@@ -15,17 +15,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-public class Room extends BaseEntity{
-
+public class RoomType extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long roomNo;
+	private Long roomTypeNo;
 	
-	@ManyToOne
-	@JoinColumn(name = "cinemaNo", referencedColumnName = "cinemaNo", nullable = false)
-	private Cinema cinema;
+	@Column(nullable = false)
+	private String roomName;
 	
-	@ManyToOne
-	@JoinColumn(name = "roomTypeNo", referencedColumnName = "roomTypeNo", nullable = false)
-	private RoomType roomType;
+	@Column(nullable = false)
+	private int roomTotalRow;
+	
+	@Column(nullable = false)
+	private int roomTotalColumn;
+	
+	@Column(nullable = false)
+	private String bigType;
+	
+	@Column(nullable = true)
+	private String smallType;	
 }

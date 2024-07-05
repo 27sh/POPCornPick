@@ -22,8 +22,12 @@ public class Gift extends BaseEntity{
 	private Long giftNo;
 	
 	@ManyToOne
-	@JoinColumn(name = "giftNo", referencedColumnName = "giftNo", nullable = false)
-	private Gift gift;
+	@JoinColumn(name = "cartNo", referencedColumnName = "cartNo", nullable = false)
+	private Cart cartNo;
+	
+	@ManyToOne
+	@JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+	private Member username;
 	
 	@Column(nullable = false)
 	private String targetName;

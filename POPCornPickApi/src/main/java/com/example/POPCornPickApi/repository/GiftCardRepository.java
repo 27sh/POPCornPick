@@ -9,5 +9,5 @@ import com.example.POPCornPickApi.entity.Member;
 
 public interface GiftCardRepository extends JpaRepository<GiftCard, Long>{
 
-	List<GiftCard> findByUserName(Member username);
+	List<GiftCard> findByMemberUsername(String username);
 }

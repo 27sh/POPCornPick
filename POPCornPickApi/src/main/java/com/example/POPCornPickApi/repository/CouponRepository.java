@@ -9,5 +9,5 @@ import com.example.POPCornPickApi.entity.Member;
 // 쿠폰
 public interface CouponRepository extends JpaRepository<Coupon, Long>{
 	
-	public List<Coupon> findByUsername(Member username);
+	public List<Coupon> findByMemberUsername(String username);
 }

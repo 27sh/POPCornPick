@@ -8,5 +8,5 @@ import com.example.POPCornPickApi.entity.Qna;
 
 public interface QnaRepository extends JpaRepository<Qna, Long>{
 
-	public List<Qna> findByQnaNo(Long qnaNo);
+	public List<Qna> findByQnaNo(Qna qnaNo);
 }

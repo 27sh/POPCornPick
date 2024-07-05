@@ -8,5 +8,5 @@ import com.example.POPCornPickApi.entity.Review;
 //평점
 public interface ReviewRepository extends JpaRepository<Review, Long>{
 	
-	public List<Review> findByReviewNo(Long ReviewNo);
+	public List<Review> findByReviewNo(Review ReviewNo);
 }

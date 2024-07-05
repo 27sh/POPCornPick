@@ -9,4 +9,6 @@ import com.example.POPCornPickApi.entity.StoreDetail;
 public interface StoreDetailRepository extends JpaRepository<StoreDetail, Long>{
     @Query(value = "select * from storedetail Where storeDetailNo = :storeDetailNo AND paymentTf = false", nativeQuery = true)
     public StoreDetail findByStoreDetailNo(@Param("storeDetailNo") Long storeDetailNo);
+    
+    
 }

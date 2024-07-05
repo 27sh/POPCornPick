@@ -1,7 +1,11 @@
 package com.example.POPCornPickApi.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MovieListRepository extends JpaRepository<MovieList, String>{
+import com.example.POPCornPickApi.entity.MovieList;
 
+public interface MovieListRepository extends JpaRepository<MovieList, String>{
+	public List<MovieList> findByMovieCd(String movieCd);
 }

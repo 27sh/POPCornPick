@@ -6,4 +6,5 @@ import com.example.POPCornPickApi.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, String>{
     public Member findByUsername(String username);
+    
 }

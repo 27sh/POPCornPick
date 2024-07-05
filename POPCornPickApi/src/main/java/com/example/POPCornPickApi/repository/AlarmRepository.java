@@ -8,8 +8,8 @@ import com.example.POPCornPickApi.entity.Alarm;
 // 알람
 public interface AlarmRepository extends JpaRepository<Alarm, Long>{
 	
-	@Query(value = "select * from alarm where alarmno = :alarmno and username = :username and alarmview = false order by regdate DESC")
-	public Alarm findByAlarmNo(@Param("alarmno") Long alarmno, @Param("username") String username);
+	@Query(value = "select * from alarm where username = :username and alarmview = false order by regdate DESC")
+	public Alarm findByMemberUsername(@Param("username") String username);
 	
 	
 }

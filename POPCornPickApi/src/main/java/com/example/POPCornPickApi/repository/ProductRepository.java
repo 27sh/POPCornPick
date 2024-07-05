@@ -9,7 +9,7 @@ import com.example.POPCornPickApi.entity.Product;
 public interface ProductRepository extends JpaRepository<Product, Long>{
     public Product findByProductNo(Long productNo);
     
-    public List<Product> findByProductList(Long productNo);
+    public List<Product> findByProductList(Product productNo);
    
 
 

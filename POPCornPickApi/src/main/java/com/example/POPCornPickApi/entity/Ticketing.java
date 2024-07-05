@@ -1,7 +1,5 @@
 package com.example.POPCornPickApi.entity;
 
-import java.util.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,22 +15,33 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-public class Schedule extends BaseEntity {
+public class Ticketing extends BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long scheduleNo;
+	private Long ticketingNo;
+	
+	@ManyToOne
+	@JoinColumn(name = "telephone", referencedColumnName = "telephone", nullable = false)
+	private UnknownMember unknownMember;
+	
+	@ManyToOne
+	@JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+	private Member member;
 	
 	@ManyToOne
 	@JoinColumn(name = "detailNo", referencedColumnName = "detailNo", nullable = false)
-	private MovieShowDetail movieShowDetail; 
+	private MovieShowDetail movieShowDetail;
 	
-	@Column(nullable = true)
-	private String schColor;
+	@Column(nullable = false)
+	private int ticketingRow;
 	
-	@Column(nullable = true)
-	private Date schDate;
+	@Column(nullable = false)
+	private int ticketingColumn;
 	
-	@Column(nullable = true)
-	private Date startTime;
+	@Column(nullable = false)
+	private int payTotalAmount;
+	
+	@Column(nullable = false)
+	private boolean viewTF;
 }

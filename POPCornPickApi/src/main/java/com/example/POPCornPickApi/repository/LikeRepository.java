@@ -10,7 +10,7 @@ import com.example.POPCornPickApi.entity.Review;
 
 public interface LikeRepository extends JpaRepository<Like, Long>{
 
-	public Like findByUsername(Member Username);
+	public Like findByMemberUsername(String username);
 	
-	List<Like> findByReviewNo(Review reviewNo);
+	List<Like> findByReviewReviewNo(Long reviewNo);
 }

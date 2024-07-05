@@ -6,5 +6,5 @@ import com.example.POPCornPickApi.entity.Cart;
 import com.example.POPCornPickApi.entity.Member;
 
 public interface CartRepository extends JpaRepository<Cart, Long>{
-    public Cart findByUsername(Member username);
+    public Cart findByMemberUsername(String username);
 }

@@ -6,6 +6,6 @@ import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Participation;
 
 public interface ParticipationRepository extends JpaRepository<Participation, Long>{
-	public Participation findByUsername(Member username);
+	public Participation findByMemberUsername(String username);
 	
 }

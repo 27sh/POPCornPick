@@ -2,7 +2,9 @@ package com.example.POPCornPickApi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UnknownMemberRepository extends JpaRepository<UnknownMemberRepository, String>{
+import com.example.POPCornPickApi.entity.UnknownMember;
+
+public interface UnknownMemberRepository extends JpaRepository<UnknownMember, String>{
 
 	
 	

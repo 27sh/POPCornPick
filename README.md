@@ -8,4 +8,4 @@
 
 # 영화 예매 사이트
 
-Spring boot / JPA, jsp, css
+![springboot](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white) / JPA, jsp, css

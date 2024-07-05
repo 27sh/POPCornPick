@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,28 +13,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-public class QnA extends BaseEntity{
+public class Faq extends BaseEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long qnaNo;
-	
-	@ManyToOne
-	@JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
-	private Member member;
+	private Long faqNo;
 	
 	@Column(nullable = false)
-	private String qnaTitle;
+	private String faqTitle;
 	
 	@Column(nullable = false)
-	private String qnaContent;
+	private String faqContent;
 	
 	@Column(nullable = true)
-	private String qnaFile;
+	private String faqFile;
 	
 	@Column(nullable = false)
-	private String qnaCategory;
+	private String faqCategory;
 	
-	@Column(nullable = true)
-	private String qnaAnswer;
+	
 }

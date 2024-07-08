@@ -55,7 +55,7 @@
         }
 
         #mme>li {
-            width: 15%;
+            width: 13%;
             height: 100%;
         }
 
@@ -63,9 +63,12 @@
             color: #fff;
         }
 
+        #logout_btn{
+            font-size: 13px;
+            font-weight: 500;
+        }
+
         #bgBox {
-            width: 100%;
-            height: 0;
             background-color: rgba(0, 0, 0, 0.7);
             position: relative;
             top: 65px;
@@ -76,7 +79,7 @@
             font-size: 14px;
             font-weight: 400;
             line-height: 24px;
-            position: relative;
+            position: absolute;
         }
 
         .sme>li {
@@ -92,13 +95,13 @@
         }
 
         .sme1{
-            left: 1205px;
+            left: 1400px;
         }
         .sme2 {
-            left: 1290px;
+            left: 1470px;
         }
         .sme3 {
-            left: 1350px;
+            left: 1550px;
         }
     </style>
 </head>
@@ -116,6 +119,9 @@
                 <li class="mme2"><a href="/admin/movieList">영화</a></li>
                 <li><a href="/admin/reportList">신고</a></li>
                 <li class="mme3"><a href="#">고객서비스</a></li>
+                <li id="logout_btn">
+                    <a href="#">✔ 로그아웃</a>
+                </li>
             </ul>
             <div id="bgBox">
                 <ul class="sme sme1">
@@ -148,6 +154,7 @@
         var sme3 = document.querySelector('.sme3');
 
         function showMenu(sme) {
+            bgBox.style.width = '100%';
             bgBox.style.height = '24px';
             sme1.style.display = 'none';
             sme2.style.display = 'none';
@@ -175,6 +182,7 @@
         });
 
         bgBox.addEventListener('mouseover', function () {
+            bgBox.style.width = '100%';
             bgBox.style.height = '24px';
         });
 

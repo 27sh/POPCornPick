@@ -8,7 +8,7 @@
 <title>관람관 등록</title>
 <style>
 main {
-	width: 1100px;
+	width: 1200px;
 	margin: 80px auto;
 	min-height: 700px;
 	border:1px solid #eee;

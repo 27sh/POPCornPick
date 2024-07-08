@@ -12,4 +12,16 @@ public class MyPageController {
 		
 		return "member/mainInfo";
 	}
+	
+	@RequestMapping("/sideMenu")
+	public String sideMenu() {
+		
+		return "member/sideMenu";
+	}
+	
+	@RequestMapping("/couponList")
+	public String couponList() {
+		
+		return "member/couponList";
+	}
 }

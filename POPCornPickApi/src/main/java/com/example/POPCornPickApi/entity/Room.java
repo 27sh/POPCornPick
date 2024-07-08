@@ -28,4 +28,14 @@ public class Room extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name = "roomTypeNo", referencedColumnName = "roomTypeNo", nullable = false)
 	private RoomType roomType;
+	
+	@Column(nullable = false)
+	private int roomRow;
+	
+	@Column(nullable = false)
+	private int roomColumn;
+	
+	@Column(nullable = false)
+	private String seatState;
+	
 }

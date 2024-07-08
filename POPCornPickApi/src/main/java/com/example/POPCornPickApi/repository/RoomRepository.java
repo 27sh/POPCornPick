@@ -6,5 +6,4 @@ import com.example.POPCornPickApi.entity.Room;
 
 public interface RoomRepository extends JpaRepository<Room, Long>{
 
-	
 }

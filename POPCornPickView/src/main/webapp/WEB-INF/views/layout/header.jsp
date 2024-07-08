@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEW</title>
+    <title>header</title>
     <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
@@ -43,7 +43,6 @@
 
         #header_wrap{
             width: 100%;
-			border-bottom: 2px solid #f82f62;
         }
 
         #header_top{
@@ -83,6 +82,7 @@
             width: 100%;
             height: 45px;
             box-sizing: border-box;
+			border-bottom: 2px solid #f82f62;
         }
 
         #nav{
@@ -102,7 +102,7 @@
             float: left;
         }
 
-        #mme:hover .sme{
+        #header_bottom:hover .sme, #header_bottom:hover #header_box{
             height: 315px;
         }
 
@@ -111,15 +111,37 @@
             font-weight: 400;
             font-size: 14px;
             overflow: hidden;
-            transition-duration: 0.2s;
+            z-index: 99;
+            position: relative;
         }
 
+        .sme>li:hover a{
+            font-weight: 600;
+        }
 
         #search_content{
-            width: 200px; height: 45px;
+            width: 200px; height: 43px;
             float: right;
             border-left: 1px solid #eee;
             border-right: 1px solid #eee;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        #search_content>input{
+            width: 80%; height: 90%;
+            font-size: 14px;
+            border: 0;
+            float: left;
+        }
+        input:focus {outline:none;}
+
+        #search_btn{
+            width: 26px; height: 26px;
+            float: right;
+            border: 0;
+            background: transparent url(img/search.png) center center / 26px scroll no-repeat;
+            cursor: pointer;
         }
 
         .header_wrap_c{
@@ -130,15 +152,69 @@
         #header_box{
             position: relative;
             top: 45px;
-            width: 100%; height: 315px;
-            background-color: darkolivegreen;
-            z-index: -99;
+            width: 100%; height: 0;
+            transition-duration: 0.2s;
+            background-color: #fff;
         }
 
+
+        #ticketing>a{
+            color: #f82f62;
+        }
         
+        /* header END */
+
+        #header_fixed{
+            position: fixed; top: 0; left: 0;
+            width: 100%;
+            height: 45px;
+            box-sizing: border-box;
+            background: transparent url(img/headerBg.png);
+            display: none;
+        }
+
+        #nav2{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #mme2{
+            width: 700px;
+        }
+
+        #mme2>li{
+            width: 20%; height: 100%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 45px;
+            float: left;
+            transition-duration: 0.2s;
+
+        }
+        #mme2>li>a{
+            color: #fff;
+        }
+
+        #header_box2{
+            position: relative;
+            top: -315px;
+            width: 100%; height: 0;
+            transition-duration: 0.2s;
+            background-color: #fff;
+        }
+
+        #header_fixed:hover .sme, #header_fixed:hover #header_box2{
+            height: 315px;
+        }
 
 
-
+        .exBox{
+            width: 100%; height: 1000px;
+            background-color: black;
+        }
 
     </style>
 </head>
@@ -160,18 +236,18 @@
                     </div>
                     <div class="loginMenu" id="notLogin" style="display: block;">
                         <ul>
-                            <li><a href="">로그인</a></li>
-                            <li><a href="">회원가입</a></li>
-                            <li><a href="">대관문의</a></li>
-                            <li><a href="">고객센터</a></li>
+                            <li><a href="loginForm">로그인</a></li>
+                            <li><a href="regForm">회원가입</a></li>
+                            <li><a href="/member/lentForm">대관문의</a></li>
+                            <li><a href="faqList">고객센터</a></li>
                         </ul>
                     </div>
                     <div class="loginMenu" id="login" style="display: none;">
                         <ul>
-                            <li><a href="" onclick="logout()" class="logout-btn">로그아웃</a></li>
-                            <li><a href="">My Page</a></li>
-                            <li><a href="">대관문의</a></li>
-                            <li><a href="">고객센터</a></li>
+                            <li><a href="" onclick="logout()" class="logout_btn">로그아웃</a></li>
+                            <li><a href="/member/reservationList">My Page</a></li>
+                            <li><a href="/member/lentForm">대관문의</a></li>
+                            <li><a href="faqList">고객센터</a></li>
                         </ul>
                     </div>
                 </div>
@@ -187,45 +263,46 @@
                     <div id="nav">
                         <!-- 메인메뉴, 검색 포함 -->
                         <ul id="mme">
-                            <li><a href="">영화</a>
+                            <li><a href="movieList">영화</a>
                                 <ul class="sme">
-                                    <li><a href="">무비차트</a></li>
+                                    <li><a href="movieList">무비차트</a></li>
                                 </ul>
                             </li>
-                            <li><a href="">극장</a>
+                            <li><a href="cinemaPage">극장</a>
                                 <ul class="sme">
-                                    <li><a href="">POPCornPick 극장</a></li>
-                                    <li><a href="">특별관</a></li>
+                                    <li><a href="cinemaPage">POPCornPick 극장</a></li>
+                                    <li><a href="sRoomDetail">특별관</a></li>
                                 </ul>
                             </li>
-                            <li><a href="">예매</a>
+                            <li id="ticketing"><a href="reservePage">예매</a>
                                 <ul class="sme">
-                                    <li><a href="">빠른 예매</a></li>
-                                    <li><a href="">상영스케쥴</a></li>
+                                    <li><a href="reservePage">빠른 예매</a></li>
+                                    <li><a href="scheduleLIst">상영스케쥴</a></li>
                                 </ul>
                             </li>
-                            <li><a href="">스토어</a>
+                            <li><a href="storeMain">스토어</a>
                                 <ul class="sme">
-                                    <li><a href="">패키지</a></li>
-                                    <li><a href="">영화관람권</a></li>
-                                    <li><a href="">기프트카드</a></li>
-                                    <li><a href="">콤보</a></li>
-                                    <li><a href="">팝콘</a></li>
-                                    <li><a href="">음료</a></li>
-                                    <li><a href="">스낵</a></li>
+                                    <li><a href="storeMain">패키지</a></li>
+                                    <li><a href="storeMain">영화관람권</a></li>
+                                    <li><a href="storeMain">기프트카드</a></li>
+                                    <li><a href="storeMain">콤보</a></li>
+                                    <li><a href="storeMain">팝콘</a></li>
+                                    <li><a href="storeMain">음료</a></li>
+                                    <li><a href="storeMain">스낵</a></li>
                                 </ul>
                             </li>
-                            <li><a href="">이벤트</a>
+                            <li><a href="eventList">이벤트</a>
                                 <ul class="sme">
-                                    <li><a href="">진행중인 이벤트</a></li>
-                                    <li><a href="">당첨자 발표</a></li>
-                                    <li><a href="">종료된 이벤트</a></li>
+                                    <li><a href="eventList">진행중인 이벤트</a></li>
+                                    <li><a href="eventList">당첨자 발표</a></li>
+                                    <li><a href="eventList">종료된 이벤트</a></li>
                                 </ul>
                             </li>
                         </ul>
 
                         <div id="search_content">
-                            <input type="text">
+                            <input type="text" placeholder="검색어를 입력하세요.">
+                            <button id="search_btn"></button>
                         </div>
 
                     </div>
@@ -234,18 +311,80 @@
                 </div>
                 <!-- header_wrap_c END -->
 
-<!--                 <div id="header_box"></div> -->
+                <div id="header_box"></div>
                 <!-- width: 100% -->
             </div>
             <!-- header_bottom END -->
+
+            <div id="header_fixed">
+                <!-- 하단 메뉴 전체 100% -->
+                <div class="header_wrap_c">
+                    <!-- width:1200px -->
+                    <div id="nav2">
+                        <!-- 메인메뉴, 검색 포함 -->
+                        <ul id="mme2">
+                            <li><a href="movieList">영화</a>
+                                <ul class="sme">
+                                    <li><a href="movieList">무비차트</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="cinemaPage">극장</a>
+                                <ul class="sme">
+                                    <li><a href="cinemaPage">POPCornPick 극장</a></li>
+                                    <li><a href="sRoomDetail">특별관</a></li>
+                                </ul>
+                            </li>
+                            <li id="ticketing"><a href="reservePage">예매</a>
+                                <ul class="sme">
+                                    <li><a href="reservePage">빠른 예매</a></li>
+                                    <li><a href="scheduleLIst">상영스케쥴</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="storeMain">스토어</a>
+                                <ul class="sme">
+                                    <li><a href="storeMain">패키지</a></li>
+                                    <li><a href="storeMain">영화관람권</a></li>
+                                    <li><a href="storeMain">기프트카드</a></li>
+                                    <li><a href="storeMain">콤보</a></li>
+                                    <li><a href="storeMain">팝콘</a></li>
+                                    <li><a href="storeMain">음료</a></li>
+                                    <li><a href="storeMain">스낵</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="eventList">이벤트</a>
+                                <ul class="sme">
+                                    <li><a href="eventList">진행중인 이벤트</a></li>
+                                    <li><a href="eventList">당첨자 발표</a></li>
+                                    <li><a href="eventList">종료된 이벤트</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- nav2 END -->
+
+                </div>
+                <!-- header_wrap_c END -->
+
+                <div id="header_box2"></div>
+                <!-- width: 100% -->
+            </div>
+            <!-- header_fixed END -->
         </div>
-
-
-
-
-
-
     </header>
 </body>
+<script>
+    window.onscroll = function () {
 
+        var headerFixed = document.getElementById("header_fixed");
+        var headerBottom = document.getElementById('header_bottom');
+        console.log(document.documentElement.scrollTop);
+        if (document.body.scrollTop > 90 || document.documentElement.scrollTop > 90) {
+            headerFixed.style.display = "block";
+            headerBottom.style.display = "none";
+        } else {
+            headerFixed.style.display = "none";
+            headerBottom.style.display = "block";
+        }
+    };
+</script>
 </html>

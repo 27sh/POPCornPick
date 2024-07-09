@@ -46,7 +46,7 @@ main {
 		<div>전화번호<span>*</span></div>
 		<input type="text" name="cinemaTel">
 		<div>대표 이미지<span>*</span></div>
-		<input type="text" id="cinemaImg" name="cinemaImg">
+		<input type="file" id="cinemaImg" name="cinemaImg">
 		<div>중요공지</div>
 		<input type="text" name="cinemaIntro"><br>
 		<input type="button" value="영화관 등록하기" onclick="submitCinemaForm(event)">

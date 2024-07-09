@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>관람관 등록</title>
+
 <style>
 main {
 	width: 1200px;

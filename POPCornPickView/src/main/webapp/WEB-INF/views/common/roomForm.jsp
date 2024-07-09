@@ -13,16 +13,38 @@ main {
 	min-height: 700px;
 	border:1px solid #eee;
 }
+#roomForm{
+	width:460px;
+	margin:30px auto;
+	
+}
+#roomForm .roomRegistForm{
+	display:flex;
+	justify-content:center;
+}
+.roomRegistForm input[type="number"]{
+	width:460px;
+	height:50px;
+	border:1px solid #dadada;
+	border-radius:5px;
+	padding-left:8px;
+	box-sizing:border-box;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size:15px;
+}
 </style>
 </head>
 <body>
 	<header>
-		<%@ include file="../layout/header.jsp"%>
+		<%@ include file="../layout/adminHeader.jsp"%>
 	</header>
 	<main>
 	<h1>관람관 관리</h1>
 	<hr>
-	<form>
+	<form id="roomForm">
+	<div class="roomRegistForm">
+	
+	</div>
 		<label for="bigType">대분류</label>
 		<select id="bigType" name="bigType" required onchange="updateSmallType()">
 			<option value="" disabled selected>선택</option>

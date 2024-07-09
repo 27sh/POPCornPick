@@ -19,7 +19,10 @@ public class Cinema extends BaseEntity{
 	private Long cinemaNo;
 	
 	@Column(nullable = false)
-	private String cinemaImg;
+	private String cinemaImgOriginName;
+	
+	@Column(nullable = false)
+	private String cinemaImgNewName;
 	
 	@Column(nullable = true)
 	private String cinemaIntro;
@@ -35,4 +38,6 @@ public class Cinema extends BaseEntity{
 	
 	@Column(nullable = false)
 	private String cinemaName;
+	
+	
 }

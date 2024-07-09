@@ -27,13 +27,16 @@ public class RoomService {
 		}
 	}
 	
-	public int registCinema(Cinema cinema) {
+	public boolean registCinema(Cinema cinema) {
+		System.out.println(cinema);
 		try {
+			System.out.println("try.........");
 			cinemaRepository.save(cinema);
-			return 1;
+			return true;
 		} catch(Exception e) {
+			System.out.println("catch.........");
 			e.printStackTrace();
-			return 0;
+			return false;
 		}
 	}
 	

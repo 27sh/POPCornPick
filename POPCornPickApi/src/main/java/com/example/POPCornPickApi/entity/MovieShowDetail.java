@@ -42,4 +42,10 @@ public class MovieShowDetail extends BaseEntity{
 	
 	@Column(nullable = true)
 	private Long totalViewer;
+	
+	@Column(nullable = true)
+	private boolean dubbing;
+	
+	@Column(nullable = true)
+	private boolean subtitle;
 }

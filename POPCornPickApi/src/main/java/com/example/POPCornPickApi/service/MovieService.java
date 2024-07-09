@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class MovieService {
 
-	@Autowired
+    @Autowired
     private MovieRepository movieNameRepository;
 
     private final String kobisApiKey = "12cc7dc453c4bb57c2342f243ea66220";

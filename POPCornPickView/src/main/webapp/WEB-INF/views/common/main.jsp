@@ -1,6 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%-- JSTL Core --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -23,7 +21,22 @@ main {
 .movie-item img {
     margin-right: 20px;
 }
+.movie-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+.movie-card .poster {
+    margin-right: 20px;
+}
+.movie-card .movie-info {
+    flex: 1;
+}
 </style>
+    <!-- jQuery 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header>
@@ -31,26 +44,8 @@ main {
     </header>
 
     <main>
-        <div id="video-container">
-            <!-- 영상이 들어갈 공간 -->
-        </div>
-        <div id="movie-container">
-            <div id="movie-details">
-                <h1>All Movies</h1>
-                <p>Loading movies...</p>
-            </div>
-            <div id="films-scheduled">
-                <!-- 상영 예정작 -->
-            </div>
-        </div>
-        <div id="event-container">
-            <!-- 이벤트 리스트 -->
-        </div>
-        <div id="special-room">
-            <!-- 특별관 -->
-        </div>
-        <div id="package">
-        
+        <div id="movie-chart">
+            <!-- 영화 목록이 여기에 추가됩니다. -->
         </div>
     </main>
 
@@ -60,45 +55,63 @@ main {
 
     <script>
         function loadMovies() {
-            fetch('http://localhost:9001/api/v1/main/movies')
-                .then(response => response.json())
-                .then(movies => {
-                    console.log('Movies:', movies); // 로그 추가
-                    const movieDetails = document.getElementById('movie-details');
-                    movieDetails.innerHTML = '<h1>All Movies</h1>'; // 기존 내용을 초기화합니다.
+            // AJAX 요청으로 영화 목록 가져오기
+            $.ajax({
+                url: 'http://localhost:9001/api/v1/main/movies',
+                method: 'GET',
+                dataType: 'json',
+                success: function(movies) {
+                    console.log('Movies:', movies);
+                    const movieChart = document.getElementById('movie-chart');
+                    movieChart.innerHTML = ''; // 기존 내용을 초기화합니다.
                     if (movies.length > 0) {
-                        movies.forEach(movieTitle => {
-                            const encodedTitle = encodeURIComponent(movieTitle);
-                            fetch('http://localhost:9001/api/v1/main/movies/details/' + encodedTitle)
-                                .then(response => response.json())
-                                .then(details => {
-                                    console.log('Details:', details); // JSON 응답 로그 추가
+                        movies.forEach(movie => {
+                            // 각 영화에 대한 상세 정보 가져오기
+                            $.ajax({
+                                url: 'http://localhost:9001/api/v1/main/movies/details/' + encodeURIComponent(movie),
+                                method: 'GET',
+                                dataType: 'json',
+                                success: function(details) {
+                                    console.log('Details:', details);
+                                    console.log('Poster URL:', details.posterUrl); // 포스터 URL 콘솔 출력
                                     if (details.error) {
                                         console.error('Error fetching movie details:', details.error);
                                         return;
                                     }
-                                    // movie-item 요소 생성 및 추가
-                                    const movieItem = document.createElement('div');
-                                    movieItem.className = 'movie-item';
-                                    movieItem.innerHTML = `
-                                        <img src="${details.posterUrl}" alt="${details.title}" width="100" height="150">
-                                        <div>
-                                            <h2>${details.title}</h2>
-                                            <p>Release Date: ${details.openStartDt}</p>
+
+                                    const movieCard = document.createElement('div');
+                                    movieCard.className = 'movie-card';
+                                    movieCard.innerHTML = `
+                                        <div class="poster">
+                                            <img style="width:200px; height:300px;" src="${details.posterUrl}" alt="포스터">
+                                        </div>
+                                        <div class="movie-info">
+                                            <div>영화 제목: ${details.title}</div>
+                                            <div>개봉일: ${details.openStartDt}</div>
+                                            <button class="btn">예매하기</button>
                                         </div>
                                     `;
-                                    movieDetails.appendChild(movieItem);
-                                })
-                                .catch(error => console.error('Error:', error));
+                                    movieChart.appendChild(movieCard);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error:', error);
+                                }
+                            });
                         });
                     } else {
-                        movieDetails.innerHTML = '<p>No movies found.</p>';
+                        movieChart.innerHTML = '<p>No movies found.</p>';
                     }
-                })
-                .catch(error => console.error('Error:', error));
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
         }
 
-        window.onload = loadMovies;
+        $(document).ready(function() {
+            loadMovies();
+        });
     </script>
+
 </body>
 </html>

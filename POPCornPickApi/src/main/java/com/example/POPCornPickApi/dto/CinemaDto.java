@@ -21,4 +21,8 @@ public class CinemaDto {
 	public String getFileNema() {
 		return cinemaImg.getOriginalFilename();
 	}
+	
+	public MultipartFile getImgfile() {
+		return cinemaImg;
+	}
 }

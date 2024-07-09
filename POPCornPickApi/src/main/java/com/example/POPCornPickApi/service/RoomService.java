@@ -1,11 +1,11 @@
 package com.example.POPCornPickApi.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.RoomType;
-import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.RoomTypeRepository;
 
 @Service
@@ -14,8 +14,8 @@ public class RoomService {
 	@Autowired
 	private RoomTypeRepository roomTypeRepository;
 	
-	@Autowired
-	private CinemaRepository cinemaRepository;
+//	@Autowired
+//	private RoomRepository roomRepository;
 	
 	public int registRoom(RoomType roomType) {
 		try {
@@ -27,20 +27,9 @@ public class RoomService {
 		}
 	}
 	
-	public boolean registCinema(Cinema cinema) {
-		System.out.println(cinema);
-		try {
-			System.out.println("try.........");
-			cinemaRepository.save(cinema);
-			return true;
-		} catch(Exception e) {
-			System.out.println("catch.........");
-			e.printStackTrace();
-			return false;
-		}
+	public List<RoomType> getRoomList(){
+		System.out.println("service : " + roomTypeRepository.findAllByOrderByRoomNameAsc());
+		return roomTypeRepository.findAllByOrderByRoomNameAsc();		
 	}
-	
-	
-	
 	
 }

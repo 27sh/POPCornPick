@@ -55,13 +55,48 @@ main {
 	</div>
 	<!-- 관람관 등록 -->
 	<div>
-	
+	<div>관람관</div>
+	<div id="roomList"></div>	
 	</div>
 	</main>
 	<footer>
 	
 	</footer>
 	<script>
+	$(document).ready(function(){
+		const xhttp = new XMLHttpRequest();
+		
+		xhttp.onload = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				const data = JSON.parse(this.responseText);
+				console.log("data: ",data);
+				if(data != null && data.length > 0){
+					let table = '<table border="1">';
+
+					for (let i = 0; i < data.length; i++) {
+						table += '<div>';
+						table += '<tr>';
+						table += '<td>' + data[i].bigType + '</td>';
+						table += '<td>' + data[i].smallType + '</td>';
+						table += '<td>' + data[i].roomName + '</td>';
+						table += '</tr>';
+						table += '</div>';
+					}
+					table += '</table>';
+
+					document.getElementById("roomList").innerHTML = table;
+				} else {
+					document.getElementById("roomList").innerHTML = "등록되어있는 상영관이 없습니다.";
+				}
+				
+			} else if (this.readyState == 4 && this.status != 200) {
+				alert("목록을 불러올 수 없습니다. 다시 시도해주세요.");
+			}
+		}
+		xhttp.open("GET", "http://localhost:9001/api/v1/cinema/room", true);
+		xhttp.send();
+	});
+	
 	function submitCinemaForm(event){
 		event.preventDefault();
 		
@@ -82,13 +117,14 @@ main {
 			contentType : false,
 			cache : false,
 			success : function(data){
+				//var image = document.getElementById('myImage');
+				//image.src = data;
 				console.log("success : ", data);
 			},
 			error : function(e){
 				console.log("error : " );
 			}
 		});
-		
 	}
 	</script>
 </body>

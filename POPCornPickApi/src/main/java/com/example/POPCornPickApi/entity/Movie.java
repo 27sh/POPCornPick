@@ -1,7 +1,8 @@
 package com.example.POPCornPickApi.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,53 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-public class Movie extends BaseEntity{
-	
+public class Movie {
+
 	@Id
-	private String movieDc;
-	
-	@Column(nullable = true)
-	private String movieNm;
-	
-	@Column(nullable = true)
-	private String movieNmEn;
-	
-	@Column(nullable = true)
-	private String movieNmOg;
-	
-	@Column(nullable = true)
-	private String prdtYear;
-	
-	@Column(nullable = true)
-	private String showTm;
-	
-	@Column(nullable = true)
-	private String openDt;
-	
-	@Column(nullable = true)
-	private String prdtStatNm;
-	
-	@Column(nullable = true)
-	private String nations;
-	
-	@Column(nullable = true)
-	private String genres;
-	
-	@Column(nullable = true)
-	private String directors;
-	
-	@Column(nullable = true)
-	private String actors;
-	
-	@Column(nullable = true)
-	private String showTypes;
-	
-	@Column(nullable = true)
-	private String showTypeGroupNm;
-	
-	@Column(nullable = true)
-	private boolean dubbing;
-	
-	@Column(nullable = true)
-	private boolean subtitle;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long movieDC;
+    private String title;
 }

@@ -35,4 +35,6 @@ public class Schedule extends BaseEntity {
 	
 	@Column(nullable = true)
 	private Date end;
+	
+	private Long regNo;
 }

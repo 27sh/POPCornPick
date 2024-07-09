@@ -12,4 +12,11 @@ public class AdminController {
 		
 		return"admin/qnaList";
 	}
+	
+	@RequestMapping("/qnaEdit")
+	public String qnaDetail() {
+		
+		return"admin/qnaEdit";
+	}
+	
 }

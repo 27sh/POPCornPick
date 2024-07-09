@@ -39,5 +39,4 @@ public class Cinema extends BaseEntity{
 	@Column(nullable = false)
 	private String cinemaName;
 	
-	
 }

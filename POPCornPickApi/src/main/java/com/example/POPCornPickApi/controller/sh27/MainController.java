@@ -13,21 +13,21 @@ import com.example.POPCornPickApi.service.MovieService;
 
 @RestController
 @RequestMapping("/api/v1/main")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8080")
 public class MainController {
 
     @Autowired
-    private MovieService movieNameService;
+    private MovieService movieService;
 
     @GetMapping("/movies")
     public List<String> getAllMovies() {
-        return movieNameService.getAllMovies();
+        return movieService.getAllMovies();
     }
 
     @GetMapping("/movies/details/{title}")
     public String getMovieDetails(@PathVariable("title") String title) {
         try {
-            return movieNameService.getMovieDetails(title);
+            return movieService.getMovieDetails(title);
         } catch (Exception e) {
             e.printStackTrace();
             return "{\"error\":\"An error occurred\"}";

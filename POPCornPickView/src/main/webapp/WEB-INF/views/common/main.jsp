@@ -67,6 +67,7 @@ main {
                     if (movies.length > 0) {
                         movies.forEach(movie => {
                             // 각 영화에 대한 상세 정보 가져오기
+                            
                             $.ajax({
                                 url: 'http://localhost:9001/api/v1/main/movies/details/' + encodeURIComponent(movie),
                                 method: 'GET',
@@ -78,19 +79,32 @@ main {
                                         console.error('Error fetching movie details:', details.error);
                                         return;
                                     }
-
+                                    let str = '';
                                     const movieCard = document.createElement('div');
                                     movieCard.className = 'movie-card';
-                                    movieCard.innerHTML = `
-                                        <div class="poster">
+                                    movieCard.innerHTML = 
+                                    	
+                                    	
+
+                                    str += '<div class="poster">'
+                                        + '<img style="width:200px; height:300px;" src="' + details.posterUrl + '" alt="포스터">'
+                                        + '</div>'
+                                        + '<div class="movie-info">'
+                                        + '<div>영화 제목: ' + details.title + '</div>'
+                                        + '<div>개봉일: ' + details.openStartDt + '</div>'
+                                        + '<button class="btn">예매하기</button>'
+                                        + '</div>';
+
+                                   	
+                                    	
+                                    	/*`<div class="poster">
                                             <img style="width:200px; height:300px;" src="${details.posterUrl}" alt="포스터">
                                         </div>
                                         <div class="movie-info">
                                             <div>영화 제목: ${details.title}</div>
                                             <div>개봉일: ${details.openStartDt}</div>
                                             <button class="btn">예매하기</button>
-                                        </div>
-                                    `;
+                                        </div>`;*/
                                     movieChart.appendChild(movieCard);
                                 },
                                 error: function(xhr, status, error) {

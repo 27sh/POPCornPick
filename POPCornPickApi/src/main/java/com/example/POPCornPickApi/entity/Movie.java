@@ -18,4 +18,5 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieDC;
     private String title;
+    private String color;
 }

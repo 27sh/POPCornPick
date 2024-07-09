@@ -72,7 +72,7 @@ body {
 	</div>
 
 	<script type="text/javascript">
-    /*    
+  //영화목록 불러오기
 	function getJson() {
             const xhr = new XMLHttpRequest();
             xhr.onload = function () {
@@ -81,10 +81,13 @@ body {
                 const movieList = response.movieListResult.movieList;
                 displayMovies(movieList);
             };
-            xhr.open("GET", "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=12cc7dc453c4bb57c2342f243ea66220&targetDt=20120101", true);
+            xhr.open("GET", "http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=12cc7dc453c4bb57c2342f243ea66220&itemPerPage=50||openStartDt=2024", true);
+            
             xhr.send();
         }
-*/
+
+//일별 박스오피스 불러오기
+/*
 function getJson() {
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
@@ -101,6 +104,7 @@ function getJson() {
                    
                 } else {
                     console.error('Movie list not found in API response');
+                    console.log('상태확인' + xhr.status);
                 }
             } catch (error) {
                 console.error('Error parsing JSON response:', error);
@@ -113,11 +117,12 @@ function getJson() {
     xhr.onerror = function () {
         console.error('Request failed');
     };
-
-    xhr.open("GET", "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=12cc7dc453c4bb57c2342f243ea66220&targetDt=20240701&itemPerPage=10", true);
+    
+    
+    xhr.open("GET", "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=12cc7dc453c4bb57c2342f243ea66220&targetDt=20240701", true);
     xhr.send();
 }
-
+*/
 
 
 /*
@@ -143,7 +148,7 @@ function displayMovies(movies) {
     
     movieListContainer.innerHTML = str;
 }
-
+ㅏ
 */
 function fetchPoster(movieNm) {
 	const apiKey = '4b5db8493a5df33fa9def848bcdda8b1'; // 여기에 본인의 TMDb API 키를 입력하세요
@@ -162,13 +167,15 @@ function fetchPoster(movieNm) {
             const data = JSON.parse(xhr.responseText);
             if (data.results && data.results.length > 0) {
                 const posterPath = data.results[0].poster_path;
-                return 'https://image.tmdb.org/t/p/w500${posterPath}';
+                return 'https://image.tmdb.org/t/p/w500'+ posterPath;
                 console.log('Poster URL:', posterUrl);
+                console.log('데이터데이터' + data);
             } else {
                 return 'https://via.placeholder.com/200x300'; // 포스터를 찾을 수 없을 때 기본 포스터 이미지
             }
         } else {
             console.error('Error fetching poster:', xhr.status, xhr.statusText);
+            console.log('데이터데이터' + data);
             return 'https://via.placeholder.com/200x300'; // 에러 발생 시 기본 포스터 이미지
         }
     }
@@ -184,15 +191,19 @@ async function displayMovies(movie) {
         
         str += '<div class="movie-card">'
             +   '<div>No.' + (i + 1) + '</div>'
-            +   '<div class="poster"><img src="' + posterUrl + '" alt="포스터"></div>'
+            +   '<div class="poster"><img style="width="200" height="300" src="' + posterUrl + '" alt="포스터"></div>'
             +   '<div class="movie-info">'
-            +       '<div>영화 제목: ' + movie.movieNm + '</div>'
-            +       '<div class="sales">예매율: ' + movie.salesAcc + '</div>'
+            +       '<div>영화 제목: ' + movie[i].movieNm + '</div>'
+            +       '<div class="sales">예매율: ' + movie[i].salesAcc + '</div>'
             +       '<div class="rating">평점: 9.3</div>'
-            +       '<div>개봉일: ' + movie.openDt + '</div>'
+            +       '<div>개봉일: ' + movie[i].openDt + '</div>'
             +       '<button class="btn">예매하기</button>'
             +   '</div>'
             + '</div>';
+            
+            console.log(movie);
+            console.log(movie[i].movieNm);
+            console.log(posterUrl);
     }
 
     movieListContainer.innerHTML = str;

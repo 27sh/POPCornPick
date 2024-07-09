@@ -81,7 +81,7 @@ body {
                 const movieList = response.movieListResult.movieList;
                 displayMovies(movieList);
             };
-            xhr.open("GET", "http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=12cc7dc453c4bb57c2342f243ea66220&itemPerPage=50||openStartDt=2024", true);
+            xhr.open("GET", "http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=12cc7dc453c4bb57c2342f243ea66220&itemPerPage=50", true);
             
             xhr.send();
         }

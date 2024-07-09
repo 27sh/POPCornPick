@@ -12,5 +12,10 @@ public class RoomController {
 		return "common/roomForm";
 	}
 	
+	@RequestMapping("/sRoomDetail")
+	public String sRoomDetail() {
+		return "common/sRoomDetail";
+	}
+	
 	
 }

@@ -81,4 +81,15 @@ public class CinemaController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@GetMapping("/list")
+	public ResponseEntity<List<Cinema>> cinemaList(){
+		List<Cinema> list = cinemaService.getCinemaList();
+		System.out.println("list: " + list);
+		if(!list.isEmpty()) {
+			return ResponseEntity.ok(list);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 }

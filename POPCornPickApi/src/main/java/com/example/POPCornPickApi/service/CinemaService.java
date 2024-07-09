@@ -63,6 +63,10 @@ public class CinemaService {
 		}
 	}
 	
+	public List<Cinema> getCinemaList(){
+		return cinemaRepository.findAll();
+	}
+	
 	
 	
 	

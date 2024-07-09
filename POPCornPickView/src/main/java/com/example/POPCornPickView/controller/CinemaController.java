@@ -11,4 +11,9 @@ public class CinemaController {
 	public String registForm() {
 		return "common/cinemaForm";
 	}
+	
+	@RequestMapping("/list")
+	public String getCinemaList() {
+		return "common/cinemaList";
+	}
 }

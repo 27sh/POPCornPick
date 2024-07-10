@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import com.example.POPCornPickApi.entity.MovieShowDetail;
 
 public interface MovieShowDetailRepository extends JpaRepository<MovieShowDetail, Long>{
-	public MovieShowDetail findByDetailNo(MovieShowDetail detailNo);
+	public MovieShowDetail findByDetailNo(Long detailNo);
 }

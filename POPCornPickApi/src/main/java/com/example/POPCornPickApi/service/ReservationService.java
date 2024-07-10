@@ -101,30 +101,28 @@ public class ReservationService {
 		
 		List<Movie> movieList = movieRepository.findAll();
 		
-//		List<MovieShowDetail> movieShowDetailList = movieShowDetailRepository.findAll();
-//		Map<Long, Long> countMap = new HashMap<>();
-//		movieShowDetailList.forEach(movieShowDetail -> {
-//			Long count = ticketingRepository.countByMovieShowDetail_DetailNo(movieShowDetail.getDetailNo());
-//			countMap.put(movieShowDetail.getMovie().getMovieDC(), count);
-//		});
-//		
-//		System.out.println("countMap : " + countMap);
-//		Set<Long> movieDCSet = new HashSet<>();
-//		
-//		for(int i = 0; i < countMap.size(); i++) {
-//			movieDCSet = countMap.keySet();
-//		}
-//
-//		Map<Movie, Long> movieMap = new HashMap<>();
-//		
-//		movieDCSet.forEach(movieDC -> {
-//			Movie movie = movieRepository.findByMovieDC(movieDC);
-//			movieMap.put(movie, countMap.get(movieDC));
-//		});
-//		
-//		System.out.println("movieMap : " + movieMap);
-//		
-		// ticketingRepository.countByMovie_MovieDCOrderByCountDesc();
+		List<MovieShowDetail> movieShowDetailList = movieShowDetailRepository.findAll();
+		Map<Long, Long> countMap = new HashMap<>();
+		movieShowDetailList.forEach(movieShowDetail -> {
+			Long count = ticketingRepository.countByMovieShowDetail_DetailNo(movieShowDetail.getDetailNo());
+			countMap.put(movieShowDetail.getMovie().getMovieDC(), count);
+		});
+		
+		System.out.println("countMap : " + countMap);
+		Set<Long> movieDCSet = new HashSet<>();
+		
+		for(int i = 0; i < countMap.size(); i++) {
+			movieDCSet = countMap.keySet();
+		}
+
+		Map<Movie, Long> movieMap = new HashMap<>();
+		
+		movieDCSet.forEach(movieDC -> {
+			Movie movie = movieRepository.findByMovieDC(movieDC);
+			movieMap.put(movie, countMap.get(movieDC));
+		});
+		
+		System.out.println("movieMap : " + movieMap);
 		
 		
 		

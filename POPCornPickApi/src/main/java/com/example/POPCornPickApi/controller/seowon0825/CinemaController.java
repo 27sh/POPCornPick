@@ -146,8 +146,13 @@ public class CinemaController {
 	
 	@GetMapping("/roomDetail")
 	public ResponseEntity<Long> cinemaRoomDetail(@RequestParam("cinemaName")String cinemaName){
+		//cinemaNo값 추출
 		Long cinemaNo = cinemaService.getCinemaNo(cinemaName);
 		System.out.println(cinemaNo);
+		//cinemaNo값을 이용해서 room_no추출
+		
+		//반복문을 이용해서 roomNo에 해당하는 seat데이터 추출
+		
 		return ResponseEntity.ok(cinemaNo);
 	}
 	

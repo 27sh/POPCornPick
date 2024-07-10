@@ -1,8 +1,12 @@
 package com.example.POPCornPickApi.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -101,34 +105,60 @@ public class ReservationService {
 		
 		List<Movie> movieList = movieRepository.findAll();
 		
-//		List<MovieShowDetail> movieShowDetailList = movieShowDetailRepository.findAll();
-//		Map<Long, Long> countMap = new HashMap<>();
-//		movieShowDetailList.forEach(movieShowDetail -> {
-//			Long count = ticketingRepository.countByMovieShowDetail_DetailNo(movieShowDetail.getDetailNo());
-//			countMap.put(movieShowDetail.getMovie().getMovieDC(), count);
-//		});
-//		
-//		System.out.println("countMap : " + countMap);
-//		Set<Long> movieDCSet = new HashSet<>();
-//		
-//		for(int i = 0; i < countMap.size(); i++) {
-//			movieDCSet = countMap.keySet();
-//		}
-//
-//		Map<Movie, Long> movieMap = new HashMap<>();
-//		
-//		movieDCSet.forEach(movieDC -> {
-//			Movie movie = movieRepository.findByMovieDC(movieDC);
-//			movieMap.put(movie, countMap.get(movieDC));
-//		});
-//		
-//		System.out.println("movieMap : " + movieMap);
-//		
-		// ticketingRepository.countByMovie_MovieDCOrderByCountDesc();
+		List<MovieShowDetail> movieShowDetailList = movieShowDetailRepository.findAll();
+		Map<Long, Long> countMap = new HashMap<>();
+		movieShowDetailList.forEach(movieShowDetail -> {
+			Long count = ticketingRepository.countByMovieShowDetail_DetailNo(movieShowDetail.getDetailNo());
+			if(count > 0) {
+				countMap.put(movieShowDetail.getDetailNo(), count);
+			}
+		});
 		
+		Set<Long> detailNoSet = new HashSet<>();
 		
+		for(int i = 0; i < countMap.size(); i++) {
+			detailNoSet = countMap.keySet();
+		}
 		
+		Map<Movie, Long> totalCountMap = new HashMap<>();
+		
+		detailNoSet.forEach(detailNo -> {
+			MovieShowDetail movieShowDetail = movieShowDetailRepository.findByDetailNo(detailNo);
+			Movie movie = movieRepository.findByMovieDC(movieShowDetail.getMovie().getMovieDC());
+			if(totalCountMap.containsKey(movie)) {
+				Long count = totalCountMap.get(movie);
+				Long newCount = countMap.get(detailNo) + count;
+				totalCountMap.remove(movie);
+				totalCountMap.put(movie, newCount);
+			}else {
+				totalCountMap.put(movie, countMap.get(detailNo));				
+			}
+		});
+		
+		Map<Movie, Long> map = sortByValue(totalCountMap);
+		System.out.println(map.values());
+		System.out.println(map.keySet());
 		return movieList;
 	}
+	
+	public Map<Movie, Long> sortByValue(Map<Movie, Long> map) {
+        List<Map.Entry<Movie, Long>> list = new LinkedList<>(map.entrySet());
+        
+        // 값(value)을 기준으로 정렬 (오름차순)
+        Collections.sort(list, new Comparator<Map.Entry<Movie, Long>>() {
+            @Override
+            public int compare(Map.Entry<Movie, Long> o1, Map.Entry<Movie, Long> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        
+        // 정렬된 엔트리를 LinkedHashMap에 넣어 순서를 유지하면서 맵을 구성
+        Map<Movie, Long> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<Movie, Long> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        
+        return sortedMap;
+    }
 	
 }

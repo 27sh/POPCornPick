@@ -16,4 +16,5 @@ public interface TicketingRepository extends JpaRepository<Ticketing, Long>{
             "GROUP BY m.title " +
             "ORDER BY ticketCount DESC", nativeQuery = true)
 	List<Object[]> findTopMoviesByTicketCount();
+	public Long countByMovieShowDetail_DetailNo(Long detailNo);
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.entity.Cinema;
+import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.service.ReservationService;
 
@@ -73,7 +74,7 @@ public class ReservationController {
 	}
 	
 	@GetMapping("/cinema/special/list/{roomTypeNo}")
-	public ResponseEntity<List<Room>> getCinemaByRoomTypeNo(@PathVariable Long roomTypeNo){
+	public ResponseEntity<List<Room>> getCinemaByRoomTypeNo(@PathVariable("roomTypeNo") Long roomTypeNo){
 		
 		List<Room> roomList = reservationService.getCinemaByRoomTypeNo(roomTypeNo);
 		
@@ -84,6 +85,29 @@ public class ReservationController {
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ArrayList<>());
+	}
+	
+	@GetMapping("/movie/list")
+	public ResponseEntity<List<Movie>> getMovie(){
+		
+		List<Movie> movieList = reservationService.getMovieList();
+		
+		if(movieList != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(movieList);
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ArrayList<>());
+	}
+	
+	@GetMapping("/movie/aboutto/list")
+	public ResponseEntity<List<Movie>> getMovieAboutToRelease(){
+		
+		
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(null);
 	}
 	
 }

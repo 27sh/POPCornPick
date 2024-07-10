@@ -569,6 +569,7 @@ h4 {
 .hide_strong {
 	visibility: hidden;
 }
+
 main {
 	width: 1280px;
 	margin: 80px auto;
@@ -659,23 +660,19 @@ main {
 							<li class="jeju">제주(0)</li>
 						</ul>
 						<ul class="scroll_container" id="section_cinema_list_specific">
-							<li class="selected"><span>가산디지털</span></li>
-							<li>가양</li>
-							<li>강동</li>
 						</ul>
 					</div>
 				</section>
 				<section id="section_movie">
-					<h4 class="section_movie_title">영화 선택</h4>	
+					<h4 class="section_movie_title">영화 선택</h4>
 					<div id="section_movie_select">
 						<select>
-							<option>예매순</option>
-							<option>관객순</option>
-							<option>예정작</option>
+							<option id="section_movie_select_reservation">예매순</option>
+							<option id="section_movie_select_aboutto">예정작</option>
 						</select>
 					</div>
 					<div id="section_movie_list">
-						<ul class="scroll_container">
+						<ul class="scroll_container" id="section_movie_list_info">
 							<li><img alt="12세 관람가" src="/img/grade_12.png" class="grade"><span>파일럿</span></li>
 							<li class="selected"><img alt="전체 관람가"
 								src="/img/grade_all.png" class="grade"><span>인사이드
@@ -889,7 +886,6 @@ main {
 				method: "GET",
 				dataType: "json",
 				success: function(response){
-					console.log(response);
 					let str = '';	
 					Object.entries(response).forEach(([key, value]) => {
 						str += '<li class="' + key + '">' + value + '</li>';
@@ -901,7 +897,39 @@ main {
 				}
 			});
 			
-			
+			$.ajax({
+				url: "http://localhost:9001/api/v1/reservation/movie/list",
+				method: "GET",
+				dataType: "json",
+				success: function(response) {
+					let str = '';
+					response.forEach(movie => {
+						
+						let title = '';
+						if(movie.title.length > 25){
+							title = movie.title.substring(0, 25) + "...";
+						}else {
+							title = movie.title;
+						}
+						
+						if(movie.viewAge === "전체 관람가"){
+							str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
+						}else if(movie.viewAge === "12세 이상 관람가"){
+							str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
+						}else if(movie.viewAge === "15세 이상 관람가"){
+							str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
+						}else if(movie.viewAge === "청소년 관람불가") {
+							str += '<li><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
+						}
+						
+					});
+					
+					$("#section_movie_list_info").html(str);
+				},
+				error : function(xhr, status, error){
+					console.log(error);
+				}
+			});
 			
 			$(".simple_info_title").on("mouseenter", function() {
 				$(this).next(".simple_info_content").removeClass("hidden");
@@ -916,42 +944,71 @@ main {
 				$(this).siblings().removeClass("selected");
 			});
 
-			$("#section_cinema_list_rough").children().on("click", function() {
+			$("#section_cinema_list_rough").on("click", "li", function() {
 				$(this).addClass("selected");
 				$(this).siblings().removeClass("selected");
 				
 				const location = $(this).attr("class").split(" ")[0];
-				$.ajax({
-					url : "http://localhost:9001api/v1/reservation/cinema/location/list/" + location,
-					method : "GET",
-					dataType: "json",
-					success : function(response){
-						console.log(response);
-						let str = '';
-						let cnt = 0;
-						response.forEach(cinema => {
-							str += '<li id="cinemaNo_' + cinema.cinemaNo + '">' + cinema.cinemaName + '</li>';
-						});
-						$("#section_cinema_list_specific").html(str);
-						
-					},
-					error : function(xhr, status, error){
-						console.log(error);
+				
+				if(location === "4DX" || location === "IMAX" || location === "PRIVATE_BOX"){
+					let roomTypeNo = 0;
+					
+					if(location === "4DX"){
+						roomTypeNo = 4;
+					}else if(location === "IMAX"){
+						roomTypeNo = 3;
+					}else if(location === "PRIVATE_BOX"){
+						roomTypeNo = 5;
 					}
-				});
+					
+					$.ajax({
+						url : "http://localhost:9001/api/v1/reservation/cinema/special/list/" + roomTypeNo,
+						method : "GET",
+						dataType: "json",
+						success : function(response){
+							let str = '';
+							let cnt = 0;
+							response.forEach(room => {
+								str += '<li id="roomNo_' + room.roomNo + '">' + room.cinema.cinemaName + '</li>';
+							});
+							$("#section_cinema_list_specific").html(str);
+							
+						},
+						error : function(xhr, status, error){
+							console.log(error);
+						}
+					});
+				}else {
+					$.ajax({
+						url : "http://localhost:9001/api/v1/reservation/cinema/location/list/" + location,
+						method : "GET",
+						dataType: "json",
+						success : function(response){
+							let str = '';
+							let cnt = 0;
+							response.forEach(cinema => {
+								str += '<li id="cinemaNo_' + cinema.cinemaNo + '">' + cinema.cinemaName + '</li>';
+							});
+							$("#section_cinema_list_specific").html(str);
+						},
+						error : function(xhr, status, error){
+							console.log(error);
+						}
+					});
+				}
 			});
 
-			$("#section_cinema_list_specific").children().on("click", function() {
+			$("#section_cinema_list_specific").on("click", "li", function() {
 				$(this).addClass("selected");
 				$(this).siblings().removeClass("selected");
-
+				
 				const title = $(this).text();
 				$(".section_cinema_title").text("영화관 - " + title);
 				$(".simple_info_content_specific").text(title);
 				
 			});
 			
-			$("#section_movie_list").children("ul").children().on("click", function() {
+			$("#section_movie_list").children("ul").on("click", "li", function() {
 				$(this).addClass("selected");
 				$(this).siblings().removeClass("selected");
 				
@@ -1021,12 +1078,12 @@ main {
 			// $("#section_schedule_date_slides").html(str);
 			
 			$("#section_cinema_tab_all").on("click", function(){
+				$("#section_cinema_list_specific").html("");
 				$.ajax({
 					url: "http://localhost:9001/api/v1/reservation/count",
 					method: "GET",
 					dataType: "json",
 					success: function(response){
-						console.log(response);
 						let str = '';	
 						Object.entries(response).forEach(([key, value]) => {
 							str += '<li class="' + key + '">' + value + '</li>';
@@ -1040,12 +1097,13 @@ main {
 			});
 			
 			$("#section_cinema_tab_special").on("click", function(){
+				$("#section_cinema_list_specific").empty();
+				console.log("aaaa");
 				$.ajax({
 					url: "http://localhost:9001/api/v1/reservation/special/count",
 					method: "GET",
 					dataType: "json",
 					success: function(response){
-						console.log(response);
 						let str = '';	
 						Object.entries(response).forEach(([key, value]) => {
 							str += '<li class="' + key + '">' + value + '</li>';
@@ -1060,11 +1118,10 @@ main {
 			
 			$(".4DX").on("click", function(){
 				$.ajax({
-					url : "http://localhost:9001api/v1/reservation/cinema/special/list/" + 2,
+					url : "http://localhost:9001/api/v1/reservation/cinema/special/list/" + 2,
 					method : "GET",
 					dataType: "json",
 					success : function(response){
-						console.log(response);
 						let str = '';
 						let cnt = 0;
 						response.forEach(room => {
@@ -1081,11 +1138,10 @@ main {
 			
 			$(".IMAX").on("click", function(){
 				$.ajax({
-					url : "http://localhost:9001api/v1/reservation/cinema/special/list/" + 3,
+					url : "http://localhost:9001/api/v1/reservation/cinema/special/list/" + 3,
 					method : "GET",
 					dataType: "json",
 					success : function(response){
-						console.log(response);
 						let str = '';
 						let cnt = 0;
 						response.forEach(cinema => {
@@ -1101,12 +1157,12 @@ main {
 			});
 			
 			$(".PRIVATE_BOX").on("click", function(){
+				console.log("privateBox");
 				$.ajax({
-					url : "http://localhost:9001api/v1/reservation/cinema/special/list/" + 4,
+					url : "http://localhost:9001/api/v1/reservation/cinema/special/list/" + 4,
 					method : "GET",
 					dataType: "json",
 					success : function(response){
-						console.log(response);
 						let str = '';
 						let cnt = 0;
 						response.forEach(cinema => {
@@ -1119,6 +1175,35 @@ main {
 						console.log(error);
 					}
 				});
+			});
+			
+			// 처음에 나오는 코드를 수정 한뒤 복사해서 가지고 오면 된다.
+			$("#section_movie_select_reservation").on("click", function(){
+				$.ajax({
+					url: "http://localhost:9001/api/v1/reservation/movie/popular/list",
+					method: "GET",
+					dataType: "json",
+					success: function(response){
+						console.log(response);
+					},
+					error: function(xhr, status, error){
+						console.log(error);
+					}
+				});						
+			});
+			
+			$("#section_movie_select_aboutto").on("click", function(){
+				$.ajax({
+					url: "http://localhost:9001/api/v1/reservation/movie/aboutto/list",
+					method: "GET",
+					dataType: "json",
+					success: function(response){
+						console.log(response);
+					},
+					error: function(xhr, status, error){
+						console.log(error);
+					}
+				});					
 			});
 			
 			/*
@@ -1180,3 +1265,7 @@ main {
 	</script>
 </body>
 </html>
+
+	
+
+

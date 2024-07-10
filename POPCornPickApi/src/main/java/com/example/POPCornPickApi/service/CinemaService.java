@@ -1,6 +1,7 @@
 package com.example.POPCornPickApi.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,6 @@ public class CinemaService {
 	
 	public boolean registCinema(Cinema cinema) {
 		try {
-			System.out.println(cinema);
 			cinema = cinemaRepository.save(cinema);
 			
 			List<RoomType> roomTypes = roomTypeRepository.findAll();
@@ -40,11 +40,8 @@ public class CinemaService {
 				Room room = new Room();
 				room.setCinema(cinema);
 				room.setRoomType(roomType);
-				System.out.println("room : "+room);
 				room = roomRepository.save(room);
 				
-				System.out.println("getRoomTotalRow : "+roomType.getRoomTotalRow());
-				System.out.println("getRoomTotalColumn : "+roomType.getRoomTotalColumn());
 				for(int i = 1; i <= roomType.getRoomTotalRow() ; i++) {
 					for(int j = 1 ; j <= roomType.getRoomTotalColumn() ;j++) {
 						Seat seat = new Seat();
@@ -67,6 +64,50 @@ public class CinemaService {
 		return cinemaRepository.findAll();
 	}
 	
+	public Cinema getCinemaDetail(Long cinemaNo) {
+		Optional<Cinema> optionalCinema = cinemaRepository.findById(cinemaNo);
+		Cinema cinemaDetail = optionalCinema.orElse(null);
+		return cinemaDetail;
+	}
+	
+	public boolean cinemaImgModify(Cinema cinema) {
+		try {
+			cinemaRepository.save(cinema);
+			return true;
+		} catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean cinemaModify(Cinema cinema) {
+		System.out.println(cinema);
+		try {
+			int count = cinemaRepository.updateCinemaById(cinema.getCinemaNo(), cinema.getCinemaAddr(), cinema.getCinemaIntro(), cinema.getCinemaLocation(), cinema.getCinemaName(), cinema.getCinemaTel());
+			if(count > 0) {
+				System.out.println("수정 완료");
+				return true;
+			} else {
+				System.out.println("수정 실패");
+				return false;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public List<Cinema> getCinemaRoomList(String cinemaLocation) {
+		System.out.println(cinemaLocation);
+		return cinemaRepository.findByCinemaLocation(cinemaLocation);
+	}
+	
+	public Long getCinemaNo(String cinemaName) {
+		System.out.println(cinemaName);
+		Long cinemaNo = cinemaRepository.findByCinemaName(cinemaName);
+		System.out.println(cinemaNo);
+		return cinemaNo;
+	}
 	
 	
 	

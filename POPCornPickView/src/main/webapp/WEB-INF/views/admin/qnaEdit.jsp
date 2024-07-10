@@ -94,7 +94,6 @@ th {
 	height: 220px;
 }
 </style>
-</style>
 </head>
 <body>
 

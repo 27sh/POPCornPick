@@ -4,9 +4,165 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>FAQ Form</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<%@ include file="../layout/adminHeader.jsp"%>
+<link rel="stylesheet" as="style" crossorigin
+	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<style>
+body {
+	font-family: 'Pretendard Variable', Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	width: 80%;
+	margin: 0 auto;
+	padding-top: 50px;
+}
+
+h1 {
+	text-align: left;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+thead tr {
+	border-top: 2px solid #ddd;
+}
+
+tbody tr:last-child {
+	border-bottom: 2px solid #ddd;
+}
+
+th, td {
+	padding: 10px;
+	text-align: left;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+}
+
+th {
+	height: 40px;
+}
+
+.btn {
+	margin: 5px;
+	padding: 5px 10px;
+	border: 1px solid #ddd;
+	background-color: white;
+	color: black;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background-color: #f4f4f4;
+}
+
+.btn-completed {
+	background-color: #5c6bc0;
+	color: white;
+	border: none;
+}
+
+.btn-pending {
+	color: gray;
+	border: 1px solid #ddd;
+}
+
+.btn {
+	background-color: #800080; /* 보라색 */
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	margin-left: 10px;
+}
+
+.btn button:hover {
+	background-color: #4b0082; /* 진한 보라색 */
+}
+#qnaanswer{
+	width: 560px;
+	height: 220px;
+}
+</style>
 </head>
 <body>
+
+	<div class="container">
+		<div class="header-text"><h1>FAQ</h1></div>
+		<table>
+			<tr>
+				<td>카테고리</td>
+				<td>
+					<select name="category">
+					  <option value="카테고리는" selected="selected">카테고리는</option>
+					  <option value="정해야하는데">정해야합니다</option>
+					  <option value="무엇이 좋을까">뭘로하지</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>제목</td>
+				<td ><input type="text" id="title"></td>
+			</tr>
+			<tr>
+				<td>내용</td>
+				<td> <input  type="text" id="content"></td>
+			</tr>
+		</table>
+		<div class="button-container">
+			<button class="btn" onclick="faqWrite(event)">등록</button>
+		</div>
+	</div>
+
+<script>
+	
+	function faqWrite(event){
+		
+		var category = $("select[name='category']").val();
+	    var title = $("#title").val();
+	    var content = $("#content").val();
+		
+		console.log(category);
+		console.log(title);
+		console.log(content);
+		
+		$.ajax({
+			url : "http://localhost:9001/api/v1/admin/Frequently",
+			method : "POST",
+			contentType : "application/json",
+			data : JSON.stringify({
+				faqCategory : category,
+				faqTitle : title,
+				faqContent : content
+			}),
+			success : function(response){
+				alert("FAQ등록 완료");
+				window.location.href="";
+			},
+			error : function(xhr, status, error){
+				console.log(error);
+			}
+		})
+		
+	}
+	
+</script>
+
+
+
+
+
+
 
 </body>
 </html>

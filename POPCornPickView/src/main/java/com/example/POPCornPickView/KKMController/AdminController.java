@@ -23,4 +23,11 @@ public class AdminController {
 		return"admin/qnaEdit";
 	}
 	
+	@RequestMapping("/faqForm")
+	public String faqform() {
+		
+		return "admin/faqForm";
+	}
+	
+	
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.POPCornPickApi.entity.Qna;
 import com.example.POPCornPickApi.service.QnaService;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/admin")
 public class QNAController {

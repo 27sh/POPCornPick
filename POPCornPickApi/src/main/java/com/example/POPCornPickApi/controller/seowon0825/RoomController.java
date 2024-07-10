@@ -19,7 +19,7 @@ public class RoomController {
 
 	@Autowired
 	private RoomService roomService;
-	/*
+	
 	@PostMapping("/room")
 	public ResponseEntity<String> registRoom(@RequestBody RoomType roomType ) {
 		int result = roomService.registRoom(roomType);
@@ -31,5 +31,5 @@ public class RoomController {
 		}
 		
 	}
-	*/
+	
 }

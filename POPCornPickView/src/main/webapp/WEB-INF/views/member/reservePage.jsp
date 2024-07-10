@@ -666,20 +666,13 @@ main {
 				<section id="section_movie">
 					<h4 class="section_movie_title">영화 선택</h4>
 					<div id="section_movie_select">
-						<select>
+						<select id="section_movie_selection">
 							<option id="section_movie_select_reservation">예매순</option>
 							<option id="section_movie_select_aboutto">예정작</option>
 						</select>
 					</div>
 					<div id="section_movie_list">
 						<ul class="scroll_container" id="section_movie_list_info">
-							<li><img alt="12세 관람가" src="/img/grade_12.png" class="grade"><span>파일럿</span></li>
-							<li class="selected"><img alt="전체 관람가"
-								src="/img/grade_all.png" class="grade"><span>인사이드
-									아웃2</span></li>
-							<li>[보석특가]바이올렛 에버가든 - 영원과 자동 수기 인형 -</li>
-							<li>파일럿</li>
-
 						</ul>
 					</div>
 				</section>
@@ -1178,33 +1171,80 @@ main {
 			});
 			
 			// 처음에 나오는 코드를 수정 한뒤 복사해서 가지고 오면 된다.
-			$("#section_movie_select_reservation").on("click", function(){
-				$.ajax({
-					url: "http://localhost:9001/api/v1/reservation/movie/popular/list",
-					method: "GET",
-					dataType: "json",
-					success: function(response){
-						console.log(response);
-					},
-					error: function(xhr, status, error){
-						console.log(error);
-					}
-				});						
+			$("#section_movie_selection").on("change", function(){
+				const optionId = $("#section_movie_selection option:selected").attr("id");
+				if(optionId === "section_movie_select_reservation"){
+					$.ajax({
+						url: "http://localhost:9001/api/v1/reservation/movie/list",
+						method: "GET",
+						dataType: "json",
+						success: function(response){
+							let str = '';
+							response.forEach(movie => {
+								
+								let title = '';
+								if(movie.title.length > 25){
+									title = movie.title.substring(0, 25) + "...";
+								}else {
+									title = movie.title;
+								}
+								
+								if(movie.viewAge === "전체 관람가"){
+									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
+								}else if(movie.viewAge === "12세 이상 관람가"){
+									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
+								}else if(movie.viewAge === "15세 이상 관람가"){
+									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
+								}else if(movie.viewAge === "청소년 관람불가") {
+									str += '<li><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
+								}
+								
+							});
+							
+							$("#section_movie_list_info").html(str);
+						},
+						error: function(xhr, status, error){
+							console.log(error);
+						}
+					});		
+				}else if(optionId === "section_movie_select_aboutto"){
+					$.ajax({
+						url: "http://localhost:9001/api/v1/reservation/movie/aboutto/list",
+						method: "GET",
+						dataType: "json",
+						success: function(response){
+							let str = '';
+							
+							response.forEach(movie => {
+								
+								let title = '';
+								if(movie.title.length > 25){
+									title = movie.title.substring(0, 25) + "...";
+								}else {
+									title = movie.title;
+								}
+								
+								if(movie.viewAge === "전체 관람가"){
+									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
+								}else if(movie.viewAge === "12세 이상 관람가"){
+									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
+								}else if(movie.viewAge === "15세 이상 관람가"){
+									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
+								}else if(movie.viewAge === "청소년 관람불가") {
+									str += '<li><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
+								}
+								
+							});
+							
+							$("#section_movie_list_info").html(str);
+						},
+						error: function(xhr, status, error){
+							console.log(error);
+						}
+					});		
+				}
 			});
 			
-			$("#section_movie_select_aboutto").on("click", function(){
-				$.ajax({
-					url: "http://localhost:9001/api/v1/reservation/movie/aboutto/list",
-					method: "GET",
-					dataType: "json",
-					success: function(response){
-						console.log(response);
-					},
-					error: function(xhr, status, error){
-						console.log(error);
-					}
-				});					
-			});
 			
 			/*
 			let cnt = 0;

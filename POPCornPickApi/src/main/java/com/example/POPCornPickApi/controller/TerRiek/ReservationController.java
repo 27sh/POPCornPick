@@ -104,10 +104,15 @@ public class ReservationController {
 	@GetMapping("/movie/aboutto/list")
 	public ResponseEntity<List<Movie>> getMovieAboutToRelease(){
 		
+		List<Movie> movieList = reservationService.getAboutToMovieList();
 		
+		if(movieList != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(movieList);
+		}
 		
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(null);
+				.body(new ArrayList<>());
 	}
 	
 }

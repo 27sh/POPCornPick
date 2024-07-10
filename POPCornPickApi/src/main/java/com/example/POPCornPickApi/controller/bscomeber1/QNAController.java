@@ -8,13 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.entity.Qna;
 import com.example.POPCornPickApi.service.QnaService;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/v1/admin")
 public class QNAController {
@@ -28,13 +31,45 @@ public class QNAController {
 		
 		return qnaservice.getAllQna();      
 	}
-	
+	/*
 	@RequestMapping("/inquiry/{qnaNo}")
 	public ResponseEntity<Qna> QnaDetail(@PathVariable ("qnaNo")Long qnaNo) {
 		
 		Qna qna = qnaservice.getQnaDetail(qnaNo);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(qna);
+	}
+	*/
+	
+	@GetMapping("/inquiry/{qnaNo}")
+	public ResponseEntity<Qna> QnaDetail(@PathVariable("qnaNo")Long qnaNo){
+		
+		
+		Qna qna = qnaservice.getQnaDetail(qnaNo);
+				
+		return ResponseEntity.status(HttpStatus.OK).body(qna);
+	}
+	
+	
+	@PutMapping("/inquiryDetial")
+	public ResponseEntity<Qna> updateQna(@RequestBody Qna updatedQna){
+		Long qnaNo = updatedQna.getQnaNo();
+		Qna qna = qnaservice.getQnaDetail(qnaNo);
+		
+		System.out.println("zbdpsdpdl : " + qna);
+		if (qna != null) {
+	        qna.setQnaCategory(updatedQna.getQnaCategory());
+	        qna.setQnaTitle(updatedQna.getQnaTitle());
+	        qna.setQnaContent(updatedQna.getQnaContent());
+	        qna.setQnaAnswer(updatedQna.getQnaAnswer());
+
+	        qna = qnaservice.updateQna(qna);
+
+	        return ResponseEntity.ok().body(qna); 
+	    } else {
+	        return ResponseEntity.badRequest().build(); 
+	    }
+		
 	}
 	
 	

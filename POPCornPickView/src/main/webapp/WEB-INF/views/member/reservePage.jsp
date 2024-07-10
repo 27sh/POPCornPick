@@ -60,7 +60,7 @@ body {
 	text-align: center;
 	width: 80px;
 	background: rgb(248, 47, 98);
-	color: white !important;
+	color: white;
 	height: 216.5px;
 	display: flex;
 	flex-direction: column;
@@ -72,24 +72,23 @@ body {
 	margin: 0 auto;
 	font-size: 14px;
 	font-weight: bold;
+	color: white;
 }
 
 .simple_info_content {
-	text-align: center;
-	width: 80px;
+	width: 230px;
 	background: rgb(248, 47, 98);
-	color: white !important;
+	color: white;
 	height: 216.5px;
 	display: flex;
 	align-items: center;
 	postion: relative;
 	left: 80px;
+	padding: 0 10px;
 }
 
 .simple_info_content ul {
 	height: 100%;
-	padding-left: 20px;
-	padding-right: 20px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -99,6 +98,7 @@ body {
 .simple_info_content ul li {
 	font-size: 12px;
 	margin: 10px 0;
+	color: white;
 }
 
 .hidden {
@@ -177,11 +177,16 @@ h4 {
 	background: white;
 	border: 3px solid pink;
 	color: rgb(248, 47, 98);
+	background: white url(/img/check.png) no-repeat;
+	background-position: 140px 10px;
 }
 
 #section_cinema_list ul:nth-child(2) li.selected {
+	background: white;
 	border: 3px solid pink;
 	color: rgb(248, 47, 98);
+	background: white url(/img/check.png) no-repeat;
+	background-position: 140px 10px;
 }
 
 .btn_view_txt.selected {
@@ -313,15 +318,13 @@ h4 {
 #section_movie_list ul li.selected {
 	background: white;
 	border: 3px solid pink;
+	color: rgb(248, 47, 98);
+	background: white url(/img/check.png) no-repeat;
+	background-position: 315px 12px;
 }
 
 #section_movie_list ul li.selected span {
 	color: rgb(248, 47, 98);
-}
-
-._check {
-	position: absolute;
-	right: 10px;
 }
 
 .grade {
@@ -336,8 +339,11 @@ h4 {
 
 #section_schedule_date {
 	height: 80px;
-	padding: 12px 20px 10px;
+	padding: 12px 20px 40px;
 	background: #f0f0f0;
+	overflow: hidden;
+	position: relative;
+	display: flex;
 }
 
 .date_radio {
@@ -345,6 +351,7 @@ h4 {
 }
 
 #section_schedule_date_slides {
+	width: 100%;
 	display: flex;
 	position: absolute;
 	left: 50px;
@@ -374,7 +381,7 @@ h4 {
 	text-align: center;
 }
 
-.date_radio.selected+strong {
+.section_schedule_date_slide.selected a label strong {
 	width: 30px;
 	height: 30px;
 	line-height: 30px;
@@ -408,7 +415,7 @@ h4 {
 .previous {
 	position: relative;
 	top: 30px;
-	left: 10px;
+	left: -12px;
 }
 
 .next {
@@ -450,7 +457,8 @@ h4 {
 	justify-content: center;
 	align-items: center;
 }
-#section_schedule_box{
+
+#section_schedule_box {
 	height: 648px;
 	padding: 0;
 	margin: 0;
@@ -505,6 +513,7 @@ h4 {
 	position: relative;
 	width: 110px;
 	height: 48px;
+	cursor: pointer;
 }
 
 .room_detail_info span:first-child {
@@ -541,20 +550,28 @@ h4 {
 	font-size: 12px;
 	color: green;
 }
-.movie_room{
+
+.movie_room {
 	margin-top: 30px;
 }
-.movie_info{
+
+.movie_info {
 	display: flex;
 	align-items: center;
 	margin-left: 10px;
 	margin-bottom: 20px;
 }
-.movie_info span{
+
+.movie_info span {
 	font-weight: bold;
 }
+
+.hide_strong {
+	visible: hidden;
+}
+
 main {
-	s width: 1280px;
+	width: 1280px;
 	margin: 80px auto;
 }
 </style>
@@ -574,10 +591,10 @@ main {
 						</div>
 						<div class="simple_info_content hidden">
 							<ul>
-								<li>aaa</li>
-								<li>bbb</li>
-								<li>ccc</li>
-								<li>ddd</li>
+								<li class="simple_info_content_movie">aaa</li>
+								<li class="simple_info_content_specific">bbb</li>
+								<li class="simple_info_content_date">ccc</li>
+								<li class="simple_info_content_time">ddd</li>
 							</ul>
 						</div>
 					</div>
@@ -625,107 +642,56 @@ main {
 					</div>
 				</div>
 				<section id="section_cinema">
-					<h4>영화관</h4>
+					<h4 class="section_cinema_title">영화관</h4>
 					<div id="section_cinema_tab">
 						<button class="selected">전체</button>
 						<button>스페셜관</button>
 					</div>
 					<div id="section_cinema_list">
 						<ul class="scroll_container" id="section_cinema_list_rough">
-							<li>My 영화관(0)</li>
-							<li>서울(1)</li>
-							<li>경기/인천(2)</li>
-							<li>My 영화관(0)</li>
-							<li>서울(1)</li>
-							<li>경기/인천(2)</li>
-							<li class="selected"><span>My 영화관(0)</span><img alt="체크 사진"
-								src="/img/check.png" class="_check"></li>
-							<li>서울(1)</li>
-							<li>경기/인천(2)</li>
-							<li>My 영화관(0)</li>
-							<li>서울(1)</li>
-							<li>경기/인천(2)</li>
-							<li>My 영화관(0)</li>
-							<li>서울(1)</li>
-							<li>경기/인천(2)</li>
-							<li>My 영화관(0)</li>
-							<li>서울(1)</li>
-							<li>경기/인천(2)</li>
-							<li>My 영화관(0)</li>
-							<li>서울(1)</li>
-							<li>경기/인천(2)</li>
-							<li>My 영화관(0)</li>
-							<li>서울(1)</li>
-							<li>경기/인천(2)</li>
+							<li class="myCinema">My 영화관(0)</li>
+							<li class="seoul">서울(0)</li>
+							<li class="gyeonggi_incheon">경기/인천(0)</li>
+							<li class="chungcheong_daejeon">충청/대전(0)</li>
+							<li class="jeonla_gwangju">전라/광주(0)</li>
+							<li class="gyeongbuk_daegu">경북/대구(0)</li>
+							<li class="gyeongnam_busan_ulsan">경남/부산/울산(0)</li>
+							<li class="gangwon">강원(0)</li>
+							<li class="jeju">제주(0)</li>
 						</ul>
 						<ul class="scroll_container" id="section_cinema_list_specific">
-							<li class="selected"><span>가산디지털</span><img alt="체크 사진"
-								src="/img/check.png" class="_check"></li>
+							<li class="selected"><span>가산디지털</span></li>
 							<li>가양</li>
 							<li>강동</li>
 						</ul>
 					</div>
 				</section>
 				<section id="section_movie">
-					<h4>영화 선택</h4>
+					<h4 class="section_movie_title">영화 선택</h4>	
 					<div id="section_movie_select">
 						<select>
 							<option>예매순</option>
 							<option>관객순</option>
 							<option>예정작</option>
 						</select>
-						<div id="section_movie_buttons">
-							<ul>
-								<li>
-									<button type="button" class="btn_view_txt selected">텍스트형</button>
-								</li>
-								<li>
-									<button type="button" class="btn_view_view">썸네일형</button>
-								</li>
-							</ul>
-						</div>
 					</div>
 					<div id="section_movie_list">
 						<ul class="scroll_container">
 							<li><img alt="12세 관람가" src="/img/grade_12.png" class="grade"><span>파일럿</span></li>
 							<li class="selected"><img alt="전체 관람가"
 								src="/img/grade_all.png" class="grade"><span>인사이드
-									아웃2</span><img alt="체크 사진" src="/img/check.png" class="_check">
-							</li>
-							<li>탈주</li>
+									아웃2</span></li>
+							<li>[보석특가]바이올렛 에버가든 - 영원과 자동 수기 인형 -</li>
 							<li>파일럿</li>
-							<li>인사이드 아웃2</li>
-							<li>탈주</li>
-							<li>파일럿</li>
-							<li>인사이드 아웃2</li>
-							<li>탈주</li>
-							<li>파일럿</li>
-							<li>인사이드 아웃2</li>
-							<li>탈주</li>
-							<li>파일럿</li>
-							<li>인사이드 아웃2</li>
-							<li>탈주</li>
-							<li>파일럿</li>
-							<li>인사이드 아웃2</li>
-							<li>탈주</li>
-							<li>파일럿</li>
-							<li>인사이드 아웃2</li>
-							<li>탈주</li>
-							<li>파일럿</li>
-							<li>인사이드 아웃2</li>
-							<li>탈주</li>
-							<li>파일럿</li>
-							<li>인사이드 아웃2</li>
-							<li>탈주</li>
-							<li>파일럿</li>
+
 						</ul>
 					</div>
 				</section>
 				<section id="section_schedule">
-					<h4>날짜/시간</h4>
+					<h4 class="section_schedule_title">날짜/시간</h4>
 					<div id="section_schedule_date">
 						<ul id="section_schedule_date_slides">
-							<li class="section_schedule_date_slide"><strong>7월</strong>
+							<li class="section_schedule_date_slide selected"><strong>7월</strong>
 								<a href="#"> <label for="ddd"> <input type="radio"
 										id="ddd" checked name="date_radio" class="date_radio selected">
 										<strong>9</strong> <em>오늘</em>
@@ -740,58 +706,47 @@ main {
 							</a></li>
 							<li class="section_schedule_date_slide"><strong
 								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="eee"> <input type="radio" id="eee"
+									for="ccc"> <input type="radio" id="ccc"
 										name="date_radio" class="date_radio"> <strong>10</strong>
 										<em>수</em>
 								</label>
 							</a></li>
 							<li class="section_schedule_date_slide"><strong
 								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="eee"> <input type="radio" id="eee"
+									for="fff"> <input type="radio" id="fff"
 										name="date_radio" class="date_radio"> <strong>10</strong>
 										<em>수</em>
 								</label>
 							</a></li>
 							<li class="section_schedule_date_slide"><strong
 								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="eee"> <input type="radio" id="eee"
+									for="aaa"> <input type="radio" id="aaa"
 										name="date_radio" class="date_radio"> <strong>10</strong>
 										<em>수</em>
 								</label>
 							</a></li>
 							<li class="section_schedule_date_slide"><strong
 								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="eee"> <input type="radio" id="eee"
+									for="ggg"> <input type="radio" id="ggg"
 										name="date_radio" class="date_radio"> <strong>10</strong>
 										<em>수</em>
 								</label>
 							</a></li>
 							<li class="section_schedule_date_slide saturday"><strong
-								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="eee"> <input type="radio" id="eee"
+								style="visibility: hidden">12월</strong> <a href="#"> <label
+									for="hhh"> <input type="radio" id="hhh"
 										name="date_radio" class="date_radio"> <strong>10</strong>
 										<em>토</em>
 								</label>
 							</a></li>
 							<li class="section_schedule_date_slide sunday"><strong
 								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="eee"> <input type="radio" id="eee"
+									for="zzz"> <input type="radio" id="zzz"
 										name="date_radio" class="date_radio"> <strong>10</strong>
 										<em>일</em>
 								</label>
 							</a></li>
 						</ul>
-						<a href="#"><img alt="이전 사진" src="/img/arr_lf_11.png"
-							class="previous disabled"></a> <a href="#"><img alt="다음 사진"
-							src="/img/arr_rg_11.png" class="next disabled"></a>
-					</div>
-					<div id="section_schedule_tab">
-						<button class="selected">전체</button>
-						<button>스페셜관</button>
-						<button>Atmos</button>
-						<button>13시 이후</button>
-						<button>19시 이후</button>
-						<button>심야</button>
 					</div>
 					<div id="section_schedule_box">
 						<!-- 
@@ -813,10 +768,9 @@ main {
 									<li>3관 (Laser)</li>
 								</ul>
 								<div class="room_detail_infos">
-									<a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
+									<a class="room_detail_info"> <span class="time_image"><img
+											alt="조조 사진" src="/img/time_sun.png"></span> <strong>09:30</strong>
+										<span class="seats_left">136</span><span class="seats_total">/136</span><span
 										class="room_number">3관</span>
 									</a> <a href="#" class="room_detail_info"> <span
 										class="time_image"><img alt="조조 사진"
@@ -866,154 +820,6 @@ main {
 									<a href="#" class="room_detail_info"> <span
 										class="time_image"><img alt="조조 사진"
 											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a>
-								</div>
-							</div>
-							<div class="room_schedule">
-								<ul class="room_info">
-									<li>2D</li>
-									<li>자막</li>
-									<li>3관 (Laser)</li>
-								</ul>
-								<div class="room_detail_infos">
-									<a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a>
-								</div>
-							</div>
-							<div class="room_schedule">
-								<ul class="room_info">
-									<li>2D</li>
-									<li>자막</li>
-									<li>3관 (Laser)</li>
-								</ul>
-								<div class="room_detail_infos">
-									<a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a> <a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a>
-								</div>
-							</div>
-							<div class="room_schedule">
-								<ul class="room_info">
-									<li>2D</li>
-									<li>자막</li>
-									<li>3관 (Laser)</li>
-								</ul>
-								<div class="room_detail_infos">
-									<a href="#" class="room_detail_info"> <strong>09:30</strong> <span
 										class="seats_left">136</span><span class="seats_total">/136</span><span
 										class="room_number">3관</span>
 									</a> <a href="#" class="room_detail_info"> <span
@@ -1055,6 +861,7 @@ main {
 								</div>
 							</div>
 						</div>
+
 					</div>
 				</section>
 			</div>
@@ -1062,11 +869,11 @@ main {
 	</main>
 	<footer> </footer>
 	<script type="text/javascript">
-		function getNext30Days() {
+		function getNext8Days() {
 			const today = new Date();
 			const days = [];
 
-			for (let i = 0; i < 30; i++) {
+			for (let i = 0; i < 8; i++) {
 				const nextDate = new Date(today);
 				nextDate.setDate(today.getDate() + i);
 				days.push(nextDate);
@@ -1076,6 +883,27 @@ main {
 		}
 
 		$(document).ready(function() {
+			
+			// My영화관, 지역별 영화관 갯수(화면 시작될 때)
+			$.ajax({
+				url: "http://localhost:9001/api/v1/reservation/count",
+				method: "",
+				dataType: "json",
+				success: function(response){
+					console.log(response);
+					let str = '';	
+					Object.entries(response).forEach(([key, value]) => {
+						str += '<li class="' + key + '">' + value + '</li>';
+					});
+					$("#section_cinema_list_rough").html(str);
+				},
+				error: function(xhr, status, error){
+					console.log(error);			
+				}
+			});
+			
+			
+			
 			$(".simple_info_title").on("mouseenter", function() {
 				$(this).next(".simple_info_content").removeClass("hidden");
 			});
@@ -1084,17 +912,165 @@ main {
 				$(this).next(".simple_info_content").addClass("hidden");
 			});
 			
-			const days = getNext30Days();
+			$("#section_cinema_tab").children().on("click", function() {
+				$(this).addClass("selected");
+				$(this).siblings().removeClass("selected");
+			});
+
+			$("#section_cinema_list_rough").children().on("click", function() {
+				$(this).addClass("selected");
+				$(this).siblings().removeClass("selected");
+				
+				const location = $(this).attr("class").split(" ")[0];
+				/*
+				$.ajax({
+					url : "http://localhost:9001api/v1/reservation/cinema/location/list/" + location,
+					method : "GET",
+					dataType: "json",
+					success : function(response){
+						console.log(response);
+						let str = '';
+						int cnt = 0;
+						response.forEach(cinema => {
+							str += '<li id="cinemaNo_' + cinema.cinemaNo + '">' + cinema.cinemaName + '</li>';
+						});
+						$("#section_cinema_list_specific").html(str);
+						
+					},
+					error : function(xhr, status, error){
+						console.log(error);
+					}
+				});
+				*/
+			});
+
+			$("#section_cinema_list_specific").children().on("click", function() {
+				$(this).addClass("selected");
+				$(this).siblings().removeClass("selected");
+
+				const title = $(this).text();
+				$(".section_cinema_title").text("영화관 - " + title);
+				$(".simple_info_content_specific").text(title);
+				
+			});
+			
+			$("#section_movie_list").children("ul").children().on("click", function() {
+				$(this).addClass("selected");
+				$(this).siblings().removeClass("selected");
+				
+				const title = $(this).text();
+				$(".section_movie_title").text("영화 - " + title);
+				$(".simple_info_content_movie").text(title);
+			});
+			
+			$(".btn_view_txt").on("click", function(){
+				$(this).addClass("selected");
+				$(".btn_view_view").removeClass("selected");
+			});
+			
+			$(".btn_view_view").on("click", function(){
+				$(this).addClass("selected");
+				$(".btn_view_txt").removeClass("selected");
+			});
+			
+			$("#section_schedule_tab").children().on("click", function(){
+				$(this).addClass("selected");
+				$(this).siblings().removeClass("selected");
+			});
+			
+			$(".section_schedule_date_slide").on("click", function(){
+				$(this).addClass("selected");
+				$(this).siblings().removeClass("selected");
+				
+				const year = new Date().getFullYear();
+				const month = $(this).children("strong").text();
+				const date = $(this).children("a").children("label").children("strong").text();
+				const day = $(this).children("a").children("label").children("em").text();
+				const result = year + "-" + month.substring(0, month.length - 1) + "-" + date + "(" + day +  ")";
+				
+				$(".section_schedule_title").text("날짜 - " + result);
+				$(".simple_info_content_date").text(result);
+				
+			});
+			
+			$(".room_detail_info").on("click", function(){
+				$("#reservation_popup").css("display", "block");
+			});
+			
+			
+			const days = getNext8Days();
+			
 			let str = '';
+			
 			days.forEach(day => {
-				str += '';
+				
+				
+				
+				str += '<li class="section_schedule_date_slide sunday"><strong ' + 
+					   'style="visibility: hidden">7월</strong> <a href="#"> <label ' + 
+					   'for="zzz"> <input type="radio" id="zzz" ' + 
+					   'name="date_radio" class="date_radio"> <strong>10</strong> ' +
+					   '<em>일</em> ' +
+					   '</label> ' +
+					   '</a></li> ';
 			});
 			
-			$("#section_schedule_date_slide").html(str);
+			$("#section_schedule_date_slides").html(str);
 			
-			$("input[type=radio]").on("click", function(){
-				console.log(this.id);
+			
+			/*
+			let cnt = 0;
+			let slide = 0;
+			let str = '';
+			
+			days.forEach(day => {
+				if(cnt % 8 === 0){
+					str += '<ul class="section_schedule_date_slides" id="slide_' + slide + '">';
+				}
+				
+				let dayName = '';
+				if(cnt === 0){
+					dayName = "오늘";
+				}else if(day.getDay() == 0) {
+					dayName = "일";
+				}else if(day.getDay() == 1){
+					dayName = "월";
+				}else if(day.getDay() == 2){
+					dayName = "화";
+				}else if(day.getDay() == 3){
+					dayName = "수";
+				}else if(day.getDay() == 4){
+					dayName = "목";
+				}else if(day.getDay() == 5){
+					dayName = "금";
+				}else if(day.getDay() == 6){
+					dayName = "토";
+				}
+				
+				let date = day.getDate();
+				if(dayName === "오늘") {
+					str += '<li class="section_schedule_date_slide selected"><strong>' + (day.getMonth() + 1) + '월</strong>' ;
+				}else if(date === 1){
+					str += '<li class="section_schedule_date_slide"><strong>' + (day.getMonth() + 1) + '월</strong>' ;
+				}else {
+					str += '<li class="section_schedule_date_slide"><strong class="hide_strong">' + (day.getMonth() + 1) + '월</strong>' ;
+				}
+				
+				str += '<a> <label for="date_' + (cnt + 1) + '"> <input type="radio" ' + 
+					   'id="date_' + (cnt + 1) + '" checked name="date_radio" class="date_radio"> ' +
+					   '<strong>' + date + '</strong> <em>' + dayName + '</em> ' + 
+					   '</label> ' + 
+				       '</a></li> ';
+				if(cnt === 7){
+				  str += '</ul>';
+				}
+				
+				cnt++;
+				
 			});
+			
+			$("#section_schedule_date").html(str);
+			*/
 		});
 
 		

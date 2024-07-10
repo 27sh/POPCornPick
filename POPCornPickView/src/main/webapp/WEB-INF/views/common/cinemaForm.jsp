@@ -27,6 +27,7 @@ main {
 	<!-- 영화관 등록 -->
 	<div>
 	<form name="cinemaFrm">
+		<input type="hidden" name="cinemaNo" id="cinemaNo">
 		<label for="cinemaLocation">지역명<span>*</span></label>
 		<select id="cinemaLocation" name="cinemaLocation" required>
 			<option value="" disabled selected>선택</option>
@@ -40,16 +41,17 @@ main {
 			<option value="jeju">제주</option>
 		</select>
 		<div>지점명<span>*</span></div>
-		<input type="text" name="cinemaName">
+		<input type="text" name="cinemaName" id="cinemaName">
 		<div>주소<span>*</span></div>
-		<input type="text" name="cinemaAddr">
+		<input type="text" name="cinemaAddr" id="cinemaAddr">
 		<div>전화번호<span>*</span></div>
-		<input type="text" name="cinemaTel">
+		<input type="text" name="cinemaTel" id="cinemaTel">
 		<div>대표 이미지<span>*</span></div>
 		<input type="file" id="cinemaImg" name="cinemaImg">
 		<div>중요공지</div>
-		<input type="text" name="cinemaIntro"><br>
-		<input type="button" value="영화관 등록하기" onclick="submitCinemaForm(event)">
+		<input type="text" name="cinemaIntro" id="cinemaIntro"><br>
+		<input type="button" id="submitWrite" value="영화관 등록하기" onclick="submitCinemaForm(event)">
+		<input type="button" id="submitModify" value="수정하기" onclick="submitCinemaModify(event)">
 	</form>
 	
 	</div>
@@ -65,6 +67,20 @@ main {
 	<script>
 	$(document).ready(function(){
 		const xhttp = new XMLHttpRequest();
+		const urlParams = new URLSearchParams(window.location.search);
+		let cinemaNo = urlParams.get('cinemaNo');
+		
+		var writeForm = $('#submitWrite');
+		var modifyForm = $('#submitModify');
+		
+		if(cinemaNo){
+			writeForm.hide();
+			modifyForm.show();
+			cinemaModify(cinemaNo);
+		} else{
+			writeForm.show();
+			modifyForm.hide();
+		}
 		
 		xhttp.onload = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -117,12 +133,63 @@ main {
 			contentType : false,
 			cache : false,
 			success : function(data){
-				//var image = document.getElementById('myImage');
-				//image.src = data;
-				console.log("success : ", data);
+				alert("지점 등록이 완료되었습니다.");
+				window.location.href="/cinema/list";
 			},
 			error : function(e){
-				console.log("error : " );
+				console.log("error : ",e );
+			}
+		});
+	}
+	
+	function submitCinemaModify(event){
+		event.preventDefault();
+		
+		var form = document.forms['cinemaFrm'];
+		var formData = new FormData(form);
+		
+		formData.forEach((value, key) => {
+			console.log(key + " : " + value);
+		});
+		
+		$.ajax({
+			type : "PUT",
+			enctype : 'multipart/form-data',
+			url : "http://localhost:9001/api/v1/cinema",
+			data : formData,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			cache : false,
+			success : function(data){
+				alert(data);
+				//alert("지점 정보 수정이 완료되었습니다.");
+				//window.location.href="/cinema/list";
+			},
+			error : function(e){
+				console.log("error : ", e);
+			}
+		});
+	}
+	
+	function cinemaModify(cinemaNo){
+		$.ajax({
+			url : "http://localhost:9001/api/v1/cinema/detail",
+			type : "GET",
+			data : {
+				cinemaNo : cinemaNo
+			},
+			success : function(data){
+				$('#cinemaNo').val(data.cinemaNo);
+				$('#cinemaLocation').val(data.cinemaLocation);
+				$('#cinemaName').val(data.cinemaName);
+				$('#cinemaAddr').val(data.cinemaAddr);
+				$('#cinemaTel').val(data.cinemaTel);
+				$('#cinemaIntro').val(data.cinemaIntro);
+			},
+			error : function(error){
+				alert("정보를 불러오는데 실패했습니다. 다시 시도해 주세요.");
+				window.location.href="/cinema/detail?cinemaNo="+cinemaNo;
 			}
 		});
 	}

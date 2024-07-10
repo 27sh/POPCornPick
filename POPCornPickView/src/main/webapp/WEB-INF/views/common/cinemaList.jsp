@@ -22,8 +22,8 @@ main {
 		<%@ include file="../layout/adminHeader.jsp"%>
 	</header>
 	<main>
-	<h1>극장 관리</h1>
-	
+	<h1>지점 관리</h1>
+	<!-- 극장 검색 기능 구현예정 -->
 	<form id="roomForm">
 		<label for="bigType">대분류</label>
 		<select id="bigType" name="bigType" required onchange="updateSmallType()">
@@ -63,7 +63,6 @@ main {
 	<script>
 	$(document).ready(function(){
 		const xhttp = new XMLHttpRequest();
-		alert("test");
 		xhttp.onload = function(){
 			if(this.readyState == 4 && this.status == 200){
 				const data = JSON.parse(this.responseText);
@@ -75,7 +74,7 @@ main {
 						table += '<tr>';
 						table += '<td>' + (i + 1) + '</td>';
 						table += '<td>' + data[i].cinemaLocation + '</td>';
-						table += '<td>' + data[i].cinemaName + '</td>';
+						table += '<td><a href="/cinema/detail?cinemaNo='+ data[i].cinemaNo +'">' + data[i].cinemaName + '</a></td>';
 						table += '<td>' + data[i].cinemaTel + '</td>';
 						table += '</tr>';
 						table += '</div>';

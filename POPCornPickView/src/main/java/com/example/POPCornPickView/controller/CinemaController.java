@@ -16,4 +16,14 @@ public class CinemaController {
 	public String getCinemaList() {
 		return "common/cinemaList";
 	}
+	
+	@RequestMapping("/detail")
+	public String getCinemaDetail() {
+		return "common/cinemaDetail";
+	}
+	
+	@RequestMapping("/roomList")
+	public String cinemaRoomList() {
+		return "common/cinemaRoomList";
+	}
 }

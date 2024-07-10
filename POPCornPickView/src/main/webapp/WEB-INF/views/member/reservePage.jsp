@@ -644,8 +644,8 @@ main {
 				<section id="section_cinema">
 					<h4 class="section_cinema_title">영화관</h4>
 					<div id="section_cinema_tab">
-						<button class="selected">전체</button>
-						<button>스페셜관</button>
+						<button class="selected" id="section_cinema_tab_all">전체</button>
+						<button id="section_cinema_tab_special">스페셜관</button>
 					</div>
 					<div id="section_cinema_list">
 						<ul class="scroll_container" id="section_cinema_list_rough">
@@ -887,7 +887,7 @@ main {
 			// My영화관, 지역별 영화관 갯수(화면 시작될 때)
 			$.ajax({
 				url: "http://localhost:9001/api/v1/reservation/count",
-				method: "",
+				method: "GET",
 				dataType: "json",
 				success: function(response){
 					console.log(response);
@@ -1017,6 +1017,43 @@ main {
 			
 			$("#section_schedule_date_slides").html(str);
 			
+			$("#section_cinema_tab_all").on("click", function(){
+				$.ajax({
+					url: "http://localhost:9001/api/v1/reservation/count",
+					method: "GET",
+					dataType: "json",
+					success: function(response){
+						console.log(response);
+						let str = '';	
+						Object.entries(response).forEach(([key, value]) => {
+							str += '<li class="' + key + '">' + value + '</li>';
+						});
+						$("#section_cinema_list_rough").html(str);
+					},
+					error: function(xhr, status, error){
+						console.log(error);			
+					}
+				});
+			});
+			
+			$("#section_cinema_tab_special").on("click", function(){
+				$.ajax({
+					url: "http://localhost:9001/api/v1/reservation/special/count",
+					method: "GET",
+					dataType: "json",
+					success: function(response){
+						console.log(response);
+						let str = '';	
+						Object.entries(response).forEach(([key, value]) => {
+							str += '<li class="' + key + '">' + value + '</li>';
+						});
+						$("#section_cinema_list_rough").html(str);
+					},
+					error: function(xhr, status, error){
+						console.log(error);			
+					}
+				});
+			});
 			
 			/*
 			let cnt = 0;

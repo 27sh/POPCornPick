@@ -1,31 +1,58 @@
 @charset "UTF-8";
 
-#cinemaList{
+#cinemaList {
     width: 100%;
-    height: 300px;
-    background-color: bisque;
+    padding: 30px;
+
 }
 
-.main_title{
-    font-size: 20px;
+select {
+    width: 200px;
+    height: 30px;
+    margin-right: 20px;
+    border: 1px solid #e2e2e2;
+    float: left;
+}
+
+select:focus {
+    outline: none;
+}
+
+.main_title {
+    font-size: 30px;
     margin: 10px;
+    font-weight: 700;
+    color: #816bff;
+}
+
+.select_title {
+    font-weight: 500;
+    float: left;
+    line-height: 30px;
+    margin-right: 10px;
+}
+
+.calendar-title {
+    padding: 10px;
+    font-size: 20px;
     font-weight: 700;
 }
 
-.calendar_wrap{
+.source-calendar,
+.destination-calendar {
     padding: 5px;
-    width: 1200px; height: 600px;
+    width: 1200px;
+    height: 700px;
     overflow: auto;
     white-space: nowrap;
     display: flex;
-    justify-content: space-evenly;
-    gap: 50px; /* 요소 사이의 간격 설정 */
+    gap: 80px;
+    /* 요소 사이의 간격 설정 */
 }
 
 
-.source-calendar,
-.destination-calendar {
-    flex: 0 0 600px; /* 요소의 너비를 600px로 고정 */
-    height: 90%;
+.calendar-container {
+    flex: 0 0 700px;
+    height: 100%;
     float: left;
 }

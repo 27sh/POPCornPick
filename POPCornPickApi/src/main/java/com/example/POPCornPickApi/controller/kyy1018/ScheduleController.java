@@ -96,10 +96,10 @@ public class ScheduleController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
-// 영화관 별 세부 상영시간표
-	@GetMapping
-	public ResponseEntity<List<Schedule>> scheduleList() {
-		List<Schedule> list = scheduleRepository.findAll();
+// 영화관 별 상영시간표 세부페이지
+	@GetMapping("/room/{roomNo}")
+	public ResponseEntity<List<Schedule>> scheduleDetail(@PathVariable("roomNo") Long roomNo) {
+		List<Schedule> list = scheduleRepository.findByRoom_RoomNo(roomNo);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 		

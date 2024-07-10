@@ -9,5 +9,5 @@ import com.example.POPCornPickApi.entity.Cinema;
 public interface CinemaRepository extends JpaRepository<Cinema, Long>{
 	public List<Cinema> findByCinemaNo(Long cinemaNo);
 	public List<Cinema> findByCinemaLocationOrderByCinemaNameAsc(String cinemaLocation);
-	public int countByCinemaLocationOrderByCinemaNameAsc(String cinemaLocation);
+	public int countByCinemaLocation(String cinemaLocation);
 }

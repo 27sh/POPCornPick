@@ -567,9 +567,8 @@ h4 {
 }
 
 .hide_strong {
-	visible: hidden;
+	visibility: hidden;
 }
-
 main {
 	width: 1280px;
 	margin: 80px auto;
@@ -922,7 +921,6 @@ main {
 				$(this).siblings().removeClass("selected");
 				
 				const location = $(this).attr("class").split(" ")[0];
-				/*
 				$.ajax({
 					url : "http://localhost:9001api/v1/reservation/cinema/location/list/" + location,
 					method : "GET",
@@ -930,7 +928,7 @@ main {
 					success : function(response){
 						console.log(response);
 						let str = '';
-						int cnt = 0;
+						let cnt = 0;
 						response.forEach(cinema => {
 							str += '<li id="cinemaNo_' + cinema.cinemaNo + '">' + cinema.cinemaName + '</li>';
 						});
@@ -941,7 +939,6 @@ main {
 						console.log(error);
 					}
 				});
-				*/
 			});
 
 			$("#section_cinema_list_specific").children().on("click", function() {
@@ -997,25 +994,31 @@ main {
 				$("#reservation_popup").css("display", "block");
 			});
 			
-			
+			/*
 			const days = getNext8Days();
 			
 			let str = '';
 			
+			let cnt = 0;
 			days.forEach(day => {
 				
+				str += '<li class="section_schedule_date_slide sunday"><strong ';
+				if(cnt === 0){
+					str += '>7월</strong> <a href="#"> <label ';
+				}
 				
-				
-				str += '<li class="section_schedule_date_slide sunday"><strong ' + 
-					   'style="visibility: hidden">7월</strong> <a href="#"> <label ' + 
+				str += 'class="hide_strong">7월</strong> <a href="#"> <label ' + 
 					   'for="zzz"> <input type="radio" id="zzz" ' + 
 					   'name="date_radio" class="date_radio"> <strong>10</strong> ' +
 					   '<em>일</em> ' +
 					   '</label> ' +
 					   '</a></li> ';
+				console.log(cnt);
+				cnt++;
 			});
+			*/
 			
-			$("#section_schedule_date_slides").html(str);
+			// $("#section_schedule_date_slides").html(str);
 			
 			$("#section_cinema_tab_all").on("click", function(){
 				$.ajax({
@@ -1051,6 +1054,69 @@ main {
 					},
 					error: function(xhr, status, error){
 						console.log(error);			
+					}
+				});
+			});
+			
+			$(".4DX").on("click", function(){
+				$.ajax({
+					url : "http://localhost:9001api/v1/reservation/cinema/special/list/" + 2,
+					method : "GET",
+					dataType: "json",
+					success : function(response){
+						console.log(response);
+						let str = '';
+						let cnt = 0;
+						response.forEach(room => {
+							str += '<li id="roomNo_' + room.roomNo + '">' + room.cinema.cinemaName + '</li>';
+						});
+						$("#section_cinema_list_specific").html(str);
+						
+					},
+					error : function(xhr, status, error){
+						console.log(error);
+					}
+				});
+			});
+			
+			$(".IMAX").on("click", function(){
+				$.ajax({
+					url : "http://localhost:9001api/v1/reservation/cinema/special/list/" + 3,
+					method : "GET",
+					dataType: "json",
+					success : function(response){
+						console.log(response);
+						let str = '';
+						let cnt = 0;
+						response.forEach(cinema => {
+							str += '<li id="roomNo_' + room.roomNo + '">' + room.cinema.cinemaName + '</li>';
+						});
+						$("#section_cinema_list_specific").html(str);
+						
+					},
+					error : function(xhr, status, error){
+						console.log(error);
+					}
+				});
+			});
+			
+			$(".PRIVATE_BOX").on("click", function(){
+				$.ajax({
+					url : "http://localhost:9001api/v1/reservation/cinema/special/list/" + 4,
+					method : "GET",
+					dataType: "json",
+					success : function(response){
+						console.log(response);
+						let str = '';
+						let cnt = 0;
+						response.forEach(cinema => {
+							str += '<li id="roomNo_' + room.roomNo + '">' + room.cinema.cinemaName + '</li>';
+						});
+						$("#section_cinema_list_specific").html(str);
+						
+					},
+					error : function(xhr, status, error){
+						console.log(error);
 					}
 				});
 			});

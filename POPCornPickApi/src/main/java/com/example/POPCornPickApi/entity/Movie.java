@@ -19,4 +19,5 @@ public class Movie {
     private Long movieDC;
     private String title;
     private String color;
+    private String viewAge;
 }

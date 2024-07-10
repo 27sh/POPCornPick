@@ -1,6 +1,7 @@
 package com.example.POPCornPickApi.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class MovieService {
 
     @Autowired
-    private MovieRepository movieNameRepository;
+    private MovieRepository movieRepository;
 
     private final String kobisApiKey = "12cc7dc453c4bb57c2342f243ea66220";
     private final String kobisApiUrl = "http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=" + kobisApiKey + "&movieNm=";
@@ -26,7 +27,7 @@ public class MovieService {
     private final String tmdbApiUrl = "https://api.themoviedb.org/3/search/movie?api_key=" + tmdbApiKey + "&query=";
 
     public List<String> getAllMovies() {
-        return movieNameRepository.findAll().stream().map(Movie::getTitle).collect(Collectors.toList());
+        return movieRepository.findAll().stream().map(Movie::getTitle).collect(Collectors.toList());
     }
 
     public String getMovieDetails(String title) {
@@ -35,6 +36,7 @@ public class MovieService {
 
         String kobisUrl = kobisApiUrl + title;
         String openStartDt = "Unknown";
+        String viewAge = "Unknown";
         try {
             String kobisResponse = restTemplate.getForObject(kobisUrl, String.class);
             JsonNode kobisRoot = objectMapper.readTree(kobisResponse);
@@ -44,16 +46,21 @@ public class MovieService {
                 openStartDt = movieNode.path("openDt").asText();
             }
         } catch (HttpServerErrorException e) {
-            // Handle server errors
             e.printStackTrace();
             return "{\"error\":\"KOBIS API server error: " + e.getMessage() + "\"}";
         } catch (RestClientException e) {
-            // Handle other client errors
             e.printStackTrace();
             return "{\"error\":\"KOBIS API error: " + e.getMessage() + "\"}";
         } catch (Exception e) {
             e.printStackTrace();
             return "{\"error\":\"Unknown error occurred\"}";
+        }
+
+        // Retrieve the viewAge from the local MovieRepository
+        Optional<Movie> movieOptional = movieRepository.findByTitle(title);
+        if (movieOptional.isPresent()) {
+            Movie movie = movieOptional.get();
+            viewAge = movie.getViewAge();
         }
 
         String tmdbUrl = tmdbApiUrl + title;
@@ -68,11 +75,9 @@ public class MovieService {
                 posterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
             }
         } catch (HttpServerErrorException e) {
-            // Handle server errors
             e.printStackTrace();
             return "{\"error\":\"TMDB API server error: " + e.getMessage() + "\"}";
         } catch (RestClientException e) {
-            // Handle other client errors
             e.printStackTrace();
             return "{\"error\":\"TMDB API error: " + e.getMessage() + "\"}";
         } catch (Exception e) {
@@ -80,6 +85,6 @@ public class MovieService {
             return "{\"error\":\"Unknown error occurred\"}";
         }
 
-        return "{\"title\":\"" + title + "\", \"openStartDt\":\"" + openStartDt + "\", \"posterUrl\":\"" + posterUrl + "\"}";
+        return "{\"title\":\"" + title + "\", \"openStartDt\":\"" + openStartDt + "\", \"posterUrl\":\"" + posterUrl + "\", \"viewAge\":\"" + viewAge + "\"}";
     }
 }

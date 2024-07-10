@@ -54,78 +54,76 @@ main {
     </footer>
 
     <script>
-        function loadMovies() {
-            // AJAX 요청으로 영화 목록 가져오기
-            $.ajax({
-                url: 'http://localhost:9001/api/v1/main/movies',
-                method: 'GET',
-                dataType: 'json',
-                success: function(movies) {
-                    console.log('Movies:', movies);
-                    const movieChart = document.getElementById('movie-chart');
-                    movieChart.innerHTML = ''; // 기존 내용을 초기화합니다.
-                    if (movies.length > 0) {
-                        movies.forEach(movie => {
-                            // 각 영화에 대한 상세 정보 가져오기
-                            
-                            $.ajax({
-                                url: 'http://localhost:9001/api/v1/main/movies/details/' + encodeURIComponent(movie),
-                                method: 'GET',
-                                dataType: 'json',
-                                success: function(details) {
-                                    console.log('Details:', details);
-                                    console.log('Poster URL:', details.posterUrl); // 포스터 URL 콘솔 출력
-                                    if (details.error) {
-                                        console.error('Error fetching movie details:', details.error);
-                                        return;
-                                    }
-                                    let str = '';
-                                    const movieCard = document.createElement('div');
-                                    movieCard.className = 'movie-card';
-                                    movieCard.innerHTML = 
-                                    	
-                                    	
+    function loadMovies() {
+        // AJAX 요청으로 영화 목록 가져오기
+        $.ajax({
+            url: 'http://localhost:9001/api/v1/main/movies/details',
+            method: 'GET',
+            dataType: 'json',
+            success: function(movies) {
+                console.log('Movies:', movies);
+                const movieChart = document.getElementById('movie-chart');
+                movieChart.innerHTML = ''; // 기존 내용을 초기화합니다.
+                if (movies.length > 0) {
+                    movies.forEach(details => {
+                        details = JSON.parse(details); // JSON 문자열을 객체로 변환
+                        console.log('Details:', details);
+                        if (details.error) {
+                            console.error('Error fetching movie details:', details.error);
+                            return;
+                        }
+                        // smallTypes가 배열인지 확인하고 변환
+                        const smallTypes = typeof details.smallTypes === 'string' ? JSON.parse(details.smallTypes) : details.smallTypes;
 
-                                    str += '<div class="poster">'
-                                        + '<img style="width:200px; height:300px;" src="' + details.posterUrl + '" alt="포스터">'
-                                        + '</div>'
-                                        + '<div class="movie-info">'
-                                        + '<div>영화 제목: ' + details.title + '</div>'
-                                        + '<div>개봉일: ' + details.openStartDt + '</div>'
-                                        + '<button class="btn">예매하기</button>'
-                                        + '</div>';
+                        // viewAge에 따른 이미지 경로 설정
+                        let ageImage = '';
+                        switch(details.viewAge) {
+                            case '청소년 관람불가':
+                                ageImage = 'pc_grade_19.png';
+                                break;
+                            case '12세 이상 관람가':
+                                ageImage = 'grade_12.png';
+                                break;
+                            case '15세 이상 관람가':
+                                ageImage = 'grade_15.png';
+                                break;
+                            case '전체 관람가':
+                                ageImage = 'grade_all.png';
+                                break;
+                            default:
+                                ageImage = ''; // 기본값 설정
+                        }
 
-                                   	
-                                    	
-                                    	/*`<div class="poster">
-                                            <img style="width:200px; height:300px;" src="${details.posterUrl}" alt="포스터">
-                                        </div>
-                                        <div class="movie-info">
-                                            <div>영화 제목: ${details.title}</div>
-                                            <div>개봉일: ${details.openStartDt}</div>
-                                            <button class="btn">예매하기</button>
-                                        </div>`;*/
-                                    movieChart.appendChild(movieCard);
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error('Error:', error);
-                                }
-                            });
-                        });
-                    } else {
-                        movieChart.innerHTML = '<p>No movies found.</p>';
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
+                        const movieCard = document.createElement('div');
+                        movieCard.className = 'movie-card';
+                        movieCard.innerHTML = 
+                            '<div class="poster">'
+                            + '<img style="width:200px; height:300px;" src="' + details.posterUrl + '" alt="포스터">'
+                            + '</div>'
+                            + '<div class="movie-info">'
+                            + '<div>영화 제목: ' + details.title + '</div>'
+                            + '<div>개봉일: ' + details.openStartDt + '</div>'
+                            + '<div>평균 리뷰 점수: ' + details.avgReviewScore + '</div>'
+                            + '<div>상영관 종류: ' + smallTypes.join(", ") + '</div>'
+                            + (ageImage ? '<div><img src="/img/' + ageImage + '" alt="연령 등급"></div>' : '')
+                            + '<button class="btn">예매하기</button>'
+                            + '</div>';
+                        movieChart.appendChild(movieCard);
+                    });
+                } else {
+                    movieChart.innerHTML = '<p>No movies found.</p>';
                 }
-            });
-        }
-
-        $(document).ready(function() {
-            loadMovies();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
         });
-    </script>
+    }
+
+    $(document).ready(function() {
+        loadMovies();
+    });
+</script>
 
 </body>
 </html>

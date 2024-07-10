@@ -103,8 +103,6 @@ public class ReservationService {
 	
 	public List<Movie> getMovieList(){
 		
-		List<Movie> movieList = movieRepository.findAll();
-		
 		List<MovieShowDetail> movieShowDetailList = movieShowDetailRepository.findAll();
 		Map<Long, Long> countMap = new HashMap<>();
 		movieShowDetailList.forEach(movieShowDetail -> {
@@ -136,8 +134,31 @@ public class ReservationService {
 		});
 		
 		Map<Movie, Long> map = sortByValue(totalCountMap);
-		System.out.println(map.values());
-		System.out.println(map.keySet());
+
+		Set<Movie> movieSet = map.keySet();
+		Set<Movie> movies = new HashSet<>();
+		movies.addAll(movieSet);
+		
+		List<Movie> movieList = movieRepository.findAllByOrderByTitleAsc();
+		List<Movie> result = new ArrayList<>();
+		result.addAll(movies);
+		
+		Collections.reverse(result);
+		
+		movieList.forEach(movie -> {
+			if(result.contains(movie)) {
+			}else {
+				result.add(movie);
+			}
+		});
+
+		return result;
+	}
+	
+	public List<Movie> getAboutToMovieList(){
+		
+		List<Movie> movieList = movieRepository.findAllByOrderByTitleAsc();
+		
 		return movieList;
 	}
 	

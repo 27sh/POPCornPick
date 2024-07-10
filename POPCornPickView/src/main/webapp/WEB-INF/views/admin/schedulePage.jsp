@@ -10,59 +10,67 @@
 </head>
 <%@ include file="../layout/adminHeader.jsp" %>
 
-<body>
-    <main>
-        <p>일반관</p>
-        <ul id="normalCal">
-            <li class="ncal"></li>
-        </ul>
-        <p>특별관</p>
-        <ul id="specialCal">
-            <li class="scal"></li>
-        </ul>
-    </main>
-</body>
 <script>
+
   document.addEventListener('DOMContentLoaded', function() {
-      var normalCalEls = document.querySelectorAll('#normalCal .ncal');
-      var specialCalEls = document.querySelectorAll('#specialCal .scal');
+    var srcCalendarEl = document.getElementById('source-calendar');
+    var destCalendarEl = document.getElementById('destination-calendar');
 
-      normalCalEls.forEach(function(normalCalEl) {
-          var normalCalendar = new FullCalendar.Calendar(normalCalEl, {
-              plugins: ['dayGrid'],
-              editable: true,
-              initialDate: '2023-01-12',
-              events: [
-                  {
-                      title: 'event1',
-                      start: '2023-01-11T10:00:00',
-                      end: '2023-01-11T16:00:00'
-                  },
-                  {
-                      title: 'event2',
-                      start: '2023-01-13T10:00:00',
-                      end: '2023-01-13T16:00:00'
-                  }
-              ],
-              eventLeave: function(info) {
-                  console.log('event left!', info.event);
-              }
-          });
-          normalCalendar.render();
-      });
+    var srcCalendar = new FullCalendar.Calendar(srcCalendarEl, {
+      editable: true,
+      initialDate: '2023-01-12',
+      events: [
+        {
+          title: 'event1',
+          start: '2023-01-11T10:00:00',
+          end: '2023-01-11T16:00:00'
+        },
+        {
+          title: 'event2',
+          start: '2023-01-13T10:00:00',
+          end: '2023-01-13T16:00:00'
+        }
+      ],
+      eventLeave: function(info) {
+        console.log('event left!', info.event);
+      }
+    });
 
-      specialCalEls.forEach(function(specialCalEl) {
-          var specialCalendar = new FullCalendar.Calendar(specialCalEl, {
-              plugins: ['dayGrid'],
-              initialDate: '2023-01-12',
-              editable: true,
-              droppable: true, // will let it receive events!
-              eventReceive: function(info) {
-                  console.log('event received!', info.event);
-              }
-          });
-          specialCalendar.render();
-      });
+    var destCalendar = new FullCalendar.Calendar(destCalendarEl, {
+      initialDate: '2023-01-12',
+      editable: true,
+      droppable: true, // will let it receive events!
+      eventReceive: function(info) {
+        console.log('event received!', info.event);
+      }
+    });
+
+    srcCalendar.render();
+    destCalendar.render();
   });
+
 </script>
+<style>
+
+  body {
+    margin: 20px 0 0 20px;
+    font-size: 14px;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  }
+
+  #source-calendar,
+  #destination-calendar {
+    float: left;
+    width: 600px;
+    margin: 0 20px 20px 0;
+  }
+
+</style>
+</head>
+<body>
+
+  <div id='source-calendar'></div>
+  <div id='destination-calendar'></div>
+
+</body>
 </html>

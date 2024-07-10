@@ -24,6 +24,10 @@ public class Schedule extends BaseEntity {
 	private Long scheduleNo;
 	
 	@ManyToOne
+	@JoinColumn(name = "roomNo", referencedColumnName = "roomNo", nullable = false)
+	private Room room;
+	
+	@ManyToOne
 	@JoinColumn(name = "detailNo", referencedColumnName = "detailNo", nullable = false)
 	private MovieShowDetail movieShowDetail; 
 	

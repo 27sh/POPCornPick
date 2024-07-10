@@ -60,7 +60,7 @@ public class ScheduleController {
 // 상영관 목록
 	@GetMapping("/cinema/{cinemaNo}")
 	public ResponseEntity<List<Room>> roomList(@PathVariable("cinemaNo") Long cinemaNo){
-		List<Room> list = roomRepository.findByCinemaNo(cinemaNo);
+		List<Room> list = roomRepository.findByCinema_CinemaNo(cinemaNo);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
@@ -68,7 +68,7 @@ public class ScheduleController {
 // 영화관 별 상영시간표 목록
 	@GetMapping("/{roomNo}")
 	public ResponseEntity<List<Schedule>> scheduleList(@PathVariable("roomNo") Long roomNo){
-		List<Schedule> list = scheduleRepository.findByRoomNo(roomNo);
+		List<Schedule> list = scheduleRepository.findByRoom_RoomNo(roomNo);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	

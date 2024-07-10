@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.POPCornPickApi.entity.RoomType;
+import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.RoomTypeRepository;
 
 @Service
@@ -14,8 +15,8 @@ public class RoomService {
 	@Autowired
 	private RoomTypeRepository roomTypeRepository;
 	
-//	@Autowired
-//	private RoomRepository roomRepository;
+	@Autowired
+	private RoomRepository roomRepository;
 	
 	public int registRoom(RoomType roomType) {
 		try {
@@ -31,5 +32,9 @@ public class RoomService {
 		System.out.println("service : " + roomTypeRepository.findAllByOrderByRoomNameAsc());
 		return roomTypeRepository.findAllByOrderByRoomNameAsc();		
 	}
+	
+	public List<String> getSmallTypeByMovieTitle(String title) {
+        return roomRepository.findSmallTypeByMovieTitle(title);
+    }
 	
 }

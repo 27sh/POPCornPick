@@ -11,4 +11,10 @@ public class MainController {
 		
 		return "common/main";
 	}
+	
+	@RequestMapping("/event")
+	public String event() {
+		
+		return "common/mainEventList";
+	}
 }

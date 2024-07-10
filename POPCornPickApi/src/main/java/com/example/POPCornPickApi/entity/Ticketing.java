@@ -22,11 +22,11 @@ public class Ticketing extends BaseEntity {
 	private Long ticketingNo;
 	
 	@ManyToOne
-	@JoinColumn(name = "telephone", referencedColumnName = "telephone", nullable = false)
+	@JoinColumn(name = "telephone", referencedColumnName = "telephone", nullable = true)
 	private UnknownMember unknownMember;
 	
 	@ManyToOne
-	@JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+	@JoinColumn(name = "username", referencedColumnName = "username", nullable = true)
 	private Member member;
 	
 	@ManyToOne

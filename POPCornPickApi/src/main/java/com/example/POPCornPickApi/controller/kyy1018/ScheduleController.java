@@ -22,9 +22,11 @@ import com.example.POPCornPickApi.dto.ScheduleDto;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.MovieShowDetail;
+import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
+import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.ScheduleRepository;
 
 @RequestMapping("/api/v1/schedule")
@@ -34,6 +36,9 @@ public class ScheduleController {
 	
 	@Autowired
 	CinemaRepository cinemaRepository;
+	
+	@Autowired
+	RoomRepository roomRepository;
 	
 	@Autowired
 	ScheduleRepository scheduleRepository;
@@ -51,11 +56,19 @@ public class ScheduleController {
 		List<Cinema> list = cinemaRepository.findAll();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
+
+// 상영관 목록
+	@GetMapping("/cinema/{cinemaNo}")
+	public ResponseEntity<List<Room>> roomList(@PathVariable("cinemaNo") Long cinemaNo){
+		List<Room> list = roomRepository.findByCinemaNo(cinemaNo);
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
 	
 // 영화관 별 상영시간표 목록
-	@GetMapping("/cinema/{cinemaNo}")
-	public ResponseEntity<List<Cinema>> cinemaScheList(@PathVariable("cinemaNo") Long cinemaNo){
-		List<Cinema> list = cinemaRepository.findByCinemaNo(cinemaNo);
+	@GetMapping("/{roomNo}")
+	public ResponseEntity<List<Schedule>> scheduleList(@PathVariable("roomNo") Long roomNo){
+		List<Schedule> list = scheduleRepository.findByRoomNo(roomNo);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	

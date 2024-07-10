@@ -90,7 +90,6 @@ th {
 					<th>작성자</th>
 					<th>작성일자</th>
 					<th>답변상태</th>
-
 				</tr>
 			</thead>
 			<tbody id="tablebody">
@@ -108,21 +107,22 @@ th {
 										var tableBody = $("#tablebody");
 										tableBody.empty();
 										data.forEach(function(qna) {
+											
 													var date = new Date(qna.regdate);
 													var year = date.getFullYear();
 													var month = (date.getMonth() + 1).toString().padStart(2,'0');
 													var day = date.getDate().toString().padStart(2,'0');
 													var formattedDate = year + '-' + month + '-' + day;
-													var answerStatus = qna.qna_answer ? '답변완료' : '답변대기'; // 답변 상태 처리
-													var answerClass = qna.qna_answer ? 'btn-completed' : 'btn-pending';
+													var answerClass = qna.qnaAnswer ? 'btn-completed' : 'btn-pending';
+													var answerStatus = (qna.qnaAnswer === null)? '답변대기<input type="button" class="btn"'+ answerClass +' onclick="answerToQna(event)" id="answer' + qna.qnaNo + '" value="답변하기">' : '답변완료'; // 답변 상태 처리
 													var row = '<tr>'+
 													'<td>' + qna.qnaNo + '</td>'+
 													'<td>' + qna.qnaCategory + '</td>' +
 													'<td>' + qna.qnaTitle + '</td>'	+
 													'<td>' + qna.member.username + '</td>' +
 													'<td>' + formattedDate + '</td>'+
-													'<td>' + answerStatus + ' <input type="button" class="btn" value="답변하기"></td>'
-															+ '</tr>';
+													'<td>' + answerStatus + ' </td>'
+											       	+ '</tr>';
 														tableBody.append(row);
 													});
 										},
@@ -131,6 +131,11 @@ th {
 										}
 									});
 						});
+		
+		function answerToQna(event){
+			const qnaNo = event.target.id.substring(6);
+			location.href="/admin/qnaEdit/" + qnaNo;
+		}
 	</script>
 </body>
 </html>

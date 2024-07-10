@@ -1,6 +1,8 @@
 package com.example.POPCornPickView.KKMController;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -13,9 +15,11 @@ public class AdminController {
 		return"admin/qnaList";
 	}
 	
-	@RequestMapping("/qnaEdit")
-	public String qnaDetail() {
+	@RequestMapping("/qnaEdit/{qnaNo}")
+	public String qnaDetail(@PathVariable("qnaNo") Long qnaNo, Model model) {
 		
+		model.addAttribute("qnaNo", qnaNo);
+		System.out.println("일반 컨트롤러 qnaNo : " + qnaNo);
 		return"admin/qnaEdit";
 	}
 	

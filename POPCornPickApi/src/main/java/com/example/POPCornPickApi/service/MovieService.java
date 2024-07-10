@@ -1,5 +1,8 @@
 package com.example.POPCornPickApi.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,6 +88,23 @@ public class MovieService {
             return "{\"error\":\"Unknown error occurred\"}";
         }
 
-        return "{\"title\":\"" + title + "\", \"openStartDt\":\"" + openStartDt + "\", \"posterUrl\":\"" + posterUrl + "\", \"viewAge\":\"" + viewAge + "\"}";
+        String dDay = calculateDday(openStartDt);
+
+        return "{\"title\":\"" + title + "\", \"openStartDt\":\"" + openStartDt + "\", \"posterUrl\":\"" + posterUrl + "\", \"viewAge\":\"" + viewAge + "\", \"dday\":\"" + dDay + "\"}";
+    }
+
+    private String calculateDday(String openStartDt) {
+        if (openStartDt == null || openStartDt.isEmpty() || openStartDt.equals("Unknown")) {
+            return "";
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalDate openDate = LocalDate.parse(openStartDt, DateTimeFormatter.ofPattern("yyyyMMdd"));
+        long daysUntilOpen = ChronoUnit.DAYS.between(today, openDate);
+
+        if (daysUntilOpen > 0) {
+            return "D-" + daysUntilOpen;
+        }
+        return "";
     }
 }

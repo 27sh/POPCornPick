@@ -74,6 +74,26 @@ main {
                         }
                         // smallTypes가 배열인지 확인하고 변환
                         const smallTypes = typeof details.smallTypes === 'string' ? JSON.parse(details.smallTypes) : details.smallTypes;
+
+                        // viewAge에 따른 이미지 경로 설정
+                        let ageImage = '';
+                        switch(details.viewAge) {
+                            case '청소년 관람불가':
+                                ageImage = 'pc_grade_19.png';
+                                break;
+                            case '12세 이상 관람가':
+                                ageImage = 'grade_12.png';
+                                break;
+                            case '15세 이상 관람가':
+                                ageImage = 'grade_15.png';
+                                break;
+                            case '전체 관람가':
+                                ageImage = 'grade_all.png';
+                                break;
+                            default:
+                                ageImage = ''; // 기본값 설정
+                        }
+
                         const movieCard = document.createElement('div');
                         movieCard.className = 'movie-card';
                         movieCard.innerHTML = 
@@ -85,6 +105,7 @@ main {
                             + '<div>개봉일: ' + details.openStartDt + '</div>'
                             + '<div>평균 리뷰 점수: ' + details.avgReviewScore + '</div>'
                             + '<div>상영관 종류: ' + smallTypes.join(", ") + '</div>'
+                            + (ageImage ? '<div><img src="/img/' + ageImage + '" alt="연령 등급"></div>' : '')
                             + '<button class="btn">예매하기</button>'
                             + '</div>';
                         movieChart.appendChild(movieCard);

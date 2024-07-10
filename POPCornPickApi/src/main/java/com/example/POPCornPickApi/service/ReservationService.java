@@ -1,16 +1,24 @@
 package com.example.POPCornPickApi.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import com.example.POPCornPickApi.entity.Cinema;
+import com.example.POPCornPickApi.entity.Movie;
+import com.example.POPCornPickApi.entity.MovieShowDetail;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
+import com.example.POPCornPickApi.repository.MovieRepository;
+import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
+import com.example.POPCornPickApi.repository.TicketingRepository;
 
 @Service
 public class ReservationService {
@@ -18,11 +26,19 @@ public class ReservationService {
 	private CinemaRepository cinemaRepository;
 	private ExpCinemaRepository expCinemaRepository;
 	private RoomRepository roomRepository;
+	private MovieRepository movieRepository;
+	private MovieShowDetailRepository movieShowDetailRepository;
+	private TicketingRepository ticketingRepository;
 	
-	public ReservationService(CinemaRepository cinemaRepository, ExpCinemaRepository expCinemaRepository, RoomRepository roomRepository) {
+	public ReservationService(CinemaRepository cinemaRepository, ExpCinemaRepository expCinemaRepository, 
+			RoomRepository roomRepository, MovieRepository movieRepository, MovieShowDetailRepository movieShowDetailRepository,
+			TicketingRepository ticketingRepository) {
 		this.cinemaRepository = cinemaRepository;
 		this.expCinemaRepository = expCinemaRepository;
 		this.roomRepository = roomRepository;
+		this.movieRepository = movieRepository;
+		this.movieShowDetailRepository = movieShowDetailRepository;
+		this.ticketingRepository = ticketingRepository;
 	}
 	
 	public List<Cinema> getCinemaByLocaiton(String cinemaLocation){
@@ -63,13 +79,13 @@ public class ReservationService {
 		
 		Map<String, String> countMap = new HashMap<>();
 		
-		int count4DX = roomRepository.getCountByRoomTypeNo(2L);
+		int count4DX = roomRepository.getCountByRoomTypeNo(4L);
 		int countIMAX = roomRepository.getCountByRoomTypeNo(3L);
-		int countPRIVATE_BOX = roomRepository.getCountByRoomTypeNo(4L);
+		int countPRIVATE_BOX = roomRepository.getCountByRoomTypeNo(5L);
 		
 		countMap.put("4DX" , "4DX(" + count4DX + ")");
 		countMap.put("IMAX" , "IMAX(" + countIMAX + ")");
-		countMap.put("PRIVATE_BOX" , "4DX(" + countPRIVATE_BOX + ")");
+		countMap.put("PRIVATE_BOX" , "PRIVATE BOX(" + countPRIVATE_BOX + ")");
 	
 		return countMap;
 	}
@@ -79,6 +95,40 @@ public class ReservationService {
 		List<Room> roomList = roomRepository.findByRoomType_RoomTypeNoOrderByCinema_CinemaNameAsc(roomTypeNo);
 		
 		return roomList;
+	}
+	
+	public List<Movie> getMovieList(){
+		
+		List<Movie> movieList = movieRepository.findAll();
+		
+//		List<MovieShowDetail> movieShowDetailList = movieShowDetailRepository.findAll();
+//		Map<Long, Long> countMap = new HashMap<>();
+//		movieShowDetailList.forEach(movieShowDetail -> {
+//			Long count = ticketingRepository.countByMovieShowDetail_DetailNo(movieShowDetail.getDetailNo());
+//			countMap.put(movieShowDetail.getMovie().getMovieDC(), count);
+//		});
+//		
+//		System.out.println("countMap : " + countMap);
+//		Set<Long> movieDCSet = new HashSet<>();
+//		
+//		for(int i = 0; i < countMap.size(); i++) {
+//			movieDCSet = countMap.keySet();
+//		}
+//
+//		Map<Movie, Long> movieMap = new HashMap<>();
+//		
+//		movieDCSet.forEach(movieDC -> {
+//			Movie movie = movieRepository.findByMovieDC(movieDC);
+//			movieMap.put(movie, countMap.get(movieDC));
+//		});
+//		
+//		System.out.println("movieMap : " + movieMap);
+//		
+		// ticketingRepository.countByMovie_MovieDCOrderByCountDesc();
+		
+		
+		
+		return movieList;
 	}
 	
 }

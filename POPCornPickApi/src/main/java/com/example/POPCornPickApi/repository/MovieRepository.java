@@ -8,4 +8,5 @@ import com.example.POPCornPickApi.entity.Movie;
 
 public interface MovieRepository extends JpaRepository<Movie, Long>{
 	Optional<Movie> findByTitle(String title);
+	public Movie findByMovieDC(Long movieDC);
 }

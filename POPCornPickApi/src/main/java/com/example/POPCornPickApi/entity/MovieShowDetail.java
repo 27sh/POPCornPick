@@ -31,12 +31,6 @@ public class MovieShowDetail extends BaseEntity{
 	@JoinColumn(name = "roomNo", referencedColumnName = "roomNo", nullable = false)
 	private Room room;
 	
-	@Column(nullable = false)
-	private int showState;
-	
-	@Column(nullable = true)
-	private Date startDate;
-	
 	@Column(nullable = true)
 	private Date endDate;
 	

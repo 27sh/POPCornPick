@@ -23,7 +23,7 @@ public class MovieShowDetail extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long detailNo;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "movieDc", referencedColumnName = "movieDc", nullable = false)
 	private Movie movie;
 	

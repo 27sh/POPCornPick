@@ -17,6 +17,7 @@ import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.MovieShowDetail;
 import com.example.POPCornPickApi.entity.Room;
+import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
@@ -181,5 +182,11 @@ public class ReservationService {
         
         return sortedMap;
     }
+	
+	public List<Schedule> getScheduleList(String cinemaName, String title, String date){
+		
+		
+		return null;
+	}
 	
 }

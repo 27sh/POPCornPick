@@ -1258,7 +1258,7 @@ main {
 			$("#section_schedule_date").html(str);
 			
 			// 날짜 선택했을 때
-			$("#section_schedule_date").children("li").children("a").on("click", "label", function(){
+			$("#section_schedule_date").children("li").children("a").one("click", "label", function(){
 				$(this).parent().parent().addClass("selected");
 				$(this).parent().parent().siblings().removeClass("selected");
 				
@@ -1275,7 +1275,17 @@ main {
 				const cinemaName = $(".section_cinema_title").text();
 				
 				if(movieName.length > 5 && cinemaName.length > 6){
-					// 모든 선택 옵션이 선택되었을 때
+					$.ajax({
+						url : "http://localhost:9001/api/v1/reservation/schedule/list/" + cinemaName + "/" + movieName + "/" + result,
+						method: "GET",
+						dataType : "json",
+						success : function(response){
+							
+						},
+						error : function(xhr, status, error){
+							
+						}
+					});
 				}
 				
 			});
@@ -1293,10 +1303,6 @@ main {
 				
 				const movieName = $(".section_movie_title").text();
 				const date = $(".section_schedule_title").text();
-				
-				console.log(movieName.length);
-				console.log(date.length);
-				
 				
 				if(movieName.length > 5 || date.length > 5){
 					$(".section_movie_title").text("영화 선택");

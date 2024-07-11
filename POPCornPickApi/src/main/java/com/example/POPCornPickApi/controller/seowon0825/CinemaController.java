@@ -2,6 +2,7 @@ package com.example.POPCornPickApi.controller.seowon0825;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,11 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.dto.CinemaDto;
+import com.example.POPCornPickApi.dto.CinemaRoomDto;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.RoomType;
-import com.example.POPCornPickApi.entity.Seat;
 import com.example.POPCornPickApi.service.CinemaService;
 import com.example.POPCornPickApi.service.RoomService;
+import com.example.POPCornPickApi.service.SeatService;
 
 @CrossOrigin("*")
 @RestController
@@ -37,6 +39,9 @@ public class CinemaController {
 	
 	@Autowired
 	private RoomService roomService;
+	
+	@Autowired
+	private SeatService seatService;
 	
 	@PostMapping
 	public @ResponseBody String registCinema(CinemaDto cinemaDto) {
@@ -145,15 +150,33 @@ public class CinemaController {
 	}
 	
 	@GetMapping("/roomDetail")
-	public ResponseEntity<Long> cinemaRoomDetail(@RequestParam("cinemaName")String cinemaName){
+	public List<CinemaRoomDto> cinemaRoomDetail(@RequestParam("cinemaName")String cinemaName){
 		//cinemaNo값 추출
 		Long cinemaNo = cinemaService.getCinemaNo(cinemaName);
 		System.out.println(cinemaNo);
+		
 		//cinemaNo값을 이용해서 room_no추출
+		List<Long> roomNoList = roomService.getRoomNo(cinemaNo);
+		System.out.println("roomNoList : " + roomNoList);
 		
 		//반복문을 이용해서 roomNo에 해당하는 seat데이터 추출
-		
-		return ResponseEntity.ok(cinemaNo);
+		List<CinemaRoomDto> list = new ArrayList<>();
+		for(Long roomNo : roomNoList) {
+			System.out.println("roomNo : " + roomNo);
+			try {
+				Object[] seats = seatService.getCinemaRoomSeat(roomNo);
+				Object[] rooms = roomService.getRoomInfo(roomNo);
+				
+				CinemaRoomDto cinemaRoomDto = new CinemaRoomDto(
+						((Number) seats[0]).longValue(),
+						);
+				System.out.println(seats);
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 	
 //	@GetMapping("/roomList")

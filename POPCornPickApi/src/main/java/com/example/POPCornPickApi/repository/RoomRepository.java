@@ -20,4 +20,14 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	
 	@Query("SELECT rt.smallType FROM Room r JOIN r.roomType rt JOIN MovieShowDetail msd ON msd.room.roomNo = r.roomNo WHERE msd.movie.title = :title")
     List<String> findSmallTypeByMovieTitle(@Param("title") String title);
+	
+	@Query("SELECT r.roomNo FROM Room r WHERE r.cinema.cinemaNo = :cinemaNo")
+	public List<Long> findRoomNoByCinemaNo(@Param("cinemaNo") Long cinemaNo);
+	
+	@Query(value= "SELECT * FROM seat WHERE room_no = :roomNo", nativeQuery = true)
+	public Object[] getRoomInfo(@Param("roomNo") Long roomNo);
+	
+	
+	
+	
 }

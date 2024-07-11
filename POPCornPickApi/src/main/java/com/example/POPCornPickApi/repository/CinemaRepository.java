@@ -26,4 +26,5 @@ public interface CinemaRepository extends JpaRepository<Cinema, Long>{
 	
 	@Query("select c.cinemaNo from Cinema c where c.cinemaName = :cinemaName")
 	public Long findByCinemaName(@Param("cinemaName") String cinemaName);
+	
 }

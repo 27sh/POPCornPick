@@ -74,7 +74,30 @@ main {
 				data : {cinemaName : selectedText},
 				dataType : 'json',
 				success : function(data){
-					console.log(data);
+					
+					if(data != null && data.length > 0){
+						let table = '<table border="1"><tr><th scope="col">관람관 명</th><th scope="col">관람관 종류</th><th scope="col">좌석현황</th><th scope="col">좌석 수정</th></tr><tbody class="table-group-divider">';
+
+						for (let i = 0; i < data.length; i++) {
+							table += '<div class="qna-list-area">';
+							table += '<tr>';
+							table += '<td class="listNum">' + (i + 1) + '</td>';
+							table += '<td class="category">' + data[i].roomNo + '</td>';
+							table += '<td><a href="/qna99/qnaDetail?cs_no='
+									+ data[i].cs_no + '">' + data[i].cinemaNo
+									+ '</a></td>';
+							table += '<td class="listRegdate">' + data[i].roomTypeNo + '</td>';
+							table += '<td class="listRegdate">' + data[i].total + '</td>';
+							table += '<td class="listRegdate">' + data[i].bookedCnt + '</td>';
+							table += '</tr>';
+							table += '</div>';
+						}
+						table += '</tbody></table>';
+
+						document.getElementById("qnaList").innerHTML = table;
+					} else {
+						document.getElementById("qnaNull").innerHTML = "문의 내역이 없습니다.";
+					}
 				},
 				error : function(e){
 					console.log("error : ", e);

@@ -14,6 +14,7 @@ import com.example.POPCornPickApi.service.MovieService;
 import com.example.POPCornPickApi.service.ReviewService;
 import com.example.POPCornPickApi.service.RoomService;
 import com.example.POPCornPickApi.service.TicketingService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -58,7 +59,12 @@ public class MainController {
                 List<String> smallTypes = roomService.getSmallTypeByMovieTitle(title);
                 String smallTypesJson = new ObjectMapper().writeValueAsString(smallTypes);
                 String movieDetail = movieService.getMovieDetails(title);
-                String movieDetailWithScoreAndType = movieDetail.substring(0, movieDetail.length() - 1) + ", \"avgReviewScore\":\"" + avgScore + "\", \"smallTypes\":" + smallTypesJson + "}";
+                // 추가된 코드: movieDetail JSON 문자열에서 필요한 값을 파싱하여 dday 값을 포함
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode movieDetailJson = objectMapper.readTree(movieDetail);
+                String dday = movieDetailJson.path("dday").asText();
+
+                String movieDetailWithScoreAndType = movieDetail.substring(0, movieDetail.length() - 1) + ", \"avgReviewScore\":\"" + avgScore + "\", \"smallTypes\":" + smallTypesJson + ", \"dday\":\"" + dday + "\"}";
                 movieDetails.add(movieDetailWithScoreAndType);
             }
             return movieDetails;
@@ -68,10 +74,9 @@ public class MainController {
         }
     }
 
-    
     @GetMapping("/top-movies")
     public List<String> getTopMoviesByTicketCount() {
-    	List<String> topMovies = ticketingService.getTopMoviesByTicketCount();
+        List<String> topMovies = ticketingService.getTopMoviesByTicketCount();
         System.out.println("Top Movies: " + topMovies); // 디버깅을 위해 출력
         return ticketingService.getTopMoviesByTicketCount();
     }

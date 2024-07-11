@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.POPCornPickApi.entity.Faq;
 
 public interface FaqRepository extends JpaRepository<Faq, Long>{
+				
+	public Faq findByFaqNo(Long faqNo);
 	
-	List<Faq> findByFaqNo(Faq faqNo);
+	//public List<Faq> finByFaqNoList(Faq faqNo);
 }

@@ -30,7 +30,7 @@ import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.ScheduleRepository;
 
 @RequestMapping("/api/v1/schedule")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin("*")
 @RestController
 public class ScheduleController {
 	
@@ -82,11 +82,17 @@ public class ScheduleController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+// 영화 슬롯 상세
+	@GetMapping("/slot/{movieDC}")
+	public ResponseEntity<Movie> movieSlot(@PathVariable("movieDC") Long movieDC) {
+		Movie result = movieRepository.findById(movieDC).get();
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}		
 	
 // 영화 슬롯 편집	
-	@PutMapping("/slot/{movieDc}")
-	public ResponseEntity<Movie> movieSlotReg(@RequestBody MovieDto movieDto, @RequestParam("movieDc") Long movieDc) {
-		Movie movie = movieRepository.findById(movieDc).get();
+	@PutMapping("/slot/{movieDC}")
+	public ResponseEntity<Movie> movieSlotReg(@RequestBody MovieDto movieDto, @PathVariable("movieDC") Long movieDC) {
+		Movie movie = movieRepository.findById(movieDC).get();
 		System.out.println("현재 영화 : " + movie);
 		
 		movie.setColor(movieDto.getColor());

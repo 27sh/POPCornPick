@@ -590,11 +590,11 @@ main {
 							<p>상영시간</p>
 						</div>
 						<div class="simple_info_content hidden">
-							<ul>
-								<li class="simple_info_content_movie">aaa</li>
-								<li class="simple_info_content_specific">bbb</li>
-								<li class="simple_info_content_date">ccc</li>
-								<li class="simple_info_content_time">ddd</li>
+							<ul id="simple_info_content_all">
+								<li class="simple_info_content_movie"></li>
+								<li class="simple_info_content_specific"></li>
+								<li class="simple_info_content_date"></li>
+								<li class="simple_info_content_time"></li>
 							</ul>
 						</div>
 					</div>
@@ -680,61 +680,7 @@ main {
 					<h4 class="section_schedule_title">날짜/시간</h4>
 					<div id="section_schedule_date">
 						<ul id="section_schedule_date_slides">
-							<li class="section_schedule_date_slide selected"><strong>7월</strong>
-								<a href="#"> <label for="ddd"> <input type="radio"
-										id="ddd" checked name="date_radio" class="date_radio selected">
-										<strong>9</strong> <em>오늘</em>
-								</label>
-							</a></li>
-							<li class="section_schedule_date_slide"><strong
-								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="eee"> <input type="radio" id="eee"
-										name="date_radio" class="date_radio"> <strong>10</strong>
-										<em>수</em>
-								</label>
-							</a></li>
-							<li class="section_schedule_date_slide"><strong
-								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="ccc"> <input type="radio" id="ccc"
-										name="date_radio" class="date_radio"> <strong>10</strong>
-										<em>수</em>
-								</label>
-							</a></li>
-							<li class="section_schedule_date_slide"><strong
-								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="fff"> <input type="radio" id="fff"
-										name="date_radio" class="date_radio"> <strong>10</strong>
-										<em>수</em>
-								</label>
-							</a></li>
-							<li class="section_schedule_date_slide"><strong
-								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="aaa"> <input type="radio" id="aaa"
-										name="date_radio" class="date_radio"> <strong>10</strong>
-										<em>수</em>
-								</label>
-							</a></li>
-							<li class="section_schedule_date_slide"><strong
-								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="ggg"> <input type="radio" id="ggg"
-										name="date_radio" class="date_radio"> <strong>10</strong>
-										<em>수</em>
-								</label>
-							</a></li>
-							<li class="section_schedule_date_slide saturday"><strong
-								style="visibility: hidden">12월</strong> <a href="#"> <label
-									for="hhh"> <input type="radio" id="hhh"
-										name="date_radio" class="date_radio"> <strong>10</strong>
-										<em>토</em>
-								</label>
-							</a></li>
-							<li class="section_schedule_date_slide sunday"><strong
-								style="visibility: hidden">7월</strong> <a href="#"> <label
-									for="zzz"> <input type="radio" id="zzz"
-										name="date_radio" class="date_radio"> <strong>10</strong>
-										<em>일</em>
-								</label>
-							</a></li>
+							
 						</ul>
 					</div>
 					<div id="section_schedule_box">
@@ -862,7 +808,7 @@ main {
 			const today = new Date();
 			const days = [];
 
-			for (let i = 0; i < 8; i++) {
+			for (let i = 0; i < 9; i++) {
 				const nextDate = new Date(today);
 				nextDate.setDate(today.getDate() + i);
 				days.push(nextDate);
@@ -896,8 +842,9 @@ main {
 				dataType: "json",
 				success: function(response) {
 					let str = '';
+					
 					response.forEach(movie => {
-						
+					
 						let title = '';
 						if(movie.title.length > 25){
 							title = movie.title.substring(0, 25) + "...";
@@ -999,6 +946,8 @@ main {
 				$(".section_cinema_title").text("영화관 - " + title);
 				$(".simple_info_content_specific").text(title);
 				
+				
+				
 			});
 			
 			$("#section_movie_list").children("ul").on("click", "li", function() {
@@ -1008,6 +957,9 @@ main {
 				const title = $(this).text();
 				$(".section_movie_title").text("영화 - " + title);
 				$(".simple_info_content_movie").text(title);
+				
+				const 
+				
 			});
 			
 			$(".btn_view_txt").on("click", function(){
@@ -1170,6 +1122,39 @@ main {
 				});
 			});
 			
+			let movies = [];
+			let ajaxList = [];
+// 			$.ajax({
+// 				url: "http://localhost:9001/api/v1/reservation/movie/aboutto/list",
+// 				method: "GET",
+// 				dataType: "json",
+// 				success: function(response){
+// 					response.forEach(movie => {
+// 						ajaxList.push(
+// 							$.ajax({
+// 								url : "http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=12cc7dc453c4bb57c2342f243ea66220&movieNm=" + movie.title,
+// 								method: "GET",
+// 								dataType : "json",
+// 								success: function(response){
+// 									if(response.movieListResult.movieList.length > 0){
+// 										const prdtStatNm = response.movieListResult.movieList[0].prdtStatNm;
+// 										if(prdtStatNm === "개봉준비" || prdtStatNm === "개봉예정"){
+// 											movies.push(movie);	
+// 										}
+// 									}
+									
+// 								},
+// 								error : function(xhr, status, error){
+// 								}
+// 							})
+// 						);
+// 					});
+// 				},
+// 				error: function(xhr, status, error){
+// 					console.log(error);
+// 				}
+// 			});		
+			
 			// 처음에 나오는 코드를 수정 한뒤 복사해서 가지고 오면 된다.
 			$("#section_movie_selection").on("change", function(){
 				const optionId = $("#section_movie_selection option:selected").attr("id");
@@ -1208,97 +1193,114 @@ main {
 						}
 					});		
 				}else if(optionId === "section_movie_select_aboutto"){
-					$.ajax({
-						url: "http://localhost:9001/api/v1/reservation/movie/aboutto/list",
-						method: "GET",
-						dataType: "json",
-						success: function(response){
-							let str = '';
+					let str = '';
+					
+					$.when.apply($, ajaxList).done(function() {
+		                // 리스트 출력 (디버깅용)
+						movies.forEach(movie => {
 							
-							response.forEach(movie => {
-								
-								let title = '';
-								if(movie.title.length > 25){
-									title = movie.title.substring(0, 25) + "...";
-								}else {
-									title = movie.title;
-								}
-								
-								if(movie.viewAge === "전체 관람가"){
-									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
-								}else if(movie.viewAge === "12세 이상 관람가"){
-									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
-								}else if(movie.viewAge === "15세 이상 관람가"){
-									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
-								}else if(movie.viewAge === "청소년 관람불가") {
-									str += '<li><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
-								}
-								
-							});
+							let title = '';
+							if(movie.title.length > 25){
+								title = movie.title.substring(0, 25) + "...";
+							}else {
+								title = movie.title;
+							}
 							
-							$("#section_movie_list_info").html(str);
-						},
-						error: function(xhr, status, error){
-							console.log(error);
-						}
-					});		
+							if(movie.viewAge === "전체 관람가"){
+								str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
+							}else if(movie.viewAge === "12세 이상 관람가"){
+								str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
+							}else if(movie.viewAge === "15세 이상 관람가"){
+								str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
+							}else if(movie.viewAge === "청소년 관람불가") {
+								str += '<li><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
+							}
+							
+						});
+						
+						$("#section_movie_list_info").html(str);
+		            });
+					
 				}
 			});
 			
 			
-			/*
-			let cnt = 0;
-			let slide = 0;
 			let str = '';
+			let cnt = 0;
+			const days = getNext8Days();
 			
 			days.forEach(day => {
-				if(cnt % 8 === 0){
-					str += '<ul class="section_schedule_date_slides" id="slide_' + slide + '">';
+				str += '<li class="section_schedule_date_slide">';
+				if(cnt === 0 || day.getDate() === 1){
+					str += '<strong>' + (day.getMonth() + 1) + '월</strong>';	
+				}else {
+					str += '<strong class="hide_strong">' + (day.getMonth() + 1) + '</strong> '; 
 				}
-				
+				str += '<a> <label for="date_' + cnt + '"> <input type="radio"' + 
+					   'id="date_' + cnt + '" name="date_radio" class="date_radio"> ';
+				if(day.getDay() === 0){
+					str +=	'<strong style="color:red">' + day.getDate() + '</strong>';  
+				}else if(day.getDay() === 6){
+					str +=	'<strong style="color:blue">' + day.getDate() + '</strong>';  
+				}else {
+					str +=	'<strong>' + day.getDate() + '</strong>';  
+				}					   
+				//0:일, 1:월, 2:화, 3:수, 4:목, 5:금, 6:토
 				let dayName = '';
 				if(cnt === 0){
-					dayName = "오늘";
-				}else if(day.getDay() == 0) {
-					dayName = "일";
-				}else if(day.getDay() == 1){
-					dayName = "월";
-				}else if(day.getDay() == 2){
-					dayName = "화";
-				}else if(day.getDay() == 3){
-					dayName = "수";
-				}else if(day.getDay() == 4){
-					dayName = "목";
-				}else if(day.getDay() == 5){
-					dayName = "금";
-				}else if(day.getDay() == 6){
-					dayName = "토";
+					dayName = '오늘';					
+				}else if(day.getDay() === 0){
+					dayName = '일';
+				}else if(day.getDay() === 1){
+					dayName = '월';
+				}else if(day.getDay() === 2){
+					dayName = '화';
+				}else if(day.getDay() === 3){
+					dayName = '수';
+				}else if(day.getDay() === 4){
+					dayName = '목';
+				}else if(day.getDay() === 5){
+					dayName = '금';
+				}else if(day.getDay() === 6){
+					dayName = '토';
 				}
 				
-				let date = day.getDate();
-				if(dayName === "오늘") {
-					str += '<li class="section_schedule_date_slide selected"><strong>' + (day.getMonth() + 1) + '월</strong>' ;
-				}else if(date === 1){
-					str += '<li class="section_schedule_date_slide"><strong>' + (day.getMonth() + 1) + '월</strong>' ;
+				if(day.getDay() === 0){
+					str += '<em style="color:red">' + dayName + '</em></label> ' +
+					   '</a></li>';
+				}else if(day.getDay() === 6){
+					str += '<em style="color:blue">' + dayName + '</em></label> ' +
+					   '</a></li>';
 				}else {
-					str += '<li class="section_schedule_date_slide"><strong class="hide_strong">' + (day.getMonth() + 1) + '월</strong>' ;
-				}
-				
-				str += '<a> <label for="date_' + (cnt + 1) + '"> <input type="radio" ' + 
-					   'id="date_' + (cnt + 1) + '" checked name="date_radio" class="date_radio"> ' +
-					   '<strong>' + date + '</strong> <em>' + dayName + '</em> ' + 
-					   '</label> ' + 
-				       '</a></li> ';
-				if(cnt === 7){
-				  str += '</ul>';
-				}
+					str += '<em>' + dayName + '</em></label> ' +
+					   '</a></li>';
+				}	
 				
 				cnt++;
-				
 			});
 			
 			$("#section_schedule_date").html(str);
-			*/
+			
+			$("#section_schedule_date").children("li").children("a").on("click", "label", function(){
+				$(this).parent().parent().addClass("selected");
+				$(this).parent().parent().siblings().removeClass("selected");
+				
+				const year = new Date().getFullYear();
+				const month = $(this).parent("a").prev("strong").text();
+				const date = $(this).children("strong").text();
+				const day = $(this).children("em").text();
+				const result = year + "-" + month.substring(0, month.length) + "-" + date + "(" + day +  ")";
+				
+				$(".section_schedule_title").text("날짜 - " + result);
+				$(".simple_info_content_date").text(result);
+				
+			});
+			
+			const finalDate = $(".simple_info_content_date").text();
+			console.log(finalDate);
+			
+			
+			
 		});
 
 		

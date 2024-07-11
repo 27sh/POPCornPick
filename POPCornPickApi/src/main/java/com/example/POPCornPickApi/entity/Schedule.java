@@ -32,9 +32,6 @@ public class Schedule extends BaseEntity {
 	private MovieShowDetail movieShowDetail; 
 	
 	@Column(nullable = true)
-	private String color;
-	
-	@Column(nullable = true)
 	private Date start;
 	
 	@Column(nullable = true)

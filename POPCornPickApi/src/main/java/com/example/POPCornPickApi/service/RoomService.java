@@ -37,4 +37,12 @@ public class RoomService {
         return roomRepository.findSmallTypeByMovieTitle(title);
     }
 	
+	public List<Long> getRoomNo(Long cinemaNo){
+		return roomRepository.findRoomNoByCinemaNo(cinemaNo);
+	}
+	
+	public Object[] getRoomInfo(Long roomNo) {
+		return roomRepository.getRoomInfo(roomNo);
+	}
+	
 }

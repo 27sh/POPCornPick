@@ -20,4 +20,5 @@ public class Movie {
     private String title;
     private String color;
     private String viewAge;
+    private String showTm;
 }

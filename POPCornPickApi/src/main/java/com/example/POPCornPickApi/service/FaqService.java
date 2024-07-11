@@ -25,6 +25,16 @@ public class FaqService {
 		
 		
 	}
+	
+	public Faq getfaqDetail(Long faqNo){
+		
+		return faqrepository.findByFaqNo(faqNo);
+	}
+
+	public Faq modifyFaq(Faq faq) {
+
+		return faqrepository.save(faq);
+	}
 
 	
 }

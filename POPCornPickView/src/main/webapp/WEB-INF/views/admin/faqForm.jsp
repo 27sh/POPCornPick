@@ -112,7 +112,7 @@ th {
 			</tr>
 			<tr>
 				<td>제목</td>
-				<td ><input type="text" id="title"></td>
+				<td><input type="text" id="title"></td>
 			</tr>
 			<tr>
 				<td>내용</td>

@@ -29,5 +29,12 @@ public class AdminController {
 		return "admin/faqForm";
 	}
 	
+	@RequestMapping("/faqEdit")
+	public String faqEdit() {
+		
+		return "admin/faqEdit";
+	}
+	
+	
 	
 }

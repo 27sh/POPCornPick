@@ -52,10 +52,12 @@
                 <div id='calendar-wrap'>
                     <div id='calendar'></div>
                 </div>
-                
-               <div>
-                    <div class="modal-body">
+
+                <div>
+                    <div class="modal-title">
                         <select name="title" id="title"></select>
+                    </div>
+                    <div class="modal-body">
                     </div>
                 </div>
             </main>
@@ -68,7 +70,7 @@
 
                 var calendarEl = document.getElementById('calendar');
 
-                var roomNo = ${roomNo};
+                var roomNo = ${ roomNo };
                 localStorage.setItem('roomNo', roomNo);
 
                 $.ajax({
@@ -84,16 +86,16 @@
                             };
                             events.push(event);
 
-                            var calendar = new FullCalendar.Calendar(calendarEl, {                            	    
+                            var calendar = new FullCalendar.Calendar(calendarEl, {
                                 customButtons: {
                                     myCustomButton: {
                                         text: '수정하기'
                                     },
-                                    mySaveButton:{
-                                    	text: '저장하기'
+                                    mySaveButton: {
+                                        text: '저장하기'
                                     },
-                                    slotPlusButton:{
-                                    	text: '영화 추가하기'
+                                    slotPlusButton: {
+                                        text: '영화 추가하기'
                                     }
                                 },
                                 headerToolbar: {
@@ -101,8 +103,8 @@
                                     center: 'title',
                                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
                                 },
-                                footerToolbar:{
-                                	right: 'myCustomButton,mySaveButton,slotPlusButton'
+                                footerToolbar: {
+                                    right: 'myCustomButton,mySaveButton,slotPlusButton'
                                 },
                                 titleFormat: function (date) {
                                     return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
@@ -133,14 +135,14 @@
                                         arg.draggedEl.parentNode.removeChild(arg.draggedEl);
                                     }
                                 },
-                                eventDrop: function(info) {
-                                	console.log(info);
+                                eventDrop: function (info) {
+                                    console.log(info);
                                     console.log('Event dropped');
                                     console.log('Event: ' + info.event.title);
                                     console.log('Start: ' + info.event.start.toISOString());
                                     console.log('End: ' + info.event.end ? info.event.end.toISOString() : 'N/A');
                                 },
-                                eventResize: function(info) {
+                                eventResize: function (info) {
                                     console.log('Event resized');
                                     console.log('Event: ' + info.event.title);
                                     console.log('Start: ' + info.event.start.toISOString());
@@ -149,9 +151,9 @@
                             });
 
                             calendar.render(); // 캘린더 렌더링
-                        	var allEvents = calendar.getEvents();
-                        	console.log(allEvents);
-                        	
+                            //                         	var allEvents = calendar.getEvents();
+                            //                         	console.log(allEvents);
+
                         });
                     }
                 });
@@ -167,24 +169,28 @@
                         }
                     }
                 });
-                
-                var modalBody = document.getElementsByClassName('modal-body');
+
+                var modalBody = $('.modal-body');
                 var slots = [];
-                var selectedMovieDC;
+                var selectedMovieDC = 0;
+
                 $.ajax({
                     url: "http://localhost:9001/api/v1/schedule/slot",
                     method: "GET",
                     success: function (slot) {
+                        slots = slot;
+
                         var title = $('#title');
                         title.empty();
 
                         var titles = new Set(slot.map(item => item.title));
 
-                        titles.forEach(function(item){
+                        titles.forEach(function (item) {
                             var option = $('<option>').text(item).val(item);
-                                title.append(option);
+                            title.append(option);
                         });
 
+                        title.prop('selectedIndex', 0).trigger('change');
                     },
                     error: function (error) {
                         console.log("에러 :", error);
@@ -192,35 +198,63 @@
                     }
                 });
 
-                $('#title').change(function(){
+                $('#title').change(function () {
                     var selectedTitle = $(this).val();
-                    slots.forEach(function(item){
-                        if(item.title === selectedTitle){
-                            selectedMovieDC = item.movieDc;
+                    slots.forEach(function (item) {
+                        if (item.title === selectedTitle) {
+                            selectedMovieDC = item.movieDC;
+
+                            // 3. 영화 슬롯 편집 (GET)
+                            $.ajax({
+                                url: "http://localhost:9001/api/v1/schedule/slot/" + selectedMovieDC,
+                                method: "GET",
+                                success: function (slot) {
+                                    $('.modal-body').empty(); // 여기서 modalBody를 선택
+                                    var viewAge = slot.viewAge;
+                                    var showTm = slot.showTm;
+                                    var color = slot.color;
+
+                                    var slotInfo = $('<p>').text(viewAge + '/' + showTm + '분');
+                                    var slotColor = $('<p>').text('색상: ').append($('<input type="color" id="color">').val(color || '#ffffff'));
+                                    var slotBtn = $('<button class="updateBtn">').text('등록');
+
+                                    // 버튼에 이벤트 리스너 추가
+                                    slotBtn.on('click', function (event) {
+                                        submitSlot(event);
+                                    });
+
+                                    $('.modal-body').append(slotInfo).append(slotColor).append(slotBtn);
+                                },
+                                error: function (error) {
+                                    console.log("에러 :", error);
+                                    console.log("에러 상세 정보: ", error.responseText);
+                                }
+                            });
                         }
                     });
                 });
 
+                // 4. 수정 슬롯 등록하기
+                function submitSlot(event) {
+                    event.preventDefault();
 
+                    var inputColor = $('#color').val(); // .value가 아니라 .val()
 
-
-                // 3. 영화 슬롯 편집 (GET)
-                $.ajax({
-                    url: "http://localhost:9001/api/v1/schedule/slot/"+selectedMovieDC,
-                    method: "GET",
-                    success: function(slot){
-                        console.log(slot);
-                    },
-                    error: function (error) {
-                        console.log("에러 :", error);
-                        console.log("에러 상세 정보: ", error.responseText);
-                    }
-                })
-
-                // 4. 수정한 캘린더 schedule 엔티티에 저장하기
-
-
+                    $.ajax({
+                        url: "http://localhost:9001/api/v1/schedule/slot/" + selectedMovieDC,
+                        method: "PUT",
+                        data: { color: inputColor }, // 데이터를 객체로 전달
+                        success: function (slot) {
+                            alert("저장되었습니다.");
+                        },
+                        error: function (error) {
+                            console.log("에러 :", error);
+                            console.log("에러 상세 정보: ", error.responseText);
+                        }
+                    });
+                }
             });
+
 
         </script>
 

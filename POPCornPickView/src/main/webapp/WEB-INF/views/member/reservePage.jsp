@@ -677,7 +677,7 @@ main {
 					</div>
 				</section>
 				<section id="section_schedule">
-					<h4 class="section_schedule_title">날짜/시간</h4>
+					<h4 class="section_schedule_title">날짜 / 시간</h4>
 					<div id="section_schedule_date">
 						<ul id="section_schedule_date_slides">
 							
@@ -853,13 +853,13 @@ main {
 						}
 						
 						if(movie.viewAge === "전체 관람가"){
-							str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
+							str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
 						}else if(movie.viewAge === "12세 이상 관람가"){
-							str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
+							str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
 						}else if(movie.viewAge === "15세 이상 관람가"){
-							str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
+							str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
 						}else if(movie.viewAge === "청소년 관람불가") {
-							str += '<li><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
+							str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
 						}
 						
 					});
@@ -909,7 +909,7 @@ main {
 							let str = '';
 							let cnt = 0;
 							response.forEach(room => {
-								str += '<li id="roomNo_' + room.roomNo + '">' + room.cinema.cinemaName + '</li>';
+								str += '<li id="cinemaNo_' + room.cinema.cinemaNo + '">' + room.cinema.cinemaName + '</li>';
 							});
 							$("#section_cinema_list_specific").html(str);
 							
@@ -937,31 +937,7 @@ main {
 					});
 				}
 			});
-
-			$("#section_cinema_list_specific").on("click", "li", function() {
-				$(this).addClass("selected");
-				$(this).siblings().removeClass("selected");
-				
-				const title = $(this).text();
-				$(".section_cinema_title").text("영화관 - " + title);
-				$(".simple_info_content_specific").text(title);
-				
-				
-				
-			});
-			
-			$("#section_movie_list").children("ul").on("click", "li", function() {
-				$(this).addClass("selected");
-				$(this).siblings().removeClass("selected");
-				
-				const title = $(this).text();
-				$(".section_movie_title").text("영화 - " + title);
-				$(".simple_info_content_movie").text(title);
-				
-				const 
-				
-			});
-			
+	
 			$(".btn_view_txt").on("click", function(){
 				$(this).addClass("selected");
 				$(".btn_view_view").removeClass("selected");
@@ -1175,13 +1151,13 @@ main {
 								}
 								
 								if(movie.viewAge === "전체 관람가"){
-									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
+									str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
 								}else if(movie.viewAge === "12세 이상 관람가"){
-									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
+									str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
 								}else if(movie.viewAge === "15세 이상 관람가"){
-									str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
+									str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
 								}else if(movie.viewAge === "청소년 관람불가") {
-									str += '<li><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
+									str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
 								}
 								
 							});
@@ -1207,13 +1183,13 @@ main {
 							}
 							
 							if(movie.viewAge === "전체 관람가"){
-								str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
+								str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
 							}else if(movie.viewAge === "12세 이상 관람가"){
-								str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
+								str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
 							}else if(movie.viewAge === "15세 이상 관람가"){
-								str += '<li><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
+								str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
 							}else if(movie.viewAge === "청소년 관람불가") {
-								str += '<li><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
+								str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
 							}
 							
 						});
@@ -1281,6 +1257,7 @@ main {
 			
 			$("#section_schedule_date").html(str);
 			
+			// 날짜 선택했을 때
 			$("#section_schedule_date").children("li").children("a").on("click", "label", function(){
 				$(this).parent().parent().addClass("selected");
 				$(this).parent().parent().siblings().removeClass("selected");
@@ -1289,19 +1266,73 @@ main {
 				const month = $(this).parent("a").prev("strong").text();
 				const date = $(this).children("strong").text();
 				const day = $(this).children("em").text();
-				const result = year + "-" + month.substring(0, month.length) + "-" + date + "(" + day +  ")";
+				const result = year + "-" + month.substring(0, month.length) + "-" + date + " ( " + day +  " )";
 				
 				$(".section_schedule_title").text("날짜 - " + result);
 				$(".simple_info_content_date").text(result);
 				
+				const movieName = $(".section_movie_title").text();
+				const cinemaName = $(".section_cinema_title").text();
+				
+				if(movieName.length > 5 && cinemaName.length > 6){
+					// 모든 선택 옵션이 선택되었을 때
+				}
+				
 			});
 			
-			const finalDate = $(".simple_info_content_date").text();
-			console.log(finalDate);
+			// 지점명 클릭 했을때
+			$("#section_cinema_list_specific").on("click", "li", function() {
+				$(this).addClass("selected");
+				$(this).siblings().removeClass("selected");
+				
+				const cinemaName = $(this).text();
+				$(".section_cinema_title").text("영화관 - " + cinemaName);
+				$(".simple_info_content_specific").text(cinemaName);
+				
+				const cinemaNo = $(this).attr("id");
+				
+				const movieName = $(".section_movie_title").text();
+				const date = $(".section_schedule_title").text();
+				
+				console.log(movieName.length);
+				console.log(date.length);
+				
+				
+				if(movieName.length > 5 || date.length > 5){
+					$(".section_movie_title").text("영화 선택");
+					$(".section_schedule_title").text("날짜 / 시간");
+					$("#section_movie_list").children("ul").children("li").removeClass("selected");
+					$("#section_schedule_date").children("li").removeClass("selected");	
+					$(".simple_info_content_date").text("");
+					$(".simple_info_content_movie").text("");
+				}
+				
+			});
 			
+			// 영화 클릭 했을 때			
+			$("#section_movie_list").children("ul").on("click", "li", function() {
+				$(this).addClass("selected");
+				$(this).siblings().removeClass("selected");
+				
+				const title = $(this).text();
+				$(".section_movie_title").text("영화 - " + title);
+				$(".simple_info_content_movie").text(title);
+				
+				const date = $(".section_schedule_title").text();
+				
+				if(date.length > 5){
+					$(".section_schedule_title").text("날짜 / 시간");
+					$("#section_schedule_date").children("li").removeClass("selected");	
+					$(".simple_info_content_movie").text("");
+				}
+			});
 			
 			
 		});
+		
+		function getScheduleList(){
+			
+		}
 
 		
 	</script>

@@ -29,18 +29,13 @@ h1 {
 	margin-bottom: 20px;
 }
 
-form {
-	display: flex;
-	flex-direction: column;
-}
-
 label {
 	margin-bottom: 10px;
 	font-weight: bold;
 }
 
 select, input[type="text"], textarea {
-	width: 100%;
+	width: 98%;
 	padding: 10px;
 	margin-bottom: 20px;
 	border: 1px solid #ccc;
@@ -93,23 +88,25 @@ button:hover {
         <h1>공지사항 관리</h1>
         <form action="your_action_url" method="post" enctype="multipart/form-data">
             <label for="category">카테고리 <span style="color: red;">*</span></label>
-            <select id="category" name="category" required>
+            <select id="category" name="category"  required>
                 <option value="">카테고리</option>
                 <!-- Add more options here -->
             </select>
-
+			<hr>
             <label for="title">제목 <span style="color: red;">*</span></label>
             <input type="text" id="title" name="title" required>
 
             <label for="content">내용 <span style="color: red;">*</span></label>
             <textarea id="content" name="content" required></textarea>
-
+			<hr>
             <label for="file">첨부파일</label>
             <input type="file" id="file" name="file">
             <p class="file-info">*첨부가능 확장자: 이미지(jpg, gif, bmp, png, jpeg), 워드문서(hwp, ppt, pptx, xls, xlsx, doc, docx, zip, pdf, txt)</p>
-
-            <button type="submit">등록하기</button>
+			<hr>
+			<br>
+			<br>
             <button type="button" class="cancel-btn" onclick="history.back();">취소</button>
+            <button type="submit" >등록하기</button>
         </form>
     </div>
 	

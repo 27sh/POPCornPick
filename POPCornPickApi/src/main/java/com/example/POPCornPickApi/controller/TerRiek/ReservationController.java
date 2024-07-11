@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -113,6 +114,21 @@ public class ReservationController {
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ArrayList<>());
+	}
+	
+	@GetMapping("/schedule/list/{cinemaName}/{movieTitle}/{date}")
+	public ResponseEntity<String>root(@PathVariable("cinemaName") String cinemaName, 
+			@PathVariable("movieTitle") String movieTitle, @PathVariable("date") String date) {
+		
+		System.out.println("cinemaName " + cinemaName);
+		System.out.println("movieTitle " + movieTitle);
+		System.out.println("date " + date);
+		
+		
+		reservationService.getScheduleList(cinemaName, movieTitle, date);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(null);
 	}
 	
 }

@@ -4,12 +4,13 @@
 
     <head>
         <meta charset="UTF-8">
+        <script src='/dist/index.global.js'></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>상영시간표</title>
         <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/scheduleDetail.css">
         <link rel="stylesheet" as="style" crossorigin
             href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
@@ -22,61 +23,200 @@
 
         <body>
             <main>
-                <!-- calender -->
-                <div id="calendar"></div>
+                <div id='external-events'>
+                    <h4>Draggable Events</h4>
+
+                    <div id='external-events-list'>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 1</div>
+                        </div>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 2</div>
+                        </div>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 3</div>
+                        </div>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 4</div>
+                        </div>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 5</div>
+                        </div>
+                    </div>
+
+                    <p>
+                        <input type='checkbox' id='drop-remove' />
+                        <label for='drop-remove'>remove after drop</label>
+                    </p>
+                </div>
+                <div id='calendar-wrap'>
+                    <div id='calendar'></div>
+                </div>
+                
+               <div>
+                    <div class="modal-body">
+                        <select name="title" id="title"></select>
+                    </div>
+                </div>
             </main>
+
         </body>
         <script>
 
             // 1. 기본 캘린더 불러오기
             $(document).ready(function () {
+
                 var calendarEl = document.getElementById('calendar');
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    customButtons: {
-                        myCustomButton: {
-                            text: '저장하기'
-                        }
-                    },
-                    headerToolbar: {
-                        left: 'prev next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-                    },
-                    titleFormat: function (date) {
-                        return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
-                    },
-                    dayCellContent: function (info) {
-                        var number = document.createElement("a");
-                        number.classList.add("fc-daygrid-day-number");
-                        number.innerHTML = info.dayNumberText.replace("일", "").replace("日", "");
-                        if (info.view.type === "dayGridMonth") {
-                            return {
-                                html: number.outerHTML
+
+                var roomNo = ${roomNo};
+                localStorage.setItem('roomNo', roomNo);
+
+                $.ajax({
+                    url: "http://localhost:9001/api/v1/schedule/" + roomNo,
+                    method: "GET",
+                    success: function (schedule) {
+                        var events = [];
+                        schedule.forEach(function (item) {
+                            var event = {
+                                title: item.movieShowDetail.movie.title,
+                                start: item.start,
+                                end: item.end
                             };
-                        }
-                        return {
-                            domNodes: []
-                        };
-                    },
-                    //initialView: 'dayGridMonth',
-                    selectable: true, // 달력 일자 드래그 설정가능
-                    droppable: true,
-                    editable: true,
-                    nowIndicator: true, // 현재 시간 마크
-                    locale: 'ko', // 한국어 설정
+                            events.push(event);
 
-                    // ajax GET
-                    events: [
+                            var calendar = new FullCalendar.Calendar(calendarEl, {                            	    
+                                customButtons: {
+                                    myCustomButton: {
+                                        text: '수정하기'
+                                    },
+                                    mySaveButton:{
+                                    	text: '저장하기'
+                                    },
+                                    slotPlusButton:{
+                                    	text: '영화 추가하기'
+                                    }
+                                },
+                                headerToolbar: {
+                                    left: 'prev next today',
+                                    center: 'title',
+                                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                                },
+                                footerToolbar:{
+                                	right: 'myCustomButton,mySaveButton,slotPlusButton'
+                                },
+                                titleFormat: function (date) {
+                                    return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+                                },
+                                dayCellContent: function (info) {
+                                    var number = document.createElement("a");
+                                    number.classList.add("fc-daygrid-day-number");
+                                    number.innerHTML = info.dayNumberText.replace("일", "").replace("日", "");
+                                    if (info.view.type === "dayGridMonth") {
+                                        return {
+                                            html: number.outerHTML
+                                        };
+                                    }
+                                    return {
+                                        domNodes: []
+                                    };
+                                },
+                                events: events, // 위에서 설정한 events 배열 사용
 
-                    ]
+                                selectable: true, // 달력 일자 드래그 설정가능
+
+                                nowIndicator: true, // 현재 시간 마크
+                                locale: 'ko', // 한국어 설정
+                                editable: true,
+                                droppable: true,
+                                drop: function (arg) {
+                                    if (document.getElementById('drop-remove').checked) {
+                                        arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                                    }
+                                },
+                                eventDrop: function(info) {
+                                	console.log(info);
+                                    console.log('Event dropped');
+                                    console.log('Event: ' + info.event.title);
+                                    console.log('Start: ' + info.event.start.toISOString());
+                                    console.log('End: ' + info.event.end ? info.event.end.toISOString() : 'N/A');
+                                },
+                                eventResize: function(info) {
+                                    console.log('Event resized');
+                                    console.log('Event: ' + info.event.title);
+                                    console.log('Start: ' + info.event.start.toISOString());
+                                    console.log('End: ' + info.event.end.toISOString());
+                                }
+                            });
+
+                            calendar.render(); // 캘린더 렌더링
+                        	var allEvents = calendar.getEvents();
+                        	console.log(allEvents);
+                        	
+                        });
+                    }
                 });
 
-                calendar.render();
+
+                // 2. 사용 할 영화 슬롯 가져오기(GET)
+                var containerEl = document.getElementById('external-events-list');
+                new FullCalendar.Draggable(containerEl, {
+                    itemSelector: '.fc-event',
+                    eventData: function (eventEl) {
+                        return {
+                            title: eventEl.innerText.trim()
+                        }
+                    }
+                });
+                
+                var modalBody = document.getElementsByClassName('modal-body');
+                var slots = [];
+                var selectedMovieDC;
+                $.ajax({
+                    url: "http://localhost:9001/api/v1/schedule/slot",
+                    method: "GET",
+                    success: function (slot) {
+                        var title = $('#title');
+                        title.empty();
+
+                        var titles = new Set(slot.map(item => item.title));
+
+                        titles.forEach(function(item){
+                            var option = $('<option>').text(item).val(item);
+                                title.append(option);
+                        });
+
+                    },
+                    error: function (error) {
+                        console.log("에러 :", error);
+                        console.log("에러 상세 정보: ", error.responseText);
+                    }
+                });
+
+                $('#title').change(function(){
+                    var selectedTitle = $(this).val();
+                    slots.forEach(function(item){
+                        if(item.title === selectedTitle){
+                            selectedMovieDC = item.movieDc;
+                        }
+                    });
+                });
 
 
 
-                // 2. 사용 할 영화 슬롯 가져오기
-                // 3. 영화 슬롯 추가 모달창
+
+                // 3. 영화 슬롯 편집 (GET)
+                $.ajax({
+                    url: "http://localhost:9001/api/v1/schedule/slot/"+selectedMovieDC,
+                    method: "GET",
+                    success: function(slot){
+                        console.log(slot);
+                    },
+                    error: function (error) {
+                        console.log("에러 :", error);
+                        console.log("에러 상세 정보: ", error.responseText);
+                    }
+                })
+
                 // 4. 수정한 캘린더 schedule 엔티티에 저장하기
 
 

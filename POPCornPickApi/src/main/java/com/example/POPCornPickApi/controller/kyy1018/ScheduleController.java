@@ -84,7 +84,7 @@ public class ScheduleController {
 	
 	
 // 영화 슬롯 편집	
-	@PutMapping("/slot")
+	@PutMapping("/slot/{movieDc}")
 	public ResponseEntity<Movie> movieSlotReg(@RequestBody MovieDto movieDto, @RequestParam("movieDc") Long movieDc) {
 		Movie movie = movieRepository.findById(movieDc).get();
 		System.out.println("현재 영화 : " + movie);

@@ -11,6 +11,9 @@
         <link rel="stylesheet" href="/css/scheduleDetail.css">
         <link rel="stylesheet" as="style" crossorigin
             href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
@@ -24,40 +27,42 @@
         <body>
             <main>
                 <div id='external-events'>
-                    <h4>Draggable Events</h4>
+                    <h4>영화 목록</h4>
 
                     <div id='external-events-list'>
                         <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 1</div>
-                        </div>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 2</div>
-                        </div>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 3</div>
-                        </div>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 4</div>
-                        </div>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 5</div>
                         </div>
                     </div>
 
                     <p>
                         <input type='checkbox' id='drop-remove' />
-                        <label for='drop-remove'>remove after drop</label>
+                        <label for='drop-remove'>드롭 후 삭제</label>
                     </p>
                 </div>
                 <div id='calendar-wrap'>
                     <div id='calendar'></div>
                 </div>
 
-                <div>
-                    <div class="modal-title">
-                        <select name="title" id="title"></select>
-                    </div>
-                    <div class="modal-body">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-title">
+                                    <select name="title" id="title"></select>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <button class="updateBtn" onclick="submitSlot(event)">등록</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    취소
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -95,7 +100,10 @@
                                         text: '저장하기'
                                     },
                                     slotPlusButton: {
-                                        text: '영화 추가하기'
+                                        text: '영화 추가하기',
+                                        click: function () {
+                                            $("#exampleModal").modal("show");
+                                        }
                                     }
                                 },
                                 headerToolbar: {
@@ -161,14 +169,18 @@
 
                 // 2. 사용 할 영화 슬롯 가져오기(GET)
                 var containerEl = document.getElementById('external-events-list');
+                // FullCalendar의 Draggable 기능 초기화
                 new FullCalendar.Draggable(containerEl, {
                     itemSelector: '.fc-event',
-                    eventData: function (eventEl) {
+                    eventData: function(eventEl) {
+                        var mainEventEl = eventEl.querySelector('.fc-event-main');
                         return {
-                            title: eventEl.innerText.trim()
-                        }
+                            title: mainEventEl ? mainEventEl.innerText.trim() : ''
+                        };
                     }
                 });
+
+                
 
                 var modalBody = $('.modal-body');
                 var slots = [];
@@ -179,13 +191,27 @@
                     method: "GET",
                     success: function (slot) {
                         slots = slot;
-
+                        
+                        var externalEventsList = $('#external-events-list');
+                        
                         var title = $('#title');
                         title.empty();
 
                         var titles = new Set(slot.map(item => item.title));
 
                         titles.forEach(function (item) {
+                        	var mainEventEl = document.createElement('div');
+                        	mainEventEl.className = 'fc-event-main';
+                        	mainEventEl.innerText = item;
+                        	                        	
+                            var eventEl = document.createElement('div');
+                            eventEl.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
+                                                       
+                            eventEl.appendChild(mainEventEl);
+                            containerEl.appendChild(eventEl);
+                       		
+                            externalEventsList.append(containerEl);
+                        	
                             var option = $('<option>').text(item).val(item);
                             title.append(option);
                         });
@@ -243,7 +269,8 @@
                     $.ajax({
                         url: "http://localhost:9001/api/v1/schedule/slot/" + selectedMovieDC,
                         method: "PUT",
-                        data: { color: inputColor }, // 데이터를 객체로 전달
+                        contentType: "application/json", // contentType을 application/json으로 설정
+                        data: JSON.stringify({ color: inputColor }), // 데이터를 JSON 문자열로 변환하여 전송
                         success: function (slot) {
                             alert("저장되었습니다.");
                         },
@@ -257,5 +284,8 @@
 
 
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 
     </html>

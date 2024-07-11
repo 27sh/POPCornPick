@@ -93,8 +93,6 @@ public class ScheduleController {
 	@PutMapping("/slot/{movieDC}")
 	public ResponseEntity<Movie> movieSlotReg(@RequestBody MovieDto movieDto, @PathVariable("movieDC") Long movieDC) {
 		Movie movie = movieRepository.findById(movieDC).get();
-		System.out.println("현재 영화 : " + movie);
-		
 		movie.setColor(movieDto.getColor());
 		
 		Movie result = movieRepository.save(movie);

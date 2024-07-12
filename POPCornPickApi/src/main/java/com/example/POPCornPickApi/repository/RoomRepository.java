@@ -28,6 +28,4 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	public List<Room> getRoomInfo(@Param("roomNo") Long roomNo);
 	
 	
-	
-	
 }

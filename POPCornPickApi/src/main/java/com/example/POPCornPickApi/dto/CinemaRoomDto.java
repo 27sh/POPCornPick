@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CinemaRoomDto {
+	private int total;
+	private int bookedCnt;
 	private Long roomNo;
 	private Long cinemaNo;
 	private Long roomTypeNo;
-	private int total;
-	private int bookedCnt;
+	
 	
 	
 

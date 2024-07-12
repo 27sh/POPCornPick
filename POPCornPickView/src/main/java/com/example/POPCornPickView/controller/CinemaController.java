@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/cinema")
 public class CinemaController {
-
+	
 	@RequestMapping("/registForm")
 	public String registForm() {
 		return "common/cinemaForm";
@@ -25,11 +25,6 @@ public class CinemaController {
 	@RequestMapping("/roomList")
 	public String cinemaRoomList() {
 		return "common/cinemaRoomList";
-	}
-	
-	@RequestMapping("/event")
-	public String event() {
-		return "common/cinemaList2";
 	}
 	
 }

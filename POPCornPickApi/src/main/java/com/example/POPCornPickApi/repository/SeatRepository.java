@@ -1,5 +1,7 @@
 package com.example.POPCornPickApi.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,12 +10,13 @@ import com.example.POPCornPickApi.entity.Seat;
 
 public interface SeatRepository extends JpaRepository<Seat, Long>{
 
-	
-	@Query(value = "select total.total, booked.bookedCnt, total.room_no\n"
-			+ "from (select count(*) as total, room_no from seat where room_no = :roomNo) total\n"
-			+ "left join (select count(*) as bookedCnt, room_no from seat where room_no = :roomNo and is_booked = 0) booked\n"
-			+ "on total.room_no = booked.room_no;", 
+	//상영관 총 좌석 수
+	@Query(value = "select count(*) as total from seat where room_no = :roomNo", 
             nativeQuery = true)
-	public Object[] getRoomSeatStatsByRoomNo(@Param("roomNo") Long roomNo);
-
+	public int getCinemaRoomSeatTotal(@Param("roomNo") Long roomNo);
+	
+	//예매 가능한 좌석 수 
+	@Query(value = "select count(*) as bookedCnt from seat where room_no = 5 and is_booked = 0",
+			nativeQuery = true)
+	public int getCinemaRoomBookedSeat(@Param("roomNo") Long roomNo);
 }

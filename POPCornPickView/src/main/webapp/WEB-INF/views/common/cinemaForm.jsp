@@ -10,10 +10,80 @@
 	crossorigin="anonymous"></script>
 <style>
 main {
-	width: 1100px;
+	width: 1200px;
 	margin: 80px auto;
-	min-height: 700px;
-	border:1px solid #eee;
+	display:flex;
+	justify-content:space-between;
+}
+
+main #container {
+	width:900px;
+	min-height:700px;
+	box-sizing:border-box;
+}
+
+.sidebar-box1 p:nth-child(2) a{
+	color: #816bff !important;
+}
+
+h2 {
+	margin-bottom: 20px;
+	font-weight: 400;
+	font-size: 22px;
+}
+
+label b{
+	display: inline-block;
+	width: 160px;
+	font-weight: 500;
+}
+
+label b span{
+	color: red;
+	font-weight: 400;
+	padding-left: 8px;
+	font-size: 14px;
+}
+
+select {
+	width: 150px;
+	height: 35px;
+	border: 1px solid #ccc;
+	color: #666;
+	font-family: "Pretendard Variable", Pretendard;
+	margin-bottom: 20px;
+}
+
+input[type="text"]{
+	width: 460px;
+	height: 50px;
+	border: 1px solid #dadada;
+	border-radius: 0;
+	box-sizing: border-box;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	margin-bottom: 20px;
+}
+
+input[type="file"]{
+	margin-bottom: 20px;
+}
+
+input #file-upload-button {
+	width: 100px;
+	height: 25px;
+}
+
+#submitWrite {
+	padding: 15px 50px;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	cursor: pointer;
+	margin: 0 10px;
+	background: #816bff;
+	border: 1px solid #816bff;
+	color:#fff;
+	margin-left: 200px;
 }
 </style>
 </head>
@@ -22,44 +92,42 @@ main {
 		<%@ include file="../layout/adminHeader.jsp"%>
 	</header>
 	<main>
-	<h1>영화관 등록</h1>
-	<hr>
-	<!-- 영화관 등록 -->
-	<div>
-	<form name="cinemaFrm">
-		<input type="hidden" name="cinemaNo" id="cinemaNo">
-		<label for="cinemaLocation">지역명<span>*</span></label>
-		<select id="cinemaLocation" name="cinemaLocation" required>
-			<option value="" disabled selected>선택</option>
-			<option value="seoul">서울</option>
-			<option value="gyeonggi_incheon">경기/인천</option>
-			<option value="chungcheong_daejeon">충청/대전</option>
-			<option value="jeonla_gwangju">전라/광주</option>
-			<option value="gyeongbuk_daegu">경북/대구</option>
-			<option value="gyeongnam_busan_ulsan">경남/부산/울산</option>
-			<option value="gangwon">강원</option>
-			<option value="jeju">제주</option>
-		</select>
-		<div>지점명<span>*</span></div>
-		<input type="text" name="cinemaName" id="cinemaName">
-		<div>주소<span>*</span></div>
-		<input type="text" name="cinemaAddr" id="cinemaAddr">
-		<div>전화번호<span>*</span></div>
-		<input type="text" name="cinemaTel" id="cinemaTel">
-		<div>대표 이미지<span>*</span></div>
-		<input type="file" id="cinemaImg" name="cinemaImg">
-		<div>중요공지</div>
-		<input type="text" name="cinemaIntro" id="cinemaIntro"><br>
-		<input type="button" id="submitWrite" value="영화관 등록하기" onclick="submitCinemaForm(event)">
-		<input type="button" id="submitModify" value="수정하기" onclick="submitCinemaModify(event)">
-	</form>
-	
-	</div>
-	<!-- 관람관 등록 -->
-	<div>
-	<div>관람관</div>
-	<div id="roomList"></div>	
-	</div>
+		<div class="sidebar-container">
+			<%@ include file="../layout/cinemaSideBar.jsp"%>
+		</div>
+		<div id="container">
+			<h2>영화관 등록</h2>
+			<!-- 영화관 등록 -->
+			<div id="cinemaFormBox">
+			<form name="cinemaFrm">
+				<input type="hidden" name="cinemaNo" id="cinemaNo">
+				<label for="cinemaLocation"><b>지역명<span>*</span></b></label>
+				<select id="cinemaLocation" name="cinemaLocation" required>
+					<option value="" disabled selected>선택</option>
+					<option value="seoul">서울</option>
+					<option value="gyeonggi_incheon">경기/인천</option>
+					<option value="chungcheong_daejeon">충청/대전</option>
+					<option value="jeonla_gwangju">전라/광주</option>
+					<option value="gyeongbuk_daegu">경북/대구</option>
+					<option value="gyeongnam_busan_ulsan">경남/부산/울산</option>
+					<option value="gangwon">강원</option>
+					<option value="jeju">제주</option>
+				</select><br>
+				<label for="cinemaName"><b>지점명<span>*</span></b></label>
+				<input type="text" name="cinemaName" id="cinemaName"><br>
+				<label for="cinemaAddr"><b>주소<span>*</span></b></label>
+				<input type="text" name="cinemaAddr" id="cinemaAddr"><br>
+				<label for="cinemaTel"><b>전화번호<span>*</span></b></label>
+				<input type="text" name="cinemaTel" id="cinemaTel"><br>
+				<label for="cinemaImg"><b>대표 이미지<span>*</span></b></label>
+				<input type="file" id="cinemaImg" name="cinemaImg"><br>
+				<label for="cinemaIntro"><b>중요공지<span>*</span></b></label>
+				<input type="text" name="cinemaIntro" id="cinemaIntro"><br>
+				<input type="button" id="submitWrite" value="영화관 등록하기" onclick="submitCinemaForm(event)">
+				<input type="button" id="submitModify" value="수정하기" onclick="submitCinemaModify(event)">
+			</form>
+			</div>
+		</div>
 	</main>
 	<footer>
 	
@@ -81,36 +149,6 @@ main {
 			writeForm.show();
 			modifyForm.hide();
 		}
-		
-		xhttp.onload = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				const data = JSON.parse(this.responseText);
-				console.log("data: ",data);
-				if(data != null && data.length > 0){
-					let table = '<table border="1">';
-
-					for (let i = 0; i < data.length; i++) {
-						table += '<div>';
-						table += '<tr>';
-						table += '<td>' + data[i].bigType + '</td>';
-						table += '<td>' + data[i].smallType + '</td>';
-						table += '<td>' + data[i].roomName + '</td>';
-						table += '</tr>';
-						table += '</div>';
-					}
-					table += '</table>';
-
-					document.getElementById("roomList").innerHTML = table;
-				} else {
-					document.getElementById("roomList").innerHTML = "등록되어있는 상영관이 없습니다.";
-				}
-				
-			} else if (this.readyState == 4 && this.status != 200) {
-				alert("목록을 불러올 수 없습니다. 다시 시도해주세요.");
-			}
-		}
-		xhttp.open("GET", "http://localhost:9001/api/v1/cinema/room", true);
-		xhttp.send();
 	});
 	
 	function submitCinemaForm(event){

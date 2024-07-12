@@ -7,9 +7,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/event")
 public class EventController {
+	
+	@RequestMapping("/sideBar")
+	public String sideBar() {
+		return "layout/serviceSideBar";
+	}
 
 	@RequestMapping("/regist")
 	public String eventRegistForm() {
-		return "common/loginForm";
+		return "common/eventForm";
 	}
+	
+
 }

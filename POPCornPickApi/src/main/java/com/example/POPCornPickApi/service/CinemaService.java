@@ -109,6 +109,11 @@ public class CinemaService {
 		return cinemaNo;
 	}
 	
+	public String getCinemaName(Long cinemaNo) {
+		return cinemaRepository.getCinemaName(cinemaNo);
+	}
+	
+	
 	
 	
 }

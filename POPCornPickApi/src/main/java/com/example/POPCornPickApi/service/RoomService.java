@@ -42,10 +42,14 @@ public class RoomService {
 		return roomRepository.findRoomNoByCinemaNo(cinemaNo);
 	}
 	
-	public Object[] getRoomInfo(Long roomNo) {
-		Object[] result = roomRepository.getRoomInfo(roomNo);
-		System.out.println(result.length);
+	public List<Room> getRoomInfo(Long roomNo) {
+		List<Room> result = roomRepository.getRoomInfo(roomNo);
 		return result;
+	}
+	
+	public String getBigType(Long roomTypeNo) {
+		return roomTypeRepository.getBigType(roomTypeNo);
+
 	}
 	
 }

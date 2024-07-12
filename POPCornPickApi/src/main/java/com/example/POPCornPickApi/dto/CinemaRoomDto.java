@@ -13,7 +13,8 @@ public class CinemaRoomDto {
 	private Long roomNo;
 	private Long cinemaNo;
 	private Long roomTypeNo;
-	
+	private String smallType;
+	private String cinemaName;
 	
 	
 

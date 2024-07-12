@@ -13,8 +13,19 @@
 main {
 	width: 1200px;
 	margin: 80px auto;
-	min-height: 700px;
-	border:1px solid #eee;
+	display:flex;
+	justify-content:space-between;
+}
+
+main #container {
+	width:900px;
+	min-height:700px;
+	border: 1px solid #ccc;
+	box-sizing:border-box;
+}
+
+.sidebar-box2 p:nth-child(3) a{
+	color: #816bff !important;
 }
 </style>
 </head>
@@ -23,7 +34,11 @@ main {
 		<%@ include file="../layout/adminHeader.jsp"%>
 	</header>
 	<main>
-	<h1>지점별 상영관 관리</h1>
+		<div class="sidebar-container">
+			<%@ include file="../layout/cinemaSideBar.jsp"%>
+		</div>
+		<div id="container">
+			<h1>지점별 상영관 관리</h1>
 <!-- 		<select id="cinemaLocation" name="cinemaLocation" required> -->
 <!-- 			<option value="all" selected>지역선택</option> -->
 <!-- 			<option value="seoul">서울</option> -->
@@ -35,12 +50,13 @@ main {
 <!-- 			<option value="gangwon">강원</option> -->
 <!-- 			<option value="jeju">제주</option> -->
 <!-- 		</select> -->
-		
-		<select id="cinemaName" name="cinemaName" required>
-		</select>
-		<!-- 1-1. 페이지 로딩 될 때 cinemaName 옵션 현재 존재하는 지점 목록 -->
-		<!-- 1-2. 페이지 로딩 될 때 지역 옵션 미선택시 상영관을 선택해달라는 문구 -->
-		<!-- 2. 지역 선택 시 지점목록 해당 지역에 관한 지점목록만 표시  -->
+			<select id="cinemaName" name="cinemaName" required></select>
+			<div id="resultCinemaName"></div>
+			<div id="roomList"></div>
+			<!-- 1-1. 페이지 로딩 될 때 cinemaName 옵션 현재 존재하는 지점 목록 -->
+			<!-- 1-2. 페이지 로딩 될 때 지역 옵션 미선택시 상영관을 선택해달라는 문구 -->
+			<!-- 2. 지역 선택 시 지점목록 해당 지역에 관한 지점목록만 표시  -->
+		</div>
 	</main>
 	<footer>
 	
@@ -74,29 +90,26 @@ main {
 				data : {cinemaName : selectedText},
 				dataType : 'json',
 				success : function(data){
-					
+
 					if(data != null && data.length > 0){
-						let table = '<table border="1"><tr><th scope="col">관람관 명</th><th scope="col">관람관 종류</th><th scope="col">좌석현황</th><th scope="col">좌석 수정</th></tr><tbody class="table-group-divider">';
+						let table = '<table border="1"><tr><th scope="col">상영관 명</th><th scope="col">구분</th><th scope="col">좌석현황</th><th scope="col">관리</th></tr><tbody class="table-group-divider">';
 
 						for (let i = 0; i < data.length; i++) {
 							table += '<div class="qna-list-area">';
 							table += '<tr>';
-							table += '<td class="listNum">' + (i + 1) + '</td>';
-							table += '<td class="category">' + data[i].roomNo + '</td>';
-							table += '<td><a href="/qna99/qnaDetail?cs_no='
-									+ data[i].cs_no + '">' + data[i].cinemaNo
-									+ '</a></td>';
-							table += '<td class="listRegdate">' + data[i].roomTypeNo + '</td>';
-							table += '<td class="listRegdate">' + data[i].total + '</td>';
-							table += '<td class="listRegdate">' + data[i].bookedCnt + '</td>';
+							table += '<td>' + data[i].roomTypeNo + '관' + '</td>';
+							table += '<td>' + data[i].smallType + '</td>';
+							table += '<td>' + data[i].bookedCnt + '/' + data[i].total + '</td>';
+							table += '<td>' + data[i].roomNo + '</td>';
+							table += '<td><button><a href="">자세히 보기</a></button></td>';
 							table += '</tr>';
 							table += '</div>';
 						}
 						table += '</tbody></table>';
-
-						document.getElementById("qnaList").innerHTML = table;
+						document.getElementById("roomList").innerHTML = table;
+						document.getElementById("resultCinemaName").innerHTML = data[1].cinemaName;
 					} else {
-						document.getElementById("qnaNull").innerHTML = "문의 내역이 없습니다.";
+						document.getElementById("roomList").innerHTML = "문의 내역이 없습니다.";
 					}
 				},
 				error : function(e){

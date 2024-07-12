@@ -42,16 +42,11 @@ public class MovieService {
         String viewAge = "Unknown";
         try {
             String kobisResponse = restTemplate.getForObject(kobisUrl, String.class);
-            // 콘솔에 응답 전체 출력
-            System.out.println("KOBIS API Response: " + kobisResponse);
-            
             JsonNode kobisRoot = objectMapper.readTree(kobisResponse);
             JsonNode movieList = kobisRoot.path("movieListResult").path("movieList");
             if (movieList.isArray() && movieList.size() > 0) {
                 JsonNode movieNode = movieList.get(0);
                 openStartDt = movieNode.path("openDt").asText();
-                // 콘솔에 openDt 값 출력
-                System.out.println("Parsed openDt: " + openStartDt);
             }
         } catch (HttpServerErrorException e) {
             e.printStackTrace();
@@ -94,11 +89,6 @@ public class MovieService {
         }
 
         String dDay = calculateDday(openStartDt);
-
-        // 콘솔에 출력하여 확인
-        System.out.println("Title: " + title);
-        System.out.println("Open Start Date: " + openStartDt);
-        System.out.println("D-Day: " + dDay);
 
         return "{\"title\":\"" + title + "\", \"openStartDt\":\"" + openStartDt + "\", \"posterUrl\":\"" + posterUrl + "\", \"viewAge\":\"" + viewAge + "\", \"dday\":\"" + dDay + "\"}";
     }

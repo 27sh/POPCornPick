@@ -1,0 +1,304 @@
+@charset "UTF-8";
+
+.main-header {
+	background-color: white;
+}
+
+main {
+    width: 1200px;
+    margin: 80px auto;
+    min-height: 700px;
+    border: 1px solid #eee;
+    position: relative;
+    margin-top: 0px;
+    background-color: white;
+}
+
+body {
+	background-color: white;
+}
+
+.base-section {
+    width: 100%;
+    background-color: rgb(251, 251, 251); /* 배경색 설정 */	
+}
+
+#main-box1 {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.movie-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.movie-item img {
+    margin-right: 20px;
+}
+.movie-card {
+    padding: 10px;
+    margin-bottom: 10px; /* 카드 사이사이 여백 줄이기 */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 180px;
+    height: 350px;
+    box-sizing: border-box;
+    position: relative; /* 순서 오버레이를 위한 설정 */
+}
+.movie-card .poster {
+    margin-bottom: 10px;
+    position: relative;
+}
+.movie-card .movie-info {
+    flex: 1;
+    text-align: center;
+}
+
+.movie-chart-container {
+	width: 1100px;
+}
+
+#movie-chart {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start; /* movie-card들이 왼쪽에 위치하도록 설정 */
+    padding: 10px;
+    padding-left: 80px; /* 왼쪽 여백을 80px 만큼 설정 */
+    box-sizing: border-box;
+    overflow: hidden; /* 컨테이너에서 벗어나는 요소를 숨김 */
+    position: relative; /* 자식 요소를 절대 위치로 설정할 수 있도록 */
+    height: 370px; /* 높이를 고정 설정 */
+    width: 1100px;
+}
+
+
+.movie-card .age-image-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 3; /* z-index 설정 */
+}
+
+.movie-card .poster-img {
+    width: 180px; /* 포스터 이미지 너비 조정 */
+    height: 270px; /* 포스터 이미지 높이 조정 */
+    border-radius: 15px; /* 포스터 이미지 모서리를 둥글게 설정 */
+    position: relative;
+    z-index: 1; /* 포스터 이미지의 z-index를 1로 설정 */
+    transition: background 0.3s ease; /* 부드러운 배경 전환 효과 추가 */
+}
+.movie-card .poster::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px; /* 그림자 높이 조정 */
+    border-radius: 0 0 15px 15px; /* 둥근 모서리에 맞춤 */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%); /* 진한 그림자 */
+    pointer-events: none;
+    z-index: 2; /* 그림자의 z-index를 2로 설정 */
+}
+
+.movie-card .overlay {
+    position: absolute;
+    bottom: 5px; /* 포스터 이미지 하단에 딱 붙도록 위치 조정 */
+    left: 10px;
+    color: #ffffff;
+    font-size: 60px; /* 글자 크기 조정 */
+    font-weight: lighter; /* 글자 두께 얇게 조정 */
+    font-style: oblique; /* oblique 스타일 적용 */
+    background: none; /* 배경 없음 */
+    z-index: 3; /* overlay를 그림자보다 앞에 오게 설정 */
+}
+.movie-card:hover .overlay {
+    display: none; /* hover 시 인덱스 숫자 숨기기 */
+}
+
+.movie-card .movie-info .title {
+	font-size: 18px;
+    font-weight: bold; /* 제목을 굵은 글씨로 설정 */
+}
+.movie-card .dday {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    margin: 0 auto 10px;
+    font-size: 14px; /* 기본 글자 크기 */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* 글자 가운데 정렬 */
+    padding: 0; /* 여백 제거 */
+    position: absolute;
+    top: 50px;
+    right: 9px;
+    z-index: 3;
+    border-radius: 5px;
+}
+
+.movie-card .roomtype-img {
+    position: absolute;
+    top: 250px;
+    right: 9px;
+    z-index: 3;
+}
+
+.movie-card .roomtype-img-detail {
+    border: 1px solid #ffffff; /* 흰색 테두리 색상 */
+    border-radius: 2px;
+    width: 30px;
+    height: 8px;
+}
+
+	.pagination {
+	    display: flex;
+	    justify-content: space-between;
+	    position: absolute;
+	    width: 1100px;
+	    top: 348px; /* 버튼을 위로 올림 */
+	    transform: translateY(-50%);
+	}
+	
+	#prev-page {
+	    margin-left: 20px; /* 왼쪽 여백 추가 */
+	}
+	
+	#next-page {
+	    margin-right: 20px; /* 오른쪽 여백 추가 */
+	    position: absolute;
+    	right: 0px;
+	}
+	
+	.pagination button {
+	    background: none; /* 배경색 제거 */
+	    border: none; /* 테두리 제거 */
+	    cursor: pointer;
+	    padding: 0;
+	}
+	
+	.pagination button img {
+	    width: 20px; /* 이미지 크기 조정 */
+	    height: 30px; /* 이미지 크기 조정 */
+	}
+	
+	.pagination button.hidden {
+	    visibility: hidden; /* 버튼을 숨기되 공간은 유지 */
+	}
+
+
+/* 추가된 스타일 */
+.movie-card .buttons {
+    display: none; /* 초기 상태에서는 숨김 */
+    position: absolute;
+    top: 95px; /* 버튼을 포스터 이미지 위로 올림 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4; /* z-index를 높게 설정하여 버튼이 사라지지 않게 함 */
+    background: none;
+}
+.movie-card:hover .buttons {
+    display: block; /* movie-card에 hover 시 나타남 */
+}
+.buttons .btn {
+    display: block;
+    margin: 5px 0;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    width: 100px;
+}
+.buttons .btn.details {
+    background-color: #ffffff; /* 상세보기 버튼 배경색 흰색 */
+    color: #000000; /* 상세보기 버튼 텍스트 색상 검정 */
+}
+.buttons .btn.booking {
+    background-color: rgb(248, 47, 98); /* 예매하기 버튼 배경색 */
+    color: #ffffff; /* 예매하기 버튼 텍스트 색상 흰색 */
+}
+
+
+/* hover 시 숨길 요소들 */
+.movie-card .movie-info div:not(.title):not(.avgReviewScore) {
+    display: block;
+}
+.movie-card:hover .movie-info div:not(.title):not(.avgReviewScore) {
+    display: none;
+}
+.movie-card .age-image-overlay,
+.movie-card .dday,
+.movie-card .roomtype-img {
+    display: block;
+}
+.movie-card:hover .age-image-overlay,
+.movie-card:hover .dday,
+.movie-card:hover .roomtype-img {
+    display: none;
+}
+
+/* 포스터 이미지와 동일한 모양의 도형 추가 */
+.movie-card .poster::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 180px; /* 포스터 이미지 너비와 동일 */
+    height: 270px; /* 포스터 이미지 높이와 동일 */
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정색 */
+    border-radius: 15px; /* 포스터 이미지 모서리와 동일 */
+    z-index: 2; /* 포스터 이미지 위에 위치 */
+    display: none; /* 초기 상태에서는 숨김 */
+}
+.movie-card:hover .poster::before {
+    display: block; /* hover 시 나타남 */
+}
+
+/* 무비차트와 상영예정작 버튼 스타일 추가 */
+#movie-chart-btn, #to-be-screened-btn {
+    font-size: 30px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    color: gray; /* 기본 글자 색상 회색 */
+    margin-top: 10px; /* 아래로 조금 내림 */
+}
+
+#movie-chart-btn {
+	color: black;
+}
+#button-divider {
+    width: 2px;
+    height: 25px;
+    background-color: #cccccc;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 10px;
+}
+.active {
+    color: black; /* 활성화된 버튼의 글자 색상 검은색 */
+}
+
+#go-to-movieList {
+    font-size: 13px;
+    font-weight: normal; /* 글씨를 얇게 설정 */
+    background: none;
+    border: 2px solid gray; /* 테두리를 추가하고 색상을 설정 */
+    border-radius: 50px; /* 둥근 모서리 설정 */
+    cursor: pointer;
+    padding: 10px;
+    color: gray;
+    position: relative;
+    left: 680px; /* 오른쪽에 약간의 여백을 추가합니다. */
+    top: 10px; /* 아래로 조금 내림 */
+}

@@ -70,96 +70,101 @@
 
             // 1. 기본 캘린더 불러오기
             $(document).ready(function () {
-            	  var calendarEl = document.getElementById('calendar');
-            	    var roomNo = ${ roomNo };
-            	    localStorage.setItem('roomNo', roomNo);
+                var calendarEl = document.getElementById('calendar');
+                var roomNo = ${ roomNo };
+                localStorage.setItem('roomNo', roomNo);
+             
+                $.ajax({
+                    url: "http://localhost:9001/api/v1/schedule/" + roomNo,
+                    method: "GET",
+                    success: function (schedule) {	
+                    	var events = [];
+                        schedule.forEach(function (item) {
 
-            	    $.ajax({
-            	        url: "http://localhost:9001/api/v1/schedule/" + roomNo,
-            	        method: "GET",
-            	        success: function (schedule) {
-            	        	console.log(schedule[0]);
-            	            var events = [];
-            	            schedule.forEach(function (item) {
-            	            	
-            	                var event = {
-            	                    title: item.movieShowDetail.movie.title,
-            	                    start: item.start,
-            	                    end: item.end,
-            	                    borderColor : item.movieShowDetail.movie.color,
-            	                    backgroundColor: item.movieShowDetail.movie.color // Assuming the color is part of the movie detail
-            	                };
-            	                events.push(event);
-            	            });
+                            var event = {
+                                title: item.movieShowDetail.movie.title,
+                                start: item.start,
+                                end: item.end,
+                                borderColor: item.movieShowDetail.movie.color,
+                                backgroundColor: item.movieShowDetail.movie.color // Assuming the color is part of the movie detail
+                            };
+                            events.push(event);
+                        });
 
-            	            var calendar = new FullCalendar.Calendar(calendarEl, {
-            	                customButtons: {
-            	                    myCustomButton: {
-            	                        text: '수정하기'
-            	                    },
-            	                    mySaveButton: {
-            	                        text: '저장하기'
-            	                    },
-            	                    slotPlusButton: {
-            	                        text: '영화 추가하기',
-            	                        click: function () {
-            	                            $("#exampleModal").modal("show");
-            	                        }
-            	                    }
-            	                },
-            	                headerToolbar: {
-            	                    left: 'prev next today',
-            	                    center: 'title',
-            	                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-            	                },
-            	                footerToolbar: {
-            	                    right: 'myCustomButton,mySaveButton,slotPlusButton'
-            	                },
-            	                titleFormat: function (date) {
-            	                    return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
-            	                },
-            	                dayCellContent: function (info) {
-            	                    var number = document.createElement("a");
-            	                    number.classList.add("fc-daygrid-day-number");
-            	                    number.innerHTML = info.dayNumberText.replace("일", "").replace("日", "");
-            	                    if (info.view.type === "dayGridMonth") {
-            	                        return {
-            	                            html: number.outerHTML
-            	                        };
-            	                    }
-            	                    return {
-            	                        domNodes: []
-            	                    };
-            	                },
-            	                events: events,
-            	                
-            	                eventColor: schedule[0].movieShowDetail.movie.color,
-            	                selectable: true,
-            	                nowIndicator: true,
-            	                locale: 'ko',
-            	                editable: true,
-            	                droppable: true,
-            	                drop: function (arg) {
-            	                    if (document.getElementById('drop-remove').checked) {
-            	                        arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-            	                    }
-            	                },
-            	                eventDrop: function (info) {
-            	                    console.log('Event dropped');
-            	                    console.log('Event: ' + info.event.title);
-            	                    console.log('Start: ' + info.event.start.toISOString());
-            	                    console.log('End: ' + (info.event.end ? info.event.end.toISOString() : 'N/A'));
-            	                },
-            	                eventResize: function (info) {
-            	                    console.log('Event resized');
-            	                    console.log('Event: ' + info.event.title);
-            	                    console.log('Start: ' + info.event.start.toISOString());
-            	                    console.log('End: ' + info.event.end.toISOString());
-            	                }
-            	            });
+                        var calendar = new FullCalendar.Calendar(calendarEl, {
+                            customButtons: {
+                                myCustomButton: {
+                                    text: '수정하기'
+                                },
+                                mySaveButton: {
+                                    text: '저장하기'
+                                },
+                                slotPlusButton: {
+                                    text: '영화 추가하기',
+                                    click: function () {
+                                        $("#exampleModal").modal("show");
+                                    }
+                                }
+                            },
+                            headerToolbar: {
+                                left: 'prev next today',
+                                center: 'title',
+                                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                            },
+                            footerToolbar: {
+                                right: 'myCustomButton,mySaveButton,slotPlusButton'
+                            },
+                            titleFormat: function (date) {
+                                return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+                            },
+                            dayCellContent: function (info) {
+                                var number = document.createElement("a");
+                                number.classList.add("fc-daygrid-day-number");
+                                number.innerHTML = info.dayNumberText.replace("일", "").replace("日", "");
+                                if (info.view.type === "dayGridMonth") {
+                                    return {
+                                        html: number.outerHTML
+                                    };
+                                }
+                                return {
+                                    domNodes: []
+                                };
+                            },
+                            events: events,
 
-            	            calendar.render();
-            	        }
+                            eventReceive: (eventDropped) => {
+                            	console.log(eventDropped.draggedEl);
+                            	
+                            	eventDropped.event.setProp('backgroundColor', 
+                                        eventDropped.draggedEl.getAttribute('data-color'));
+                            },
+
+                            selectable: true,
+                            nowIndicator: true,
+                            locale: 'ko',
+                            editable: true,
+                            droppable: true,
+                            drop: function (arg) {
+                                if (document.getElementById('drop-remove').checked) {
+                                    arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                                }
+                            },
+                            eventDrop: function (info) {
+                                console.log('Event dropped');
+                                console.log('Event: ' + info.event.title);
+                                console.log('Start: ' + info.event.start.toISOString());
+                                console.log('End: ' + (info.event.end ? info.event.end.toISOString() : 'N/A'));
+                            },
+                            eventResize: function (info) {
+                                console.log('Event resized');
+                                console.log('Event: ' + info.event.title);
+                                console.log('Start: ' + info.event.start.toISOString());
+                                console.log('End: ' + info.event.end.toISOString());
+                            }
+                        });
+
+                        calendar.render();
+                    }
                 });
 
 
@@ -209,14 +214,15 @@
                                 mainEventEl.style.display = 'none';
                             } else {
                                 mainEventEl.style.backgroundColor = color;
+                                mainEventEl.setAttribute('data-color', color);
                             }
-                            
-                                                     	
+
+
                             var eventEl = document.createElement('div');
                             eventEl.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
-
+                            eventEl.setAttribute('data-color', color); 
                             eventEl.appendChild(mainEventEl);
-                            
+
                             containerEl.appendChild(eventEl);
 
                             externalEventsList.append(containerEl);

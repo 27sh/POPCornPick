@@ -26,4 +26,10 @@ public class CinemaController {
 	public String cinemaRoomList() {
 		return "common/cinemaRoomList";
 	}
+	
+	@RequestMapping("/event")
+	public String event() {
+		return "common/cinemaList2";
+	}
+	
 }

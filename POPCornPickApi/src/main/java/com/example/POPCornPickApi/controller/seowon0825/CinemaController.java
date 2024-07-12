@@ -3,6 +3,7 @@ package com.example.POPCornPickApi.controller.seowon0825;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.POPCornPickApi.dto.CinemaDto;
 import com.example.POPCornPickApi.dto.CinemaRoomDto;
 import com.example.POPCornPickApi.entity.Cinema;
+import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.RoomType;
 import com.example.POPCornPickApi.service.CinemaService;
 import com.example.POPCornPickApi.service.RoomService;
@@ -167,12 +169,17 @@ public class CinemaController {
 				Object[] seats = seatService.getCinemaRoomSeat(roomNo);
 				Object[] rooms = roomService.getRoomInfo(roomNo);
 				
+				System.out.println(seats.length);
+				System.out.println(rooms.length);
+				System.out.println(Arrays.toString(seats));
+				System.out.println(Arrays.toString(rooms));
+				
 				CinemaRoomDto cinemaRoomDto = new CinemaRoomDto(
+						((Number) seats[0]).intValue(),
+						((Number) seats[1]).intValue(),
 						((Number) seats[2]).longValue(),
 						((Number) rooms[0]).longValue(),
-						((Number) rooms[1]).longValue(),
-						((Number) seats[0]).intValue(),
-						((Number) seats[1]).intValue()
+						((Number) rooms[1]).longValue()
 						);
 				System.out.println(cinemaRoomDto);
 				

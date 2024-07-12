@@ -13,7 +13,7 @@ public class SeatService {
 	
 	public Object[] getCinemaRoomSeat(Long roomNo) {
 		Object[] result = seatRepository.getRoomSeatStatsByRoomNo(roomNo);
-		
+		System.out.println(result.length);
 		return result;
 	}
 }

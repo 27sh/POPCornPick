@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.RoomType;
 import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.RoomTypeRepository;
@@ -42,7 +43,9 @@ public class RoomService {
 	}
 	
 	public Object[] getRoomInfo(Long roomNo) {
-		return roomRepository.getRoomInfo(roomNo);
+		Object[] result = roomRepository.getRoomInfo(roomNo);
+		System.out.println(result.length);
+		return result;
 	}
 	
 }

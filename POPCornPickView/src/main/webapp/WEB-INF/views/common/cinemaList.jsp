@@ -12,9 +12,21 @@
 main {
 	width: 1200px;
 	margin: 80px auto;
-	min-height: 700px;
-	border:1px solid #eee;
+	display:flex;
+	justify-content:space-between;
 }
+
+main #container {
+	width:900px;
+	min-height:700px;
+	border: 1px solid #ccc;
+	box-sizing:border-box;
+}
+
+.sidebar-box1 p:nth-child(3) a{
+	color: #816bff !important;
+}
+
 </style>
 </head>
 <body>
@@ -22,40 +34,45 @@ main {
 		<%@ include file="../layout/adminHeader.jsp"%>
 	</header>
 	<main>
-	<h1>지점 관리</h1>
-	<!-- 극장 검색 기능 구현예정 -->
-	<form id="roomForm">
-		<label for="bigType">대분류</label>
-		<select id="bigType" name="bigType" required onchange="updateSmallType()">
-			<option value="" disabled selected>선택</option>
-			<option value="일반관">일반관</option>
-			<option value="특별관">특별관</option>
-		</select>
-		
-		<label for="smallType">소분류</label>
-		<select id="smallType" name="smallType" required>
-			<option value="" disabled selected>선택</option>
-			<option value="4DX">4DX</option>
-			<option value="IMAX">IMAX</option>
-			<option value="PRIVATE BOX">PRIVATE BOX</option>
-		</select>
-		
-		<label for="roomName">관</label>
-		<select id="roomName" name="roomName" required>
-			<option value="" disabled selected>선택</option>
-			<option value="1">1관</option>
-			<option value="2">2관</option>
-			<option value="3">3관</option>
-			<option value="4">4관</option>
-			<option value="5">5관</option>
-			<option value="6">6관</option>
-		</select>
-		<br>
-	</form>
-	
-	<!-- 카테고리 미선택시 전체 지점 리스트 출력 -->
-	<div id="cinemaList"></div>
-	<div id="cinemaListNull"></div>
+		<div class="sidebar-container">
+			<%@ include file="../layout/cinemaSideBar.jsp"%>
+		</div>
+		<div id="container">
+			<h1>지점 관리</h1>
+			<!-- 극장 검색 기능 구현예정 -->
+			<form id="roomForm">
+				<label for="bigType">대분류</label>
+				<select id="bigType" name="bigType" required onchange="updateSmallType()">
+					<option value="" disabled selected>선택</option>
+					<option value="일반관">일반관</option>
+					<option value="특별관">특별관</option>
+				</select>
+				
+				<label for="smallType">소분류</label>
+				<select id="smallType" name="smallType" required>
+					<option value="" disabled selected>선택</option>
+					<option value="4DX">4DX</option>
+					<option value="IMAX">IMAX</option>
+					<option value="PRIVATE BOX">PRIVATE BOX</option>
+				</select>
+				
+				<label for="roomName">관</label>
+				<select id="roomName" name="roomName" required>
+					<option value="" disabled selected>선택</option>
+					<option value="1">1관</option>
+					<option value="2">2관</option>
+					<option value="3">3관</option>
+					<option value="4">4관</option>
+					<option value="5">5관</option>
+					<option value="6">6관</option>
+				</select>
+				<br>
+			</form>
+			
+			<!-- 카테고리 미선택시 전체 지점 리스트 출력 -->
+			<div id="cinemaList"></div>
+			<div id="cinemaListNull"></div>
+		</div>
 	</main>
 	<footer>
 	

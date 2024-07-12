@@ -3,7 +3,6 @@ package com.example.POPCornPickApi.controller.seowon0825;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +23,7 @@ import com.example.POPCornPickApi.dto.CinemaRoomDto;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.RoomType;
+import com.example.POPCornPickApi.entity.Seat;
 import com.example.POPCornPickApi.service.CinemaService;
 import com.example.POPCornPickApi.service.RoomService;
 import com.example.POPCornPickApi.service.SeatService;
@@ -163,31 +163,41 @@ public class CinemaController {
 		
 		//반복문을 이용해서 roomNo에 해당하는 seat데이터 추출
 		List<CinemaRoomDto> list = new ArrayList<>();
+		
 		for(Long roomNo : roomNoList) {
 			System.out.println("roomNo : " + roomNo);
 			try {
-				Object[] seats = seatService.getCinemaRoomSeat(roomNo);
-				Object[] rooms = roomService.getRoomInfo(roomNo);
+				//상영관별 총 좌석 수
+				int total = seatService.getCinemaRoomSeat(roomNo);
+				//예매 가능한 좌석 수
+				int bookedCnt = seatService.getBookedSeat(roomNo);
+				List<Room> roomInfo = roomService.getRoomInfo(roomNo);
+				System.out.println(total);
+				System.out.println(bookedCnt);
+				System.out.println(roomInfo);
+				String smallType = roomService.getBigType(roomInfo.get(0).getRoomType().getRoomTypeNo());
+				System.out.println("smallType : " + smallType);
 				
-				System.out.println(seats.length);
-				System.out.println(rooms.length);
-				System.out.println(Arrays.toString(seats));
-				System.out.println(Arrays.toString(rooms));
-				
+				String cinemaName1 = cinemaService.getCinemaName(cinemaNo);
+				if(smallType.equals("*")) {
+					smallType = "일반관";
+				} 
 				CinemaRoomDto cinemaRoomDto = new CinemaRoomDto(
-						((Number) seats[0]).intValue(),
-						((Number) seats[1]).intValue(),
-						((Number) seats[2]).longValue(),
-						((Number) rooms[0]).longValue(),
-						((Number) rooms[1]).longValue()
+						total, 
+						bookedCnt, 
+						roomNo, 
+						roomInfo.get(0).getCinema().getCinemaNo(), 
+						roomInfo.get(0).getRoomType().getRoomTypeNo(),
+						smallType,
+						cinemaName1
 						);
-				System.out.println(cinemaRoomDto);
-				
+				list.add(cinemaRoomDto);
+				System.out.println("cinemaRoomDto : " + cinemaRoomDto);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return list;
 	}
 	
 //	@GetMapping("/roomList")

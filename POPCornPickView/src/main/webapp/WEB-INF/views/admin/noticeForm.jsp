@@ -86,10 +86,15 @@ button:hover {
 	
 	<div class="container">
         <h1>공지사항 관리</h1>
-        <form action="your_action_url" method="post" enctype="multipart/form-data">
+        
             <label for="category">카테고리 <span style="color: red;">*</span></label>
             <select id="category" name="category"  required>
-                <option value="">카테고리</option>
+                <option value="전체">전체</option>
+                <option value="시스템점검">시스템점검</option>
+                <option value="극장">극장</option>
+                <option value="행사/이벤트">행사/이벤트</option>
+                <option value="제휴이벤트">제휴이벤트</option>
+                <option value="기타">기타</option>
                 <!-- Add more options here -->
             </select>
 			<hr>
@@ -105,12 +110,57 @@ button:hover {
 			<hr>
 			<br>
 			<br>
-            <button type="button" class="cancel-btn" onclick="history.back();">취소</button>
-            <button type="submit" >등록하기</button>
-        </form>
+            <button type="button" class="cancel-btn" onclick="historyback(event);">취소</button>
+            <button type="button" onclick="noticeWrite(event)" >등록하기</button>
+        
     </div>
 	
+	<script>
+		
+	function noticeWrite(evnet){
+		var noticecategory = $("#category").val();
+		var noticetitle = $("#title").val();
+		var noticecontent = $("#content").val();
+		var noticefile = $("#file").val();
+		
+		console.log(noticecategory);
+		console.log(noticetitle);
+		console.log(noticecontent);
+		console.log(noticefile);
+		
+		$.ajax({
+			url : "http://localhost:9001/api/v1/admin/announcement",
+			enctype : "multipart/form-data",
+			method : "POST",
+			contentType : "application/json",
+			data : JSON.stringify({
+				noticeCategory : noticecategory,
+				noticeTitle : noticetitle,
+				noticeContent : noticecontent,
+				noticeFile : noticefile
+			}),
+			success : function(response){
+				alert("공지사항이 등록되었습니다");
+				//window.location.href=""; 나중에 여기 달아줘야함/////////////////////////////////////////////////////////////////////////////////////////////////
+			},
+			error : function(xhr, status, error){
+				console.log(error)
+			}
+		})
+	}
 	
+	function historyback(event){
+		const result = confirm('정말로 취소하시겠습니까');
+		if(result){
+			window.location.href="/admin/noticeForm"
+		}else{
+			
+		}
+		
+	}
+	
+	
+	</script>
 	
 	
 	

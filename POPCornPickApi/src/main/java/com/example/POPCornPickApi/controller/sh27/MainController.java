@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.POPCornPickApi.entity.Event;
+import com.example.POPCornPickApi.service.EventService;
 import com.example.POPCornPickApi.service.MovieService;
 import com.example.POPCornPickApi.service.ReviewService;
 import com.example.POPCornPickApi.service.RoomService;
@@ -33,6 +36,9 @@ public class MainController {
     
     @Autowired
     private RoomService roomService;
+    
+    @Autowired
+    private EventService eventService;
 
     @GetMapping("/movies")
     public List<String> getAllMovies() {
@@ -79,5 +85,10 @@ public class MainController {
         List<String> topMovies = ticketingService.getTopMoviesByTicketCount();
         System.out.println("Top Movies: " + topMovies); // 디버깅을 위해 출력
         return ticketingService.getTopMoviesByTicketCount();
+    }
+    
+    @GetMapping("/events")
+    public List<Event> getEvents() {
+        return eventService.getCurrentEvents();
     }
 }

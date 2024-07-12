@@ -162,7 +162,7 @@ body {
 	    justify-content: space-between;
 	    position: absolute;
 	    width: 1100px;
-	    top: 348px; /* 버튼을 위로 올림 */
+	    top: 780px; /* 버튼을 위로 올림 */
 	    transform: translateY(-50%);
 	}
 	

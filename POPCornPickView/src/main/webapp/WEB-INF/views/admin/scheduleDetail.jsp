@@ -25,20 +25,18 @@
     <%@ include file="../layout/adminHeader.jsp" %>
 
         <body>
-            <main>
-                <div id='external-events'>
-                    <h4>영화 목록</h4>
+            <div id='external-events'>
+                <h4>영화 목록</h4>
 
-                    <div id='external-events-list'>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                        </div>
-                    </div>
-
-                    <p>
-                        <input type='checkbox' id='drop-remove' />
-                        <label for='drop-remove'>드롭 후 삭제</label>
-                    </p>
+                <div id='external-events-list' style="overflow: hidden;">
                 </div>
+
+                <p>
+                    <input type='checkbox' id='drop-remove' />
+                    <label for='drop-remove'>드롭 후 삭제</label>
+                </p>
+            </div>
+            <main>
                 <div id='calendar-wrap'>
                     <div id='calendar'></div>
                 </div>
@@ -72,98 +70,96 @@
 
             // 1. 기본 캘린더 불러오기
             $(document).ready(function () {
+            	  var calendarEl = document.getElementById('calendar');
+            	    var roomNo = ${ roomNo };
+            	    localStorage.setItem('roomNo', roomNo);
 
-                var calendarEl = document.getElementById('calendar');
+            	    $.ajax({
+            	        url: "http://localhost:9001/api/v1/schedule/" + roomNo,
+            	        method: "GET",
+            	        success: function (schedule) {
+            	        	console.log(schedule[0]);
+            	            var events = [];
+            	            schedule.forEach(function (item) {
+            	            	
+            	                var event = {
+            	                    title: item.movieShowDetail.movie.title,
+            	                    start: item.start,
+            	                    end: item.end,
+            	                    borderColor : item.movieShowDetail.movie.color,
+            	                    backgroundColor: item.movieShowDetail.movie.color // Assuming the color is part of the movie detail
+            	                };
+            	                events.push(event);
+            	            });
 
-                var roomNo = ${ roomNo };
-                localStorage.setItem('roomNo', roomNo);
+            	            var calendar = new FullCalendar.Calendar(calendarEl, {
+            	                customButtons: {
+            	                    myCustomButton: {
+            	                        text: '수정하기'
+            	                    },
+            	                    mySaveButton: {
+            	                        text: '저장하기'
+            	                    },
+            	                    slotPlusButton: {
+            	                        text: '영화 추가하기',
+            	                        click: function () {
+            	                            $("#exampleModal").modal("show");
+            	                        }
+            	                    }
+            	                },
+            	                headerToolbar: {
+            	                    left: 'prev next today',
+            	                    center: 'title',
+            	                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            	                },
+            	                footerToolbar: {
+            	                    right: 'myCustomButton,mySaveButton,slotPlusButton'
+            	                },
+            	                titleFormat: function (date) {
+            	                    return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+            	                },
+            	                dayCellContent: function (info) {
+            	                    var number = document.createElement("a");
+            	                    number.classList.add("fc-daygrid-day-number");
+            	                    number.innerHTML = info.dayNumberText.replace("일", "").replace("日", "");
+            	                    if (info.view.type === "dayGridMonth") {
+            	                        return {
+            	                            html: number.outerHTML
+            	                        };
+            	                    }
+            	                    return {
+            	                        domNodes: []
+            	                    };
+            	                },
+            	                events: events,
+            	                
+            	                eventColor: schedule[0].movieShowDetail.movie.color,
+            	                selectable: true,
+            	                nowIndicator: true,
+            	                locale: 'ko',
+            	                editable: true,
+            	                droppable: true,
+            	                drop: function (arg) {
+            	                    if (document.getElementById('drop-remove').checked) {
+            	                        arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+            	                    }
+            	                },
+            	                eventDrop: function (info) {
+            	                    console.log('Event dropped');
+            	                    console.log('Event: ' + info.event.title);
+            	                    console.log('Start: ' + info.event.start.toISOString());
+            	                    console.log('End: ' + (info.event.end ? info.event.end.toISOString() : 'N/A'));
+            	                },
+            	                eventResize: function (info) {
+            	                    console.log('Event resized');
+            	                    console.log('Event: ' + info.event.title);
+            	                    console.log('Start: ' + info.event.start.toISOString());
+            	                    console.log('End: ' + info.event.end.toISOString());
+            	                }
+            	            });
 
-                $.ajax({
-                    url: "http://localhost:9001/api/v1/schedule/" + roomNo,
-                    method: "GET",
-                    success: function (schedule) {
-                        var events = [];
-                        schedule.forEach(function (item) {
-                            var event = {
-                                title: item.movieShowDetail.movie.title,
-                                start: item.start,
-                                end: item.end
-                            };
-                            events.push(event);
-
-                            var calendar = new FullCalendar.Calendar(calendarEl, {
-                                customButtons: {
-                                    myCustomButton: {
-                                        text: '수정하기'
-                                    },
-                                    mySaveButton: {
-                                        text: '저장하기'
-                                    },
-                                    slotPlusButton: {
-                                        text: '영화 추가하기',
-                                        click: function () {
-                                            $("#exampleModal").modal("show");
-                                        }
-                                    }
-                                },
-                                headerToolbar: {
-                                    left: 'prev next today',
-                                    center: 'title',
-                                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-                                },
-                                footerToolbar: {
-                                    right: 'myCustomButton,mySaveButton,slotPlusButton'
-                                },
-                                titleFormat: function (date) {
-                                    return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
-                                },
-                                dayCellContent: function (info) {
-                                    var number = document.createElement("a");
-                                    number.classList.add("fc-daygrid-day-number");
-                                    number.innerHTML = info.dayNumberText.replace("일", "").replace("日", "");
-                                    if (info.view.type === "dayGridMonth") {
-                                        return {
-                                            html: number.outerHTML
-                                        };
-                                    }
-                                    return {
-                                        domNodes: []
-                                    };
-                                },
-                                events: events, // 위에서 설정한 events 배열 사용
-
-                                selectable: true, // 달력 일자 드래그 설정가능
-
-                                nowIndicator: true, // 현재 시간 마크
-                                locale: 'ko', // 한국어 설정
-                                editable: true,
-                                droppable: true,
-                                drop: function (arg) {
-                                    if (document.getElementById('drop-remove').checked) {
-                                        arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-                                    }
-                                },
-                                eventDrop: function (info) {
-                                    console.log(info);
-                                    console.log('Event dropped');
-                                    console.log('Event: ' + info.event.title);
-                                    console.log('Start: ' + info.event.start.toISOString());
-                                    console.log('End: ' + info.event.end ? info.event.end.toISOString() : 'N/A');
-                                },
-                                eventResize: function (info) {
-                                    console.log('Event resized');
-                                    console.log('Event: ' + info.event.title);
-                                    console.log('Start: ' + info.event.start.toISOString());
-                                    console.log('End: ' + info.event.end.toISOString());
-                                }
-                            });
-
-                            calendar.render(); // 캘린더 렌더링
-                            //                         	var allEvents = calendar.getEvents();
-                            //                         	console.log(allEvents);
-
-                        });
-                    }
+            	            calendar.render();
+            	        }
                 });
 
 
@@ -172,7 +168,7 @@
                 // FullCalendar의 Draggable 기능 초기화
                 new FullCalendar.Draggable(containerEl, {
                     itemSelector: '.fc-event',
-                    eventData: function(eventEl) {
+                    eventData: function (eventEl) {
                         var mainEventEl = eventEl.querySelector('.fc-event-main');
                         return {
                             title: mainEventEl ? mainEventEl.innerText.trim() : ''
@@ -180,7 +176,7 @@
                     }
                 });
 
-                
+
 
                 var modalBody = $('.modal-body');
                 var slots = [];
@@ -191,27 +187,40 @@
                     method: "GET",
                     success: function (slot) {
                         slots = slot;
-                        
+
                         var externalEventsList = $('#external-events-list');
-                        
+
                         var title = $('#title');
                         title.empty();
 
                         var titles = new Set(slot.map(item => item.title));
 
                         titles.forEach(function (item) {
-                        	var mainEventEl = document.createElement('div');
-                        	mainEventEl.className = 'fc-event-main';
-                        	mainEventEl.innerText = item;
-                        	                        	
+                            // 해당 제목과 일치하는 첫 번째 슬롯을 찾습니다.
+                            var matchingSlot = slots.find(s => s.title === item);
+
+                            var mainEventEl = document.createElement('div');
+                            mainEventEl.className = 'fc-event-main';
+                            mainEventEl.innerText = item;
+
+                            // color 값을 설정
+                            var color = matchingSlot ? matchingSlot.color : null;
+                            if (color === null) {
+                                mainEventEl.style.display = 'none';
+                            } else {
+                                mainEventEl.style.backgroundColor = color;
+                            }
+                            
+                                                     	
                             var eventEl = document.createElement('div');
                             eventEl.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
-                                                       
+
                             eventEl.appendChild(mainEventEl);
+                            
                             containerEl.appendChild(eventEl);
-                       		
+
                             externalEventsList.append(containerEl);
-                        	
+
                             var option = $('<option>').text(item).val(item);
                             title.append(option);
                         });
@@ -260,7 +269,7 @@
                     });
                 });
 
-                // 4. 수정 슬롯 등록하기
+                // 4. 영화 슬롯 등록하기
                 function submitSlot(event) {
                     event.preventDefault();
 

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class CinemaRoomDto {
 	private Long roomNo;
 	private Long cinemaNo;
-	private String roomTypeNo;
+	private Long roomTypeNo;
 	private int total;
 	private int bookedCnt;
 	

@@ -24,7 +24,7 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	@Query("SELECT r.roomNo FROM Room r WHERE r.cinema.cinemaNo = :cinemaNo")
 	public List<Long> findRoomNoByCinemaNo(@Param("cinemaNo") Long cinemaNo);
 	
-	@Query(value= "SELECT * FROM seat WHERE room_no = :roomNo", nativeQuery = true)
+	@Query(value= "select cinema_no, room_type_no from room where room_no = :roomNo", nativeQuery = true)
 	public Object[] getRoomInfo(@Param("roomNo") Long roomNo);
 	
 	

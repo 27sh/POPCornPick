@@ -168,9 +168,13 @@ public class CinemaController {
 				Object[] rooms = roomService.getRoomInfo(roomNo);
 				
 				CinemaRoomDto cinemaRoomDto = new CinemaRoomDto(
-						((Number) seats[0]).longValue(),
+						((Number) seats[2]).longValue(),
+						((Number) rooms[0]).longValue(),
+						((Number) rooms[1]).longValue(),
+						((Number) seats[0]).intValue(),
+						((Number) seats[1]).intValue()
 						);
-				System.out.println(seats);
+				System.out.println(cinemaRoomDto);
 				
 			} catch(Exception e) {
 				e.printStackTrace();

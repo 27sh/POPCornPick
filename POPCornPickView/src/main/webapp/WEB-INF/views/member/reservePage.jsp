@@ -389,7 +389,7 @@ h4 {
 	font-size: 15px;
 	text-align: center;
 	background: black;
-	color: white !important;
+	color: white;
 	border-radius: 50%;
 }
 
@@ -490,11 +490,12 @@ h4 {
 
 .room_info li:nth-child(2) {
 	padding: 0 5px;
+	border-right: 1px solid #edebeb;
 	border-left: 1px solid #edebeb;
 }
+
 .room_info li:nth-child(3) {
 	padding-left: 5px;
-	border-left: 1px solid #edebeb;
 }
 
 .room_detail_infos {
@@ -679,7 +680,7 @@ main {
 					<h4 class="section_schedule_title">날짜 / 시간</h4>
 					<div id="section_schedule_date">
 						<ul id="section_schedule_date_slides">
-
+							
 						</ul>
 					</div>
 					<div id="section_schedule_box">
@@ -690,7 +691,7 @@ main {
 							<p>조건을 변경해주세요.</p>
 						</div>
 						 -->
-						<div id="movie_room">
+						<div class="movie_room">
 							<div class="movie_info">
 								<img alt="12세 관람가" src="/img/grade_12.png" class="grade">
 								<span>파일럿</span>
@@ -702,7 +703,91 @@ main {
 									<li>3관 (Laser)</li>
 								</ul>
 								<div class="room_detail_infos">
+									<a class="room_detail_info"> <span class="time_image"><img
+											alt="조조 사진" src="/img/time_sun.png"></span> <strong>09:30</strong>
+										<span class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a>
+								</div>
+							</div>
+							<div class="room_schedule">
+								<ul class="room_info">
+									<li>2D</li>
+									<li>자막</li>
+									<li>3관 (Laser)</li>
+								</ul>
+								<div class="room_detail_infos">
 									<a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
+										class="time_image"><img alt="조조 사진"
+											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
+										class="seats_left">136</span><span class="seats_total">/136</span><span
+										class="room_number">3관</span>
+									</a> <a href="#" class="room_detail_info"> <span
 										class="time_image"><img alt="조조 사진"
 											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
 										class="seats_left">136</span><span class="seats_total">/136</span><span
@@ -934,6 +1019,7 @@ main {
 			
 			$("#section_cinema_tab_special").on("click", function(){
 				$("#section_cinema_list_specific").empty();
+				console.log("aaaa");
 				$.ajax({
 					url: "http://localhost:9001/api/v1/reservation/special/count",
 					method: "GET",
@@ -992,6 +1078,7 @@ main {
 			});
 			
 			$(".PRIVATE_BOX").on("click", function(){
+				console.log("privateBox");
 				$.ajax({
 					url : "http://localhost:9001/api/v1/reservation/cinema/special/list/" + 4,
 					method : "GET",
@@ -1123,7 +1210,7 @@ main {
 				if(cnt === 0 || day.getDate() === 1){
 					str += '<strong>' + (day.getMonth() + 1) + '월</strong>';	
 				}else {
-					str += '<strong class="hide_strong">' + (day.getMonth() + 1) + '월</strong> '; 
+					str += '<strong class="hide_strong">' + (day.getMonth() + 1) + '</strong> '; 
 				}
 				str += '<a> <label for="date_' + cnt + '"> <input type="radio"' + 
 					   'id="date_' + cnt + '" name="date_radio" class="date_radio"> ';
@@ -1171,142 +1258,35 @@ main {
 			$("#section_schedule_date").html(str);
 			
 			// 날짜 선택했을 때
-			
-			$("#section_schedule_date").children("li").children("a").on("click", "label", function(){
+			$("#section_schedule_date").children("li").children("a").one("click", "label", function(){
 				$(this).parent().parent().addClass("selected");
 				$(this).parent().parent().siblings().removeClass("selected");
 				
 				const year = new Date().getFullYear();
-				let month = '';
-				if($(this).parent("a").prev("strong").text().replace("월", "").length == 1){
-					month = "0" + $(this).parent("a").prev("strong").text().replace("월", "");
-				}else {
-					month = $(this).parent("a").prev("strong").text().replace("월", "");
-				}
-				
+				const month = $(this).parent("a").prev("strong").text();
 				const date = $(this).children("strong").text();
 				const day = $(this).children("em").text();
-				const result = year + "-" + month + "-" + date + " ( " + day +  " )";
+				const result = year + "-" + month.substring(0, month.length) + "-" + date + " ( " + day +  " )";
+				
 				$(".section_schedule_title").text("날짜 - " + result);
 				$(".simple_info_content_date").text(result);
+				
 				const movieName = $(".section_movie_title").text();
 				const cinemaName = $(".section_cinema_title").text();
 				
-				const now = new Date();
-				
-				const hours = now.getHours();
-				const minutes = now.getMinutes();
-				const seconds = now.getSeconds();
-				
-				console.log(month);
-				
-				if(day === "오늘"){
-					if(movieName.length > 5 && cinemaName.length > 6){
-						$.ajax({
-							url : "http://localhost:9001/api/v1/reservation/schedule/list/" + cinemaName.substring(6, cinemaName.length) + "/" + movieName.substring(5, movieName.length) + "/" + (result + " " + hours + ":" + minutes + ":" + seconds),
-							method: "GET",
-							dataType : "json",
-							success : function(response){
-								
-								let str = '<div class="movie_info"> ';
-								if(response[0][0].movieShowDetail.movie.viewAge === "전체 관람가"){
-								    str += '<img alt="전체" src="/img/grade_all.png" class="grade">';
-								}else if(response[0][0].movieShowDetail.movie.viewAge === "12세 이상 관람가"){
-								    str += '<img alt="12세 관람가" src="/img/grade_12.png" class="grade">';
-								}else if(response[0][0].movieShowDetail.movie.viewAge === "15세 이상 관람가"){
-								    str += '<img alt="15세 관람가" src="/img/grade_15.png" class="grade">';
-								}else if(response[0][0].movieShowDetail.movie.viewAge === "청소년 관람불가") {
-								    str += '<img alt="청소년 관람불가" src="/img/pc_grade_19.png" class="grade">';
-								}
-
-								str += '<span>' + response[0][0].movieShowDetail.movie.title + '</span> ';
-								str += '</div>';  // 여기서 <div> 태그를 닫습니다
-
-								str += '<div class="room_schedule">';
-
-								response.forEach(scheduleList => {
-								    // 여기서 상영관 정보를 입력해야한다.
-								    str += '<ul class="room_info">'; 
-								    str += '<li>2D</li>';
-								    if(scheduleList[0].movieShowDetail.dubbing === true){
-								    	str += '<li>더빙</li>';								    	
-								    }else if(scheduleList[0].movieShowDetail.subtitle === true){
-								    	str += '<li>자막</li>';
-								    }
-								    
-								    console.log(scheduleList[0].movieShowDetail.dubbing);
-								    console.log(scheduleList[0].movieShowDetail.subtitle);
-								    
-									if(scheduleList[0].movieShowDetail.dubbing === false && scheduleList[0].movieShowDetail.subtitle === false){
-										 if(scheduleList[0].room.roomType.smallType.length > 1){
-										        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
-										    } else {
-										        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + '</li>';
-										    }
-									}else {
-										 if(scheduleList[0].room.roomType.smallType.length > 1){
-										        str += '<li>' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
-										    } else {
-										        str += '<li>' + scheduleList[0].room.roomType.roomName + '</li>';
-										    }
-									}
-								    str += '</ul>';  // <ul> 태그를 닫습니다
-								    
-								    str += '<div class="room_detail_infos">';
-								    if(scheduleList.length > 0){
-								        scheduleList.forEach(schedule => {
-								            const worldTime = schedule.start;
-								            const koreanTime = new Date(worldTime).toString();
-								            const time = koreanTime.split(" ")[4].split(":")[0] + ":" + koreanTime.split(" ")[4].split(":")[1];
-								            const roomName = schedule.room.roomType.roomName;
-								            const totalSeats = schedule.room.roomType.roomTotalColumn * schedule.room.roomType.roomTotalRow;
-								            // 여기서 상영시간표 정보를 입력해야한다.
-								            str += '<a class="room_detail_info">' +
-								                   '<span class="time_image">';
-								            if(parseInt(time.split(":")[0]) >= 8 && parseInt(time.split(":")[0]) <= 10){
-									            str += '<img alt="조조 사진" src="/img/time_sun.png"></span>';
-								            }else if(parseInt(time.split(":")[0] >= 00 && parseInt(time.split(":")[0]) <= 02)) {
-								            	str += '<img alt="심야 사진" src="/img/time_moon.png"></span>';
-								            }else {
-								            	str += '<img alt="심야 사진" src="/img/time_moon.png" style="visibility:hidden"></span>';
-								            }
-								            
-								            console.log(schedule);
-								            str += '<strong>' + time + '</strong>' +
-								                   '<span class="seats_left">136</span>' +
-								                   '<span class="seats_total">/' + totalSeats + '</span>' +
-								                   '<span class="room_number">' + roomName + '</span>' +
-								                   '</a>';
-								        });
-								    }
-								    str += '</div>';  // <div class="room_detail_infos"> 태그를 닫습니다
-								});
-								str += '</div>';  // <div class="room_schedule"> 태그를 닫습니다
-
-								$("#movie_room").html(str);
-								
-							},
-							error : function(xhr, status, error){
-								
-							}
-						});
-					}
-				}else {
-					if(movieName.length > 5 && cinemaName.length > 6){
-						$.ajax({
-							url : "http://localhost:9001/api/v1/reservation/schedule/list/" + cinemaName.substring(6, cinemaName.length) + "/" + movieName.substring(5, movieName.length) + "/" + result + " -",
-							method: "GET",
-							dataType : "json",
-							success : function(response){
-							},
-							error : function(xhr, status, error){
-								
-							}
-						});
-					}
+				if(movieName.length > 5 && cinemaName.length > 6){
+					$.ajax({
+						url : "http://localhost:9001/api/v1/reservation/schedule/list/" + cinemaName + "/" + movieName + "/" + result,
+						method: "GET",
+						dataType : "json",
+						success : function(response){
+							
+						},
+						error : function(xhr, status, error){
+							
+						}
+					});
 				}
-				
-				
 				
 			});
 			
@@ -1342,7 +1322,6 @@ main {
 				
 				const title = $(this).text();
 				$(".section_movie_title").text("영화 - " + title);
-				
 				$(".simple_info_content_movie").text(title);
 				
 				const date = $(".section_schedule_title").text();
@@ -1357,12 +1336,15 @@ main {
 			
 		});
 		
+		function getScheduleList(){
+			
+		}
 
 		
 	</script>
 </body>
 </html>
 
-
+	
 
 

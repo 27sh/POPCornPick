@@ -12,6 +12,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>{
 	Optional<Schedule> findByRegNo(Long regNo);
 
 	List<Schedule> findByRoom_RoomNo(Long roomNo);
-
+	
+	public List<Schedule> findByMovieShowDetail_DetailNoOrderByStartAsc(Long detailNo);
 
 }

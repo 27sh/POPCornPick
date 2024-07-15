@@ -32,7 +32,7 @@ import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.ScheduleRepository;
 
 @RequestMapping("/api/v1/schedule")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 public class ScheduleController {
 	

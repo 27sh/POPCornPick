@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/api/v1")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class LoginController {
 	
 	@Autowired
@@ -68,29 +68,30 @@ public class LoginController {
 	}
 	
 	// 로그인 
-		@PostMapping("/login")
-	    public ResponseEntity<?> createAuthenticationToken(Member member, HttpServletResponse response) throws Exception {
-	        authenticate(member.getUsername(), member.getPassword());
+	@PostMapping("/login")
+    public ResponseEntity<?> createAuthenticationToken(Member member, HttpServletResponse response) throws Exception {
+        authenticate(member.getUsername(), member.getPassword());
 
-	        final UserDetails userDetails = customUserDetailService.loadUserByUsername(member.getUsername());
-	        final String token = jwtUtil.createJwt(member.getUsername(), member.getRole(), 60*60*250L);
-
-	        // JWT 토큰을 responseHeader에 추가
-	        response.setHeader("Authorization", "Bearer " + token);
-
-	        return ResponseEntity.ok(new AuthResponse(token));
-	    }
-		
-		private void authenticate(String username, String password) throws Exception {
-	        try {
-	            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-	        } catch (DisabledException e) {
-	            throw new Exception("USER_DISABLED", e);
-	        } catch (BadCredentialsException e) {
-	            throw new Exception("INVALID_CREDENTIALS", e);
-	        }
-	    }
-		// 
+        final UserDetails userDetails = customUserDetailService.loadUserByUsername(member.getUsername());
+        final String token = jwtUtil.createJwt(member.getUsername(), member.getRole(), 60*60*250L);
+        
+        // JWT 토큰을 responseHeader에 추가
+        response.setHeader("Authorization", "Bearer " + token);
+        
+        return ResponseEntity.ok(new AuthResponse(token));
+    }
+	
+	private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
+	// 
+	
 	
 	
 }

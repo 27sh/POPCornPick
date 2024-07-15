@@ -9,7 +9,7 @@ import com.example.POPCornPickApi.entity.Schedule;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long>{
 
-	Optional<Schedule> findByRegNo(Long regNo);
+	// Optional<Schedule> findByRegNo(Long regNo);
 
 	List<Schedule> findByRoom_RoomNo(Long roomNo);
 

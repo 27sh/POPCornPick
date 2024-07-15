@@ -45,10 +45,9 @@ public class CinemaService {
 				for(int i = 1; i <= roomType.getRoomTotalRow() ; i++) {
 					for(int j = 1 ; j <= roomType.getRoomTotalColumn() ;j++) {
 						Seat seat = new Seat();
-						seat.setRoom(room);
+						seat.setRoom(null);
 						seat.setSeatRow(i);
 						seat.setSeatColumn(j);
-						seat.setBooked(false);
 						seatRepository.save(seat);
 					}
 				}

@@ -27,6 +27,7 @@ import com.example.POPCornPickApi.repository.MovieRepository;
 import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.ScheduleRepository;
+import com.example.POPCornPickApi.repository.SeatRepository;
 import com.example.POPCornPickApi.repository.TicketingRepository;
 
 @Service
@@ -38,11 +39,12 @@ public class ReservationService {
 	private MovieShowDetailRepository movieShowDetailRepository;
 	private TicketingRepository ticketingRepository;
 	private ScheduleRepository shceduleRepository;
+	private SeatRepository seatRepository;
 
 	public ReservationService(CinemaRepository cinemaRepository, ExpCinemaRepository expCinemaRepository,
 			RoomRepository roomRepository, MovieRepository movieRepository,
 			MovieShowDetailRepository movieShowDetailRepository, TicketingRepository ticketingRepository,
-			ScheduleRepository shceduleRepository) {
+			ScheduleRepository shceduleRepository, SeatRepository seatRepository) {
 		this.cinemaRepository = cinemaRepository;
 		this.expCinemaRepository = expCinemaRepository;
 		this.roomRepository = roomRepository;
@@ -50,6 +52,7 @@ public class ReservationService {
 		this.movieShowDetailRepository = movieShowDetailRepository;
 		this.ticketingRepository = ticketingRepository;
 		this.shceduleRepository = shceduleRepository;
+		this.seatRepository = seatRepository;
 	}
 
 	public List<Cinema> getCinemaByLocaiton(String cinemaLocation) {
@@ -233,7 +236,7 @@ public class ReservationService {
 			scheduleListList.add(scheduleList);
 		});
 
-		List<List<Schedule>> resultScheduleListList = new ArrayList<>();
+		List<List<ScheduleDto>> resultScheduleListList = new ArrayList<>();
 
 		scheduleListList.forEach(scheduleList -> {
 			List<Schedule> resultScheduleList = new ArrayList<>();
@@ -287,6 +290,17 @@ public class ReservationService {
 		} else {
 			return date.split(" ")[0].replace("월", "") + " " + date.split(" ")[4];
 		}
+	}
+	
+	public int getSeatAmount(Long roomNo) {
+		
+		int leftSeats = seatRepository.getCinemaRoomBookedSeat(roomNo);
+		
+		if(leftSeats > 0) {
+			return leftSeats;
+		}
+		
+		return 0;
 	}
 
 }

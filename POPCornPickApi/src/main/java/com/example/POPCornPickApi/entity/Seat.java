@@ -36,9 +36,6 @@ public class Seat {
 	@Column(nullable = false)
 	private int seatColumn;
 	
-	@Column(nullable = false)
-	private boolean isBooked;
-	
 //	@Override
 //	public String toString() {
 //		return "Seat [seatNo="+ seatNo +"]";

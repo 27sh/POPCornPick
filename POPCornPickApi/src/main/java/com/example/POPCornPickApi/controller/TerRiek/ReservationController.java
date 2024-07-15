@@ -132,6 +132,17 @@ public class ReservationController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(null);
 	}
+	
+	@GetMapping("/seat/left/{roomNo}")
+	public ResponseEntity<String> getSeatNoLeft(@PathVariable("roomNo") Long roomNo) {
+		
+		int leftSeats = reservationService.getSeatAmount(roomNo);
+		
+		String seatsNumber = String.valueOf(leftSeats);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(seatsNumber);
+	}
 
 	
 	

@@ -16,7 +16,9 @@ public interface SeatRepository extends JpaRepository<Seat, Long>{
 	public int getCinemaRoomSeatTotal(@Param("roomNo") Long roomNo);
 	
 	//예매 가능한 좌석 수 
-	@Query(value = "select count(*) as bookedCnt from seat where room_no = 5 and is_booked = 0",
+	@Query(value = "select count(*) as bookedCnt from seat where room_no = :roomNo and is_booked = 0",
 			nativeQuery = true)
 	public int getCinemaRoomBookedSeat(@Param("roomNo") Long roomNo);
+	
+	
 }

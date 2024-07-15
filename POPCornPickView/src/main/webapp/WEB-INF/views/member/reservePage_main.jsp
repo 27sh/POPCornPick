@@ -459,8 +459,9 @@ h4 {
 }
 
 #section_schedule_box {
-	height: 648px;
-	padding: 0;
+	height: 678.96px;
+	padding-left: 10px;
+	padding-top: 15px;
 	margin: 0;
 	list-style: none;
 	width: 100%;
@@ -470,10 +471,6 @@ h4 {
 	scrollbar-color: #888 #f1f1f1;
 	overflow-x: hidden;
 	background: #fafafa;
-}
-
-.room_schedule {
-	margin-bottom: 30px;
 }
 
 .room_info {
@@ -552,7 +549,7 @@ h4 {
 }
 
 .movie_room {
-	margin-top: 30px;
+	margin-top: 50px;
 }
 
 .movie_info {
@@ -568,6 +565,16 @@ h4 {
 
 .hide_strong {
 	visibility: hidden;
+}
+
+.nofilm {
+	margin: 0 auto;
+	width: fit-content;
+	margin-top: 50%;
+}
+
+.nofilm p {
+	width: fit-content;
 }
 
 main {
@@ -605,10 +612,10 @@ main {
 						</div>
 						<div class="simple_info_content hidden">
 							<ul>
-								<li>aaa</li>
-								<li>bbb</li>
-								<li>ccc</li>
-								<li>ddd</li>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
 							</ul>
 						</div>
 					</div>
@@ -619,10 +626,10 @@ main {
 						</div>
 						<div class="simple_info_content hidden">
 							<ul>
-								<li>aaa</li>
-								<li>bbb</li>
-								<li>ccc</li>
-								<li>ddd</li>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
 							</ul>
 						</div>
 					</div>
@@ -633,10 +640,10 @@ main {
 						</div>
 						<div class="simple_info_content hidden">
 							<ul>
-								<li>aaa</li>
-								<li>bbb</li>
-								<li>ccc</li>
-								<li>ddd</li>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
 							</ul>
 						</div>
 					</div>
@@ -680,7 +687,7 @@ main {
 					<h4 class="section_schedule_title">날짜 / 시간</h4>
 					<div id="section_schedule_date">
 						<ul id="section_schedule_date_slides">
-							
+
 						</ul>
 					</div>
 					<div id="section_schedule_box">
@@ -691,28 +698,7 @@ main {
 							<p>조건을 변경해주세요.</p>
 						</div>
 						 -->
-						<div id="movie_room">							
-							<div class="movie_info">
-								<img alt="12세 관람가" src="/img/grade_12.png" class="grade">
-								<span>파일럿</span>
-							</div>
-							<div class="room_schedule">
-								<ul class="room_info">
-									<li>2D</li>
-									<li>자막</li>
-									<li>3관 (Laser)</li>
-								</ul>
-								<div class="room_detail_infos">
-									<a href="#" class="room_detail_info"> <span
-										class="time_image"><img alt="조조 사진"
-											src="/img/time_sun.png"></span> <strong>09:30</strong> <span
-										class="seats_left">136</span><span class="seats_total">/136</span><span
-										class="room_number">3관</span>
-									</a>
-									
-								</div>
-							</div>
-						</div>
+						<div id="movie_room"></div>
 
 					</div>
 				</section>
@@ -1211,82 +1197,110 @@ main {
 							dataType : "json",
 							success : function(response){
 								
-								let str = '<div class="movie_info"> ';
-								if(response[0][0].movieShowDetail.movie.viewAge === "전체 관람가"){
-								    str += '<img alt="전체" src="/img/grade_all.png" class="grade">';
-								}else if(response[0][0].movieShowDetail.movie.viewAge === "12세 이상 관람가"){
-								    str += '<img alt="12세 관람가" src="/img/grade_12.png" class="grade">';
-								}else if(response[0][0].movieShowDetail.movie.viewAge === "15세 이상 관람가"){
-								    str += '<img alt="15세 관람가" src="/img/grade_15.png" class="grade">';
-								}else if(response[0][0].movieShowDetail.movie.viewAge === "청소년 관람불가") {
-								    str += '<img alt="청소년 관람불가" src="/img/pc_grade_19.png" class="grade">';
-								}
-								str += '<span>' + response[0][0].movieShowDetail.movie.title + '</span> ';
-								str += '</div>';  // 여기서 <div> 태그를 닫습니다
-								str += '<div class="room_schedule">';
-								response.forEach(scheduleList => {
-								    // 여기서 상영관 정보를 입력해야한다.
-								    str += '<ul class="room_info">'; 
-								    str += '<li>2D</li>';
-								    if(scheduleList[0].movieShowDetail.dubbing === true){
-								    	str += '<li>더빙</li>';								    	
-								    }else if(scheduleList[0].movieShowDetail.subtitle === true){
-								    	str += '<li>자막</li>';
-								    }
-								    
-								    console.log(scheduleList[0].movieShowDetail.dubbing);
-								    console.log(scheduleList[0].movieShowDetail.subtitle);
-								    
-									if(scheduleList[0].movieShowDetail.dubbing === false && scheduleList[0].movieShowDetail.subtitle === false){
-										 if(scheduleList[0].room.roomType.smallType.length > 1){
-										        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
-										    } else {
-										        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + '</li>';
-										    }
-									}else {
-										 if(scheduleList[0].room.roomType.smallType.length > 1){
-										        str += '<li>' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
-										    } else {
-										        str += '<li>' + scheduleList[0].room.roomType.roomName + '</li>';
-										    }
-									}
-								    str += '</ul>';  // <ul> 태그를 닫습니다
-								    
-								    str += '<div class="room_detail_infos">';
-								    if(scheduleList.length > 0){
-								        scheduleList.forEach(schedule => {
-								            const worldTime = schedule.start;
-								            const koreanTime = new Date(worldTime).toString();
-								            const time = koreanTime.split(" ")[4].split(":")[0] + ":" + koreanTime.split(" ")[4].split(":")[1];
-								            const roomName = schedule.room.roomType.roomName;
-								            const totalSeats = schedule.room.roomType.roomTotalColumn * schedule.room.roomType.roomTotalRow;
-								            // 여기서 상영시간표 정보를 입력해야한다.
-								            str += '<a class="room_detail_info">' +
-								                   '<span class="time_image">';
-								            if(parseInt(time.split(":")[0]) >= 8 && parseInt(time.split(":")[0]) <= 10){
-									            str += '<img alt="조조 사진" src="/img/time_sun.png"></span>';
-								            }else if(parseInt(time.split(":")[0] >= 00 && parseInt(time.split(":")[0]) <= 02)) {
-								            	str += '<img alt="심야 사진" src="/img/time_moon.png"></span>';
-								            }else {
-								            	str += '<img alt="심야 사진" src="/img/time_moon.png" style="visibility:hidden"></span>';
-								            }
-								            
-								            console.log(schedule);
-								            str += '<strong>' + time + '</strong>' +
-								                   '<span class="seats_left">136</span>' +
-								                   '<span class="seats_total">/' + totalSeats + '</span>' +
-								                   '<span class="room_number">' + roomName + '</span>' +
-								                   '</a>';
-								        });
-								    }
-								    str += '</div>';  // <div class="room_detail_infos"> 태그를 닫습니다
-								});
-								str += '</div>';  // <div class="room_schedule"> 태그를 닫습니다
-								$("#movie_room").html(str);
+								let cnt = 0;
+								const length = response.length;
 								
+								response.forEach(scheduleList => {
+									if(scheduleList.length === 0){
+										cnt++;
+									}
+								});
+								
+								if(length === cnt){
+									let str = '<div id="section_schedule_box_information" class="nofilm"> ' +
+											  '<img alt="필름 사진" src="/img/film.png"> ' +
+											  '<p>조회 가능한 상영시간이 없습니다.</p> ' +
+											  '<p>조건을 변경해주세요.</p> ' +
+											  '</div>';
+									$("#movie_room").html(str);
+								}else {
+									
+									let str = '<div class="movie_info"> ';
+									if(response[0][0].movieShowDetail.movie.viewAge === "전체 관람가"){
+									    str += '<img alt="전체" src="/img/grade_all.png" class="grade">';
+									}else if(response[0][0].movieShowDetail.movie.viewAge === "12세 이상 관람가"){
+									    str += '<img alt="12세 관람가" src="/img/grade_12.png" class="grade">';
+									}else if(response[0][0].movieShowDetail.movie.viewAge === "15세 이상 관람가"){
+									    str += '<img alt="15세 관람가" src="/img/grade_15.png" class="grade">';
+									}else if(response[0][0].movieShowDetail.movie.viewAge === "청소년 관람불가") {
+									    str += '<img alt="청소년 관람불가" src="/img/pc_grade_19.png" class="grade">';
+									}
+									str += '<span>' + response[0][0].movieShowDetail.movie.title + '</span> ';
+									str += '</div>';  // 여기서 <div> 태그를 닫습니다
+									str += '<div class="room_schedule">';
+									response.forEach(scheduleList => {
+									    // 여기서 상영관 정보를 입력해야한다.
+									    str += '<ul class="room_info">'; 
+									    str += '<li>2D</li>';
+									    if(scheduleList[0].movieShowDetail.dubbing === true){
+									    	str += '<li>더빙</li>';								    	
+									    }else if(scheduleList[0].movieShowDetail.subtitle === true){
+									    	str += '<li>자막</li>';
+									    }
+									    
+										if(scheduleList[0].movieShowDetail.dubbing === false && scheduleList[0].movieShowDetail.subtitle === false){
+											 if(scheduleList[0].room.roomType.smallType.length > 1){
+											        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
+											    } else {
+											        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + '</li>';
+											    }
+										}else {
+											 if(scheduleList[0].room.roomType.smallType.length > 1){
+											        str += '<li>' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
+											    } else {
+											        str += '<li>' + scheduleList[0].room.roomType.roomName + '</li>';
+											    }
+										}
+									    str += '</ul>';  // <ul> 태그를 닫습니다
+									    
+									    str += '<div class="room_detail_infos">';
+									    if(scheduleList.length > 0){
+									        scheduleList.forEach(schedule => {
+									            const worldTime = schedule.start;
+									            const koreanTime = new Date(worldTime).toString();
+									            const time = koreanTime.split(" ")[4].split(":")[0] + ":" + koreanTime.split(" ")[4].split(":")[1];
+									            const roomName = schedule.room.roomType.roomName;
+									            const totalSeats = schedule.room.roomType.roomTotalColumn * schedule.room.roomType.roomTotalRow;
+									            // 여기서 상영시간표 정보를 입력해야한다.
+									            str += '<a class="room_detail_info">' +
+									                   '<span class="time_image">';
+									            if(parseInt(time.split(":")[0]) >= 8 && parseInt(time.split(":")[0]) <= 10){
+										            str += '<img alt="조조 사진" src="/img/time_sun.png"></span>';
+									            }else if(parseInt(time.split(":")[0] >= 00 && parseInt(time.split(":")[0]) <= 02)) {
+									            	str += '<img alt="심야 사진" src="/img/time_moon.png"></span>';
+									            }else {
+									            	str += '<img alt="심야 사진" src="/img/time_moon.png" style="visibility:hidden"></span>';
+									            }
+									            
+ 												const seats = schedule.room.seats;
+ 												let bookedSeats = 0;
+												seats.forEach(seat => {
+													console.log(seat);
+													if(seat.booked === true){
+														bookedSeats++;														
+													}
+												});
+												
+												// 가져온 데이터에 문제 있음
+												
+												const leftSeats = totalSeats - bookedSeats;
+ 												
+									            str += '<strong>' + time + '</strong>' +
+									                   '<span class="seats_left">' + leftSeats	 + '</span>' +
+									                   '<span class="seats_total">/' + totalSeats + '</span>' +
+									                   '<span class="room_number">' + roomName + '</span>' +
+									                   '</a>';
+									        });
+									    }
+									    str += '</div>';  // <div class="room_detail_infos"> 태그를 닫습니다
+									});
+									str += '</div>';  // <div class="room_schedule"> 태그를 닫습니다
+									$("#movie_room").html(str);
+								
+								}
 							},
 							error : function(xhr, status, error){
-								
+								console.log(error);
 							}
 						});
 					}
@@ -1297,9 +1311,104 @@ main {
 							method: "GET",
 							dataType : "json",
 							success : function(response){
+								
+								let cnt = 0;
+								const length = response.length;
+								
+								response.forEach(scheduleList => {
+									if(scheduleList.length === 0){
+										cnt++;
+									}
+								});
+								
+								if(length === cnt){
+									let str = '<div id="section_schedule_box_information" class="nofilm"> ' +
+											  '<img alt="필름 사진" src="/img/film.png"> ' +
+											  '<p>조회 가능한 상영시간이 없습니다.</p> ' +
+											  '<p>조건을 변경해주세요.</p> ' +
+											  '</div>';
+									$("#movie_room").html(str);
+								}else {
+									
+									let str = '<div class="movie_info"> ';
+									if(response[0][0].movieShowDetail.movie.viewAge === "전체 관람가"){
+									    str += '<img alt="전체" src="/img/grade_all.png" class="grade">';
+									}else if(response[0][0].movieShowDetail.movie.viewAge === "12세 이상 관람가"){
+									    str += '<img alt="12세 관람가" src="/img/grade_12.png" class="grade">';
+									}else if(response[0][0].movieShowDetail.movie.viewAge === "15세 이상 관람가"){
+									    str += '<img alt="15세 관람가" src="/img/grade_15.png" class="grade">';
+									}else if(response[0][0].movieShowDetail.movie.viewAge === "청소년 관람불가") {
+									    str += '<img alt="청소년 관람불가" src="/img/pc_grade_19.png" class="grade">';
+									}
+									str += '<span>' + response[0][0].movieShowDetail.movie.title + '</span> ';
+									str += '</div>';  // 여기서 <div> 태그를 닫습니다
+									str += '<div class="room_schedule">';
+									response.forEach(scheduleList => {
+									    // 여기서 상영관 정보를 입력해야한다.
+									    str += '<ul class="room_info">'; 
+									    str += '<li>2D</li>';
+									    if(scheduleList[0].movieShowDetail.dubbing === true){
+									    	str += '<li>더빙</li>';								    	
+									    }else if(scheduleList[0].movieShowDetail.subtitle === true){
+									    	str += '<li>자막</li>';
+									    }
+									    
+										if(scheduleList[0].movieShowDetail.dubbing === false && scheduleList[0].movieShowDetail.subtitle === false){
+											 if(scheduleList[0].room.roomType.smallType.length > 1){
+											        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
+											    } else {
+											        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + '</li>';
+											    }
+										}else {
+											 if(scheduleList[0].room.roomType.smallType.length > 1){
+											        str += '<li>' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
+											    } else {
+											        str += '<li>' + scheduleList[0].room.roomType.roomName + '</li>';
+											    }
+										}
+									    str += '</ul>';  // <ul> 태그를 닫습니다
+									    
+									    str += '<div class="room_detail_infos">';
+									    if(scheduleList.length > 0){
+									        scheduleList.forEach(schedule => {
+									            const worldTime = schedule.start;
+									            const koreanTime = new Date(worldTime).toString();
+									            const time = koreanTime.split(" ")[4].split(":")[0] + ":" + koreanTime.split(" ")[4].split(":")[1];
+									            const roomName = schedule.room.roomType.roomName;
+									            const totalSeats = schedule.room.roomType.roomTotalColumn * schedule.room.roomType.roomTotalRow;
+									            // 여기서 상영시간표 정보를 입력해야한다.
+									            str += '<a href="#" class="room_detail_info">' +
+									                   '<span class="time_image">';
+									            if(parseInt(time.split(":")[0]) >= 8 && parseInt(time.split(":")[0]) <= 10){
+										            str += '<img alt="조조 사진" src="/img/time_sun.png"></span>';
+									            }else if(parseInt(time.split(":")[0] >= 00 && parseInt(time.split(":")[0]) <= 02)) {
+									            	str += '<img alt="심야 사진" src="/img/time_moon.png"></span>';
+									            }else {
+									            	str += '<img alt="심야 사진" src="/img/time_moon.png" style="visibility:hidden"></span>';
+									            }
+									            
+									            console.log(schedule);
+									            
+									            let seat_left = getSeatLeft(schedule.room.roomNo);
+									            
+									            console.log(seat_left);
+									            
+									            str += '<strong>' + time + '</strong>' +
+									                   '<span class="seats_left">' + seat_left + '</span>' +
+									                   '<span class="seats_total">/' + totalSeats + '</span>' +
+									                   '<span class="room_number">' + roomName + '</span>' +
+									                   '</a>';
+									        });
+									    }
+									    str += '</div>';  // <div class="room_detail_infos"> 태그를 닫습니다
+									});
+									str += '</div>';  // <div class="room_schedule"> 태그를 닫습니다
+									$("#movie_room").html(str);
+								}
+								
 							},
 							error : function(xhr, status, error){
-								
+								console.log(error);
 							}
 						});
 					}
@@ -1340,25 +1449,38 @@ main {
 				$(this).siblings().removeClass("selected");
 				
 				const title = $(this).text();
+				
+				console.log(title);
+				
 				$(".section_movie_title").text("영화 - " + title);
 				$(".simple_info_content_movie").text(title);
 				
 				const date = $(".section_schedule_title").text();
-				
-				if(date.length > 5){
+				if(date.length > 7){
 					$(".section_schedule_title").text("날짜 / 시간");
 					$("#section_schedule_date").children("li").removeClass("selected");	
 					$(".simple_info_content_movie").text("");
 				}
 			});
 			
-			
+			$(".room_detail_info").on("click", function(){
+				console.log($(this));
+				console.log("aaaa");
+			});
 		});
+		
+		function getSeatLeft(roomNo){
+			return $.ajax({
+            	url : "http://localhost:9001/api/v1/reservation/seat/left/" + roomNo,
+            	method : "GET",
+            	dataType : "text"
+            });
+		}
 		
 	</script>
 </body>
 </html>
 
-	
+
 
 

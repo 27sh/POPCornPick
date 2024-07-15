@@ -2,20 +2,23 @@ package com.example.POPCornPickApi.controller.seowon0825;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.dto.EventDto;
 import com.example.POPCornPickApi.entity.Event;
 import com.example.POPCornPickApi.service.EventService;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/event")
 public class EventController {
@@ -51,6 +54,7 @@ public class EventController {
 				return "파일 저장 중 에러 발생" + e.getMessage();
 			}
 		}
+		
 		boolean result = eventService.registEvent(event);
 		if(result) {
 			System.out.println(result);
@@ -59,6 +63,26 @@ public class EventController {
 			System.out.println(result);
 			return "다시 시도해 주세요.";
 		}
-	
 	}
+	
+	@GetMapping
+	public List<Event> getAllEventList() {
+		List<Event> list = eventService.getAllEventList();
+		
+		return list;
+	}
+	
+	@GetMapping("/detail")
+	public ResponseEntity<Event> getEventDetail(@RequestParam("eventNo") Long eventNo) {
+		Event detail = eventService.getEventDetail(eventNo);
+		System.out.println("eventDetail : " + detail);
+		if(detail != null) {
+			return ResponseEntity.ok(detail);
+		} else {
+			return ResponseEntity.badRequest().body(null);
+		}
+	}
+	
+	
+	
 }

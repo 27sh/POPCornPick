@@ -9,22 +9,27 @@ public class CinemaController {
 	
 	@RequestMapping("/registForm")
 	public String registForm() {
-		return "common/cinemaForm";
+		return "admin/cinemaForm";
 	}
 	
 	@RequestMapping("/list")
 	public String getCinemaList() {
-		return "common/cinemaList";
+		return "admin/cinemaList";
 	}
 	
 	@RequestMapping("/detail")
 	public String getCinemaDetail() {
-		return "common/cinemaDetail";
+		return "admin/cinemaDetail";
 	}
 	
 	@RequestMapping("/roomList")
 	public String cinemaRoomList() {
-		return "common/cinemaRoomList";
+		return "admin/cinemaRoomList";
+	}
+	
+	@RequestMapping("/roomDetail")
+	public String cinemaRoomSeatDetail() {
+		return "admin/cinemaRoomDetail";
 	}
 	
 }

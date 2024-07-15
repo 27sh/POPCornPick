@@ -2,6 +2,7 @@ package com.example.POPCornPickApi.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,15 @@ public class EventService {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public List<Event> getAllEventList(){
+		return eventRepository.findAll();
+	}
+	
+	public Event getEventDetail(Long eventNo) {
+		Optional<Event> optionalEvent = eventRepository.findById(eventNo);
+		Event eventDetail = optionalEvent.orElse(null);
+		return eventDetail;
 	}
 }

@@ -20,12 +20,63 @@ main {
 main #container {
 	width:900px;
 	min-height:700px;
-	border: 1px solid #ccc;
 	box-sizing:border-box;
 }
 
 .sidebar-box2 p:nth-child(3) a{
 	color: #816bff !important;
+}
+
+h2{
+	margin-bottom: 20px;
+	font-weight: 400;
+	font-size: 22px;
+}
+
+table, tr, th, td{
+	border-collapse:collapse;
+	border:1px solid #eee;
+	border-right:0;
+	border-left:0;
+	padding:20px;
+	text-align:center;
+}
+
+select {
+	width: 150px;
+	height: 35px;
+	border: 1px solid #ccc;
+	color: #666;
+	font-family: "Pretendard Variable", Pretendard;
+	margin-bottom: 50px;
+}
+
+#resultCinemaName{
+ 	color: #816bff;
+ 	margin-bottom: 20px;
+	font-weight: 700;
+	font-size: 22px;
+}
+
+#cinemaRoomList{
+	width:100%;
+}
+
+#cinemaRoomList .table{
+	width:100%;
+	margin:0 auto;
+	
+}
+#cinemaRoomList .table .roomTypeNo{
+	width:100px;
+}
+
+#cinemaRoomList .table .smallType .seatState .detailButton{
+	width:100px;
+}
+
+#cinemaRoomList{
+	text-align: center;
 }
 </style>
 </head>
@@ -38,21 +89,33 @@ main #container {
 			<%@ include file="../layout/cinemaSideBar.jsp"%>
 		</div>
 		<div id="container">
-			<h1>지점별 상영관 관리</h1>
-<!-- 		<select id="cinemaLocation" name="cinemaLocation" required> -->
-<!-- 			<option value="all" selected>지역선택</option> -->
-<!-- 			<option value="seoul">서울</option> -->
-<!-- 			<option value="gyeonggi_incheon">경기/인천</option> -->
-<!-- 			<option value="chungcheong_daejeon">충청/대전</option> -->
-<!-- 			<option value="jeonla_gwangju">전라/광주</option> -->
-<!-- 			<option value="gyeongbuk_daegu">경북/대구</option> -->
-<!-- 			<option value="gyeongnam_busan_ulsan">경남/부산/울산</option> -->
-<!-- 			<option value="gangwon">강원</option> -->
-<!-- 			<option value="jeju">제주</option> -->
-<!-- 		</select> -->
+			<h2>지점별 상영관 관리</h2>
+			<select id="cinemaLocation" name="cinemaLocation" required>
+				<option value="all" selected>지역선택</option>
+				<option value="seoul">서울</option>
+				<option value="gyeonggi_incheon">경기/인천</option>
+				<option value="chungcheong_daejeon">충청/대전</option>
+				<option value="jeonla_gwangju">전라/광주</option>
+				<option value="gyeongbuk_daegu">경북/대구</option>
+				<option value="gyeongnam_busan_ulsan">경남/부산/울산</option>
+				<option value="gangwon">강원</option>
+				<option value="jeju">제주</option>
+			</select>
 			<select id="cinemaName" name="cinemaName" required></select>
 			<div id="resultCinemaName"></div>
-			<div id="roomList"></div>
+			<div id="cinemaRoomList">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col" class="roomTypeNo">상영관 명</th><th scope="col" class="smallType">구분</th><th scope="col" class="seatState">좌석현황</th><th scope="col" class="detailButton">관리</th>
+						</tr>
+					</thead>
+					<tbody id="roomList">
+					
+					</tbody>					
+				</table>
+			</div>
+			
 			<!-- 1-1. 페이지 로딩 될 때 cinemaName 옵션 현재 존재하는 지점 목록 -->
 			<!-- 1-2. 페이지 로딩 될 때 지역 옵션 미선택시 상영관을 선택해달라는 문구 -->
 			<!-- 2. 지역 선택 시 지점목록 해당 지역에 관한 지점목록만 표시  -->
@@ -68,7 +131,7 @@ main #container {
 			url : "http://localhost:9001/api/v1/cinema/list",
 			dataType : 'json',
 			success : function(data){
-				let cinema = '<option value="" selected>선택</option>';
+				let cinema = '<option value="" selected>지점선택</option>';
 				for(let i = 0 ; i < data.length ; i++){
 					console.log(data[i].cinemaName);
 					cinema += '<option id="option'+ i +'" value="'+ data[i].cinemaName +'">'+ data[i].cinemaName +'</option>';
@@ -92,24 +155,20 @@ main #container {
 				success : function(data){
 
 					if(data != null && data.length > 0){
-						let table = '<table border="1"><tr><th scope="col">상영관 명</th><th scope="col">구분</th><th scope="col">좌석현황</th><th scope="col">관리</th></tr><tbody class="table-group-divider">';
+						let table = '';
 
 						for (let i = 0; i < data.length; i++) {
-							table += '<div class="qna-list-area">';
 							table += '<tr>';
 							table += '<td>' + data[i].roomTypeNo + '관' + '</td>';
 							table += '<td>' + data[i].smallType + '</td>';
-							table += '<td>' + data[i].bookedCnt + '/' + data[i].total + '</td>';
-							table += '<td>' + data[i].roomNo + '</td>';
-							table += '<td><button><a href="">자세히 보기</a></button></td>';
+							table += '<td>' + data[i].bookedCnt + ' / ' + data[i].total + '</td>';
+							table += '<td><button><a href="/cinema/roomDetail?roomNo=' + data[i].roomNo + '">자세히 보기</a></button></td>';
 							table += '</tr>';
-							table += '</div>';
 						}
-						table += '</tbody></table>';
 						document.getElementById("roomList").innerHTML = table;
 						document.getElementById("resultCinemaName").innerHTML = data[1].cinemaName;
 					} else {
-						document.getElementById("roomList").innerHTML = "문의 내역이 없습니다.";
+						document.getElementById("roomList").innerHTML = "지점을 선택해 주세요.";
 					}
 				},
 				error : function(e){

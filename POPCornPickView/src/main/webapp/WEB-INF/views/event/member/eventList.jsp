@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관람관 등록</title>
+<title>이벤트 목록</title>
 <style>
 main {
 	width: 1200px;
@@ -34,11 +34,11 @@ h2{
 </head>
 <body>
 	<header>
-		<%@ include file="../layout/adminHeader.jsp"%>
+		<%@ include file="../../layout/header.jsp"%>
 	</header>
 	<main>
 		<div class="sidebar-container">
-			<%@ include file="../layout/cinemaSideBar.jsp"%>
+			<%@ include file="../../layout/cinemaSideBar.jsp"%>
 		</div>
 		<div id="container">
 		</div>

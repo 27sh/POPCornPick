@@ -22,7 +22,7 @@ main #container {
 	box-sizing:border-box;
 }
 
-.sidebar-box2 p:nth-child(3) a{
+.sidebar-box2 p:nth-child(2) a{
 	color: #816bff !important;
 }
 
@@ -100,11 +100,11 @@ textarea{
 </head>
 <body>
 	<header>
-		<%@ include file="../layout/adminHeader.jsp"%>
+		<%@ include file="../../layout/adminHeader.jsp"%>
 	</header>
 	<main>
 	<div class="sidebar-container">
-			<%@ include file="../layout/serviceSideBar.jsp"%>
+			<%@ include file="../../layout/serviceSideBar.jsp"%>
 		</div>
 		<div id="container">
 			<h2>이벤트 등록</h2>

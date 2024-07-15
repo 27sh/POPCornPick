@@ -144,7 +144,7 @@
         position: absolute; /* 절대 위치 설정 */
         top: 20px;
         bottom: 20px;
-        left: 50%;
+        left: 55%;
         border-left: 1px solid lightgray; /* 세로 줄 */
     }
     #main-notice h4, #main-notice p, #main-notice button {
@@ -152,8 +152,15 @@
         vertical-align: middle;
         margin-right: 10px;
     }
+    #main-notice button {
+    	background-color: transparent;
+    	border: 1px solid lightgray;
+	    border-radius: 50px;
+	    padding: 3px 10px;
+    }
+    
     #main-notice h4 {
-        margin: 0;
+        margin: 0 10px 0 0;
     }
     hr {
         border: 0;
@@ -166,7 +173,17 @@
         margin-right: 10px;
     }
     #main-cs-high h4 {
-        margin: 0;
+        margin: 0 10px 38px 0;
+    }
+    
+    #etc-button {
+    	margin-top: 10px;
+    }
+    
+    #etc-button button {
+    	padding: 5px 10px;
+	    border: none;
+	    border-radius: 5px;
     }
 </style>
 <script>
@@ -357,9 +374,9 @@
             <div id="main-cs-high">
                 <h4>고객센터</h4>
                 <div id="etc-cs-info">
-                    <p>1544-1122</p>
+                    <p style="font-weight: bold; margin: 0 0 2px 0;">1544-1122</p>
                     <p>고객센터 운영시간 (평일 09:00~18:00)</p>
-                    <p>업무시간 외 자동응답 안내 가능합니다.</p>
+                    <p style="color: lightgray;">업무시간 외 자동응답 안내 가능합니다.</p>
                 </div>
             </div>
             <div id="etc-button">

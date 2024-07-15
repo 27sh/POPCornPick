@@ -9,7 +9,7 @@ public class RoomController {
 
 	@RequestMapping("/registForm")
 	public String registForm() {
-		return "common/roomForm";
+		return "admin/roomForm";
 	}
 	
 	@RequestMapping("/sRoomDetail")

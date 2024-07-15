@@ -138,7 +138,9 @@
                                             var event = {
                                                 title: item.movieShowDetail.movie.title,
                                                 start: item.start,
-                                                end: item.end
+                                                end: item.end,
+                                                borderColor: item.movieShowDetail.movie.color,
+                                                backgroundColor: item.movieShowDetail.movie.color
                                             };
                                             events.push(event);
                                         });

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.POPCornPickApi.entity.Faq;
 import com.example.POPCornPickApi.service.FaqService;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/admin")
 public class FaqController {

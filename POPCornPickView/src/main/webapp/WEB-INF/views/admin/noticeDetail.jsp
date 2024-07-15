@@ -140,20 +140,40 @@ button:hover {
 	
 	
 
-// 	function(event){
-// 		$.ajax({
-// 			url : "",
-// 			method : "",
-// 			success : function(notmd){
-				
-// 			},
-// 			error : function(xhr, status, error){
-// 				console.log(error);
-// 			}
-			
-// 		})
+	function noticemodify(event){
+	const noticeno = "${noticeNo}";
+	const noticetitle= $("#title").val();
+	const noticecontent= $("#content").val();
+	const noticefile= $("#file").val();
 		
-// 	}
+	console.log(noticeno);
+	console.log(noticetitle);
+	console.log(noticecontent);
+	console.log(noticefile);
+	
+	
+		$.ajax({
+			url : "http://localhost:9001/api/v1/admin/announcementput",
+			enctype : "multipart/form-data",
+			method : "PUT",
+			contentType : "application/json",
+			data : JSON.stringify({
+				noticeNo : noticeno,
+				noticeTitle : noticetitle,
+				noticeContent : noticecontent,
+				noticeFile :noticefile,
+			}),
+			success : function(noticeModify){
+				alert("노티스모디퐈이 수정완료");
+				window.location.href="/admin/noticeList";
+			},
+			error : function(xhr, status, error){
+				console.log(error);
+			}
+			
+		})
+		
+	}
 	
 	
 	

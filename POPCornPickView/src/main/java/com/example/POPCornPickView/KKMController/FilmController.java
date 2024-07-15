@@ -13,4 +13,10 @@ public class FilmController {
 		return "movieList";
 	}
 	
+	@RequestMapping("/movieDetail")
+	public String movieDetail() {
+		
+		return"common/movieDetail";
+	}
+	
 }

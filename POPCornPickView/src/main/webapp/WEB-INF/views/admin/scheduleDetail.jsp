@@ -120,7 +120,7 @@
                                     	
 
                                     	$.ajax({
-                                    		url: "http://localhost:9001/api/v1/schedule/" + roomNo + "/" + title,
+                                    		url: "http://localhost:9001/api/v1/schedule/" + roomNo,
                                             method: "PUT",
                                             contentType: "application/json", // JSON 형식으로 데이터 전송
                                             data: JSON.stringify(saveData),

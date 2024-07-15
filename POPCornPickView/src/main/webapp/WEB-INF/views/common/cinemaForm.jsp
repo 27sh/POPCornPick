@@ -69,11 +69,6 @@ input[type="file"]{
 	margin-bottom: 20px;
 }
 
-input #file-upload-button {
-	width: 100px;
-	height: 25px;
-}
-
 #submitWrite {
 	padding: 15px 50px;
 	font-family: "Pretendard Variable", Pretendard;
@@ -96,7 +91,7 @@ input #file-upload-button {
 			<%@ include file="../layout/cinemaSideBar.jsp"%>
 		</div>
 		<div id="container">
-			<h2>영화관 등록</h2>
+			<h2>지점 등록</h2>
 			<!-- 영화관 등록 -->
 			<div id="cinemaFormBox">
 			<form name="cinemaFrm">

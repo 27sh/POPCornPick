@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.dto.EventDto;
 import com.example.POPCornPickApi.entity.Event;
 import com.example.POPCornPickApi.repository.EventRepository;
 
@@ -23,4 +24,15 @@ public class EventService {
                 .collect(Collectors.toList());
         return currentEvents;
     }
+	
+	public boolean registEvent(Event event) {
+		try {
+			event = eventRepository.save(event);
+			return true;
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

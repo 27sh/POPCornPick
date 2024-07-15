@@ -14,7 +14,7 @@ import com.example.POPCornPickApi.service.RoomService;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class RoomController {
 
 	@Autowired

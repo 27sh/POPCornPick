@@ -15,7 +15,17 @@ public class EventController {
 
 	@RequestMapping("/regist")
 	public String eventRegistForm() {
-		return "common/eventForm";
+		return "event/admin/eventForm";
+	}
+	
+	@RequestMapping("/allList")
+	public String eventAllList() {
+		return "event/admin/eventList";
+	}
+	
+	@RequestMapping("/detail")
+	public String eventDetail() {
+		return "event/admin/eventDetail";
 	}
 	
 

@@ -89,7 +89,7 @@ ul {
 		<div class="sidebar-box sidebar-box1">
 			<h3>지점</h3>
 			<p><a href="/cinema/registForm">지점 등록</a></p>
-			<p><a href="/cinema/list">지점 관리</a></p>
+			<p><a href="/cinema/list">지점 정보 관리</a></p>
 		</div>
 		<div class="sidebar-box sidebar-box2">
 			<h3>관람관</h3>

@@ -80,6 +80,18 @@ input[type="file"]{
 	color:#fff;
 	margin-left: 200px;
 }
+
+#submitModify{
+	padding: 15px 50px;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	cursor: pointer;
+	margin: 0 10px;
+	background: #816bff;
+	border: 1px solid #816bff;
+	color:#fff;
+	margin-left: 200px;
+}
 </style>
 </head>
 <body>

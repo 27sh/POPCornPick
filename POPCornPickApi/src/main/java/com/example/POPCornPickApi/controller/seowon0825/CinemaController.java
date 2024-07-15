@@ -28,7 +28,7 @@ import com.example.POPCornPickApi.service.CinemaService;
 import com.example.POPCornPickApi.service.RoomService;
 import com.example.POPCornPickApi.service.SeatService;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/cinema")
 public class CinemaController {

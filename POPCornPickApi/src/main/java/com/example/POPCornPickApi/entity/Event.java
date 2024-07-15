@@ -34,5 +34,8 @@ public class Event extends BaseEntity{
 	private Date endEvent;
 	
 	@Column(nullable = true)
-	private String eventFile;
+	private String eventImgOriginName;
+	
+	@Column(nullable = true)
+	private String eventImgNewName;
 }

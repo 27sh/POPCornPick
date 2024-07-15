@@ -87,9 +87,9 @@ ul {
 			<h2>극장</h2>
 		</div>
 		<div class="sidebar-box sidebar-box1">
-			<h3>극장</h3>
-			<p><a href="/cinema/registForm">극장 등록</a></p>
-			<p><a href="/cinema/list">극장 관리</a></p>
+			<h3>지점</h3>
+			<p><a href="/cinema/registForm">지점 등록</a></p>
+			<p><a href="/cinema/list">지점 관리</a></p>
 		</div>
 		<div class="sidebar-box sidebar-box2">
 			<h3>관람관</h3>

@@ -117,37 +117,33 @@ button:hover {
 	
 	<script>
 		
-	function noticeWrite(evnet){
-		var noticecategory = $("#category").val();
-		var noticetitle = $("#title").val();
-		var noticecontent = $("#content").val();
-		var noticefile = $("#file").val();
+	function noticeWrite(event){
+	    event.preventDefault();  // 이벤트 기본 동작 중지 (폼 제출 등)
+	    var formData = new FormData();
+	    formData.append("noticeCategory", $("#category").val());
+	    formData.append("noticeTitle", $("#title").val());
+	    formData.append("noticeContent", $("#content").val());
+	    formData.append("noticeFile", $("#file")[0].files[0]);
 		
-		console.log(noticecategory);
-		console.log(noticetitle);
-		console.log(noticecontent);
-		console.log(noticefile);
-		
-		$.ajax({
-			url : "http://localhost:9001/api/v1/admin/announcement",
-			enctype : "multipart/form-data",
-			method : "POST",
-			contentType : "application/json",
-			data : JSON.stringify({
-				noticeCategory : noticecategory,
-				noticeTitle : noticetitle,
-				noticeContent : noticecontent,
-				noticeFile : noticefile
-			}),
-			success : function(response){
-				alert("공지사항이 등록되었습니다");
-				//window.location.href=""; 나중에 여기 달아줘야함/////////////////////////////////////////////////////////////////////////////////////////////////
-			},
-			error : function(xhr, status, error){
-				console.log(error)
-			}
-		})
+	    console.log(formData);
+	    
+	    $.ajax({
+	        url: "http://localhost:9001/api/v1/admin/announcement",
+	        method: "POST",
+	        enctype: "multipart/form-data",
+	        processData: false,  // 파일 데이터를 문자열로 변환하지 않음
+	        contentType: false,  // jQuery가 자동으로 Content-Type을 설정하지 않도록 함
+	        data: formData,
+	        success: function(response){
+	            alert("공지사항이 등록되었습니다");
+	            // window.location.href = ""; 나중에 여기 추가해줘야 함
+	        },
+	        error: function(xhr, status, error){
+	            console.log(error);
+	        }
+	    });
 	}
+
 	
 	function historyback(event){
 		const result = confirm('정말로 취소하시겠습니까');

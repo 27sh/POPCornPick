@@ -134,11 +134,11 @@ a:hover{
   <div class="container">
         <h1>공지사항 목록</h1>
         <div class="tab-menu">
-            <div id="">공지사항</div>
-            <div id="">이벤트</div>
-            <div id="">FAQ</div>
-            <div id="">문의</div>
-            <div id="">신고</div>
+            <div id="" onclick="">공지사항</div>
+            <div id="" onclick="">이벤트</div>
+            <div id="" onclick="">FAQ</div>
+            <div id="" onclick="">문의</div>
+            <div id="" onclick="">신고</div>
         </div>
         <hr>
         <br>
@@ -171,6 +171,10 @@ a:hover{
     </div>
 <script>
 	$(document).ready(function(){
+		
+		var currentPage = 1;
+        var itemsPerPage = 10;
+		
 		$.ajax({
 			url : "http://localhost:9001/api/v1/admin/announcementList",
 			mehtod : "GET",
@@ -196,20 +200,21 @@ a:hover{
 						
 						tableBody.append(row);
 						
-						counter++;
-						console.log(counter);
-						console.log(not.noticeCategory);
-						console.log(not.noticeContent);
-						console.log(formattedDate);
-						
 					})
 			},
 			error : function(xhr, status, error){
 				console.log(error);
 			}
 		});
-	});
+	}
+	
+	
+	
+	);
 
+		
+		
+	
 	
 	
 	

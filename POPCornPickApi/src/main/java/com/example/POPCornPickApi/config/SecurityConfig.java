@@ -59,7 +59,7 @@ public class SecurityConfig {
 								
 								CorsConfiguration configuration = new CorsConfiguration();
 								
-								 	configuration.setAllowedOrigins(Collections.singletonList("http://localhost:9009"));
+								 	configuration.setAllowedOrigins(Collections.singletonList("http://localhost:9001"));
 								 	configuration.setAllowedMethods(Collections.singletonList("*"));
 								 	configuration.setAllowCredentials(true);
 								 	configuration.setAllowedHeaders(Collections.singletonList("*"));

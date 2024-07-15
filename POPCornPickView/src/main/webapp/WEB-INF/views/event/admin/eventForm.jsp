@@ -146,36 +146,6 @@ textarea{
 		<label for="q4a2">약속에 맞춰서 나가야지!</label>
 	</div>
 				</textarea><br>
-<!-- 				<div id="mbtiForm"> -->
-<!-- 					<div> -->
-<!-- 						<p>1. 친구들을 만나고 집으로 돌아갈 때 당신은?</p> -->
-<!-- 						<input type="radio" id="q1a1" name="q1" value="E"> -->
-<!-- 						<label for="q1a1">아~ 잘놀았다! 충전완료~!</label> -->
-<!-- 						<input type="radio" id="q1a2" name="q1" value="I"> -->
-<!-- 						<label for="q1a2">아~ 잘놀았다! 이제 집에 가서 쉬어야지...</label> -->
-<!-- 					</div> -->
-<!-- 					<div> -->
-<!-- 						<p>2. 말이 술집에 들어가서 하는 말은?</p> -->
-<!-- 						<input type="radio" id="q2a1" name="q2" value="N"> -->
-<!-- 						<label for="q2a1">우유랑 당근 주문요~</label> -->
-<!-- 						<input type="radio" id="q2a2" name="q2" value="S"> -->
-<!-- 						<label for="q2a2">말이 술집에 왜 들어가..?</label> -->
-<!-- 					</div> -->
-<!-- 					<div> -->
-<!-- 						<p>3. 달을 봤는데 너 생각이 나서 전화했어!</p> -->
-<!-- 						<input type="radio" id="q3a1" name="q3" value="F"> -->
-<!-- 						<label for="q3a1">(헐 감동이야ㅠㅜ)</label> -->
-<!-- 						<input type="radio" id="q3a2" name="q3" value="T"> -->
-<!-- 						<label for="q3a2">(왜..?)</label> -->
-<!-- 					</div> -->
-<!-- 					<div> -->
-<!-- 						<p>4. 약속이 잡혔다면?</p> -->
-<!-- 						<input type="radio" id="q4a1" name="q4" value="J"> -->
-<!-- 						<label for="q4a1">약속에 늦지 않게 미리 나간다.</label> -->
-<!-- 						<input type="radio" id="q4a2" name="q4" value="P"> -->
-<!-- 						<label for="q4a2">약속에 맞춰서 나가야지!</label> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
 				<label for="eventFile"><b>파일등록<span>*</span></b></label>
 				<input type="file" name="eventFile"><br>
 				<input type="button" id="submitWrite" value="등록하기" onclick="submitMbti(event)">

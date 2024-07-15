@@ -27,6 +27,16 @@ public class EventController {
 	public String eventDetail() {
 		return "event/admin/eventDetail";
 	}
+	// 공통, 회원 
+	@RequestMapping("/commonList")
+	public String eventCommonList() {
+		return "event/member/eventList";
+	}
+	
+	@RequestMapping("/commonDetail")
+	public String eventCommonDetail() {
+		return "event/member/eventDetail";
+	}
 	
 
 }

@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.service.ReservationService;
 
 @RestController
-@CrossOrigin("*")
+// @CrossOrigin("*")
 @RequestMapping("/api/v1/reservation")
 public class ReservationController {
 	
@@ -117,18 +117,22 @@ public class ReservationController {
 	}
 	
 	@GetMapping("/schedule/list/{cinemaName}/{movieTitle}/{date}")
-	public ResponseEntity<String>root(@PathVariable("cinemaName") String cinemaName, 
+	public ResponseEntity<List<List<Schedule>>>root(@PathVariable("cinemaName") String cinemaName, 
 			@PathVariable("movieTitle") String movieTitle, @PathVariable("date") String date) {
-		
-		System.out.println("cinemaName " + cinemaName);
-		System.out.println("movieTitle " + movieTitle);
-		System.out.println("date " + date);
-		
-		
-		reservationService.getScheduleList(cinemaName, movieTitle, date);
-		
+
+		List<List<Schedule>> scheduleListList = reservationService.getScheduleList(cinemaName, movieTitle, date);
+
+		if(scheduleListList != null) {
+			System.out.println("success");
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(scheduleListList);
+		}
+
+		System.out.println("fail");
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(null);
 	}
+
+	
 	
 }

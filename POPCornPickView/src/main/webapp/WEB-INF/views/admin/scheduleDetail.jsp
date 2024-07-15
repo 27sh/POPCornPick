@@ -69,105 +69,169 @@
         <script>
 
             // 1. 기본 캘린더 불러오기
-            $(document).ready(function () {
-                var calendarEl = document.getElementById('calendar');
-                var roomNo = ${ roomNo };
-                localStorage.setItem('roomNo', roomNo);
-             
-                $.ajax({
-                    url: "http://localhost:9001/api/v1/schedule/" + roomNo,
-                    method: "GET",
-                    success: function (schedule) {	
-                    	var events = [];
-                        schedule.forEach(function (item) {
+        $(document).ready(function () {        	
+            var calendarEl = document.getElementById('calendar');
+            var roomNo = ${roomNo};       
+            localStorage.setItem('roomNo', roomNo);
+      		
+            function toKST(date) {
+                return new Date(date).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+            }
+            $.ajax({
+                url: "http://localhost:9001/api/v1/schedule/" + roomNo,
+                method: "GET",
+                success: function (schedule) {
+                    var events = [];
+                    schedule.forEach(function (item) {
+                    	// console.log(item);
+                    	var start = new Date(item.start);
+                        var end = new Date(start.getTime() + item.movieShowDetail.movie.showTm * 60000); // showTm 분 후의 시간 계산
+                        
+                        var event = {
+                            title: item.movieShowDetail.movie.title,
+                            start: start,
+                            end: end,
+                            borderColor: item.movieShowDetail.movie.color,
+                            backgroundColor: item.movieShowDetail.movie.color,
+                            extendedProps: {
+                                detailNo: item.movieShowDetail.detailNo // detailNo를 extendedProps에 추가
+                            }
+                        };
+                        events.push(event);
+                    });
+                    
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                    	
+                        customButtons: {
+                            mySaveButton: {
+                                text: '저장',                 
+                                click: function () {
+                                    if(confirm('저장하시겠습니까?')){
+                                    	var allEvents = calendar.getEvents();
+                                        var saveData = allEvents.map(event => {                                    	
+                                            return {
+                                                title: event.title,
+                                                detailNo: event.extendedProps.detailNo,
+                                                start: event.start.toISOString(), // ISO 형식으로 변환
+                                                end: event.end.toISOString(),     // ISO 형식으로 변환
+                                                roomNo: roomNo
+                                            };
+                                        });
+                                    	
 
-                            var event = {
-                                title: item.movieShowDetail.movie.title,
-                                start: item.start,
-                                end: item.end,
-                                borderColor: item.movieShowDetail.movie.color,
-                                backgroundColor: item.movieShowDetail.movie.color // Assuming the color is part of the movie detail
-                            };
-                            events.push(event);
-                        });
-
-                        var calendar = new FullCalendar.Calendar(calendarEl, {
-                            customButtons: {
-                                myCustomButton: {
-                                    text: '수정하기'
-                                },
-                                mySaveButton: {
-                                    text: '저장하기'
-                                },
-                                slotPlusButton: {
-                                    text: '영화 추가하기',
-                                    click: function () {
-                                        $("#exampleModal").modal("show");
+                                    	$.ajax({
+                                    		url: "http://localhost:9001/api/v1/schedule/" + roomNo + "/" + title,
+                                            method: "PUT",
+                                            contentType: "application/json", // JSON 형식으로 데이터 전송
+                                            data: JSON.stringify(saveData),
+                                            success: function(save){
+                                            	console.log(save);
+                                            	alert("저장되었습니다.");
+                                            },
+                                            error: function (error) {
+                                                console.log("에러 :", error);
+                                                console.log("에러 상세 정보: ", error.responseText);
+                                            }
+                                    	});
                                     }
                                 }
                             },
-                            headerToolbar: {
-                                left: 'prev next today',
-                                center: 'title',
-                                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-                            },
-                            footerToolbar: {
-                                right: 'myCustomButton,mySaveButton,slotPlusButton'
-                            },
-                            titleFormat: function (date) {
-                                return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
-                            },
-                            dayCellContent: function (info) {
-                                var number = document.createElement("a");
-                                number.classList.add("fc-daygrid-day-number");
-                                number.innerHTML = info.dayNumberText.replace("일", "").replace("日", "");
-                                if (info.view.type === "dayGridMonth") {
-                                    return {
-                                        html: number.outerHTML
-                                    };
-                                }
-                                return {
-                                    domNodes: []
-                                };
-                            },
-                            events: events,
-
-                            eventReceive: (eventDropped) => {
-                            	console.log(eventDropped.draggedEl);
-                            	
-                            	eventDropped.event.setProp('backgroundColor', 
-                                        eventDropped.draggedEl.getAttribute('data-color'));
-                            },
-
-                            selectable: true,
-                            nowIndicator: true,
-                            locale: 'ko',
-                            editable: true,
-                            droppable: true,
-                            drop: function (arg) {
-                                if (document.getElementById('drop-remove').checked) {
-                                    arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                            myDeleteButton: {
+                                text: '삭제',
+                                click: function () {
+                                    alert('삭제 confirm창 한번 더 띄워야됨');
                                 }
                             },
-                            eventDrop: function (info) {
-                                console.log('Event dropped');
-                                console.log('Event: ' + info.event.title);
-                                console.log('Start: ' + info.event.start.toISOString());
-                                console.log('End: ' + (info.event.end ? info.event.end.toISOString() : 'N/A'));
-                            },
-                            eventResize: function (info) {
-                                console.log('Event resized');
-                                console.log('Event: ' + info.event.title);
-                                console.log('Start: ' + info.event.start.toISOString());
-                                console.log('End: ' + info.event.end.toISOString());
+                            slotPlusButton: {
+                                text: '영화 추가하기',
+                                click: function () {
+                                    $("#exampleModal").modal("show");
+                                }
                             }
-                        });
+                        },
+                        headerToolbar: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                        },
+                        footerToolbar: {
+                            right: 'mySaveButton,myDeleteButton,slotPlusButton'
+                        },
+                        titleFormat: function (date) {
+                            return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+                        },
+                        dayCellContent: function (info) {
+                            var number = document.createElement("a");
+                            number.classList.add("fc-daygrid-day-number");
+                            number.innerHTML = info.dayNumberText.replace("일", "").replace("日", "");
+                            if (info.view.type === "dayGridMonth") {
+                                return {
+                                    html: number.outerHTML
+                                };
+                            }
+                            return {
+                                domNodes: []
+                            };
+                        },
+                        events: events,
+                        eventReceive: function (eventDropped) {
+                        	
+                        	console.log(eventDropped.event);
+                        	console.log(slots);
+                            var showTm = parseInt(eventDropped.draggedEl.getAttribute('data-showTm')); // 드래그된 요소에서 showTm 가져오기
+                            var start = eventDropped.event.start; // 드롭된 이벤트의 시작 시간
+                            var end = new Date(start.getTime() + showTm * 60000); // showTm 분 후의 시간 계산
 
-                        calendar.render();
-                    }
-                });
+                            eventDropped.event.setProp('backgroundColor', eventDropped.draggedEl.getAttribute('data-color'));
+                            eventDropped.event.setProp('borderColor', eventDropped.draggedEl.getAttribute('data-color'));
+                            eventDropped.event.setEnd(end); // 계산된 end 시간을 설정
+                            
+//                             for(i=0; i<slots.length, i++){
+//                             	if(eventDropped.event.title === slots[i].title){
+//                             		var detailNo;
+//                             		eventDropped.event.setExtendedProp('detailNo', detailNo);
+//                             	}
+//                             }
 
+                        },
+                        timeZone: 'local',
+                        navLinks: true,
+                        selectable: true,
+                        nowIndicator: true,
+                        locale: 'ko',
+                        editable: true,
+                        eventDurationEditable: false,
+                        droppable: true,  // 기본적으로 드롭 비활성화
+                        drop: function (arg) {
+                            if (document.getElementById('drop-remove').checked) {
+                                arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                            }
+                        },
+                        eventDrop: function (info) {
+                            console.log('Event dropped');
+                            console.log('Event: ' + info.event.title);
+                            console.log('Start: ' + toKST(info.event.start));
+                            console.log('End: ' + (info.event.end ? toKST(info.event.end) : 'N/A'));                      
+                        },
+                        datesSet: function (view) {
+                            if (view.view.type === 'dayGridMonth') {
+                                $('#external-events').hide();
+                                $('.fc-mySaveButton-button').hide();
+                                $('.fc-myDeleteButton-button').hide();
+                                $('.fc-slotPlusButton-button').hide();
 
+                            } else {
+                                $('#external-events').show();
+                                $('.fc-mySaveButton-button').show();
+                                $('.fc-myDeleteButton-button').show();
+                                $('.fc-slotPlusButton-button').show();
+                            }
+                        }
+                    });
+
+                    calendar.render();
+                }
+            });
                 // 2. 사용 할 영화 슬롯 가져오기(GET)
                 var containerEl = document.getElementById('external-events-list');
                 // FullCalendar의 Draggable 기능 초기화
@@ -217,10 +281,14 @@
                                 mainEventEl.setAttribute('data-color', color);
                             }
 
-
+	
                             var eventEl = document.createElement('div');
                             eventEl.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
                             eventEl.setAttribute('data-color', color); 
+                            if (matchingSlot) {
+                                eventEl.setAttribute('data-showTm', matchingSlot.showTm); // showTm 설정
+                            }
+                            
                             eventEl.appendChild(mainEventEl);
 
                             containerEl.appendChild(eventEl);
@@ -296,6 +364,8 @@
                     });
                 }
             });
+            
+            
 
 
         </script>

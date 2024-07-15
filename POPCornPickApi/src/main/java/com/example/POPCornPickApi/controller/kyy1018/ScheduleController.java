@@ -2,6 +2,7 @@ package com.example.POPCornPickApi.controller.kyy1018;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
+import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.ScheduleRepository;
 
@@ -45,6 +47,9 @@ public class ScheduleController {
 	
 	@Autowired
 	MovieRepository movieRepository;
+	
+	@Autowired
+	MovieShowDetailRepository movieShowDetailRepository;
 	
 	
 	
@@ -101,26 +106,57 @@ public class ScheduleController {
 	}
 	
 // 영화관 별 상영시간표 세부페이지
-	@GetMapping("/room/{roomNo}")
-	public ResponseEntity<List<Schedule>> scheduleDetail(@PathVariable("roomNo") Long roomNo) {
-		List<Schedule> list = scheduleRepository.findByRoom_RoomNo(roomNo);
-		return new ResponseEntity<>(list, HttpStatus.OK);
-	}
+//	@GetMapping("/room/{roomNo}")
+//	public ResponseEntity<List<Schedule>> scheduleDetail(@PathVariable("roomNo") Long roomNo) {
+//		List<Schedule> list = scheduleRepository.findByRoom_RoomNo(roomNo);
+//		return new ResponseEntity<>(list, HttpStatus.OK);
+//	}
 		
 			
-// 영화관 별 세부 상영시간표 수정
-	@PutMapping("/{regNo}")
-	public ResponseEntity<Schedule> scheduleSave(@PathVariable("regNo") Long regNo, @RequestBody ScheduleDto scheduleDto) {
-		Schedule schedule = scheduleRepository.findByRegNo(regNo).get();
-		System.out.println("현재 일정 목록 :" + schedule);
+	// 영화관 별 세부 상영시간표 수정
+	@PutMapping("/{roomNo}")
+	public ResponseEntity<List<Schedule>> scheduleSave(
+	        @PathVariable("roomNo") Long roomNo,
+	        @RequestBody List<ScheduleDto> scheduleDtos) {
 
-		schedule.setStart(scheduleDto.getStart());
-		schedule.setEnd(scheduleDto.getEnd());
-		
-		Schedule result = scheduleRepository.save(schedule);
-		
-		return new ResponseEntity<>(result, HttpStatus.OK);		
+		System.out.println("xxxxx");
+		System.out.println(scheduleDtos);
+	    // 기존 스케줄 목록을 가져옴
+	    List<Schedule> existingSchedules = scheduleRepository.findByRoom_RoomNo(roomNo);
+	    System.out.println("현재 일정 목록 :" + existingSchedules);
+	    
+	    List<Movie> mList = movieRepository.findAll();
+	    Optional<Room> rList= roomRepository.findById(roomNo);
+	    
+	    System.out.println(rList);
+	    
+	    // 기존 스케줄 목록을 삭제 (주석 해제 필요)
+	    // scheduleRepository.deleteAll(existingSchedules);
+
+	    // 새로운 스케줄 목록을 생성
+	    List<Schedule> newSchedules = scheduleDtos.stream().map(dto -> {
+	        Schedule schedule = new Schedule();
+	        schedule.setRoom(roomRepository.findById(dto.getRoomNo()).get());
+  
+	        if(movieShowDetailRepository.findById(dto.getDetailNo()) != null) {
+	        	schedule.setMovieShowDetail(movieShowDetailRepository.findById(dto.getDetailNo()).get());
+	        }else {
+	        	
+	        }
+	        
+	        
+	        schedule.setStart(dto.getStart());
+	        schedule.setEnd(dto.getEnd());
+	        return schedule;
+	    }).collect(Collectors.toList());
+
+	    // 새로운 스케줄 목록을 저장
+	    List<Schedule> savedSchedules = scheduleRepository.saveAll(newSchedules);
+
+	    return new ResponseEntity<>(savedSchedules, HttpStatus.OK);
 	}
+
+
 
 	
 }

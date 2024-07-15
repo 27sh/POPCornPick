@@ -19,7 +19,7 @@ $(document).ready(function() {
             const eventContentBox = document.createElement('div');
             eventContentBox.className = 'event-content-box';
             eventContentBox.innerHTML = 
-                '<img src="/img/' + event.eventFile + '" class="event-img" alt="Event Image">'
+                '<img src="/img/' + event.eventImgNewName + '" class="event-img" alt="Event Image">'
                 + '<p>' + event.eventTitle + '</p>'
                 + '<p>' + startDate + ' - ' + endDate + '</p>';
 

@@ -11,187 +11,175 @@
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/mainMovieList.css">
 <link rel="stylesheet" href="/css/mainEventList.css">
+<link rel="stylesheet" href="/css/mainYT.css">
 <script src="/js/mainMovieList.js"></script>
-<script src="/js/mainEventList.js"></script>
+<script src="/js/mainEventList.js"></script>    
+<script src="/js/mainYT.js"></script>    
 <!-- YouTube IFrame Player API 추가 -->
 <script src="https://www.youtube.com/iframe_api"></script>
 <style>
-    /* 필요에 따라 스타일 추가 */
-    #youtube-trailer {
-        position: relative;
-        background-color: black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 450px;
+    #sRoom-container {
+        width: 1200px;
     }
-    #ytplayer {
-        width: 100%; /* 원하는 너비로 조정 */
-        height: 100%;
-        z-index: 1;
-    }
-    .overlay-block {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: transparent;
-        z-index: 2;
-        display: flex;
-        justify-content: space-between;
-    }
-    
-    #yt-inner-block-left {
-    	width: 23%;
-    	color: black;
-    	background: linear-gradient(to right, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
-    }
-    
-    #yt-inner-block-right {
-    	width: 23%;
-    	color: black;
-    	background: linear-gradient(to left, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
-    }
-    
-    .youtube-overlay {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 1000px;
-        height: 100%;
-        display: flex;
-        justify-content: space-between;
-        z-index: 3;
-    }
-    .youtube-overlay .left {
-        width: 150px; /* 좌우 검은 영역 너비 조정 */
-        height: 100%;
-        background: linear-gradient(to right, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
-        position: absolute;
-    }
-    .youtube-overlay .right {
-        width: 150px; /* 좌우 검은 영역 너비 조정 */
-        height: 100%;
-        background: linear-gradient(to left, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
-    }
-    .youtube-overlay .middle {
-        width: 1000px; /* 가운데 투명 영역 너비 */
-        background-color: transparent;
-    }
-    #youtube-movie-info {
-        width: 850px;
-        position: absolute;
-        bottom: 150px;
-        color: white;
-        padding: 10px;
-    }
-    #youtube-movie-info button {
-        background-color: transparent;
-        color: white;
-        border: 1px solid;
-        padding: 8px 12px;
-        border-radius: 50px;
-        cursor: pointer;
-    }
-    #youtube-title {
-        color: white;
+    #sRoom-h1 {
         font-size: 30px;
         font-weight: bold;
+        padding: 10px;
+        margin-top: 10px;
     }
-    #youtube-content {
-        color: white;
+    #sRoom-img {
+        background-color: palegoldenrod;
+        width: 500px;
+        height: 250px;
+        float: left;
+        border-radius: 10px;
+        margin: 10px 50px;
+        background-size: cover;
+        background-position: center;
+    }
+    #sRoom-table {
+        margin: 10px;
+        width: 430px;
+        float: left;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    #sRoom-table td {
+        padding: 30px 0; /* 간격을 늘림 */
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        font-size: 20px;
+    }
+    .sRoom-option:hover {
+        cursor: pointer;
+    }
+    .clear {
+        clear: both;
+    }
+    
+    
+    #store-container {
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .store-item-box {
+        display: inline-block;
+        vertical-align: top;
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        margin: 30px;
+        padding: 10px;
+        width: 280px;
+        white-space: normal;
+    }
+    .store-high-container {
+        overflow: hidden;
+        padding: 10px 0 20px 0;
+    }
+    .store-high-container h3 {
+        float: left;
+        margin: 0;
+    }
+    .store-high-container .go-to-store {
+        float: right;
+    }
+
+    #pack-img, #store-movie-img, #gift-img {
+        background-color: gray;
+        width: 60px;
+        height: 60px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .store-info-box {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+    }
+    .store-info-box div {
+        margin-bottom: 5px;
+    }
+    .go-to-store{
+        background-color: transparent;
+        border: 1px solid lightgray;
+        border-radius: 50px;
+        padding: 5px 10px;
+    }
+
+    #pack-price, #store-movie-price, #gift-price {
+        font-weight: bold;
+    }
+
+    .item-box-info {
         padding: 10px 0;
     }
     
+        #etc-container {
+        width: 1000px;
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 0 30px;
+        white-space: nowrap;
+        position: relative; /* 부모 요소에 상대 위치 설정 */
+    }
+    #etc-right-container, #etc-left-container {
+        display: inline-block;
+        vertical-align: top;
+        white-space: normal;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+    
+    #etc-right-container {
+    	width: 55%;
+    }
+    
+    #etc-left-container {
+        text-align: center; /* 가운데 정렬 */
+        width: 45%;
+    }
+    #vertical-divider {
+        position: absolute; /* 절대 위치 설정 */
+        top: 20px;
+        bottom: 20px;
+        left: 50%;
+        border-left: 1px solid lightgray; /* 세로 줄 */
+    }
+    #main-notice h4, #main-notice p, #main-notice button {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+    #main-notice h4 {
+        margin: 0;
+    }
+    hr {
+        border: 0;
+        border-top: 1px solid lightgray;
+        margin: 20px 0; /* 상하 마진 */
+    }
+    #main-cs-high h4, #etc-cs-info {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+    #main-cs-high h4 {
+        margin: 0;
+    }
 </style>
 <script>
-    // 전역 변수로 player 선언
-    var player;
-
-    function initializePlayer() {
-        // 두 개의 동영상 ID 중 하나를 랜덤으로 선택
-        var videoIds = ['T9uolHEOqFg', 'EiCmnIaj4u8'];
-        var selectedVideoId = videoIds[Math.floor(Math.random() * videoIds.length)];
-
-        // 동영상 정보 업데이트
-        updateMovieInfo(selectedVideoId);
-
-        if (player && player.destroy) {
-            player.destroy();
-        }
-        
-        player = new YT.Player('ytplayer', {
-            videoId: selectedVideoId, // 랜덤으로 선택된 YouTube 동영상 ID
-            playerVars: {
-                'autoplay': 1,
-                'mute': 1, // 무음으로 설정
-                'controls': 0, // 제어 바 숨기기
-                'modestbranding': 1, // YouTube 로고 최소화
-                'rel': 0, // 관련 동영상 표시 안함
-                'iv_load_policy': 3, // 자막 숨기기
-                'playsinline': 1, // 인라인 재생
-                'showinfo': 0 // 동영상 정보 숨기기
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
-    }
-
-    // 동영상 정보 업데이트 함수
-    function updateMovieInfo(videoId) {
-        var title = '';
-        var content = '';
-
-        if (videoId === 'T9uolHEOqFg') {
-            title = '명탐정 코난: 100만 달러의 펜타그램';
-            content = '드디어 밝혀지는 괴도키드의 정체? <br>역대급 시리즈 흥행! 7월 17일 대개봉!';
-        } else if (videoId === 'EiCmnIaj4u8') {
-            title = '인사이드 아웃 2';
-            content = '디즈니·픽사의 대표작 <인사이드 아웃> <br>새로운 감정과 함께 돌아오다!';
-        }
-
-        document.getElementById('youtube-title').innerHTML = title;
-        document.getElementById('youtube-content').innerHTML = content;
-    }
-
-    // YouTube IFrame API가 로드되면 호출되는 함수
-    function onYouTubeIframeAPIReady() {
-        initializePlayer();
-    }
-
-    // 페이지 로드 시 초기화
     $(document).ready(function() {
-        // 유튜브 IFrame API 로드
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        // 사용자가 클릭 시 음소거 해제
-        $('#ytplayer').on('click', function() {
-            player.unMute();
+        $("#sRoom-IMAX").hover(function() {
+            $("#sRoom-img").css("background-image", "url('/img/IMAX.png')");
         });
-    });
-
-    // 플레이어가 준비되면 호출되는 함수
-    function onPlayerReady(event) {
-        event.target.playVideo(); // 동영상 자동 재생
-    }
-
-    // 플레이어 상태 변경 시 호출되는 함수
-    function onPlayerStateChange(event) {
-        if (event.data === YT.PlayerState.ENDED) {
-            player.playVideo(); // 동영상 반복 재생
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        onYouTubeIframeAPIReady();
+        $("#sRoom-4DX").hover(function() {
+            $("#sRoom-img").css("background-image", "url('/img/4DX.png')");
+        });
+        $("#sRoom-PrivateBox").hover(function() {
+            $("#sRoom-img").css("background-image", "url('/img/PRIVATEBOX.png')");
+        });
     });
 </script>
 </head>
@@ -201,19 +189,19 @@
     <div id="youtube-trailer">
         <div id="ytplayer"></div>
         <div class="overlay-block">
-        	<div id="yt-inner-block-left"></div>
-			<div class="youtube-overlay">
-	            <div class="left">
-	                <div id="youtube-movie-info">
-	                    <div id="youtube-title"></div>
-	                    <div id="youtube-content"></div>
-	                    <button id="youtube-go-detail">상세보기</button>
-	                </div>
-	            </div>
-	            <div class="middle"></div>
-	            <div class="right"></div>
-        	</div>
-        	<div id="yt-inner-block-right"></div>        	        
+            <div id="yt-inner-block-left"></div>
+            <div class="youtube-overlay">
+                <div class="left">
+                    <div id="youtube-movie-info">
+                        <div id="youtube-title"></div>
+                        <div id="youtube-content"></div>
+                        <button id="youtube-go-detail">상세보기</button>
+                    </div>
+                </div>
+                <div class="middle"></div>
+                <div class="right"></div>
+            </div>
+            <div id="yt-inner-block-right"></div>                
         </div>
     </div>
 </div>
@@ -248,6 +236,149 @@
         <button id="event-prev-page" class="hidden" onclick="eventPrevPage()"><img src="/img/arrowL.png" alt="이전"></button>
         <button id="event-next-page" class="hidden" onclick="eventNextPage()"><img src="/img/arrowL.png" alt="다음" style="transform: rotate(180deg);"></button>
     </div>
+    
+    <!-- 특별관 -->
+    <div id="sRoom-container">
+    <h1 id="sRoom-h1">특별관</h1>
+    <div>
+        <div id="sRoom-img" style="background-image: url('/img/IMAX.png');"></div>
+        <div id="sRoom-textBox">
+            <table id="sRoom-table">
+                <tr>
+                    <td id="sRoom-IMAX" class="sRoom-option">IMAX</td>
+                </tr>
+                <tr>
+                    <td id="sRoom-4DX" class="sRoom-option">4DX</td>
+                </tr>
+                <tr>
+                    <td id="sRoom-PrivateBox" class="sRoom-option">PRIVATE BOX</td>
+                </tr>
+            </table>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+	<!-- 스토어 -->
+	<div id="store-container">
+    <div class="store-item-box" id="pack-container">
+        <div class="store-high-container">
+            <h3>패키지</h3>
+            <button class="go-to-store">더보기</button>
+        </div>
+        <div class="item-box-info" id="pack-info">
+            <div id="pack-img"></div>
+            <div class="store-info-box">
+                <div id="pack-name">우리 패키지</div>
+                <div id="pack-price">62,000</div>    
+            </div>
+        </div>
+        <div class="item-box-info" id="pack-info">
+            <div id="pack-img"></div>
+            <div class="store-info-box">
+                <div id="pack-name">우리 패키지</div>
+                <div id="pack-price">62,000</div>    
+            </div>
+        </div>
+        <div class="item-box-info" id="pack-info">
+            <div id="pack-img"></div>
+            <div class="store-info-box">
+                <div id="pack-name">우리 패키지</div>
+                <div id="pack-price">62,000</div>    
+            </div>
+        </div>
+    </div>
+    <div class="store-item-box" id="store-movie-container">
+        <div class="store-high-container">
+            <h3>영화관람권</h3>
+            <button class="go-to-store">더보기</button>
+        </div>
+        <div class="item-box-info" id="store-movie-info">
+            <div id="store-movie-img"></div>
+            <div class="store-info-box">
+                <div id="store-movie-name">팝콘픽 영화관람권</div>
+                <div id="store-movie-price">13,000</div>
+            </div>
+        </div>
+        <div class="item-box-info" id="store-movie-info">
+            <div id="store-movie-img"></div>
+            <div class="store-info-box">
+                <div id="store-movie-name">팝콘픽 영화관람권</div>
+                <div id="store-movie-price">13,000</div>
+            </div>
+        </div>
+        <div class="item-box-info" id="store-movie-info">
+            <div id="store-movie-img"></div>
+            <div class="store-info-box">
+                <div id="store-movie-name">팝콘픽 영화관람권</div>
+                <div id="store-movie-price">13,000</div>
+            </div>
+        </div>
+    </div>
+    <div class="store-item-box" id="gift-container">
+        <div class="store-high-container">
+            <h3>기프트카드</h3>
+            <button class="go-to-store">더보기</button>
+        </div>
+        <div class="item-box-info" id="gift-info">
+            <div id="gift-img"></div>
+            <div class="store-info-box">
+                <div id="gift-name">POPCONNIE A형</div>
+                <div id="gift-price">금액충전형</div>
+            </div>
+        </div>
+        <div class="item-box-info" id="gift-info">
+            <div id="gift-img"></div>
+            <div class="store-info-box">
+                <div id="gift-name">POPCONNIE A형</div>
+                <div id="gift-price">금액충전형</div>
+            </div>
+        </div>
+        <div class="item-box-info" id="gift-info">
+            <div id="gift-img"></div>
+            <div class="store-info-box">
+                <div id="gift-name">POPCONNIE A형</div>
+                <div id="gift-price">금액충전형</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ETC -->
+<div id="etc-container">
+    <div id="etc-right-container">
+        <div id="main-notice">
+            <h4>공지사항</h4>
+            <p>[행사/이벤트][팝콘픽]<선재 업고 튀어> 최종화 단...</p>
+            <button>더보기</button>
+        </div>
+        <hr> <!-- 가로 줄 -->
+        <div id="main-cs">
+            <div id="main-cs-high">
+                <h4>고객센터</h4>
+                <div id="etc-cs-info">
+                    <p>1544-1122</p>
+                    <p>고객센터 운영시간 (평일 09:00~18:00)</p>
+                    <p>업무시간 외 자동응답 안내 가능합니다.</p>
+                </div>
+            </div>
+            <div id="etc-button">
+                <button id="etc-FAQ">FAQ</button>
+                <button id="etc-one-to-one">1:1 문의</button>
+                <button id="etc-inquiry">대관/단체 문의</button>
+            </div>
+        </div>
+    </div>
+    <div id="vertical-divider"></div> <!-- 세로 줄 -->
+    <div id="etc-left-container">
+        <h4>앱 다운로드</h4>
+        <p>팝콘픽 앱에서 더 편리하게 이용하세요</p>
+        <div id="etc-QR-code"></div>
+        <p>QR코드를 스캔하고</p>
+        <p>앱설치 페이지로 바로 이동하세요</p>
+    </div>
+</div>
+
 </main>
 
 <footer>
@@ -256,3 +387,4 @@
 
 </body>
 </html>
+

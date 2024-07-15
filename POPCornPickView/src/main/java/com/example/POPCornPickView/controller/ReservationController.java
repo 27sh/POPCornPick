@@ -9,6 +9,12 @@ public class ReservationController {
 
 	@RequestMapping("/main")
 	public String reservation() {
-		return "member/reservePage";
+		return "member/reservePage_main";
 	}
+	
+	@RequestMapping("/seat")
+	public String seatSelection() {
+		return "member/reservePage_seatSelection";
+	}
+	
 }

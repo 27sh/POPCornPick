@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.entity.Event;
+import com.example.POPCornPickApi.entity.Product;
+import com.example.POPCornPickApi.repository.ProductRepository;
 import com.example.POPCornPickApi.service.EventService;
 import com.example.POPCornPickApi.service.MovieService;
 import com.example.POPCornPickApi.service.ReviewService;
@@ -39,6 +39,9 @@ public class MainController {
     
     @Autowired
     private EventService eventService;
+    
+    @Autowired
+    private ProductRepository productRepository;
 
     @GetMapping("/movies")
     public List<String> getAllMovies() {
@@ -90,5 +93,20 @@ public class MainController {
     @GetMapping("/events")
     public List<Event> getEvents() {
         return eventService.getCurrentEvents();
+    }
+    
+    @GetMapping("/packages")
+    public List<Product> getPackageProducts() {
+        return productRepository.findTop3ByProductType("패키지");
+    }
+    
+    @GetMapping("/storeMovies")
+    public List<Product> getStoreMoviesProducts() {
+        return productRepository.findTop3ByProductType("영화관람권");
+    }
+    
+    @GetMapping("/gift")
+    public List<Product> getGiftProducts() {
+        return productRepository.findTop3ByProductType("기프트카드");
     }
 }

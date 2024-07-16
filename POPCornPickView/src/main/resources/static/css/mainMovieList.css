@@ -298,6 +298,6 @@ body {
     padding: 10px;
     color: gray;
     position: relative;
-    left: 680px; /* 오른쪽에 약간의 여백을 추가합니다. */
+    left: 635px; /* 오른쪽에 약간의 여백을 추가합니다. */
     top: 10px; /* 아래로 조금 내림 */
 }

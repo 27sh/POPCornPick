@@ -10,6 +10,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 
 	public List<Product> findByProductNo(Product productNo);
    
-
+	List<Product> findTop3ByProductType(String productType);
 
 }

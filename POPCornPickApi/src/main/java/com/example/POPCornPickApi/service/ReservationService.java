@@ -16,6 +16,7 @@ import java.util.Set;
 import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.dto.ScheduleDto;
 import com.example.POPCornPickApi.dto.ScheduleDto_JYC;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Movie;
@@ -356,6 +357,30 @@ public class ReservationService {
 		}
 		
 		return 0;
+	}
+	
+	public ScheduleDto_JYC getScheduleDetail(Long scheduleNo) {
+		
+		Schedule schedule = shceduleRepository.findByScheduleNo(scheduleNo);
+		ScheduleDto_JYC scheduleDto = new ScheduleDto_JYC();
+		scheduleDto.setScheduleNo(schedule.getScheduleNo());
+		scheduleDto.setMovieShowDetail(schedule.getMovieShowDetail());
+		scheduleDto.setEnd(schedule.getEnd());
+		scheduleDto.setStart(schedule.getStart());
+		scheduleDto.setRoom(schedule.getRoom());
+		int totalSeats = schedule.getRoom().getRoomType().getRoomTotalColumn() * schedule.getRoom().getRoomType().getRoomTotalRow();
+		int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
+		int leftSeats = totalSeats - bookedSeats;
+		
+		System.out.println("totalSeats : " + totalSeats);
+		System.out.println("bookedSeats : " + bookedSeats);
+		System.out.println("leftSeats : " + leftSeats);
+		
+		scheduleDto.setTotalSeat(totalSeats);
+		scheduleDto.setBookedSeat(bookedSeats);
+		scheduleDto.setLeftSeat(leftSeats);
+		
+		return scheduleDto;
 	}
 
 }

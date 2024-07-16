@@ -543,7 +543,7 @@ h4 {
 .room_detail_info .seats_left {
 	position: absolute;
 	bottom: 3px;
-	left: 12px;
+	left: 18px;
 	font-size: 12px;
 	color: green;
 }
@@ -869,10 +869,6 @@ main {
 				$(".section_schedule_title").text("날짜 - " + result);
 				$(".simple_info_content_date").text(result);
 				
-			});
-			
-			$(".room_detail_info").on("click", function(){
-				$("#reservation_popup").css("display", "block");
 			});
 			
 			/*
@@ -1262,7 +1258,9 @@ main {
 									            const roomName = schedule.room.roomType.roomName;
 									            const totalSeats = schedule.room.roomType.roomTotalColumn * schedule.room.roomType.roomTotalRow;
 									            // 여기서 상영시간표 정보를 입력해야한다.
-									            str += '<a class="room_detail_info">' +
+									            console.log(schedule);
+									            
+									            str += '<a class="room_detail_info" onclick="moveToSeatPage(event)" id="scheduleNo_' + schedule.scheduleNo + '">' +
 									                   '<span class="time_image">';
 									            if(parseInt(time.split(":")[0]) >= 8 && parseInt(time.split(":")[0]) <= 10){
 										            str += '<img alt="조조 사진" src="/img/time_sun.png"></span>';
@@ -1272,22 +1270,16 @@ main {
 									            	str += '<img alt="심야 사진" src="/img/time_moon.png" style="visibility:hidden"></span>';
 									            }
 									            
- 												const seats = schedule.room.seats;
- 												let bookedSeats = 0;
-												seats.forEach(seat => {
-													console.log(seat);
-													if(seat.booked === true){
-														bookedSeats++;														
-													}
-												});
-												
-												// 가져온 데이터에 문제 있음
-												
-												const leftSeats = totalSeats - bookedSeats;
- 												
+									            let resultLeftSeat = '';
+									            if(schedule.leftSeat < 10){
+									            	resultLeftSeat = '0' + schedule.leftSeat;
+									            }else {
+									            	resultLeftSeat = schedule.leftSeat;
+									            }
+									            
 									            str += '<strong>' + time + '</strong>' +
-									                   '<span class="seats_left">' + leftSeats	 + '</span>' +
-									                   '<span class="seats_total">/' + totalSeats + '</span>' +
+									                   '<span class="seats_left">' + resultLeftSeat + '</span>' +
+									                   '<span class="seats_total">/' + schedule.totalSeat + '</span>' +
 									                   '<span class="room_number">' + roomName + '</span>' +
 									                   '</a>';
 									        });
@@ -1387,15 +1379,16 @@ main {
 									            	str += '<img alt="심야 사진" src="/img/time_moon.png" style="visibility:hidden"></span>';
 									            }
 									            
-									            console.log(schedule);
-									            
-									            let seat_left = getSeatLeft(schedule.room.roomNo);
-									            
-									            console.log(seat_left);
+									            let resultLeftSeat = '';
+									            if(schedule.leftSeat < 10){
+									            	resultLeftSeat = '0' + schedule.leftSeat;
+									            }else {
+									            	resultLeftSeat = schedule.leftSeat;
+									            }
 									            
 									            str += '<strong>' + time + '</strong>' +
-									                   '<span class="seats_left">' + seat_left + '</span>' +
-									                   '<span class="seats_total">/' + totalSeats + '</span>' +
+									                   '<span class="seats_left">' + resultLeftSeat + '</span>' +
+									                   '<span class="seats_total">/' + schedule.totalSeat + '</span>' +
 									                   '<span class="room_number">' + roomName + '</span>' +
 									                   '</a>';
 									        });
@@ -1463,19 +1456,49 @@ main {
 				}
 			});
 			
-			$(".room_detail_info").on("click", function(){
-				console.log($(this));
-				console.log("aaaa");
-			});
 		});
 		
-		function getSeatLeft(roomNo){
-			return $.ajax({
-            	url : "http://localhost:9001/api/v1/reservation/seat/left/" + roomNo,
-            	method : "GET",
-            	dataType : "text"
-            });
+		function moveToSeatPage(event){
+			
+			let scheduleNo = "";
+			
+			if(event.target.tagName === "STRONG"){
+				scheduleNo = event.target.parentNode.id;
+			}else if(event.target.className === "time_image"){
+				scheduleNo = event.target.parentNode.id;
+			}else if(event.target.className === "room_number"){
+				scheduleNo = event.target.parentNode.id;
+			}else if(event.target.className === "seats_total"){
+				scheduleNo = event.target.parentNode.id;
+			}else if(event.target.className === "seats_left") {
+				scheduleNo = event.target.parentNode.id;
+			}else {
+				scheduleNo = event.target.id;
+			}
+			
+			const movie = $(".simple_info_content_movie").text();
+			const specific = $(".simple_info_content_specific").text();
+			const date = $(".simple_info_content_date").text();
+			const time = $(".simple_info_content_time").text();
+			
+			console.log("movie : " + movie);
+			console.log("specific : " + specific);
+			console.log("date : " + date);
+			
+			if(confirm("이 영화 정보로 예약하시겠습니까?")){
+				location.href="http://localhost:8080/reservation/seat/" + scheduleNo.substring(11, scheduleNo.length) + "/" + movie + "/" + specific + "/" + date;
+			}
+			
 		}
+		
+		
+// 		function getSeatLeft(roomNo){
+// 			return $.ajax({
+//             	url : "http://localhost:9001/api/v1/reservation/seat/left/" + roomNo,
+//             	method : "GET",
+//             	dataType : "text"
+//             });
+// 		}
 		
 	</script>
 </body>

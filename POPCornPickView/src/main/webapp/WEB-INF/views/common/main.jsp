@@ -12,180 +12,53 @@
 <link rel="stylesheet" href="/css/mainMovieList.css">
 <link rel="stylesheet" href="/css/mainEventList.css">
 <link rel="stylesheet" href="/css/mainYT.css">
+<link rel="stylesheet" href="/css/mainETC.css">
 <script src="/js/mainMovieList.js"></script>
 <script src="/js/mainEventList.js"></script>    
 <script src="/js/mainYT.js"></script>    
 <!-- YouTube IFrame Player API 추가 -->
 <script src="https://www.youtube.com/iframe_api"></script>
+
 <style>
-    #sRoom-container {
-        width: 1200px;
-    }
-    #sRoom-h1 {
-        font-size: 30px;
-        font-weight: bold;
-        padding: 10px;
-        margin-top: 10px;
-    }
-    #sRoom-img {
-        background-color: palegoldenrod;
-        width: 500px;
-        height: 250px;
-        float: left;
-        border-radius: 10px;
-        margin: 10px 50px;
-        background-size: cover;
-        background-position: center;
-    }
-    #sRoom-table {
-        margin: 10px;
-        width: 430px;
-        float: left;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-    #sRoom-table td {
-        padding: 30px 0; /* 간격을 늘림 */
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
-        font-size: 20px;
-    }
-    .sRoom-option:hover {
-        cursor: pointer;
-    }
-    .clear {
-        clear: both;
-    }
-    
-    
-    #store-container {
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .store-item-box {
-        display: inline-block;
-        vertical-align: top;
-        border: 1px solid lightgray;
-        border-radius: 10px;
-        margin: 30px;
-        padding: 10px;
-        width: 280px;
-        white-space: normal;
-    }
-    .store-high-container {
-        overflow: hidden;
-        padding: 10px 0 20px 0;
-    }
-    .store-high-container h3 {
-        float: left;
-        margin: 0;
-    }
-    .store-high-container .go-to-store {
-        float: right;
-    }
-
-    #pack-img, #store-movie-img, #gift-img {
-        background-color: gray;
-        width: 60px;
-        height: 60px;
-        display: inline-block;
-        vertical-align: middle;
-    }
-    .store-info-box {
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: 10px;
-    }
-    .store-info-box div {
-        margin-bottom: 5px;
-    }
-    .go-to-store{
-        background-color: transparent;
-        border: 1px solid lightgray;
-        border-radius: 50px;
-        padding: 5px 10px;
-    }
-
-    #pack-price, #store-movie-price, #gift-price {
-        font-weight: bold;
-    }
-
-    .item-box-info {
-        padding: 10px 0;
-    }
-    
-        #etc-container {
-        width: 1000px;
-        border: 1px solid lightgray;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 0 30px;
-        white-space: nowrap;
-        position: relative; /* 부모 요소에 상대 위치 설정 */
-    }
-    #etc-right-container, #etc-left-container {
-        display: inline-block;
-        vertical-align: top;
-        white-space: normal;
-        padding: 0 20px;
-        box-sizing: border-box;
-    }
-    
-    #etc-right-container {
-    	width: 55%;
-    }
-    
-    #etc-left-container {
-        text-align: center; /* 가운데 정렬 */
-        width: 45%;
-    }
-    #vertical-divider {
-        position: absolute; /* 절대 위치 설정 */
-        top: 20px;
-        bottom: 20px;
-        left: 55%;
-        border-left: 1px solid lightgray; /* 세로 줄 */
-    }
-    #main-notice h4, #main-notice p, #main-notice button {
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 10px;
-    }
-    #main-notice button {
-    	background-color: transparent;
-    	border: 1px solid lightgray;
-	    border-radius: 50px;
-	    padding: 3px 10px;
-    }
-    
-    #main-notice h4 {
-        margin: 0 10px 0 0;
-    }
-    hr {
-        border: 0;
-        border-top: 1px solid lightgray;
-        margin: 20px 0; /* 상하 마진 */
-    }
-    #main-cs-high h4, #etc-cs-info {
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 10px;
-    }
-    #main-cs-high h4 {
-        margin: 0 10px 38px 0;
-    }
-    
-    #etc-button {
-    	margin-top: 10px;
-    }
-    
-    #etc-button button {
-    	padding: 5px 10px;
-	    border: none;
-	    border-radius: 5px;
-    }
+.btn_gotop {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 150px;
+    z-index: 999;
+    outline: none;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border: 1px solid;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn_goreservation {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 210px;
+    z-index: 999;
+    outline: none;
+    background: linear-gradient(2345670deg, #ffef8a, #ee2b60);
+    color: white;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    text-align: center;
+}
 </style>
+
 <script>
     $(document).ready(function() {
         $("#sRoom-IMAX").hover(function() {
@@ -198,6 +71,175 @@
             $("#sRoom-img").css("background-image", "url('/img/PRIVATEBOX.png')");
         });
     });
+    
+    $(document).ready(function() {
+        $.ajax({
+            url: 'http://localhost:9001/api/v1/main/packages',
+            method: 'GET',
+            success: function(data) {
+                console.log('Received data:', data); // 데이터를 콘솔에 출력
+                if (typeof data === 'string') {
+                    try {
+                        data = JSON.parse(data); // 데이터가 문자열이면 JSON 파싱
+                    } catch (e) {
+                        console.error('Failed to parse JSON:', e);
+                        return;
+                    }
+                }
+                renderPackages(data);
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+
+    function renderPackages(data) {
+        const container = $('#pack-info');
+        container.empty(); // 기존 내용을 초기화
+
+        if (!Array.isArray(data) || data.length === 0) {
+            container.append('<p>패키지 정보가 없습니다.</p>');
+            return;
+        }
+
+        data.forEach((product, index) => {
+            if (product && typeof product === 'object') {
+
+                const packInfoBox = document.createElement('div');
+                packInfoBox.className = 'item-box-info';
+                packInfoBox.innerHTML = 
+                    '<img src="/img/' + product.productImg + '" class="pack-img" alt="pack Image">' +
+                    '<div class="store-info-box">' +
+                        '<div class="pack-name">' + product.productName + '</div>' +
+                        '<div class="pack-price">' + product.productPrice + '</div>' +
+                    '</div>';
+                container.append(packInfoBox);
+            } else {
+                console.error('Invalid product:', product);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $.ajax({
+            url: 'http://localhost:9001/api/v1/main/storeMovies',
+            method: 'GET',
+            success: function(data) {
+                console.log('Received data:', data); // 데이터를 콘솔에 출력
+                if (typeof data === 'string') {
+                    try {
+                        data = JSON.parse(data); // 데이터가 문자열이면 JSON 파싱
+                    } catch (e) {
+                        console.error('Failed to parse JSON:', e);
+                        return;
+                    }
+                }
+                renderStoreMovies(data);
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+
+    function renderStoreMovies(data) {
+        const container = $('#store-movie-info');
+        container.empty(); // 기존 내용을 초기화
+
+        if (!Array.isArray(data) || data.length === 0) {
+            container.append('<p>패키지 정보가 없습니다.</p>');
+            return;
+        }
+
+        data.forEach((product, index) => {
+            if (product && typeof product === 'object') {
+
+                const packInfoBox = document.createElement('div');
+                packInfoBox.className = 'item-box-info';
+                packInfoBox.innerHTML = 
+                    '<img src="/img/' + product.productImg + '" class="store-movie-img" alt="store movie Image">' +
+                    '<div class="store-info-box">' +
+                        '<div class="store-movie-name">' + product.productName + '</div>' +
+                        '<div class="store-movie-price">' + product.productPrice + '</div>' +
+                    '</div>';
+                container.append(packInfoBox);
+            } else {
+                console.error('Invalid product:', product);
+            }
+        });
+    }
+    
+    
+    $(document).ready(function() {
+        $.ajax({
+            url: 'http://localhost:9001/api/v1/main/gift',
+            method: 'GET',
+            success: function(data) {
+                console.log('Received data:', data); // 데이터를 콘솔에 출력
+                if (typeof data === 'string') {
+                    try {
+                        data = JSON.parse(data); // 데이터가 문자열이면 JSON 파싱
+                    } catch (e) {
+                        console.error('Failed to parse JSON:', e);
+                        return;
+                    }
+                }
+                renderGift(data);
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+
+    function renderGift(data) {
+        const container = $('#gift-info');
+        container.empty(); // 기존 내용을 초기화
+
+        if (!Array.isArray(data) || data.length === 0) {
+            container.append('<p>패키지 정보가 없습니다.</p>');
+            return;
+        }
+
+        data.forEach((product, index) => {
+            if (product && typeof product === 'object') {
+
+                const packInfoBox = document.createElement('div');
+                packInfoBox.className = 'item-box-info';
+                packInfoBox.innerHTML = 
+                    '<img src="/img/' + product.productImg + '" class="gift-img" alt="gift Image">' +
+                    '<div class="store-info-box">' +
+                        '<div class="gift-name">' + product.productName + '</div>' +
+                        '<div class="gift-price">' + product.productPrice + '</div>' +
+                    '</div>';
+                container.append(packInfoBox);
+            } else {
+                console.error('Invalid product:', product);
+            }
+        });
+    }
+    
+    $(window).scroll(function(){
+    	if ($(this).scrollTop() > 150){
+    		$('.btn_gotop').show();
+    	} else{
+    		$('.btn_gotop').hide();
+    	}
+    });
+    $('.btn_gotop').click(function(){
+    	$('html, body').animate({scrollTop:0},400);
+    	return false;
+    });
+    
+    $(window).scroll(function(){
+    	if ($(this).scrollTop() > 150){
+    		$('.btn_goreservation').show();
+    	} else{
+    		$('.btn_goreservation').hide();
+    	}
+    });
+    
 </script>
 </head>
 <body>
@@ -278,31 +320,13 @@
 
 	<!-- 스토어 -->
 	<div id="store-container">
-    <div class="store-item-box" id="pack-container">
+	<div class="store-item-box" id="pack-container">
         <div class="store-high-container">
             <h3>패키지</h3>
             <button class="go-to-store">더보기</button>
         </div>
-        <div class="item-box-info" id="pack-info">
-            <div id="pack-img"></div>
-            <div class="store-info-box">
-                <div id="pack-name">우리 패키지</div>
-                <div id="pack-price">62,000</div>    
-            </div>
-        </div>
-        <div class="item-box-info" id="pack-info">
-            <div id="pack-img"></div>
-            <div class="store-info-box">
-                <div id="pack-name">우리 패키지</div>
-                <div id="pack-price">62,000</div>    
-            </div>
-        </div>
-        <div class="item-box-info" id="pack-info">
-            <div id="pack-img"></div>
-            <div class="store-info-box">
-                <div id="pack-name">우리 패키지</div>
-                <div id="pack-price">62,000</div>    
-            </div>
+        <div class="item-box-info-container" id="pack-info">
+            <!-- 아이템 컨텐츠는 AJAX 요청으로 추가됩니다. -->
         </div>
     </div>
     <div class="store-item-box" id="store-movie-container">
@@ -310,26 +334,8 @@
             <h3>영화관람권</h3>
             <button class="go-to-store">더보기</button>
         </div>
-        <div class="item-box-info" id="store-movie-info">
-            <div id="store-movie-img"></div>
-            <div class="store-info-box">
-                <div id="store-movie-name">팝콘픽 영화관람권</div>
-                <div id="store-movie-price">13,000</div>
-            </div>
-        </div>
-        <div class="item-box-info" id="store-movie-info">
-            <div id="store-movie-img"></div>
-            <div class="store-info-box">
-                <div id="store-movie-name">팝콘픽 영화관람권</div>
-                <div id="store-movie-price">13,000</div>
-            </div>
-        </div>
-        <div class="item-box-info" id="store-movie-info">
-            <div id="store-movie-img"></div>
-            <div class="store-info-box">
-                <div id="store-movie-name">팝콘픽 영화관람권</div>
-                <div id="store-movie-price">13,000</div>
-            </div>
+		<div class="item-box-info-container" id="store-movie-info">
+            <!-- 아이템 컨텐츠는 AJAX 요청으로 추가됩니다. -->
         </div>
     </div>
     <div class="store-item-box" id="gift-container">
@@ -337,26 +343,8 @@
             <h3>기프트카드</h3>
             <button class="go-to-store">더보기</button>
         </div>
-        <div class="item-box-info" id="gift-info">
-            <div id="gift-img"></div>
-            <div class="store-info-box">
-                <div id="gift-name">POPCONNIE A형</div>
-                <div id="gift-price">금액충전형</div>
-            </div>
-        </div>
-        <div class="item-box-info" id="gift-info">
-            <div id="gift-img"></div>
-            <div class="store-info-box">
-                <div id="gift-name">POPCONNIE A형</div>
-                <div id="gift-price">금액충전형</div>
-            </div>
-        </div>
-        <div class="item-box-info" id="gift-info">
-            <div id="gift-img"></div>
-            <div class="store-info-box">
-                <div id="gift-name">POPCONNIE A형</div>
-                <div id="gift-price">금액충전형</div>
-            </div>
+		<div class="item-box-info-container" id="gift-info">
+            <!-- 아이템 컨텐츠는 AJAX 요청으로 추가됩니다. -->
         </div>
     </div>
 </div>
@@ -395,6 +383,14 @@
         <p>앱설치 페이지로 바로 이동하세요</p>
     </div>
 </div>
+
+<a href="#" class="btn_gotop">
+  TOP
+</a>
+
+<a href="/reservation/main" class="btn_goreservation">
+  예매하기
+</a>
 
 </main>
 

@@ -22,4 +22,6 @@ public interface NoticeRepository extends JpaRepository<Notice, Long>{
 	 Page<Notice> findByNoticeTitleContaining(String noticeNo, Pageable pageable);
 
 //	 Page<Notice> findByNoticeCategory(String category, Pageable pageable);
+	 
+	 Notice findFirstByOrderByRegdateDesc();
 }

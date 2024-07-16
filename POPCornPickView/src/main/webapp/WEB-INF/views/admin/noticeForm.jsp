@@ -86,9 +86,9 @@ button:hover {
 	
 	<div class="container">
         <h1>공지사항 관리</h1>
-        
+        <form>
             <label for="category">카테고리 <span style="color: red;">*</span></label>
-            <select id="category" name="category"  required>
+            <select id="category" name="category" required>
                 <option value="전체">전체</option>
                 <option value="시스템점검">시스템점검</option>
                 <option value="극장">극장</option>
@@ -112,38 +112,45 @@ button:hover {
 			<br>
             <button type="button" class="cancel-btn" onclick="historyback(event);">취소</button>
             <button type="button" onclick="noticeWrite(event)" >등록하기</button>
-        
+        </form>
     </div>
 	
 	<script>
 		
-	function noticeWrite(event){
-	    event.preventDefault();  // 이벤트 기본 동작 중지 (폼 제출 등)
-	    var formData = new FormData();
-	    formData.append("noticeCategory", $("#category").val());
-	    formData.append("noticeTitle", $("#title").val());
-	    formData.append("noticeContent", $("#content").val());
-	    formData.append("noticeFile", $("#file")[0].files[0]);
+	function noticeWrite(evnet){
+		var formData = new FormData();
+        formData.append("noticeCategory", $("#category").val());
+        formData.append("noticeTitle", $("#title").val());
+        formData.append("noticeContent", $("#content").val());
 		
-	    console.log(formData);
-	    
-	    $.ajax({
-	        url: "http://localhost:9001/api/v1/admin/announcement",
-	        method: "POST",
-	        enctype: "multipart/form-data",
-	        processData: false,  // 파일 데이터를 문자열로 변환하지 않음
-	        contentType: false,  // jQuery가 자동으로 Content-Type을 설정하지 않도록 함
-	        data: formData,
-	        success: function(response){
-	            alert("공지사항이 등록되었습니다");
-	            // window.location.href = ""; 나중에 여기 추가해줘야 함
-	        },
-	        error: function(xhr, status, error){
-	            console.log(error);
-	        }
-	    });
-	}
+        var fileInput = $("#file")[0];
+        if(fileInput.files.length > 0) {
+            formData.append("noticeFile", fileInput.files[0]);
+        }
 
+        
+        console.log("Category:", $("#category").val());
+        console.log("Title:", $("#title").val());
+        console.log("Content:", $("#content").val());
+        console.log("File:", fileInput.files.length > 0 ? fileInput.files[0].name : "No file selected");
+
+		
+		$.ajax({
+			url : "http://localhost:9001/api/v1/admin/announcement",
+			enctype : "multipart/form-data",
+			method : "POST",
+			processData : false, 
+	        contentType : false, 
+			data : formData,
+			success : function(response){
+				alert("공지사항이 등록되었습니다");
+				//window.location.href=""; 나중에 여기 달아줘야함/////////////////////////////////////////////////////////////////////////////////////////////////
+			},
+			error : function(xhr, status, error){
+				console.log(error)
+			}
+		})
+	}
 	
 	function historyback(event){
 		const result = confirm('정말로 취소하시겠습니까');

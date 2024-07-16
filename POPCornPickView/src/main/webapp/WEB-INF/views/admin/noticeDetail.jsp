@@ -136,9 +136,7 @@ button:hover {
 		
 	});
 	
-	
-	
-	
+		
 
 	function noticemodify(event){
 	const noticeno = "${noticeNo}";
@@ -153,7 +151,7 @@ button:hover {
 	
 	
 		$.ajax({
-			url : "http://localhost:9001/api/v1/admin/announcementput",
+			url : "http://localhost:9001/api/v1/admin/announcementput/" + noticeno,
 			enctype : "multipart/form-data",
 			method : "PUT",
 			contentType : "application/json",

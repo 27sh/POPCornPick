@@ -292,10 +292,10 @@ main {
 						</div>
 						<div class="simple_info_content none-active">
 							<ul id="simple_info_content_all">
-								<li class="simple_info_content_movie">aa</li>
-								<li class="simple_info_content_specific">bb</li>
-								<li class="simple_info_content_date">cc</li>
-								<li class="simple_info_content_time">dd</li>
+								<li class="simple_info_content_movie"></li>
+								<li class="simple_info_content_specific"></li>
+								<li class="simple_info_content_date"></li>
+								<li class="simple_info_content_time"></li>
 							</ul>
 						</div>
 					</div>
@@ -306,10 +306,10 @@ main {
 						</div>
 						<div class="simple_info_content none-active">
 							<ul>
-								<li>aaa</li>
-								<li>bbb</li>
-								<li>ccc</li>
-								<li>ddd</li>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
 							</ul>
 						</div>
 					</div>
@@ -320,10 +320,10 @@ main {
 						</div>
 						<div class="simple_info_content none-active">
 							<ul>
-								<li>aaa</li>
-								<li>bbb</li>
-								<li>ccc</li>
-								<li>ddd</li>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
 							</ul>
 						</div>
 					</div>
@@ -334,10 +334,10 @@ main {
 						</div>
 						<div class="simple_info_content none-active">
 							<ul>
-								<li>aaa</li>
-								<li>bbb</li>
-								<li>ccc</li>
-								<li>ddd</li>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
 							</ul>
 						</div>
 					</div>
@@ -418,7 +418,60 @@ main {
 	<script type="text/javascript">
 		$(document).ready(
 				function() {
+					
+					const newUrl = "http://localhost:8080/reservation/seat";
+					
+					window.history.replaceState({path: newUrl}, "", newUrl);
+					
+// 					const scheduleNo = "${scheduleNo}";
+// 					const movieTitle = "${movieTitle}";
+// 					const cinemaName = "${cinemaName}";
+// 					const date = "${date}";
+					
+// 					const movie = $(".simple_info_content_movie").text(movieTitle);
+// 					const specific = $(".simple_info_content_specific").text(cinemaName);
+// 					const date = $(".simple_info_content_date").text(date);
+					
+// 					$.ajax({
+// 						url : "http://localhost:9001/api/v1/reservation/seat/detail/" + scheduleNo,
+// 						method: "GET",
+// 						dataType : "json",
+// 						success : function(response){
+							
+// 							console.log(response);
+							
+// 							const roomTotalColumn = response.room.roomType.roomTotalColumn;
+// 							const roomTotalRow = response.room.roomType.roomTotalRow;
+							
+// 							const seatArray = new Array(roomTotalColumn);
+							
+// 							for (var i = 0; i < seatArray.length; i++) {
+// 								seatArray[i] = new Array(roomTotalRow);
+// 							}
 
+// 							let seatStr = '';
+
+// 							for (let i = 0; i < seatArray.length; i++) {
+// 								const ascciCode = String.fromCharCode(65 + i);
+// 								seatStr += "<div><span>" + ascciCode + "</span>";
+// 								for (let j = 0; j < seatArray[1].length; j++) {
+// 									seatStr += '<span>' + (j + 1) + '</span>';
+// 								}
+// 								seatStr += "</div>";
+// 							}
+							
+// 							// 출구 이미지 bg_window_right.png
+
+// 							$("#seat_map").html(seatStr);
+							
+							
+							
+// 						},
+// 						error : function(xhr, status, error) {
+// 							console.log(error);
+// 						}
+// 					});
+					
 					$(".simple_info_title").on(
 							"mouseenter",
 							function() {
@@ -433,34 +486,41 @@ main {
 										"none-active");
 							});
 
-					const totalRow = 5;
-					const totalColumn = 5;
-
-					var arr = new Array(totalRow);
 					
-					for (var i = 0; i < arr.length; i++) {
-						arr[i] = new Array(totalColumn);
-					}
-
-					console.log(arr);
-
-					let str = '';
-
-					for (let i = 0; i < arr.length; i++) {
-						const ascci = String.fromCharCode(65 + i);
-						str += "<div><span>" + ascci + "</span>";
-						for (let j = 0; j < arr[1].length; j++) {
-							str += '<span>' + (j + 1) + '</span>';
-						}
-						str += "</div>";
-					}
-
-					// 출구 이미지 bg_window_right.png
-
-					console.log(str);
-					$("#seat_map").html(str);
 
 				});
+		
+		function fetchPoster(movieNm) {
+			const apiKey = '4b5db8493a5df33fa9def848bcdda8b1'; // 여기에 본인의 TMDb API 키를 입력하세요
+			const baseUrl = 'https://api.themoviedb.org/3';
+		    const searchUrl = baseUrl + '/search/movie?api_key=' + apiKey +'&query=' + encodeURIComponent(movieNm);
+
+
+		    // XMLHttpRequest 객체 생성
+		    const xhr = new XMLHttpRequest();
+		    xhr.open('GET', searchUrl, false); // false는 동기적 요청을 나타냄
+		    xhr.send();
+
+		    // 요청이 완료되었을 때 처리
+		    if (xhr.readyState === XMLHttpRequest.DONE) {
+		        if (xhr.status === 200) {
+		            const data = JSON.parse(xhr.responseText);
+		            if (data.results && data.results.length > 0) {
+		                const posterPath = data.results[0].poster_path;
+		                return 'https://image.tmdb.org/t/p/w500'+ posterPath;
+		                console.log('Poster URL:', posterUrl);
+		                console.log('데이터데이터' + data);
+		            } else {
+		                return 'https://via.placeholder.com/200x300'; // 포스터를 찾을 수 없을 때 기본 포스터 이미지
+		            }
+		        } else {
+		            console.error('Error fetching poster:', xhr.status, xhr.statusText);
+		            console.log('데이터데이터' + data);
+		            return 'https://via.placeholder.com/200x300'; // 에러 발생 시 기본 포스터 이미지
+		        }
+		    }
+		    return 'https://via.placeholder.com/200x300'; // 기본 포스터 이미지 (여기까지 올 수 있는 경우)
+		}
 	</script>
 </body>
 </html>

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -143,6 +144,20 @@ public class ReservationController {
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(seatsNumber);
+	}
+	
+	@GetMapping("/seat/detail/{scheduleNo}")
+	public ResponseEntity<ScheduleDto_JYC> getScheduleDetail(@PathVariable("scheduleNo") Long scheduleNo){
+		
+		ScheduleDto_JYC scheduleDto = reservationService.getScheduleDetail(scheduleNo);
+		
+		if(scheduleDto != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(scheduleDto);
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body(null);
 	}
 
 }

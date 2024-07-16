@@ -35,128 +35,120 @@ import com.example.POPCornPickApi.repository.ScheduleRepository;
 //@CrossOrigin("*")
 @RestController
 public class ScheduleController {
-	
+
 	@Autowired
 	CinemaRepository cinemaRepository;
-	
+
 	@Autowired
 	RoomRepository roomRepository;
-	
+
 	@Autowired
 	ScheduleRepository scheduleRepository;
-	
+
 	@Autowired
 	MovieRepository movieRepository;
-	
+
 	@Autowired
 	MovieShowDetailRepository movieShowDetailRepository;
-	
-	
-	
-//////	schedulePage
-	
-// 영화관 목록
+
+	//////schedulePage
+
+	//영화관 목록
 	@GetMapping("/cinema")
 	public ResponseEntity<List<Cinema>> cinemaList(){
 		List<Cinema> list = cinemaRepository.findAll();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
-// 상영관 목록
+	//상영관 목록
 	@GetMapping("/cinema/{cinemaNo}")
 	public ResponseEntity<List<Room>> roomList(@PathVariable("cinemaNo") Long cinemaNo){
 		List<Room> list = roomRepository.findByCinema_CinemaNo(cinemaNo);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
-	
-// 영화관 별 상영시간표 목록
+
+	//영화관 별 상영시간표 목록
 	@GetMapping("/{roomNo}")
 	public ResponseEntity<List<Schedule>> scheduleList(@PathVariable("roomNo") Long roomNo){
 		List<Schedule> list = scheduleRepository.findByRoom_RoomNo(roomNo);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
-	
-	
-//////	scheduleDetail
-// 영화 슬롯 목록
+
+
+
+	//////scheduleDetail
+	//영화 슬롯 목록
 	@GetMapping("/slot")
 	public ResponseEntity<List<Movie>> movieSlot(){
 		List<Movie> list = movieRepository.findAll();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
-// 영화 슬롯 상세
+
+	//영화 슬롯 상세
 	@GetMapping("/slot/{movieDC}")
 	public ResponseEntity<Movie> movieSlot(@PathVariable("movieDC") Long movieDC) {
 		Movie result = movieRepository.findById(movieDC).get();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}		
-	
-// 영화 슬롯 편집	
+
+	//영화 슬롯 편집	
 	@PutMapping("/slot/{movieDC}")
 	public ResponseEntity<Movie> movieSlotReg(@RequestBody MovieDto movieDto, @PathVariable("movieDC") Long movieDC) {
 		Movie movie = movieRepository.findById(movieDC).get();
 		movie.setColor(movieDto.getColor());
-		
+
 		Movie result = movieRepository.save(movie);
-		
+
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-// 영화관 별 상영시간표 세부페이지
-//	@GetMapping("/room/{roomNo}")
-//	public ResponseEntity<List<Schedule>> scheduleDetail(@PathVariable("roomNo") Long roomNo) {
-//		List<Schedule> list = scheduleRepository.findByRoom_RoomNo(roomNo);
-//		return new ResponseEntity<>(list, HttpStatus.OK);
-//	}
-		
-			
+
+
 	// 영화관 별 세부 상영시간표 수정
 	@PutMapping("/{roomNo}")
 	public ResponseEntity<List<Schedule>> scheduleSave(
-	        @PathVariable("roomNo") Long roomNo,
-	        @RequestBody List<ScheduleDto> scheduleDtos) {
+			@PathVariable("roomNo") Long roomNo,
+			@RequestBody List<ScheduleDto> scheduleDtos) {
 
-		System.out.println("xxxxx");
-		System.out.println(scheduleDtos);
-	    // 기존 스케줄 목록을 가져옴
-	    List<Schedule> existingSchedules = scheduleRepository.findByRoom_RoomNo(roomNo);
-	    System.out.println("현재 일정 목록 :" + existingSchedules);
-	    
-	    List<Movie> mList = movieRepository.findAll();
-	    Optional<Room> rList= roomRepository.findById(roomNo);
-	    
-	    System.out.println(rList);
-	    
-	    // 기존 스케줄 목록을 삭제 (주석 해제 필요)
-	    // scheduleRepository.deleteAll(existingSchedules);
+		// 기존 스케줄 목록을 가져옴
+		List<Schedule> existingSchedules = scheduleRepository.findByRoom_RoomNo(roomNo);
 
-	    // 새로운 스케줄 목록을 생성
-	    List<Schedule> newSchedules = scheduleDtos.stream().map(dto -> {
-	        Schedule schedule = new Schedule();
-	        schedule.setRoom(roomRepository.findById(dto.getRoomNo()).get());
-  
-	        if(movieShowDetailRepository.findById(dto.getDetailNo()) != null) {
-	        	schedule.setMovieShowDetail(movieShowDetailRepository.findById(dto.getDetailNo()).get());
-	        }else {
-	        	
-	        }
-	        
-	        
-	        schedule.setStart(dto.getStart());
-	        schedule.setEnd(dto.getEnd());
-	        return schedule;
-	    }).collect(Collectors.toList());
+		// 영화 제목을 기준으로 detailNo를 설정
+		for (ScheduleDto scheduleDto : scheduleDtos) {
+			if (scheduleDto.getDetailNo() == null || scheduleDto.getDetailNo().isEmpty()) {
+				// 영화 제목으로 영화 조회
+				Optional<Movie> movieOpt = movieRepository.findByTitle(scheduleDto.getTitle());
+				if (movieOpt.isPresent()) {
+					Movie movie = movieOpt.get();
+					// 영화 DC로 MovieShowDetail 목록 조회
+					List<MovieShowDetail> detailNos = movieShowDetailRepository.findByMovie_MovieDC(movie.getMovieDC());
+					for(int i=0; i<detailNos.size(); i++) {
+						if(scheduleDto.getTitle().equals(detailNos.get(i).getMovie().getTitle())) {
+							scheduleDto.setDetailNo(String.valueOf(detailNos.get(i).getDetailNo()));
+						}
+					}
+				}
 
-	    // 새로운 스케줄 목록을 저장
-	    List<Schedule> savedSchedules = scheduleRepository.saveAll(newSchedules);
+			}
+		}
 
-	    return new ResponseEntity<>(savedSchedules, HttpStatus.OK);
+		// 기존 스케줄 목록을 삭제 (주석 해제 필요)
+		scheduleRepository.deleteAll(existingSchedules);
+
+		// 새로운 스케줄 목록을 생성
+		List<Schedule> newSchedules = scheduleDtos.stream().map(dto -> {
+			Schedule schedule = new Schedule();
+			schedule.setRoom(roomRepository.findById(Long.parseLong(dto.getRoomNo())).get());
+			schedule.setMovieShowDetail(movieShowDetailRepository.findById(Long.parseLong(dto.getDetailNo())).get());
+			schedule.setStart(dto.getStart());
+			schedule.setEnd(dto.getEnd());
+			return schedule;
+		}).collect(Collectors.toList());
+
+		// 새로운 스케줄 목록을 저장
+		List<Schedule> savedSchedules = scheduleRepository.saveAll(newSchedules);
+		return new ResponseEntity<>(savedSchedules, HttpStatus.OK);
 	}
 
 
-
-	
 }

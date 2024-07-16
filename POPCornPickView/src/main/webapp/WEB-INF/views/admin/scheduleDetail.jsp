@@ -1,74 +1,80 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <!DOCTYPE html>
-    <html lang="en">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <script src='/dist/index.global.js'></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>상영시간표</title>
-        <link rel="stylesheet" href="/css/style.css">
-        <link rel="stylesheet" href="/css/scheduleDetail.css">
-        <link rel="stylesheet" as="style" crossorigin
-            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<head>
+<meta charset="UTF-8">
+<script src='/dist/index.global.js'></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상영시간표</title>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/scheduleDetail.css">
+<link rel="stylesheet" as="style" crossorigin
+	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
 
-        <script src="https://code.jquery.com/jquery-3.7.1.js"
-            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    </head>
-    <%@ include file="../layout/adminHeader.jsp" %>
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+	crossorigin="anonymous"></script>
+</head>
+<%@ include file="../layout/adminHeader.jsp"%>
 
-        <body>
-            <div id='external-events'>
-                <h4>영화 목록</h4>
+<body>
+	<div id='external-events'>
+		<h4>영화 목록</h4>
 
-                <div id='external-events-list' style="overflow: hidden;">
-                </div>
+		<div id='external-events-list' style="overflow: hidden;"></div>
 
-                <p>
-                    <input type='checkbox' id='drop-remove' />
-                    <label for='drop-remove'>드롭 후 삭제</label>
-                </p>
-            </div>
-            <main>
-                <div id='calendar-wrap'>
-                    <div id='calendar'></div>
-                </div>
+		<p>
+			<input type='checkbox' id='drop-remove' /> <label for='drop-remove'>드롭
+				후 삭제</label>
+		</p>
+	</div>
+	<main>
+		<div id='calendar-wrap'>
+			<div id='calendar'></div>
+		</div>
 
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <div class="modal-title">
-                                    <select name="title" id="title"></select>
-                                </div>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <button class="updateBtn" onclick="submitSlot(event)">등록</button>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                    취소
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+		<div class="modal fade" id="exampleModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class="modal-title">
+							<select name="title" id="title"></select>
+						</div>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<button class="updateBtn" onclick="submitSlot(event)">등록</button>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
 
-        </body>
-        <script>
+</body>
+<script>
 
-            // 1. 기본 캘린더 불러오기
+        // 1. 기본 캘린더 불러오기
         $(document).ready(function () {        	
             var calendarEl = document.getElementById('calendar');
             var roomNo = ${roomNo};       
@@ -83,7 +89,6 @@
                 success: function (schedule) {
                     var events = [];
                     schedule.forEach(function (item) {
-                    	// console.log(item);
                     	var start = new Date(item.start);
                         var end = new Date(start.getTime() + item.movieShowDetail.movie.showTm * 60000); // showTm 분 후의 시간 계산
                         
@@ -117,7 +122,7 @@
                                                 roomNo: roomNo
                                             };
                                         });
-                                    	
+                                    	console.log(saveData)
 
                                     	$.ajax({
                                     		url: "http://localhost:9001/api/v1/schedule/" + roomNo,
@@ -136,12 +141,6 @@
                                     }
                                 }
                             },
-                            myDeleteButton: {
-                                text: '삭제',
-                                click: function () {
-                                    alert('삭제 confirm창 한번 더 띄워야됨');
-                                }
-                            },
                             slotPlusButton: {
                                 text: '영화 추가하기',
                                 click: function () {
@@ -155,7 +154,7 @@
                             right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
                         },
                         footerToolbar: {
-                            right: 'mySaveButton,myDeleteButton,slotPlusButton'
+                            right: 'mySaveButton,slotPlusButton'
                         },
                         titleFormat: function (date) {
                             return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
@@ -176,8 +175,6 @@
                         events: events,
                         eventReceive: function (eventDropped) {
                         	
-                        	console.log(eventDropped.event);
-                        	console.log(slots);
                             var showTm = parseInt(eventDropped.draggedEl.getAttribute('data-showTm')); // 드래그된 요소에서 showTm 가져오기
                             var start = eventDropped.event.start; // 드롭된 이벤트의 시작 시간
                             var end = new Date(start.getTime() + showTm * 60000); // showTm 분 후의 시간 계산
@@ -185,13 +182,6 @@
                             eventDropped.event.setProp('backgroundColor', eventDropped.draggedEl.getAttribute('data-color'));
                             eventDropped.event.setProp('borderColor', eventDropped.draggedEl.getAttribute('data-color'));
                             eventDropped.event.setEnd(end); // 계산된 end 시간을 설정
-                            
-//                             for(i=0; i<slots.length, i++){
-//                             	if(eventDropped.event.title === slots[i].title){
-//                             		var detailNo;
-//                             		eventDropped.event.setExtendedProp('detailNo', detailNo);
-//                             	}
-//                             }
 
                         },
                         timeZone: 'local',
@@ -208,10 +198,10 @@
                             }
                         },
                         eventDrop: function (info) {
-                            console.log('Event dropped');
-                            console.log('Event: ' + info.event.title);
-                            console.log('Start: ' + toKST(info.event.start));
-                            console.log('End: ' + (info.event.end ? toKST(info.event.end) : 'N/A'));                      
+//                             console.log('Event dropped');
+//                             console.log('Event: ' + info.event.title);
+//                             console.log('Start: ' + toKST(info.event.start));
+//                             console.log('End: ' + (info.event.end ? toKST(info.event.end) : 'N/A'));                      
                         },
                         datesSet: function (view) {
                             if (view.view.type === 'dayGridMonth') {
@@ -231,6 +221,8 @@
 
                     calendar.render();
                 }
+            
+
             });
                 // 2. 사용 할 영화 슬롯 가져오기(GET)
                 var containerEl = document.getElementById('external-events-list');
@@ -365,12 +357,11 @@
                 }
             });
             
-            
-
 
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+	crossorigin="anonymous"></script>
 
-    </html>
+</html>

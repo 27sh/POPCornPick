@@ -1,5 +1,7 @@
 package com.example.POPCornPickApi.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +34,7 @@ public class Product extends BaseEntity{
 	private String productType;
 	
 	@Column(nullable = false)
-	private String productEndDate;
+	private LocalDate productEndDate;
 	
 	@Column(nullable = false)
 	private int productAmount;

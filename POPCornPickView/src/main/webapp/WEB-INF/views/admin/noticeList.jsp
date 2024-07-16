@@ -10,6 +10,13 @@
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
+main {
+	width: 1200px;
+	margin: 80px auto;
+	display:flex;
+	justify-content:space-between;
+}
+
 body {
 	font-family: Arial, sans-serif;
 	margin: 0;
@@ -24,6 +31,15 @@ body {
 	border-radius: 5px;
 }
 
+.sidebar {
+    flex: 1;
+    margin-right: 20px;
+}
+.main-content {
+    flex: 3;
+}
+
+
 h1 {
 	font-size: 24px;
 	margin-bottom: 20px;
@@ -33,18 +49,30 @@ h1 {
 	display: flex;
 	justify-content: space-around;
 	margin-bottom: 20px;
+	background-color: #white;
+	border-bottom: 1px solid black;
+	padding-bottom: 10px;
+	
+}
+.tab-menu-item{
+	cursor: pointer;
+	padding: 15px;
+}
+
+.tab-menu-item:hover{
+	color: #673AB7;
 }
 
 .tab-menu button {
 	padding: 10px 20px;
 	border: none;
-	background-color: #f0f0f0;
 	cursor: pointer;
 	border-radius: 5px;
 }
 
 .tab-menu button:hover, .tab-menu button.active {
-	background-color: #ddd;
+	border: 1px solid #816bff;
+	color: white;
 }
 
 .search-form {
@@ -122,21 +150,32 @@ h1 {
 a:hover {
 	color: gray;
 }
+.tab-menu button:hover {
+    color: #816bff; /* Use a hash (#) for the color code */
+}
+.sidebar-container{
+	margin-top: 150px;
+}
 </style>
 </head>
 <body>
-
+           
+<main>	
+		<div class="sidebar-container">
+			<%@ include file="../layout/serviceSideBar.jsp"%>
+		</div>
 
 	<div class="container">
-		<h1>공지사항 목록</h1>
+			<h1>공지사항 목록</h1>
 		<div class="tab-menu">
-			<div id="" onclick="">공지사항</div>
-			<div id="" onclick="">이벤트</div>
-			<div id="" onclick="">FAQ</div>
-			<div id="" onclick="">문의</div>
-			<div id="" onclick="">신고</div>
+			<div id="" onclick="a(event)" class="tab-menu-item" data-value="공지사항">공지사항</div>
+			<div id="" onclick="" class="tab-menu-item" data-value="이벤트">이벤트</div>
+			<div id="" onclick="" class="tab-menu-item" data-value="FAQ">FAQ</div>
+			<div id="" onclick="" class="tab-menu-item" data-value="문의">문의</div>
+			<div id="" onclick="" class="tab-menu-item" data-value="신고">신고</div>
+			<div>사이드바를 만들었으니 여기에 카테고리를 넣으면 될것같다.</div>
 		</div>
-		<hr>
+		
 		<br>
 		<form class="search-form" onsubmit="searchNotice(event)">
 			<label for="search">검색</label> <input type="text" id="search"
@@ -156,11 +195,12 @@ a:hover {
 
 			</tbody>
 		</table>
+		
 	   <div class="pagination" id="pagination">
-            
+             
         </div>
 	</div>
-	
+	</main>
 	
 	<script>
     $(document).ready(function() {
@@ -255,6 +295,11 @@ a:hover {
             searchNotice(event);
         });
     });
+    
+    function a(event){
+    	
+    }
+    
 </script>
 
 </body>

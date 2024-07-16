@@ -285,9 +285,9 @@
                 <div id="nav">
                     <!-- 메인메뉴, 검색 포함 -->
                     <ul id="mme">
-                        <li><a href="movieList">영화</a>
+                        <li><a href="/film/movieList">영화</a>
                             <ul class="sme">
-                                <li><a href="movieList">무비차트</a></li>
+                                <li><a href="/film/movieList">무비차트</a></li>
                             </ul>
                         </li>
                         <li><a href="cinemaPage">극장</a>
@@ -296,9 +296,9 @@
                                 <li><a href="sRoomDetail">특별관</a></li>
                             </ul>
                         </li>
-                        <li id="ticketing"><a href="reservePage">예매</a>
+                        <li id="ticketing"><a href="/reservation/main">예매</a>
                             <ul class="sme">
-                                <li><a href="reservePage">빠른 예매</a></li>
+                                <li><a href="/reservation/main">빠른 예매</a></li>
                                 <li><a href="scheduleLIst">상영스케쥴</a></li>
                             </ul>
                         </li>

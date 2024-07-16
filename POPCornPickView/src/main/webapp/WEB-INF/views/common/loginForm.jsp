@@ -143,7 +143,7 @@ a {
 	
 	</footer>
 	<script>
-	
+		memberLogin();
 		function memberLogin(){
 			console.log("member");
 			document.querySelector('.tab-member').classList.add('active');

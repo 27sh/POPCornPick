@@ -9,9 +9,9 @@ import lombok.Data;
 
 @Data
 public class ScheduleDto {
-	private Long scheduleNo;
-	private Long roomNo;
-	private Long detailNo; 
+	private String title;
+	private String roomNo;
+	private String detailNo; 
 	private Date start;
 	private Date end;
 }

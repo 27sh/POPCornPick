@@ -1,6 +1,7 @@
 package com.example.POPCornPickApi.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,6 @@ public interface MovieShowDetailRepository extends JpaRepository<MovieShowDetail
 
 	@Query(value = "select detail_No from movie_show_detail WHERE movie_DC = :movieDC and room_No = :roomNo", nativeQuery = true)
 	public Long findDetailNoByMovieDCAndRoomNo(@Param("movieDC") Long movieDC, @Param("roomNo") Long roomNo);
+	
+	public List<MovieShowDetail> findByMovie_MovieDC(Long movieDC);
 }

@@ -13,5 +13,11 @@ public class LoginController {
 		return "common/loginForm";
 	}
 	
+	@GetMapping("/joinForm")
+	public String joinForm() {
+		return "common/joinForm";
+	}
+	
+	
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -48,9 +49,18 @@ public class SecurityConfig {
     public HttpFirewall allowNonPrintableAsciiCharacters() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowUrlEncodedPercent(true);
-        firewall.setAllowUrlEncodedSlash(true);
         firewall.setAllowSemicolon(true);
-//        firewall.setAllowNonAscii(true);
+        firewall.setAllowUrlEncodedSlash(true);
+        firewall.setAllowUrlEncodedDoubleSlash(true);
+        firewall.setAllowBackSlash(true);
+        firewall.setAllowNull(true);
+        firewall.setAllowUrlEncodedCarriageReturn(true);
+        firewall.setAllowUrlEncodedLineFeed(true);
+        firewall.setAllowUrlEncodedLineSeparator(true);
+        firewall.setAllowUrlEncodedParagraphSeparator(true);
+        firewall.setAllowUrlEncodedPeriod(true);
+        firewall.setUnsafeAllowAnyHttpMethod(true);
+//        firewall.setAllowNonAscii(true); 지금 버전에 없는 메서드
         return firewall;
     }
     
@@ -123,4 +133,11 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+    
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(HttpFirewall allowUrlEncodedCharactersHttpFirewall) {
+        return web -> web.httpFirewall(allowUrlEncodedCharactersHttpFirewall);
+    }
+    
+    
 }

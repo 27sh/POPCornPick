@@ -83,7 +83,6 @@
                 success: function (schedule) {
                     var events = [];
                     schedule.forEach(function (item) {
-                    	// console.log(item);
                     	var start = new Date(item.start);
                         var end = new Date(start.getTime() + item.movieShowDetail.movie.showTm * 60000); // showTm 분 후의 시간 계산
                         
@@ -117,7 +116,7 @@
                                                 roomNo: roomNo
                                             };
                                         });
-                                    	
+                                    	console.log(saveData)
 
                                     	$.ajax({
                                     		url: "http://localhost:9001/api/v1/schedule/" + roomNo,
@@ -176,8 +175,6 @@
                         events: events,
                         eventReceive: function (eventDropped) {
                         	
-                        	console.log(eventDropped.event);
-                        	console.log(slots);
                             var showTm = parseInt(eventDropped.draggedEl.getAttribute('data-showTm')); // 드래그된 요소에서 showTm 가져오기
                             var start = eventDropped.event.start; // 드롭된 이벤트의 시작 시간
                             var end = new Date(start.getTime() + showTm * 60000); // showTm 분 후의 시간 계산
@@ -185,13 +182,6 @@
                             eventDropped.event.setProp('backgroundColor', eventDropped.draggedEl.getAttribute('data-color'));
                             eventDropped.event.setProp('borderColor', eventDropped.draggedEl.getAttribute('data-color'));
                             eventDropped.event.setEnd(end); // 계산된 end 시간을 설정
-                            
-//                             for(i=0; i<slots.length, i++){
-//                             	if(eventDropped.event.title === slots[i].title){
-//                             		var detailNo;
-//                             		eventDropped.event.setExtendedProp('detailNo', detailNo);
-//                             	}
-//                             }
 
                         },
                         timeZone: 'local',

@@ -130,8 +130,8 @@
         </ul>
         <div id="bgBox">
             <ul class="sme sme1">
-                <li><a href="/admin/cinemaList">극장</a></li>
-                <li><a href="/admin/roomList">관람관</a></li>
+                <li><a href="/cinema/list">극장</a></li>
+                <li><a href="/cinema/roomList">관람관</a></li>
             </ul>
             <ul class="sme sme2">
                 <li><a href="/admin/movieList">영화정보</a></li>
@@ -139,7 +139,7 @@
             </ul>
             <ul class="sme sme3">
                 <li><a href="/admin/noticeList">공지사항</a></li>
-                <li><a href="/admin/eventList">이벤트</a></li>
+                <li><a href="/event/allList">이벤트</a></li>
                 <li><a href="/admin/qnaList">Q&A</a></li>
                 <li><a href="faqList">자주찾는 질문</a></li>
             </ul>

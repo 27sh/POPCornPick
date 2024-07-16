@@ -20,6 +20,7 @@ import com.example.POPCornPickApi.jwt.JWTUtil;
 import com.example.POPCornPickApi.repository.MemberRepository;
 import com.example.POPCornPickApi.service.CustomUserDetailService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -41,6 +42,7 @@ public class LoginController {
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
 	
 	
 //	@GetMapping("/loginForm")
@@ -90,7 +92,25 @@ public class LoginController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
-	// 
+	
+	//token 유효기간 체크
+	@GetMapping("/tokenExpired")
+	public String tokenExpired(HttpServletRequest request) {
+		String str = "";
+		String BearerToken = request.getHeader("Authorization");
+		String token = BearerToken.split(" ")[1];
+		System.out.println("token : " + token);
+		
+		boolean tf = jwtUtil.isExpired(token);
+		
+		if(tf == true) {
+			str = "유효한 토큰입니다.";
+		}else {
+			str = "유효하지 못한 토큰입니다.";
+		}
+		
+		return str;
+	}
 	
 	
 	

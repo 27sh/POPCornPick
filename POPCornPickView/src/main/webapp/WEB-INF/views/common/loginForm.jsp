@@ -64,6 +64,11 @@ main {
     text-align: left;
 }
 
+.loginBox {
+	width: 600px;
+	position: left 20px;
+}
+
 .input-group {
     margin-bottom: 15px;
 }
@@ -71,7 +76,7 @@ main {
 /* 입력란 스타일 */
 input[type="text"],
 input[type="password"] {
-  width: 100%; /* 입력란 너비 100% */
+  width: 400px; /* 입력란 너비 100% */
   padding: 10px; /* 여백 추가 */
   border: 1px solid #ddd; /* 회색 테두리 */
   border-radius: 5px; /* 모서리 둥글게 처리 */
@@ -111,7 +116,8 @@ a {
 	</header>
 	<main>
 		<div class="tab">
-			<button class="tab-member" onclick="memberLogin()">회원</button> <button class="tab-non-member" onclick="nonMemberLogin()">비회원</button> 
+			<button class="tab-member" onclick="memberLogin()">회원</button> 
+			<button class="tab-non-member" onclick="nonMemberLogin()">비회원</button> 
 		</div>
 		<div class="login-wrapper">
 			<div class="loginBox">
@@ -123,7 +129,7 @@ a {
 					<div class="input-group">
 						<input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요">
 					</div>
-					<button type="button" id="loginButton" onclick="login()">로그인</button>
+					<button type="button" id="loginButton" onclick="login()">로그인</button> <button type="button" onclick="tokenExpiredCheck()">Test</button>
 					<div class="links">
 	                    <a href="#">회원가입</a>
 	                    <a href="#">아이디 찾기</a>
@@ -151,29 +157,62 @@ a {
 		}
 		
 		function login(){
-			const xhttp = new XMLHttpRequest();
-			const username = document.querySelector("input[name='username']").value;
-			const password = document.querySelector("input[name='password']").value;
-			
-			xhttp.onload = function(){
-				if (xhttp.readyState === XMLHttpRequest.DONE) {
-	                if (xhttp.status === 200) {
-	                    const token = xhttp.getResponseHeader('Authorization').split(' ')[1];
-	                    // JWT 토큰을 로컬 스토리지에 저장
-	                    localStorage.setItem('jwtToken', token);
-	                    alert('Login successful! Token stored in local storage.');
-	                } else {
-	                    alert('Login failed. Please check your credentials.');
-	                }
-	            }
+// 			const tokenCheck = localStorage.getItem('jwtToken');
+// 			if(tokenExpiredCheck() == false){
 				
-			}
+// 			}else {
+// 				alert('이미 로그인 되어있습니다.');
+// 			}
+				const xhttp = new XMLHttpRequest();
+				const username = document.querySelector("input[name='username']").value;
+				const password = document.querySelector("input[name='password']").value;
+				
+				xhttp.onload = function(){
+					if (xhttp.readyState === XMLHttpRequest.DONE) {
+		                if (xhttp.status === 200) {
+		                    const token = xhttp.getResponseHeader('Authorization').split(' ')[1];
+		                    // JWT 토큰을 로컬 스토리지에 저장
+		                    localStorage.setItem('jwtToken', token);
+		                    alert('로그인 성공!');
+		                    //alert('Login successful! Token stored in local storage.');
+		                } else {
+		                    alert('로그인 실패 아이디나 비밀번호가 다릅니다.')
+		                	//alert('Login failed. Please check your credentials.');
+		                }
+		            }
+					
+				}
+				
+				xhttp.open("POST", "http://localhost:9001/api/v1/login");
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send("username=" + username + "&password=" + password);
 			
-			xhttp.open("POST", "http://localhost:9001/api/v1/login");
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhttp.send("username=" + username + "&password=" + password);
+			
+			
 		}
 		
+		function tokenExpiredCheck(){
+			const xhttp = new XMLHttpRequest();
+			const token = localStorage.getItem('jwtToken');
+			console.log(token);
+			xhttp.onload = function(){
+				let result;
+				if(this.responseText == "유효한 토큰입니다."){
+					console.log(this.responseText);
+					result = true;
+					alert(result + ", 유효한 토큰");
+				}else {
+					console.log(this.responseText);
+					result = false;
+					alert(result + ", 만료된 토큰");
+				}
+				return result;
+			}
+			
+			xhttp.open("GET", "http://localhost:9001/api/v1/tokenExpired");
+			xhttp.setRequestHeader("Authorization", "Bearer " + token);
+			xhttp.send();
+		}
 		
 	</script>
 </body>

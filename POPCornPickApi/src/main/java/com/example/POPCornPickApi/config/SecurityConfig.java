@@ -12,6 +12,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,8 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.example.POPCornPickApi.jwt.JWTFilter;
 import com.example.POPCornPickApi.jwt.JWTUtil;
 import com.example.POPCornPickApi.jwt.LoginFilter;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableWebSecurity
@@ -42,6 +42,16 @@ public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    public HttpFirewall allowNonPrintableAsciiCharacters() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowUrlEncodedPercent(true);
+        firewall.setAllowUrlEncodedSlash(true);
+        firewall.setAllowSemicolon(true);
+//        firewall.setAllowNonAscii(true);
+        return firewall;
     }
     
     @Bean
@@ -75,7 +85,7 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/main", "/login", "/join", "/loginProc", "/joinProc", "/**").permitAll()
+                        .requestMatchers("/", "/main", "/loginForm", "/joinForm", "/loginProc", "/joinProc", "/**").permitAll()
                         .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
         
@@ -90,6 +100,11 @@ public class SecurityConfig {
         http
                 .sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        
+//        @Override
+//        public void configure(WebSecurity web) throws Exception {
+//            web.httpFirewall(allowNonPrintableAsciiCharacters());
+//        }
         
         return http.build();
     }

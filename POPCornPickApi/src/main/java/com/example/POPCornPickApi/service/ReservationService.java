@@ -21,6 +21,7 @@ import com.example.POPCornPickApi.dto.ScheduleDto_JYC;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.MovieShowDetail;
+import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.repository.CinemaRepository;
@@ -359,8 +360,8 @@ public class ReservationService {
 		return 0;
 	}
 	
-	public ScheduleDto_JYC getScheduleDetail(Long scheduleNo) {
 		
+	public ScheduleDto_JYC getScheduleDetail(Long scheduleNo) {
 		Schedule schedule = shceduleRepository.findByScheduleNo(scheduleNo);
 		ScheduleDto_JYC scheduleDto = new ScheduleDto_JYC();
 		scheduleDto.setScheduleNo(schedule.getScheduleNo());
@@ -370,7 +371,10 @@ public class ReservationService {
 		scheduleDto.setRoom(schedule.getRoom());
 		int totalSeats = schedule.getRoom().getRoomType().getRoomTotalColumn() * schedule.getRoom().getRoomType().getRoomTotalRow();
 		int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
+		List<ReservatedSeat> reservatedSeatList = reservatedSeatRepository.getReservatedSeatByScheduleNo(scheduleNo);
 		int leftSeats = totalSeats - bookedSeats;
+		
+		scheduleDto.setReservatedSeatList(reservatedSeatList);
 		
 		System.out.println("totalSeats : " + totalSeats);
 		System.out.println("bookedSeats : " + bookedSeats);

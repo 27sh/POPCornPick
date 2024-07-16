@@ -77,8 +77,8 @@
             url: 'http://localhost:9001/api/v1/main/packages',
             method: 'GET',
             success: function(data) {
-                console.log('Received data:', data); // 데이터를 콘솔에 출력
-                if (typeof data === 'string') {
+
+            	if (typeof data === 'string') {
                     try {
                         data = JSON.parse(data); // 데이터가 문자열이면 JSON 파싱
                     } catch (e) {
@@ -112,7 +112,7 @@
                     '<img src="/img/' + product.productImg + '" class="pack-img" alt="pack Image">' +
                     '<div class="store-info-box">' +
                         '<div class="pack-name">' + product.productName + '</div>' +
-                        '<div class="pack-price">' + product.productPrice + '</div>' +
+                        '<div class="pack-price">' + Number(product.productPrice).toLocaleString() + '</div>' +
                     '</div>';
                 container.append(packInfoBox);
             } else {
@@ -126,7 +126,6 @@
             url: 'http://localhost:9001/api/v1/main/storeMovies',
             method: 'GET',
             success: function(data) {
-                console.log('Received data:', data); // 데이터를 콘솔에 출력
                 if (typeof data === 'string') {
                     try {
                         data = JSON.parse(data); // 데이터가 문자열이면 JSON 파싱
@@ -161,7 +160,7 @@
                     '<img src="/img/' + product.productImg + '" class="store-movie-img" alt="store movie Image">' +
                     '<div class="store-info-box">' +
                         '<div class="store-movie-name">' + product.productName + '</div>' +
-                        '<div class="store-movie-price">' + product.productPrice + '</div>' +
+                        '<div class="store-movie-price">' + Number(product.productPrice).toLocaleString() + '</div>' +
                     '</div>';
                 container.append(packInfoBox);
             } else {
@@ -211,7 +210,7 @@
                     '<img src="/img/' + product.productImg + '" class="gift-img" alt="gift Image">' +
                     '<div class="store-info-box">' +
                         '<div class="gift-name">' + product.productName + '</div>' +
-                        '<div class="gift-price">' + product.productPrice + '</div>' +
+                        '<div class="gift-price">금액충전형</div>' +
                     '</div>';
                 container.append(packInfoBox);
             } else {
@@ -239,6 +238,41 @@
     		$('.btn_goreservation').hide();
     	}
     });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('go-to-movieList').addEventListener('click', function() {
+            window.location.href = '/film/movieList';
+        });
+    });
+
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // 공지사항 데이터 가져오기
+        $.ajax({
+            url: 'http://localhost:9001/api/v1/main/latest',
+            method: 'GET',
+            success: function(data) {
+                console.log('Received latest notice:', data); // 데이터를 콘솔에 출력
+                displayLatestNotice(data);
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+
+    // 최신 공지사항을 HTML에 출력하는 함수
+    function displayLatestNotice(notice) {
+	    const noticeElement = document.getElementById('latest-notice');
+	    let fullText = '[' + notice.noticeCategory + '] ' + notice.noticeTitle;
+	    
+	    if (fullText.length > 32) {
+	        fullText = fullText.substring(0, 32) + '...';
+	    }
+	
+	    noticeElement.innerHTML = fullText;
+	}
+
     
 </script>
 </head>
@@ -353,26 +387,26 @@
 <div id="etc-container">
     <div id="etc-right-container">
         <div id="main-notice">
-            <h4>공지사항</h4>
-            <p>[행사/이벤트][팝콘픽]<선재 업고 튀어> 최종화 단...</p>
-            <button>더보기</button>
-        </div>
-        <hr> <!-- 가로 줄 -->
-        <div id="main-cs">
-            <div id="main-cs-high">
-                <h4>고객센터</h4>
-                <div id="etc-cs-info">
-                    <p style="font-weight: bold; margin: 0 0 2px 0;">1544-1122</p>
-                    <p>고객센터 운영시간 (평일 09:00~18:00)</p>
-                    <p style="color: lightgray;">업무시간 외 자동응답 안내 가능합니다.</p>
-                </div>
-            </div>
-            <div id="etc-button">
-                <button id="etc-FAQ">FAQ</button>
-                <button id="etc-one-to-one">1:1 문의</button>
-                <button id="etc-inquiry">대관/단체 문의</button>
-            </div>
-        </div>
+		    <h4>공지사항</h4>
+		    <p id="latest-notice">[행사/이벤트][팝콘픽]<선재 업고 튀어> 최종화 단...</p>
+		    <button>더보기</button>
+		</div>
+		<hr> <!-- 가로 줄 -->
+		<div id="main-cs">
+		    <div id="main-cs-high">
+		        <h4>고객센터</h4>
+		        <div id="etc-cs-info">
+		            <p style="font-weight: bold; margin: 0 0 2px 0;">1544-1122</p>
+		            <p>고객센터 운영시간 (평일 09:00~18:00)</p>
+		            <p style="color: lightgray;">업무시간 외 자동응답 안내 가능합니다.</p>
+		        </div>
+		    </div>
+		    <div id="etc-button">
+		        <button id="etc-FAQ">FAQ</button>
+		        <button id="etc-one-to-one">1:1 문의</button>
+		        <button id="etc-inquiry">대관/단체 문의</button>
+		    </div>
+		</div>
     </div>
     <div id="vertical-divider"></div> <!-- 세로 줄 -->
     <div id="etc-left-container">

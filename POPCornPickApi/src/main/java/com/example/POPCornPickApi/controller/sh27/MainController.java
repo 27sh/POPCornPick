@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.entity.Event;
+import com.example.POPCornPickApi.entity.Notice;
 import com.example.POPCornPickApi.entity.Product;
+import com.example.POPCornPickApi.repository.NoticeRepository;
 import com.example.POPCornPickApi.repository.ProductRepository;
 import com.example.POPCornPickApi.service.EventService;
 import com.example.POPCornPickApi.service.MovieService;
@@ -42,6 +44,9 @@ public class MainController {
     
     @Autowired
     private ProductRepository productRepository;
+    
+    @Autowired
+    private NoticeRepository noticeRepository;
 
     @GetMapping("/movies")
     public List<String> getAllMovies() {
@@ -108,5 +113,10 @@ public class MainController {
     @GetMapping("/gift")
     public List<Product> getGiftProducts() {
         return productRepository.findTop3ByProductType("기프트카드");
+    }
+    
+    @GetMapping("/latest")
+    public Notice getLatestNotice() {
+        return noticeRepository.findFirstByOrderByRegdateDesc();
     }
 }

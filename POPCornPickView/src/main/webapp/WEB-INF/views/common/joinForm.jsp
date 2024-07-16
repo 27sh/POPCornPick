@@ -20,13 +20,14 @@ main {
 }
 
 .join-wrapper {
-	max-width: 600px;
+	max-width: 400px;
 	margin: 0 auto;
 	text-align: left;
 }
 
 .join-wrapper h2, p {
 	text-align: center;
+	position: relative;
 }
 
 .join-wrapper h2 {
@@ -42,10 +43,59 @@ span {
 	width: 70px;
 }
 
-input {
-	width: 300px;
+.input-group {
+	width: 400px;
 	
 }
+
+.input {
+	width: 230px;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin-bottom: 15px;
+	
+}
+
+.input-group-radio {
+	margin-bottom: 15px;
+}
+
+.input-button {
+	width: 400px;
+	position: relative;
+	left: 90px;
+	
+}
+
+#joinBtn, #backBtn{
+	padding: 10px;
+	margin-top: 10px;
+	margin-right: 30px;
+	border-radius: 5px;
+	border: 2px ;
+}
+
+#joinBtn {
+	background-color: #d9534f;
+	color: #fff;
+}
+
+#backBtn {
+	background-color: #ffffff;
+	font-weight: bold;
+}
+
+#joinBtn:hover {
+	background-color: #FF6347;
+	cursor: pointer;
+}
+
+#backBtn:hover {
+	background-color: #D3D3D3;
+	cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -57,29 +107,29 @@ input {
 			<h2>회원가입</h2>
 			<p>회원이 되어 다양한 혜택을 누려보세요!</p>
 			<div class="joinBox">
-				<form action="">
+				<form name="frm" >
 					<div class="input-group">
 						<span>아이디 </span>
-						<input type="text" id="id" name="username" placeholder="아이디를 입력하세요.">
+						<input type="text" class="input" id="id" name="username" placeholder="아이디를 입력하세요.">
 					</div>
 					<div class="input-group">
 						<span>비밀번호 </span>
-						<input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요.">
+						<input type="password" class="input" id="password" name="password" placeholder="비밀번호를 입력하세요.">
 					</div>
 					<div class="input-group">
 						<span>이름 </span>
-						<input type="text" id="name" name="name" placeholder="이름을 입력하세요.">
+						<input type="text" class="input" id="name" name="name" placeholder="이름을 입력하세요.">
 					</div>
-					<div class="input-group">
+					<div class="input-group-radio">
 						<span>성별 </span>
 						<label><input type="radio" id="genderM" name="gender" value="남자"> 남자 </label>
 						<label><input type="radio" id="genderF" name="gender" value="여자"> 여자 </label>
 					</div>
 					<div class="input-group">
 						<span>생년월일</span>
-						<input type="date" id="birthdate" name="birthdate" placeholder="생년월일을 입력하세요.">
+						<input type="date" class="input" id="birthdate" name="birthdate" placeholder="생년월일을 입력하세요.">
 					</div>
-					<div class="input-group">
+					<div class="input-group-radio">
 						<span>통신사 </span>
 						<label><input type="radio" id="telecomSKT" name="telecom" value="SKT"> SKT </label>
 						<label><input type="radio" id="telecomKT" name="telecom" value="KT"> KT </label>
@@ -87,14 +137,15 @@ input {
 					</div>
 					<div class="input-group">
 						<span>전화번호 </span>
-						<input type="tel" id="tel" name="tel" placeholder="전화번호를 입력하세요.">
+						<input type="tel" class="input" id="tel" name="tel" placeholder="전화번호를 입력하세요.">
 					</div>
 					<div class="input-group">
 						<span>이메일 </span>
-						<input type="email" id="email" name="email" placeholder="이메일을 입력하세요.">
+						<input type="email" class="input" id="email" name="email" placeholder="이메일을 입력하세요.">
 					</div>
-					<div>
+					<div class="input-button">
 						<button type="button" onclick="joinProc()" id="joinBtn">회원가입</button>
+						<button type="button" onclick="goBack()" id="backBtn">취소</button>
 					</div>
 				</form>
 			</div>

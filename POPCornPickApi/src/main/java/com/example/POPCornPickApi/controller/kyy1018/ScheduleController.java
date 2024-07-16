@@ -104,10 +104,9 @@ public class ScheduleController {
 	}
 
 
-
 	// 영화관 별 세부 상영시간표 수정
 	@PutMapping("/{roomNo}")
-	public ResponseEntity<String> scheduleSave(
+	public ResponseEntity<List<Schedule>> scheduleSave(
 			@PathVariable("roomNo") Long roomNo,
 			@RequestBody List<ScheduleDto> scheduleDtos) {
 
@@ -148,8 +147,7 @@ public class ScheduleController {
 
 		// 새로운 스케줄 목록을 저장
 		List<Schedule> savedSchedules = scheduleRepository.saveAll(newSchedules);
-
-		return new ResponseEntity<>("", HttpStatus.OK);
+		return new ResponseEntity<>(savedSchedules, HttpStatus.OK);
 	}
 
 

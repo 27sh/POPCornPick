@@ -93,7 +93,7 @@ ul {
 		<div class="sidebar-box sidebar-box2">
 			<h3>이벤트</h3>
 			<p><a href="/event/regist">이벤트 등록</a></p>
-			<p><a href="">이벤트 목록</a></p>
+			<p><a href="/event/allList">이벤트 목록</a></p>
 			<p><a href="">이벤트 종료목록</a></p>
 			<p><a href="">이벤트 참여목록</a></p>
 		</div>

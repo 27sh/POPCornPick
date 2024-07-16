@@ -131,7 +131,7 @@ a {
 					</div>
 					<button type="button" id="loginButton" onclick="login()">로그인</button> <button type="button" onclick="tokenExpiredCheck()">Test</button>
 					<div class="links">
-	                    <a href="#">회원가입</a>
+	                    <a href="/joinForm">회원가입</a>
 	                    <a href="#">아이디 찾기</a>
 	                    <a href="#">비밀번호 찾기</a>
                 	</div>

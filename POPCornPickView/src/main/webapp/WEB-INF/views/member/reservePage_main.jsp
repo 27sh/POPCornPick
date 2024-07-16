@@ -450,7 +450,7 @@ h4 {
 	border-bottom: 2px solid black;
 }
 
-#section_schedule_box.none {
+.none {
 	height: 648px;
 	background: grey;
 	display: flex;
@@ -459,12 +459,11 @@ h4 {
 }
 
 #section_schedule_box {
-	height: 678.96px;
+	height: 665px;
 	padding-left: 10px;
 	padding-top: 15px;
 	margin: 0;
 	list-style: none;
-	width: 100%;
 	overflow: auto;
 	scroll-behavior: smooth;
 	scrollbar-width: thin;
@@ -1258,7 +1257,6 @@ main {
 									            const roomName = schedule.room.roomType.roomName;
 									            const totalSeats = schedule.room.roomType.roomTotalColumn * schedule.room.roomType.roomTotalRow;
 									            // 여기서 상영시간표 정보를 입력해야한다.
-									            console.log(schedule);
 									            
 									            str += '<a class="room_detail_info" onclick="moveToSeatPage(event)" id="scheduleNo_' + schedule.scheduleNo + '">' +
 									                   '<span class="time_image">';
@@ -1369,8 +1367,8 @@ main {
 									            const roomName = schedule.room.roomType.roomName;
 									            const totalSeats = schedule.room.roomType.roomTotalColumn * schedule.room.roomType.roomTotalRow;
 									            // 여기서 상영시간표 정보를 입력해야한다.
-									            str += '<a href="#" class="room_detail_info">' +
-									                   '<span class="time_image">';
+												str += '<a class="room_detail_info" onclick="moveToSeatPage(event)" id="scheduleNo_' + schedule.scheduleNo + '">' +		
+									            	   '<span class="time_image">';
 									            if(parseInt(time.split(":")[0]) >= 8 && parseInt(time.split(":")[0]) <= 10){
 										            str += '<img alt="조조 사진" src="/img/time_sun.png"></span>';
 									            }else if(parseInt(time.split(":")[0] >= 00 && parseInt(time.split(":")[0]) <= 02)) {

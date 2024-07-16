@@ -43,7 +43,10 @@
 }
 
 .simple_info_title p {
+	position: relative;
 	color: white;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .simple_info_content {
@@ -56,11 +59,16 @@
 	height: 216.5px;
 	z-index: 9999;
 }
-
-.simple_info_content ul li {
+.simple_info_content_all{
+	position: relative;
+}
+.simple_info_content_all ul{
+	position: absolute;
+	top: 50%;
+}
+.simple_info_content_all ul li{
 	color: white;
 }
-
 .none-active {
 	display: none;
 }
@@ -79,6 +87,7 @@
 
 #seat_reservation_header h4 {
 	color: white;
+	font-size: 1.1rem;
 	padding: 20px;
 }
 
@@ -132,6 +141,8 @@
 }
 
 #movie_viewage p {
+	font-size: 1rem;
+	font-weight: bold;
 	position: absolute;
 	left: 30px;
 }
@@ -141,22 +152,35 @@
 	position: relative;
 	top: 40px;
 	left: 80px;
+	font-size: 0.8rem;
 }
-
+#movie_datetime span:first-child{
+	border-right: 1px solid #edebeb;
+	padding-right: 10px;
+}
+#movie_datetime span:nth-child(2){
+	padding-left: 5px;
+}
 #movie_room {
 	position: absolute;
 	top: 65px;
 	left: 80px;
+	font-size: 0.8rem;
 }
-
+#movie_room span span{
+	color: #edebeb;
+	padding: 0 5px;
+}
 #seat_amount_selections {
 	position: absolute;
 	position: relative;
-	left: 400px;
-	top: 20px;
+	left: 530px;
+	top: 35px;
 	height: 100%;
 }
-
+#seat_amount_selections button{
+	cursor: pointer;
+}
 #seat_amount_selections div {
 	width: fit-content;
 	height: fit-content;
@@ -164,7 +188,12 @@
 	flex-direction: row;
 	align-items: center;
 }
-
+#seat_amount_selections div:nth-child(3){
+	margin-left: 10px;
+}
+#seat_amount_selections div:nth-child(4){
+	margin-left: 10px;
+}
 .names {
 	padding-right: 10px;
 }
@@ -304,7 +333,7 @@ main {
 							<p>02</p>
 							<p>인원/좌석</p>
 						</div>
-						<div class="simple_info_content none-active">
+						<div class="simple_info_content_all none-active">
 							<ul>
 								<li></li>
 								<li></li>
@@ -318,7 +347,7 @@ main {
 							<p>03</p>
 							<p>결제</p>
 						</div>
-						<div class="simple_info_content none-active">
+						<div class="simple_info_content_all none-active">
 							<ul>
 								<li></li>
 								<li></li>
@@ -332,7 +361,7 @@ main {
 							<p>04</p>
 							<p>결제완료</p>
 						</div>
-						<div class="simple_info_content none-active">
+						<div class="simple_info_content_all none-active">
 							<ul>
 								<li></li>
 								<li></li>
@@ -350,54 +379,7 @@ main {
 						<p>&middot; 인원은 최대 4명까지 선택 가능합니다.</p>
 					</div>
 					<div id="seat_reservation_selection">
-						<div id="movie_information">
-							<img alt="탈주 사진"
-								src="https://cf.lottecinema.co.kr//Media/MovieFile/MovieImg/202407/21144_103_1.jpg">
-							<div id="movie_viewage">
-								<img alt="12세 이상 관람가" src="/img/grade_12.png">
-								<p>탈주 (2D)</p>
-							</div>
-							<div id="movie_datetime">
-								<span>24.07.15(월)</span> <span>10:10 ~ 11:44</span>
-							</div>
-							<div id="movie_room">
-								<span>4관 리클라이너(레이저 영사기) ·</span>
-							</div>
-						</div>
-						<div id="seat_amount_selections">
-							<div class="seat_amount_selection" id="seat_amount_selection1">
-								<p class="names">성인</p>
-								<div class="counts">
-									<button class="minus">-</button>
-									<p>0</p>
-									<button class="plus">+</button>
-								</div>
-							</div>
-							<div class="seat_amount_selection" id="seat_amount_selection2">
-								<p class="names">청소년</p>
-								<div class="counts">
-									<button class="minus">-</button>
-									<p>0</p>
-									<button class="plus">+</button>
-								</div>
-							</div>
-							<div class="seat_amount_selection" id="seat_amount_selection3">
-								<p class="names">경로</p>
-								<div class="counts">
-									<button class="minus">-</button>
-									<p>0</p>
-									<button class="plus">+</button>
-								</div>
-							</div>
-							<div class="seat_amount_selection" id="seat_amount_selection4">
-								<p class="names">장애인</p>
-								<div class="counts">
-									<button class="minus">-</button>
-									<p>0</p>
-									<button class="plus">+</button>
-								</div>
-							</div>
-						</div>
+						
 					</div>
 					<div id="seat_map_information">
 						<p>- 인원을 선택하세요</p>
@@ -419,58 +401,156 @@ main {
 		$(document).ready(
 				function() {
 					
-					const newUrl = "http://localhost:8080/reservation/seat";
 					
-					window.history.replaceState({path: newUrl}, "", newUrl);
+					const scheduleNo = "${scheduleNo}";
+					const movieTitle = "${movieTitle}";
+					const cinemaName = "${cinemaName}";
+					const date = "${date}";
 					
-// 					const scheduleNo = "${scheduleNo}";
-// 					const movieTitle = "${movieTitle}";
-// 					const cinemaName = "${cinemaName}";
-// 					const date = "${date}";
+					$(".simple_info_content_movie").text(movieTitle);
+					$(".simple_info_content_specific").text(cinemaName);
+					$(".simple_info_content_date").text(date);
 					
-// 					const movie = $(".simple_info_content_movie").text(movieTitle);
-// 					const specific = $(".simple_info_content_specific").text(cinemaName);
-// 					const date = $(".simple_info_content_date").text(date);
-					
-// 					$.ajax({
-// 						url : "http://localhost:9001/api/v1/reservation/seat/detail/" + scheduleNo,
-// 						method: "GET",
-// 						dataType : "json",
-// 						success : function(response){
+					$.ajax({
+						url : "http://localhost:9001/api/v1/reservation/seat/detail/" + scheduleNo,
+						method: "GET",
+						dataType : "json",
+						success : function(response){
 							
-// 							console.log(response);
+							const roomTotalColumn = response.room.roomType.roomTotalColumn;
+							const roomTotalRow = response.room.roomType.roomTotalRow;
 							
-// 							const roomTotalColumn = response.room.roomType.roomTotalColumn;
-// 							const roomTotalRow = response.room.roomType.roomTotalRow;
+							const seatArray = new Array(roomTotalColumn);
 							
-// 							const seatArray = new Array(roomTotalColumn);
-							
-// 							for (var i = 0; i < seatArray.length; i++) {
-// 								seatArray[i] = new Array(roomTotalRow);
-// 							}
+							for (var i = 0; i < seatArray.length; i++) {
+								seatArray[i] = new Array(roomTotalRow);
+							}
 
-// 							let seatStr = '';
+							let seatStr = '';
+							
+							const startWorldTime = response.start;
+					        const startKoreanTime = new Date(startWorldTime).toString();
+					        const startTime = startKoreanTime.split(" ")[4].split(":")[0] + ":" + startKoreanTime.split(" ")[4].split(":")[1];
+					        
+					        const endWorldTime = response.end;
+					        const endKoreanTime = new Date(endWorldTime).toString();
+					        const endTime = endKoreanTime.split(" ")[4].split(":")[0] + ":" + endKoreanTime.split(" ")[4].split(":")[1];
+							
+					        const resultTime = startTime + " ~ " + endTime;
+					        $(".simple_info_content_time").text(resultTime);
+							
+					        let cnt = 0;
+					        
+					        console.log(response.reservatedSeatList);
+					        
+							for (let i = 0; i < seatArray.length; i++) {
+								const ascciCode = String.fromCharCode(65 + i);
+								seatStr += "<div><span>" + ascciCode + "</span>";
+								for (let j = 0; j < seatArray[1].length; j++) {
+									if(response.reservatedSeatList.length === 0){
+										seatStr += '<span class="seats" onclick="selectSeat(event)">' + (j + 1) + '</span>';
+									}else {
+										if(response.reservatedSeatList[cnt].seatRow === (i + 1) && response.reservatedSeatList[cnt].seatColumn === (j + 1) && response.reservatedSeatList[cnt].booked === true){
+											
+											seatStr += '<span style="background: grey;" onclick="alertReservatedSeat()">' + (j + 1) + '</span>';
+											if(cnt === response.reservatedSeatList.length - 1){
+												
+											}else {
+												cnt++;
+											}
+										}else {
+											seatStr += '<span class="seats" onclick="selectSeat(event)">' + (j + 1) + '</span>';
+										}
+									}
+									
+								}
+								seatStr += "</div>";
+							}
+							
+							// 출구 이미지 bg_window_right.png
+							
+							const imgApiUrl = fetchPoster(response.movieShowDetail.movie.title);
+							
+							let str = '<div id="movie_information">' +
+						        		'<img alt="' + response.movieShowDetail.movie.title  + ' 사진"' +
+						           		'src="' + imgApiUrl + '">' +
+						     		    '<div id="movie_viewage">';
+						     		   
+						     		    // 관람가 여부
+										if(response.movieShowDetail.movie.viewAge === "전체 관람가"){
+										    str += '<img alt="전체" src="/img/grade_all.png">';
+										}else if(response.movieShowDetail.movie.viewAge === "12세 이상 관람가"){
+										    str += '<img alt="12세 관람가" src="/img/grade_12.png">';
+										}else if(response.movieShowDetail.movie.viewAge === "15세 이상 관람가"){
+										    str += '<img alt="15세 관람가" src="/img/grade_15.png">';
+										}else if(response.movieShowDetail.movie.viewAge === "청소년 관람불가") {
+											str += '<img alt="15세 관람가" src="/img/pc_grade_19.png">';
+										}
+						     		    
+						    	 str += '<p>' + response.movieShowDetail.movie.title + ' (2D)</p>' + // 2d 데이터 없음
+						     	        '</div>' +
+						    	        '<div id="movie_datetime">' +
+								        '<span>' + date + '</span> <span>' + resultTime + '</span>' +
+								        '</div>' +
+								        '<div id="movie_room">' +
+								        '<span>' + response.room.cinema.cinemaName + "<span> | </span>" + response.room.roomType.roomName + " " + response.room.roomType.smallType + " "; 
+								        
+								        // 자막 더빙 여부
+							    	 	if(response.movieShowDetail.dubbing === true){
+									    	str += '<span>|</span> 더빙';								    	
+									    }else if(response.movieShowDetail.subtitle === true){
+									    	str += '<span>|</span> 자막';
+									    }else {
+									    }
+								        
+								 str += '</span>' +
+								        '</div>' +
+								        '</div>' +
+								        '<div id="seat_amount_selections">' +
+								        '<div class="seat_amount_selection" id="seat_amount_selection1">' +
+								        '<p class="names">성인</p>' +
+								        '<div class="counts">' +
+								        '<button class="minus" onclick="minusAmount(event)" id="minus_adult">-</button>' +
+								        '<p id="adult_amount">0</p>' +
+								        '<button class="plus" onclick="plusAmount(event)" id="plus_adult">+</button>' +
+								        '</div>' +
+								        '</div>' +
+								        '<div class="seat_amount_selection" id="seat_amount_selection2">' +
+								        '<p class="names">청소년</p>' +
+								        '<div class="counts">' +
+								        '<button class="minus" onclick="minusAmount(event)" id="minus_teenager">-</button>' +
+								        '<p id="teenager_amount">0</p>' +
+								        '<button class="plus" onclick="plusAmount(event)" id="plus_teenager">+</button>' +
+								        '</div>' +
+								        '</div>' +
+								        '<div class="seat_amount_selection" id="seat_amount_selection3">' +
+								        '<p class="names">경로</p>' +
+								        '<div class="counts">' +
+								        '<button class="minus" onclick="minusAmount(event)" id="minus_senile">-</button>' +
+								        '<p id="senile_amount">0</p>' +
+								        '<button class="plus" onclick="plusAmount(event)" id="plus_senile">+</button>' +
+								        '</div>' +
+								        '</div>' +
+								        '<div class="seat_amount_selection" id="seat_amount_selection4">' +
+								        '<p class="names">장애인</p>' +
+								        '<div class="counts">' +
+								        '<button class="minus" onclick="minusAmount(event)" id="minus_disabled">-</button>' +
+								        '<p id="disabled_amount">0</p>' +
+								        '<button class="plus" onclick="plusAmount(event)" id="plus_disabled">+</button>' +
+								        '</div>' +
+								        '</div>' +
+										'</div>';
+							
+							$("#seat_reservation_selection").html(str);
 
-// 							for (let i = 0; i < seatArray.length; i++) {
-// 								const ascciCode = String.fromCharCode(65 + i);
-// 								seatStr += "<div><span>" + ascciCode + "</span>";
-// 								for (let j = 0; j < seatArray[1].length; j++) {
-// 									seatStr += '<span>' + (j + 1) + '</span>';
-// 								}
-// 								seatStr += "</div>";
-// 							}
-							
-// 							// 출구 이미지 bg_window_right.png
-
-// 							$("#seat_map").html(seatStr);
+							$("#seat_map").html(seatStr);
 							
 							
-							
-// 						},
-// 						error : function(xhr, status, error) {
-// 							console.log(error);
-// 						}
-// 					});
+						},
+						error : function(xhr, status, error) {
+							console.log(error);
+						}
+					});
 					
 					$(".simple_info_title").on(
 							"mouseenter",
@@ -486,7 +566,9 @@ main {
 										"none-active");
 							});
 
-					
+// 					$("#seat_map").on("click", "span" function(){
+// 						$(this).css("background", "red");
+// 					});
 
 				});
 		
@@ -521,6 +603,123 @@ main {
 		    }
 		    return 'https://via.placeholder.com/200x300'; // 기본 포스터 이미지 (여기까지 올 수 있는 경우)
 		}
+		
+		let finalAmount = 0;
+		let selectedAmount = 0;
+		
+		function minusAmount(event){
+			const id = event.target.id;
+			const type = id.substring(6, id.length);
+			const totalAmount = 4;
+						
+			let amount = parseInt($("#" + type + "_amount").text());
+			$(".seats").css("background", "#3498db");
+			selectedAmount = 0;
+			
+			if(amount === 0){
+			}else {
+				amount--;
+				finalAmount--;
+			}
+			$("#" + type + "_amount").text(amount);
+			
+		}
+		
+		function plusAmount(event){
+			const id = event.target.id;
+			const type = id.substring(5, id.length);
+			const totalAmount = 4;
+			
+			let amount = parseInt($("#" + type + "_amount").text());
+			
+			if(type === "adult") {
+				const teenagerAmount = parseInt($("#teenager_amount").text());
+				const senileAmount = parseInt($("#senile_amount").text());
+				const disabledAmount = parseInt($("#disabled_amount").text());
+				
+				const resultAmount = teenagerAmount + senileAmount + disabledAmount + amount;
+			
+				if(resultAmount === 4){
+				}else {
+					amount++;
+					finalAmount++;
+				}
+			
+			}else if(type === "teenager") {
+				
+				const adultAmount = parseInt($("#adult_amount").text());
+				const senileAmount = parseInt($("#senile_amount").text());
+				const disabledAmount = parseInt($("#disabled_amount").text());
+				
+				const resultAmount = adultAmount + senileAmount + disabledAmount + amount;
+			
+				if(resultAmount === 4){
+				}else {
+					amount++;
+					finalAmount++;
+				}
+				
+			} else if(type === "senile") {
+				
+				const teenagerAmount = parseInt($("#teenager_amount").text());
+				const adultAmount = parseInt($("#adult_amount").text());
+				const disabledAmount = parseInt($("#disabled_amount").text());
+				
+				const resultAmount = teenagerAmount + adultAmount + disabledAmount + amount;
+			
+				if(resultAmount === 4){
+				}else {
+					amount++;
+					finalAmount++;
+				}
+				
+			} else if(type === "disabled") {
+				
+				const teenagerAmount = parseInt($("#teenager_amount").text());
+				const adultAmount = parseInt($("#adult_amount").text());
+				const senileAmount = parseInt($("#senile_amount").text());
+				
+				const resultAmount = teenagerAmount + adultAmount + senileAmount + amount;
+			
+				if(resultAmount === 4){
+				}else {
+					amount++;
+					finalAmount++;
+				}
+				
+			}			
+			
+			$("#" + type + "_amount").text(amount);
+		
+		}
+		
+		function selectSeat(event){
+			if(finalAmount === 0){
+				alert("인원수를 선택해주세요.");
+			}else {
+			
+				if(event.target.style.backgroundColor === "red"){
+					event.target.style.backgroundColor = '#3498db';
+					selectedAmount--;
+				
+				}else {
+					
+					if(selectedAmount === finalAmount){
+						alert("선택한 인원수를 확인해주세요.");
+					}else {
+						event.target.style.backgroundColor = 'red';
+						selectedAmount++;
+					}
+				
+				}
+			}
+			
+		}
+		
+		function alertReservatedSeat(){
+			alert("이미 예약된 좌석입니다.");
+		}
+		
 	</script>
 </body>
 </html>

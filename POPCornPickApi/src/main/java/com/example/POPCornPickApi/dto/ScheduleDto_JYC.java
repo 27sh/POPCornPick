@@ -1,8 +1,10 @@
 package com.example.POPCornPickApi.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import com.example.POPCornPickApi.entity.MovieShowDetail;
+import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
 
 import jakarta.persistence.Column;
@@ -27,4 +29,5 @@ public class ScheduleDto_JYC {
 	private int totalSeat;
 	private int bookedSeat;
 	private int leftSeat;
+	private List<ReservatedSeat> reservatedSeatList;
 }

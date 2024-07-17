@@ -110,7 +110,7 @@ textarea{
 
 </style>
 </head>
-<%@ include file="../../layout/header.jsp"%>
+<%@ include file="../../layout/adminHeader.jsp"%>
 <body>
 	<main>
 	<div class="sidebar-container">

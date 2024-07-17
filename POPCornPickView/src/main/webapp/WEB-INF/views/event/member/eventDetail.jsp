@@ -16,25 +16,43 @@ main {
 	min-height: 700px;
 }
 
-h2{
-	margin-bottom: 20px;
-	font-weight: 600;
-	font-size: 22px;
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #b8b6aa;
+    border-bottom: 1px solid #b8b6aa;
+    margin-bottom: 20px;
+    background-color: #f8f8f8;
 }
 
-table, tr, th, td{
-	border-collapse:collapse;
-	border:1px solid #eee;
-	border-right:0;
-	border-left:0;
-	padding:20px;
-	text-align:center;
+.event-info{
+	display: flex;
+	align-items: center;
 }
 
-#eventDetail .table{
-	width: 100%;
+.event-state{
+	font-size: 14px;
+    font-weight: 400;
+}
+.event-title {
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 20px;
 }
 
+.event-period {
+    font-size: 14px;
+    color: #666;
+}
+
+#eventContent {
+    margin-top: 20px;
+    margin-left: 400px;
+	text-align: left;
+}
+    
 #question{
 	font-size: 18px;
 	font-weight: 400;
@@ -46,8 +64,36 @@ input[type="radio"]{
 	margin-left: 10px;
 }
 
-#eventContentBox{
+#eventSubmitButton{
 	text-align: center;
+	margin-top: 20px;
+}
+#submitEvent {
+	padding: 15px 50px;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	cursor: pointer;
+	margin: 0 10px;
+	background: #f82f62;
+	border: 1px solid #f82f62;
+	color:#fff;
+}
+
+hr{
+	margin-top: 20px;
+	color: #b8b6aa;
+}
+#buttonBox{
+	text-align: right;
+}
+#backButton{
+	padding: 10px 15px;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 10px;
+	cursor: pointer;
+	margin: 10px 0;
+	border: 1px solid #b8b6aa;
+	background: white;
 }
 
 
@@ -56,18 +102,17 @@ input[type="radio"]{
 <%@ include file="../../layout/header.jsp"%>
 <body>
 	<main>
-		<div id="container">
-			<h2>이벤트 상세</h2>
-			<div id="eventDetail">
-				<table class="table">
-					<tbody id="roomList">
-					
-					</tbody>					
-				</table>
-				<div id="eventContent"></div>
-				<div id="eventSubmitButton"></div>
+		<div class="event-header">
+			<div class="event-info">
+				<div class="event-state"><b id="eventState"></b></div>
+				<div id="eventTitle" class="event-title"></div>
 			</div>
+			<div id="eventPeriod" class="event-period"></div>
 		</div>
+		<div id="eventContent"></div>
+		<div id="eventSubmitButton"></div>
+		<hr>
+		<div id="buttonBox"></div>
 	</main>
 	<footer>
 	
@@ -78,8 +123,26 @@ input[type="radio"]{
 		let eventNo = urlParams.get('eventNo');
 		console.log(eventNo);
 		
-		if(eventNo === null){
+		let eventState = urlParams.get('eventState');
+		console.log(eventState);
+		
+		if(eventNo === null || eventState === null){
 			alert("올바르지 않은 경로입니다.");
+		} 
+		
+		if(eventState == 1){
+			document.getElementById('eventState').innerText = "진행중인 이벤트";
+			document.querySelector('#eventState').style.color = '#2275a4';
+			const buttonStr1 = '<input type="button" id="submitEvent" value="참여하기" onclick="submitEvent(event)">';
+			document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
+			
+			const buttonStr2 = '<button type="button" id="backButton" onclick="backButton1()">이전</button>';
+			document.getElementById("buttonBox").innerHTML = buttonStr2;
+		} else if(eventState == 0){
+			document.getElementById('eventState').innerText = "종료된 이벤트";
+			document.querySelector('#eventState').style.color = '#2275a4';
+			const buttonStr2 = '<button type="button" id="backButton" onclick="backButton0()">이전</button>';
+			document.getElementById("buttonBox").innerHTML = buttonStr2;
 		}
 		
 		$.ajax({
@@ -91,15 +154,9 @@ input[type="radio"]{
 			success : function(data) {
 				console.log(data);
 				if(data != null){
-					let table = '';
-					table += '<tr><td>' + data.eventNo + '</td>';
-					table += '<td>' + data.eventTitle + '</td>';
-					table += '<td>' + data.startEvent + ' ~ ' + data.endEvent + '</td></tr>';
-					
+					document.getElementById("eventTitle").innerText = data.eventTitle;
+					document.getElementById("eventPeriod").innerText = "기간: "+ data.startEvent + ' ~ ' + data.endEvent;
 					document.getElementById("eventContent").innerHTML = data.eventContent;
-					document.getElementById("roomList").innerHTML = table;
-					const buttonStr1 = '<input type="button" id="submitEvent" value="제출하기" onclick="submitEvent(event)">';
-					document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
 				} else {
 					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
 					//window.location.href="/cinema/list";
@@ -180,6 +237,14 @@ input[type="radio"]{
 		xhttp.open("POST", "http://localhost:9001/api/v1/event/member/form");
 		xhttp.setRequestHeader("Content-type", "application/json");
 		xhttp.send(sendData);
+	}
+	
+	function backButton0(){
+		window.location.href="/event/commonList?eventState=0";
+	}
+	
+	function backButton1(){
+		window.location.href="/event/commonList?eventState=1";
 	}
 	
 	

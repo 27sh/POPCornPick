@@ -78,7 +78,7 @@ hr{
 }
 
 .eventDate {
-    font-size: 14px;
+    font-size: 13px;
     margin-bottom: 5px;
     color: #6a6f77;
     padding: 18px 11px 0 11px;
@@ -133,7 +133,7 @@ hr{
 				if(data != null && data.length > 0){
 					let list = '';
 					for(let i = 0 ; i < data.length ; i++){
-						list += '<a href="/event/commonDetail?eventNo='+ data[i].eventNo +'">';
+						list += '<a href="/event/commonDetail?eventState=1&eventNo='+ data[i].eventNo +'">';
 						list += '<div class="eventItem">';
 						list += '<img src="/img/'+ data[i].eventImgOriginName +'" alt="'+ data[i].eventTitle +'">';
 						list += '<div class="eventTitle">'+ data[i].eventTitle +'</div>';
@@ -164,7 +164,7 @@ hr{
 				if(data != null && data.length > 0){
 					let list = '';
 					for(let i = 0 ; i < data.length ; i++){
-						list += '<a href="/event/commonDetail?eventNo='+ data[i].eventNo +'">';
+						list += '<a href="/event/commonDetail?eventState=0&eventNo='+ data[i].eventNo +'">';
 						list += '<div class="eventItem">';
 						list += '<img src="/img/'+ data[i].eventImgOriginName +'" alt="'+ data[i].eventTitle +'">';
 						list += '<div class="eventTitle">'+ data[i].eventTitle +'</div>';

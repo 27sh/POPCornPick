@@ -202,104 +202,96 @@ a:hover {
 	</div>
 	</main>
 	
-	<script>
-    $(document).ready(function() {
-        var currentPage = 1;
-        var itemsPerPage = 10;
+<script>
+$(document).ready(function() {
+    var currentPage = 1;
+    var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
 
-        loadPage(currentPage);
+    loadPage(currentPage);
 
-        function loadPage(page) {
-            $.ajax({
-                url: "http://localhost:9001/api/v1/admin/announcementList",
-                method: "GET",
-                data: {
-                    page: page,
-                    size: itemsPerPage
-                },
-                success: function(data) {
-                    var tableBody = $("#tablebody");
-                    tableBody.empty();
+    $("#searchForm").submit(function(event) {
+        event.preventDefault();
+        var searchQuery = $("#search").val();
+        $.ajax({
+            url: "/api/v1/admin/search",
+            method: "GET",
+            data: { title: searchQuery },
+            success: function(data) {
+                var tableBody = $("#tablebody");
+                tableBody.empty();
 
-                    var counter = (page - 1) * itemsPerPage + 1;
-                    data.forEach(function(not) {
-                        var date = new Date(not.regdate);
-                        var year = date.getFullYear();
-                        var month = (date.getMonth() + 1).toString().padStart(2, '0');
-                        var day = date.getDate().toString().padStart(2, '0');
-                        var formattedDate = year + '-' + month + '-' + day;
+                var counter = 1;
+                data.forEach(function(not) {
+                    var date = new Date(not.regdate);
+                    var year = date.getFullYear();
+                    var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    var day = date.getDate().toString().padStart(2, '0');
+                    var formattedDate = year + '-' + month + '-' + day;
 
-                        var row = '<tr>' +
-                            '<td>' + counter + '</td>' +
-                            '<td>' + not.noticeCategory + '</td>' +
-                            "<td><a href='http://localhost:8080/admin/noticeDetail/" + not.noticeNo + "'>" + not.noticeTitle + "</a></td>" +
-                            '<td>' + formattedDate + '</td>' +
-                            '</tr>';
+                    var row = '<tr>' +
+                        '<td>' + counter + '</td>' +
+                        '<td>' + not.noticeCategory + '</td>' +
+                        "<td><a href='/admin/noticeDetail/" + not.noticeNo + "'>" + not.noticeTitle + "</a></td>" +
+                        '<td>' + formattedDate + '</td>' +
+                        '</tr>';
 
-                        tableBody.append(row);
-                        counter++;
-                    });
-
-                    // Pagination
-                    var pagination = $("#pagination");
-                    pagination.empty();
-                    var totalPages = Math.ceil(data.totalElements / itemsPerPage);
-                    for (var i = 1; i <= totalPages; i++) {
-                        var buttonClass = (i === page) ? "active" : "";
-                        pagination.append('<button class="' + buttonClass + '" onclick="loadPage(' + i + ')">' + i + '</button>');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
-                }
-            });
-        }
-
-        function searchNotice(event) {
-            event.preventDefault();
-            var searchQuery = $("#search").val();
-            $.ajax({
-                url: "http://localhost:9001/api/v1/admin/search",
-                method: "GET",
-                data: { title: searchQuery },
-                success: function(data) {
-                    var tableBody = $("#tablebody");
-                    tableBody.empty();
-
-                    var counter = 1;
-                    data.forEach(function(not) {
-                        var date = new Date(not.regdate);
-                        var year = date.getFullYear();
-                        var month = (date.getMonth() + 1).toString().padStart(2, '0');
-                        var day = date.getDate().toString().padStart(2, '0');
-                        var formattedDate = year + '-' + month + '-' + day;
-
-                        var row = '<tr>' +
-                            '<td>' + counter + '</td>' +
-                            '<td>' + not.noticeCategory + '</td>' +
-                            "<td><a href='http://localhost:8080/admin/noticeDetail/" + not.noticeNo + "'>" + not.noticeTitle + "</a></td>" +
-                            '<td>' + formattedDate + '</td>' +
-                            '</tr>';
-
-                        tableBody.append(row);
-                        counter++;
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
-                }
-            });
-        }
-
-        $("#searchForm").submit(function(event) {
-            searchNotice(event);
+                    tableBody.append(row);
+                    counter++;
+                });
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
         });
     });
-    
-    function a(event){
-    	
-    }
-    
+});
+
+function loadPage(page) {
+    var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
+    $.ajax({
+        url: "http://localhost:9001/api/v1/admin/announcementList",
+        method: "GET",
+        data: {
+            page: page - 1,
+            size: itemsPerPage
+        },
+        success: function(data) {
+            var tableBody = $("#tablebody");
+            tableBody.empty();
+
+            var counter = (page - 1) * itemsPerPage + 1;
+            data.content.forEach(function(not) {
+                var date = new Date(not.regdate);
+                var year = date.getFullYear();
+                var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                var day = date.getDate().toString().padStart(2, '0');
+                var formattedDate = year + '-' + month + '-' + day;
+
+                var row = '<tr>' +
+                    '<td>' + counter + '</td>' +
+                    '<td>' + not.noticeCategory + '</td>' +
+                    "<td><a href='/admin/noticeDetail/" + not.noticeNo + "'>" + not.noticeTitle + "</a></td>" +
+                    '<td>' + formattedDate + '</td>' +
+                    '</tr>';
+
+                tableBody.append(row);
+                counter++;
+            });
+
+            // Pagination
+            var pagination = $("#pagination");
+            pagination.empty();
+            var totalPages = data.totalPages;
+            for (var i = 1; i <= totalPages; i++) {
+                var buttonClass = (i === page) ? "active" : "";
+                pagination.append('<button class="' + buttonClass + '" onclick="loadPage(' + i + ')">' + i + '</button>');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
 </script>
 
 </body>

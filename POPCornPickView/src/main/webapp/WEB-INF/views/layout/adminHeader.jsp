@@ -119,7 +119,7 @@
         </div>
         <ul id="mme">
             <li><a href="/">홈</a></li>
-            <li><a href="/admin/userList">회원</a></li>
+            <li><a href="/memManage/memState">회원</a></li>
             <li class="mme1"><a href="/admin/cinemaList">극장</a></li>
             <li class="mme2"><a href="/admin/movieList">영화</a></li>
             <li><a href="/admin/reportList">신고</a></li>

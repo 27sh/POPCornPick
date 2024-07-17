@@ -35,15 +35,26 @@ table, tr, th, td{
 	width: 100%;
 }
 
+#question{
+	font-size: 18px;
+	font-weight: 400;
+	margin-top: 40px;
+	margin-bottom: 10px;
+}
 
+input[type="radio"]{
+	margin-left: 10px;
+}
+
+#eventContentBox{
+	text-align: center;
+}
 
 
 </style>
 </head>
+<%@ include file="../layout/adminHeader.jsp"%>
 <body>
-	<header>
-		<%@ include file="../../layout/header.jsp"%>
-	</header>
 	<main>
 		<div id="container">
 			<h2>이벤트 상세</h2>
@@ -54,6 +65,7 @@ table, tr, th, td{
 					</tbody>					
 				</table>
 				<div id="eventContent"></div>
+				<div id="eventSubmitButton"></div>
 			</div>
 		</div>
 	</main>
@@ -86,6 +98,8 @@ table, tr, th, td{
 					
 					document.getElementById("eventContent").innerHTML = data.eventContent;
 					document.getElementById("roomList").innerHTML = table;
+					const buttonStr1 = '<input type="button" id="submitEvent" value="제출하기" onclick="submitEvent(event)">';
+					document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
 				} else {
 					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
 					//window.location.href="/cinema/list";
@@ -98,6 +112,77 @@ table, tr, th, td{
 		});
 		
 	});
+	
+	function submitEvent(event){
+		const q1 = document.getElementsByName('q1');
+		const q2 = document.getElementsByName('q2');
+		const q3 = document.getElementsByName('q3');
+		const q4 = document.getElementsByName('q4');
+		console.log(q1);
+		let selectedValue1 = null;
+		let selectedValue2 = null;
+		let selectedValue3 = null;
+		let selectedValue4 = null;
+		for(const radio of q1){
+			if(radio.checked){
+				selectedValue1 = radio.value;
+				break;
+			}
+		}
+		
+		for(const radio of q2){
+			if(radio.checked){
+				selectedValue2 = radio.value;
+				break;
+			}
+		}
+		
+		for(const radio of q3){
+			if(radio.checked){
+				selectedValue3 = radio.value;
+				break;
+			}
+		}
+		
+		for(const radio of q4){
+			if(radio.checked){
+				selectedValue4 = radio.value;
+				break;
+			}
+		}
+		
+		console.log(selectedValue1);
+		console.log(selectedValue2);
+		console.log(selectedValue3);
+		console.log(selectedValue4);
+		
+		const urlParams = new URLSearchParams(window.location.search);
+		let eventNo = urlParams.get('eventNo');
+		console.log("eventNo22 : ", eventNo);
+		
+		const participation = {
+			eventNo : eventNo
+		}
+		console.log("participation", participation);
+
+		const sendData = JSON.stringify(participation);
+		console.log("sendData: " + sendData);
+
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function() {
+			if (this.status === 200) {
+				alert(this.responseText);
+				window.location.href = "http://localhost:8080/event/commonList"
+			} else {
+				alert("다시 입력해주세요.");
+			}
+		};
+		xhttp.open("POST", "http://localhost:9001/api/v1/event/member/form");
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.send(sendData);
+	}
+	
+	
 	</script>
 </body>
 </html>

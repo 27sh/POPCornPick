@@ -291,9 +291,9 @@
                                 <li><a href="/film/movieList">무비차트</a></li>
                             </ul>
                         </li>
-                        <li><a href="cinemaPage">극장</a>
+                        <li><a href="/memberCinema/cinemaPage">극장</a>
                             <ul class="sme">
-                                <li><a href="cinemaPage">POPCornPick 극장</a></li>
+                                <li><a href="/memberCinema/cinemaPage">POPCornPick 극장</a></li>
                                 <li><a href="sRoomDetail">특별관</a></li>
                             </ul>
                         </li>

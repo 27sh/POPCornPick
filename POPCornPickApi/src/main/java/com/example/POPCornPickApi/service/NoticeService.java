@@ -61,6 +61,11 @@ public class NoticeService {
 	public List<Notice> searchNoticesByTitle(String title) {
         return noticerepository.findByNoticeTitleContaining(title);
     }
+	
+    public Page<Notice> getNotices(Pageable pageable) {
+        return noticerepository.findAll(pageable);
+    }
+	
 //	public Page<Notice> searchByTitle(String noticeNo, int page, int size) {
 //        Pageable pageable = PageRequest.of(page, size);
 //        return noticerepository.findByNoticeTitleContaining(noticeNo, pageable);

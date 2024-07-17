@@ -32,10 +32,8 @@ h2{
 
 </style>
 </head>
+<%@ include file="../layout/adminHeader.jsp"%>
 <body>
-	<header>
-		<%@ include file="../layout/adminHeader.jsp"%>
-	</header>
 	<main>
 		<div class="sidebar-container">
 			<%@ include file="../layout/cinemaSideBar.jsp"%>

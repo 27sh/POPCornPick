@@ -557,7 +557,6 @@ main {
 										seatStr += '<span class="seats" onclick="selectSeat(event)" >' + (j + 1) + '</span>';
 									}else {
 										if(response.reservatedSeatList[cnt].seatRow === (i + 1) && response.reservatedSeatList[cnt].seatColumn === (j + 1) && response.reservatedSeatList[cnt].booked === true){
-											
 											seatStr += '<span style="background: grey; cursor: default;">' + (j + 1) + '</span>';
 											if(cnt === response.reservatedSeatList.length - 1){
 												

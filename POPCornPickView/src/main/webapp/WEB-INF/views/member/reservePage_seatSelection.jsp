@@ -62,11 +62,16 @@
 .simple_info_content_all{
 	position: relative;
 }
-.simple_info_content_all ul{
+.simple_info_content_all {
 	position: absolute;
 	top: 50%;
 }
-.simple_info_content_all ul li{
+.simple_info_content_all {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.simple_info_content_all li{
 	color: white;
 }
 .none-active {
@@ -231,6 +236,7 @@
 
 .counts {
 	border: 1px solid grey;
+	border-radius: 5px;
 	text-align: center;
 	padding-right: 5px;
 	padding-left: 5px;
@@ -249,7 +255,7 @@
 	position: absolute;
 	top: 10px;
 	color: white;
-	font-size: 0.9rem;
+	font-size: 0.8rem;
 	left: 50%;
 	transform: translateX(-50%);
 }
@@ -266,7 +272,10 @@
 	padding: 5px;
 	transform: translateX(-50%);
 }
-
+#seat_map_information_intro{
+	width: 100%;
+	text-align: center;
+}
 #seat_map {
 	position: absolute;
 	left: 50%;
@@ -282,10 +291,62 @@
 	background-color: #3498db;
 	color: white;
 	text-align: center;
+	cursor: pointer;
 	line-height: 30px;
 	border-radius: 5px;
-	cursor: pointer;
 	border-radius: 7px 7px 2px 0px;
+}
+#seat_type{
+	display: flex;
+}
+#seat_type div:first-child span {
+	display: block;
+	width: 20px;
+	height: 17px;
+	margin: 5px;
+	background-color: #3498db;
+	color: transparent;
+	text-align: center;
+	line-height: 30px;
+	border-radius: 5px;
+	border-radius: 7px 7px 2px 0px;
+}
+#seat_type div:nth-child(2) span {
+	display: block;
+	width: 20px;
+	height: 17px;
+	margin: 5px;
+	background-color: grey;
+	color: transparent;
+	text-align: center;
+	line-height: 30px;
+	border-radius: 5px;
+	border-radius: 7px 7px 2px 0px;
+}
+#seat_type div:nth-child(3) span {
+	display: block;
+	width: 20px;
+	height: 17px;
+	margin: 5px;
+	background-color: red;
+	color: transparent;
+	text-align: center;
+	line-height: 30px;
+	border-radius: 5px;
+	border-radius: 7px 7px 2px 0px;
+}
+#seat_type div{
+	display: flex;
+	align-items: center;
+	margin: 0 5px;
+}
+#seat_type div p{
+	color: white;
+}
+#seat_type{
+	position: absolute;
+	bottom: 30px;
+	left: 30px;
 }
 #seat_map span:first-child{
 	cursor: auto;
@@ -295,9 +356,40 @@
 	margin: 5px;
 	display: flex;
 }
-#payment_total{
-	height: 80px;
+#payment_container{
+	height: 81px;
 	background: grey;
+	display: flex;
+	align-items: center;
+}
+#payment_total{
+	width: 100%;
+}
+#payment_total p{
+	color: white;
+	margin-left: 20px;
+}
+#payment_total span{
+	color: white;
+	font-size: 2rem;
+	font-weight: bold;
+	position: relative;
+	top: 3px;
+}
+#payment_confirm{
+	height: 100%;
+	background: red;
+	width: 200px;
+	cursor:pointer;
+}
+#payment_confirm p{
+	color: white;
+	cursor: pointer;
+	font-size: 1.2rem;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: center;
 }
 main {
 	width: 100%;
@@ -333,12 +425,10 @@ main {
 							<p>02</p>
 							<p>인원/좌석</p>
 						</div>
-						<div class="simple_info_content_all none-active">
-							<ul>
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
+						<div class="simple_info_content none-active">
+							<ul class="simple_info_content_all">
+								<li id="type_count"></li>
+								<li id="seat_selected"></li>
 							</ul>
 						</div>
 					</div>
@@ -347,8 +437,8 @@ main {
 							<p>03</p>
 							<p>결제</p>
 						</div>
-						<div class="simple_info_content_all none-active">
-							<ul>
+						<div class="simple_info_content none-active">
+							<ul class="simple_info_content_all">
 								<li></li>
 								<li></li>
 								<li></li>
@@ -361,8 +451,8 @@ main {
 							<p>04</p>
 							<p>결제완료</p>
 						</div>
-						<div class="simple_info_content_all none-active">
-							<ul>
+						<div class="simple_info_content none-active">
+							<ul class="simple_info_content_all">
 								<li></li>
 								<li></li>
 								<li></li>
@@ -382,14 +472,30 @@ main {
 						
 					</div>
 					<div id="seat_map_information">
-						<p>- 인원을 선택하세요</p>
+						<p id="seat_map_information_intro">- 인원을 선택하세요</p>
 						<h4>S C R E E N</h4>
 						<div id="seat_map"></div>
+						<div id="seat_type">
+							<div>
+								<span>a</span>
+								<p>예약 가능</p>
+							</div>
+							<div>
+								<span>a</span>
+								<p>예매 완료</p>
+							</div>
+							<div>
+								<span>a</span>
+								<p>선택</p>
+							</div>
+						</div>
 					</div>
-					<div id="payment_total"></div>
-					<div id="seat_type">
-						<div>
-							
+					<div id="payment_container">
+						<div  id="payment_total">
+							<p>총 합계<span id="total_cost"> 0 </span>원</p>
+						</div>
+						<div  id="payment_confirm">
+							<p>결제하기</p>
 						</div>
 					</div>
 				</section>
@@ -448,18 +554,18 @@ main {
 								seatStr += "<div><span>" + ascciCode + "</span>";
 								for (let j = 0; j < seatArray[1].length; j++) {
 									if(response.reservatedSeatList.length === 0){
-										seatStr += '<span class="seats" onclick="selectSeat(event)">' + (j + 1) + '</span>';
+										seatStr += '<span class="seats" onclick="selectSeat(event)" >' + (j + 1) + '</span>';
 									}else {
 										if(response.reservatedSeatList[cnt].seatRow === (i + 1) && response.reservatedSeatList[cnt].seatColumn === (j + 1) && response.reservatedSeatList[cnt].booked === true){
 											
-											seatStr += '<span style="background: grey;" onclick="alertReservatedSeat()">' + (j + 1) + '</span>';
+											seatStr += '<span style="background: grey; cursor: default;">' + (j + 1) + '</span>';
 											if(cnt === response.reservatedSeatList.length - 1){
 												
 											}else {
 												cnt++;
 											}
 										}else {
-											seatStr += '<span class="seats" onclick="selectSeat(event)">' + (j + 1) + '</span>';
+											seatStr += '<span class="seats" onclick="selectSeat(event)" id="seatRow' + i + '"_seatColumn"' + j + '">' + (j + 1) + '</span>';
 										}
 									}
 									
@@ -540,7 +646,7 @@ main {
 								        '</div>' +
 								        '</div>' +
 										'</div>';
-							
+							 
 							$("#seat_reservation_selection").html(str);
 
 							$("#seat_map").html(seatStr);
@@ -569,7 +675,38 @@ main {
 // 					$("#seat_map").on("click", "span" function(){
 // 						$(this).css("background", "red");
 // 					});
+					
+					// 결제하기 눌렀을때 이벤트 좌석이 선택 안됐을때 예외처리 
+					$("#payment_confirm").on("click", function(){
 
+						const movieTitle = $(".simple_info_content_movie").text();
+						const cinemaName = $(".simple_info_content_specific").text();
+						const date = $(".simple_info_content_date").text();
+						const time = $(".simple_info_content_time").text();
+						const typeCount = $("#type_count").text();
+						const seatSelected = $("#seat_selected").text();
+						const scheduleNo = "${scheduleNo}";
+
+						const seatSelectedArray = seatSelected.split(", ");
+						const typeCountArray = typeCount.split(", ");
+	
+						const teenagerAmount = parseInt($("#teenager_amount").text());
+						const adultAmount = parseInt($("#adult_amount").text());
+						const senileAmount = parseInt($("#senile_amount").text());
+						const disabledAmount = parseInt($("#disabled_amount").text());
+						
+						const totalAmount = teenagerAmount + adultAmount + senileAmount + disabledAmount;
+						
+						if(seatSelectedArray.length === totalAmount && seatSelectedArray[0] !== "" && typeCountArray[0] !== null){
+							if(confirm("이 정보로 결제창으로 넘어가시겠습니까?")){
+								location.href="http://localhost:8080/reservation/pay/" + scheduleNo + "/" + movieTitle + "/" + cinemaName + "/" + date + "/" + time + "/" + typeCount + "/" + seatSelected;
+							}
+						}else {
+							alert("좌석을 다시 선택해주십시오.");
+						}
+						
+					});
+					
 				});
 		
 		function fetchPoster(movieNm) {
@@ -606,12 +743,14 @@ main {
 		
 		let finalAmount = 0;
 		let selectedAmount = 0;
+		let array = new Array();
 		
 		function minusAmount(event){
+			$("#total_cost").text(0);
 			const id = event.target.id;
 			const type = id.substring(6, id.length);
 			const totalAmount = 4;
-						
+			$("#seat_map_information_intro").text("- 좌석 선택 후 결제하기 버튼을 클릭하세요");			
 			let amount = parseInt($("#" + type + "_amount").text());
 			$(".seats").css("background", "#3498db");
 			selectedAmount = 0;
@@ -622,6 +761,57 @@ main {
 				finalAmount--;
 			}
 			$("#" + type + "_amount").text(amount);
+			
+			const teenagerAmount = parseInt($("#teenager_amount").text());
+			const adultAmount = parseInt($("#adult_amount").text());
+			const senileAmount = parseInt($("#senile_amount").text());
+			const disabledAmount = parseInt($("#disabled_amount").text());
+			
+			let stringArray = new Array();
+			let adultStr = '';
+			let senileStr = '';
+			let teenagerStr = '';
+			let disabledStr = '';
+			
+			
+			if(adultAmount > 0){
+				adultStr = "성인" + adultAmount;
+				stringArray.push(adultStr); 
+			}
+			if(teenagerAmount > 0){
+				teenagerStr = "청소년" + teenagerAmount;
+				stringArray.push(teenagerStr); 
+			}	
+			if(senileAmount > 0){
+				senileStr = "경로" + senileAmount;
+				stringArray.push(senileStr); 
+			}	
+			if(disabledAmount > 0){
+				disabledStr = "장애인" + disabledAmount;
+				stringArray.push(disabledStr); 
+			}	
+			
+			let resultStr = ''; 
+			
+			if(stringArray.length > 1){
+				stringArray.forEach(string => {
+					if(stringArray[stringArray.length - 1] === string){
+						resultStr += string;
+					}else {
+						resultStr += string + ", ";
+					}
+				});
+			}else {
+				if(stringArray.length === 0){
+					resultStr = "";
+				}else {
+					resultStr = stringArray[0];
+				}
+			}
+			
+			$("#type_count").text(resultStr);
+			array.length = 0;
+			$("#seat_selected").text("");	
 			
 		}
 		
@@ -646,7 +836,7 @@ main {
 				}
 			
 			}else if(type === "teenager") {
-				
+				$("#seat_map_information_intro").text("- 청소년 요금은 만 4세 이상 ~ 만 19세 미만의 청소년에 한해 적용됩니다.");	
 				const adultAmount = parseInt($("#adult_amount").text());
 				const senileAmount = parseInt($("#senile_amount").text());
 				const disabledAmount = parseInt($("#disabled_amount").text());
@@ -660,7 +850,7 @@ main {
 				}
 				
 			} else if(type === "senile") {
-				
+				$("#seat_map_information_intro").text("- 반드시 본인의 신분증(만 65세 이상)을 소지하신 후 입장해주세요. 미지참 시 입장이 제한됩니다.");	
 				const teenagerAmount = parseInt($("#teenager_amount").text());
 				const adultAmount = parseInt($("#adult_amount").text());
 				const disabledAmount = parseInt($("#disabled_amount").text());
@@ -674,7 +864,7 @@ main {
 				}
 				
 			} else if(type === "disabled") {
-				
+				$("#seat_map_information_intro").text("- 반드시 복지카드를 소지하신 후 입장해주세요. 미지참 시 입장이 제한됩니다. (장애의 정도가 심한 장애인: 동반 1인 포함 할인 가능/ 장애 정도가 심하지 않은 장애인: 본인에 한하여 할인 적용)");	
 				const teenagerAmount = parseInt($("#teenager_amount").text());
 				const adultAmount = parseInt($("#adult_amount").text());
 				const senileAmount = parseInt($("#senile_amount").text());
@@ -691,9 +881,76 @@ main {
 			
 			$("#" + type + "_amount").text(amount);
 		
+			const teenagerAmount = parseInt($("#teenager_amount").text());
+			const adultAmount = parseInt($("#adult_amount").text());
+			const senileAmount = parseInt($("#senile_amount").text());
+			const disabledAmount = parseInt($("#disabled_amount").text());
+			
+			let stringArray = new Array();
+			let adultStr = '';
+			let senileStr = '';
+			let teenagerStr = '';
+			let disabledStr = '';
+			
+			
+			if(adultAmount > 0){
+				adultStr = "성인" + adultAmount;
+				stringArray.push(adultStr); 
+			}
+			if(teenagerAmount > 0){
+				teenagerStr = "청소년" + teenagerAmount;
+				stringArray.push(teenagerStr); 
+			}	
+			if(senileAmount > 0){
+				senileStr = "경로" + senileAmount;
+				stringArray.push(senileStr); 
+			}	
+			if(disabledAmount > 0){
+				disabledStr = "장애인" + disabledAmount;
+				stringArray.push(disabledStr); 
+			}	
+			
+			let resultStr = ''; 
+			
+			if(stringArray.length > 1){
+				stringArray.forEach(string => {
+					if(stringArray[stringArray.length - 1] === string){
+						resultStr += string;
+					}else {
+						resultStr += string + ", ";
+					}
+				});
+			}else {
+				resultStr = stringArray[0];
+			}
+			
+			$("#type_count").text(resultStr);
 		}
 		
 		function selectSeat(event){
+			
+			if(selectedAmount === finalAmount - 1){
+				
+				const teenagerAmount = parseInt($("#teenager_amount").text());
+				const adultAmount = parseInt($("#adult_amount").text());
+				const senileAmount = parseInt($("#senile_amount").text());
+				const disabledAmount = parseInt($("#disabled_amount").text());
+				
+				const totalCost = adultAmount * 14000 + teenagerAmount * 11000 + senileAmount * 7000 + disabledAmount * 5000;				
+				
+				$("#total_cost").text(totalCost);
+			}
+			
+			const seatRow = event.target.parentNode.firstChild.innerText;
+			const seatColumn = event.target.innerText;
+			const scheduleNo = "${scheduleNo}";
+			
+			const object = {
+				"seatRow" : seatRow,
+				"seatColumn" : seatColumn,
+				"scheduleNo" : scheduleNo
+			}
+			
 			if(finalAmount === 0){
 				alert("인원수를 선택해주세요.");
 			}else {
@@ -701,7 +958,31 @@ main {
 				if(event.target.style.backgroundColor === "red"){
 					event.target.style.backgroundColor = '#3498db';
 					selectedAmount--;
-				
+					array.pop(object);
+					$("#total_cost").text(0);
+					
+					let resultStr = ''; 
+					
+					console.log(array.length);
+					
+					if(array.length > 1){
+						array.forEach(object => {
+							if(array[array.length - 1] === object){
+								resultStr += object.seatRow + object.seatColumn;
+							}else {
+								resultStr += object.seatRow + object.seatColumn + ", ";
+							}
+						});
+					}else {
+						if(array.length === 1){
+							resultStr = array[0].seatRow + array[0].seatColumn;
+						}else {
+							resultStr = "";
+						}
+					}
+					
+					$("#seat_selected").text(resultStr);
+					
 				}else {
 					
 					if(selectedAmount === finalAmount){
@@ -709,16 +990,39 @@ main {
 					}else {
 						event.target.style.backgroundColor = 'red';
 						selectedAmount++;
+						array.push(object);
+						
+						let resultStr = ''; 
+						
+						console.log(array.length);
+						
+						if(array.length > 1){
+							array.forEach(object => {
+								if(array[array.length - 1] === object){
+									resultStr += object.seatRow + object.seatColumn;
+								}else {
+									resultStr += object.seatRow + object.seatColumn + ", ";
+								}
+							});
+						}else {
+							if(array.length === 1){
+								resultStr = array[0].seatRow + array[0].seatColumn;
+							}else {
+								resultStr = "";
+							}
+						}
+						
+						$("#seat_selected").text(resultStr);
 					}
 				
 				}
 			}
 			
+			
+			
 		}
 		
-		function alertReservatedSeat(){
-			alert("이미 예약된 좌석입니다.");
-		}
+		
 		
 	</script>
 </body>

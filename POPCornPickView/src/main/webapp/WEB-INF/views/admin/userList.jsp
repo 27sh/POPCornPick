@@ -8,20 +8,10 @@
 <title>회원 관리</title>
 <style>
 main {
-	width: 1200px;
+	width: 1100px;
 	margin: 80px auto;
-	display:flex;
-	justify-content:space-between;
-}
-
-main #container {
-	width:900px;
-	min-height:700px;
-	box-sizing:border-box;
-}
-
-.sidebar-box2 p:nth-child(3) a{
-	color: #816bff !important;
+	margin-top: 10px;
+	min-height: 700px;
 }
 
 h2{
@@ -35,12 +25,20 @@ h2{
 <%@ include file="../layout/adminHeader.jsp"%>
 <body>
 	<main>
-		<div class="sidebar-container">
-			<%@ include file="../layout/cinemaSideBar.jsp"%>
-		</div>
 		<div id="container">
 			<h2>회원 관리</h2>
-			
+			<div id="memberList">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">번호</th><th scope="col">제목</th><th scope="col">시작일</th><th scope="col">종료일</th>
+						</tr>
+					</thead>
+					<tbody id="roomList">
+					
+					</tbody>					
+				</table>
+			</div>
 		</div>
 	</main>
 	<footer>

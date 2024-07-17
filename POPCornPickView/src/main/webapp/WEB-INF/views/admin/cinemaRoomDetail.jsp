@@ -26,7 +26,7 @@ main #container {
 
 h2{
 	margin-bottom: 20px;
-	font-weight: 400;
+	font-weight: 600;
 	font-size: 22px;
 }
 

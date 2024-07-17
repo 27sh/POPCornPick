@@ -34,7 +34,6 @@ public class EventController {
 	}
 	
 	
-	
 	@RequestMapping("/commonDetail")
 	public String eventCommonDetail() {
 		return "event/member/eventDetail";

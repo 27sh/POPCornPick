@@ -25,10 +25,10 @@ main #container {
 .sidebar-box1 p:nth-child(2) a{
 	color: #816bff !important;
 }
-
+ 
 h2 {
 	margin-bottom: 20px;
-	font-weight: 400;
+	font-weight: 600;
 	font-size: 22px;
 }
 

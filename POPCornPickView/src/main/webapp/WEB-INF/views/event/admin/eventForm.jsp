@@ -28,7 +28,7 @@ main #container {
 
 h2 {
 	margin-bottom: 20px;
-	font-weight: 400;
+	font-weight: 600;
 	font-size: 22px;
 }
 
@@ -110,7 +110,7 @@ textarea{
 
 </style>
 </head>
-<%@ include file="../layout/adminHeader.jsp"%>
+<%@ include file="../../layout/header.jsp"%>
 <body>
 	<main>
 	<div class="sidebar-container">
@@ -170,6 +170,9 @@ textarea{
 			console.log(key + " : " + value);
 		});
 		
+		const jwtToken = localStorage.getItem("jwtToken");
+		console.log("jwtToken", jwtToken);
+		
 		$.ajax({
 			type : "POST",
 			enctype : 'multipart/form-data',
@@ -179,9 +182,12 @@ textarea{
 			processData : false,
 			contentType : false,
 			cache : false,
+			headers: {
+				"Authorization" : "Bearer " + jwtToken
+			},
 			success : function(data){
 				alert("이벤트 등록이 완료되었습니다.");
-				//window.location.href="/cinema/list";
+				window.location.href="/event/allList";
 			},
 			error : function(e){
 				console.log("error : ",e );

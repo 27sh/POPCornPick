@@ -18,7 +18,7 @@ main {
 
 h2{
 	margin-bottom: 20px;
-	font-weight: 400;
+	font-weight: 600;
 	font-size: 22px;
 }
 
@@ -53,7 +53,7 @@ input[type="radio"]{
 
 </style>
 </head>
-<%@ include file="../layout/adminHeader.jsp"%>
+<%@ include file="../../layout/header.jsp"%>
 <body>
 	<main>
 		<div id="container">

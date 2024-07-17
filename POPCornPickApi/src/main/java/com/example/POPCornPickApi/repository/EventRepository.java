@@ -26,5 +26,10 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 	@Query(value = "delete from event where event_no = :eventNo", nativeQuery = true)
 	public int deleteEventById(@Param("eventNo") Long eventNo);
 	
+	@Query(value = "select * from event where end_event >= CURDATE() order by start_event desc", nativeQuery = true)
+	public List<Event> getProgressEventList();
+	
+	@Query(value = "select * from event where end_event < CURDATE() order by end_event desc", nativeQuery = true)
+	public List<Event> getEndEventList();
 	
 }

@@ -13,6 +13,6 @@ public interface ReservatedSeatRepository extends JpaRepository<ReservatedSeat, 
 	@Query(value = "select count(*) from reservated_seat WHERE schedule_no = :scheduleNo AND is_booked = true", nativeQuery = true)
 	public int getCountByScheduleNo(@Param("scheduleNo")Long scheduleNo);
 	
-	@Query(value ="select * from reservated_seat where schedule_no = :scheduleNo and is_booked = true", nativeQuery = true)
+	@Query(value ="select * from reservated_seat where schedule_no = :scheduleNo and is_booked = true order by seat_row asc, seat_column asc", nativeQuery = true)
 	public List<ReservatedSeat> getReservatedSeatByScheduleNo(@Param("scheduleNo") Long scheduleNo);
 }

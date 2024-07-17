@@ -23,5 +23,5 @@ public interface NoticeRepository extends JpaRepository<Notice, Long>{
 	 
 	 public Page<Notice> findAll(Pageable pageable);
 	 
-	 
+     Notice findFirstByOrderByRegdateDesc();
 }

@@ -263,10 +263,6 @@ public class ReservationService {
 						int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
 						int leftSeats = totalSeats - bookedSeats;
 						
-						System.out.println("totalSeats : " + totalSeats);
-						System.out.println("bookedSeats : " + bookedSeats);
-						System.out.println("leftSeats : " + leftSeats);
-						
 						scheduleDto.setTotalSeat(totalSeats);
 						scheduleDto.setBookedSeat(bookedSeats);
 						scheduleDto.setLeftSeat(leftSeats);
@@ -296,10 +292,6 @@ public class ReservationService {
 							int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
 							int leftSeats = totalSeats - bookedSeats;
 							
-							System.out.println("totalSeats : " + totalSeats);
-							System.out.println("bookedSeats : " + bookedSeats);
-							System.out.println("leftSeats : " + leftSeats);
-							
 							scheduleDto.setTotalSeat(totalSeats);
 							scheduleDto.setBookedSeat(bookedSeats);
 							scheduleDto.setLeftSeat(leftSeats);
@@ -316,10 +308,6 @@ public class ReservationService {
 								int totalSeats = schedule.getRoom().getRoomType().getRoomTotalColumn() * schedule.getRoom().getRoomType().getRoomTotalRow();
 								int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
 								int leftSeats = totalSeats - bookedSeats;
-								
-								System.out.println("totalSeats : " + totalSeats);
-								System.out.println("bookedSeats : " + bookedSeats);
-								System.out.println("leftSeats : " + leftSeats);
 								
 								scheduleDto.setTotalSeat(totalSeats);
 								scheduleDto.setBookedSeat(bookedSeats);
@@ -375,10 +363,6 @@ public class ReservationService {
 		int leftSeats = totalSeats - bookedSeats;
 		
 		scheduleDto.setReservatedSeatList(reservatedSeatList);
-		
-		System.out.println("totalSeats : " + totalSeats);
-		System.out.println("bookedSeats : " + bookedSeats);
-		System.out.println("leftSeats : " + leftSeats);
 		
 		scheduleDto.setTotalSeat(totalSeats);
 		scheduleDto.setBookedSeat(bookedSeats);

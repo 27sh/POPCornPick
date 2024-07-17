@@ -15,4 +15,7 @@ public class ScheduleController {
 	public void scheduleDetail(@RequestParam("roomNo") Long roomNo, Model model) {
 		model.addAttribute("roomNo", roomNo);
 	}
+	
+	@RequestMapping("/common/scheduleList")
+	public void scheduleList() {}
 }

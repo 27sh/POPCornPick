@@ -64,7 +64,7 @@
         }
 
         .loginMenu {
-            width: 25%;
+            width: 30%;
             height: 30px;
             text-align: center;
             margin-top: 30px;
@@ -78,7 +78,7 @@
         }
 
         .loginMenu li {
-            width: 25%;
+            width: 20%;
             float: left;
         }
 
@@ -258,14 +258,15 @@
                 </div>
                 <div class="loginMenu" id="notLogin" style="display: block;">
                     <ul>
-                        <li><a href="loginForm">로그인</a></li>
-                        <li><a href="regForm">회원가입</a></li>
+                        <li><a href="/loginForm">로그인</a></li>
+                        <li><a href="/joinForm">회원가입</a></li>
                         <li><a href="/member/lentForm">대관문의</a></li>
                         <li><a href="faqList">고객센터</a></li>
                     </ul>
                 </div>
                 <div class="loginMenu" id="login" style="display: none;">
                     <ul>
+                    	<li><p id="username">username</p><input type="hidden" name="role" id="role" value=""></li>
                         <li><a href="" onclick="logout()" class="logout_btn">로그아웃</a></li>
                         <li><a href="/member/reservationList">My Page</a></li>
                         <li><a href="/member/lentForm">대관문의</a></li>
@@ -407,6 +408,48 @@
             headerBottom.style.display = "block";
         }
     };
+    
+    function loginCheck(){
+    	const xhttp = new XMLHttpRequest();
+    	const token = localStorage.getItem("jwtToken");
+    	let username = "";
+    	let role = "";
+    	if(token != null){
+    		
+	    	xhttp.onload = function(){
+	    		if(this.responseText != "유효하지 못한 토큰입니다."){
+	    			const response = this.responseText.split(" ");
+	    			username = response[0];
+	    			role = response[1];
+	    			console.log(username + " " + role);
+	    			document.querySelector("#username").innerHTML = username;
+	    			document.querySelector("#role").innerHTML = role;
+	    			document.querySelector("#login").style.display = "block";
+	    			document.querySelector("#notLogin").style.display = "none";
+	//     			window.location.href = "/";
+	    		}else {
+					alert("토큰의 유효기간이 만료되었습니다. 다시 로그인을 해주세요. 확인 버튼을 누르면 자동으로 로그인 페이지로 이동합니다.");
+					window.location.href = "/loginForm";
+	    		}
+	    	}
+	    	
+	    	xhttp.open("GET", "http://localhost:9001/api/v1/loginCheck");
+	    	xhttp.setRequestHeader("Authorization", "Bearer " + token);
+	    	xhttp.send();
+	    	
+    	}
+    }
+    
+    function logout(){
+    	localStorage.removeItem("jwtToken");
+    	alert("성공적으로 로그아웃 됬습니다.");
+    	window.location.href = "/";
+    }
+    
+    loginCheck();
+    
+    
+    
 </script>
 
 </html>

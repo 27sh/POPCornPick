@@ -22,21 +22,26 @@ public class JWTUtil {
 		
 	}
 	
-	public String getUsername(String token) {
+	public String getUsername(String token) { // 이 메소드 사용시 로그인해서 인증받은 유저의 아이디를 가져올 수 있음.
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
     }
 
-    public String getRole(String token) {
+    public String getRole(String token) { // 이 메소드 사용시 로그인해서 인증받은 유저의 role 값을 가져올 수 있음.
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
-    public Boolean isExpired(String token) {
+    public Boolean isExpired(String token) { // 토큰의 유효기간을 검증해서 유효하면 false 를 리턴
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 	
+    public Boolean isExpired2(String token) { // 토큰의 유효기간을 검증해서 유효하면 true 를 리턴
+    	
+    	return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().after(new Date());
+    }
+    
 	public String createJwt(String username, String role, Long expiredMs) {
 		
 		return Jwts.builder()

@@ -37,7 +37,6 @@
 		<h4>영화 목록</h4>
 
 		<div id='external-events-list' style="overflow: hidden;"></div>
-
 		<p>
 			<input type='checkbox' id='drop-remove' /> <label for='drop-remove'>드롭
 				후 삭제</label>
@@ -59,12 +58,11 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<div class="modal-body">
-						<button class="updateBtn" onclick="submitSlot(event)">등록</button>
-					</div>
+					<div class="modal-body"></div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
+					<button class="btn btn-secondary updateBtn" onclick="submitSlot(event)">등록</button>
+<!-- 						<button type="button" class="btn btn-secondary" -->
+<!-- 							data-bs-dismiss="modal">취소</button> -->
 					</div>
 				</div>
 			</div>
@@ -79,7 +77,7 @@
             var calendarEl = document.getElementById('calendar');
             var roomNo = ${roomNo};       
             localStorage.setItem('roomNo', roomNo);
-      		
+   		
             function toKST(date) {
                 return new Date(date).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
             }
@@ -173,8 +171,23 @@
                             };
                         },
                         events: events,
+                        eventDidMount: function (info) {
+                            var eventFrameEl = info.el.querySelector('.fc-event-main-frame');
+                            if (eventFrameEl) {
+                                var btnEl = document.createElement('button');
+                                btnEl.type = 'button';
+                                btnEl.className = 'btn-close';
+                                btnEl.setAttribute('aria-label', 'Close');
+
+                                btnEl.addEventListener('click', function () {
+                                    info.event.remove();
+                                });
+
+                                eventFrameEl.appendChild(btnEl);
+                            }
+                        },
                         eventReceive: function (eventDropped) {
-                        	
+
                             var showTm = parseInt(eventDropped.draggedEl.getAttribute('data-showTm')); // 드래그된 요소에서 showTm 가져오기
                             var start = eventDropped.event.start; // 드롭된 이벤트의 시작 시간
                             var end = new Date(start.getTime() + showTm * 60000); // showTm 분 후의 시간 계산
@@ -184,6 +197,11 @@
                             eventDropped.event.setEnd(end); // 계산된 end 시간을 설정
 
                         },
+                        eventDragStart: function (info) {
+                        	console.log(info);
+                            var backgroundColor = info.event.backgroundColor;
+                            console.log('Drag Start - Background Color: ', backgroundColor);
+                        },
                         timeZone: 'local',
                         navLinks: true,
                         selectable: true,
@@ -191,7 +209,7 @@
                         locale: 'ko',
                         editable: true,
                         eventDurationEditable: false,
-                        droppable: true,  // 기본적으로 드롭 비활성화
+                        droppable: true,
                         drop: function (arg) {
                             if (document.getElementById('drop-remove').checked) {
                                 arg.draggedEl.parentNode.removeChild(arg.draggedEl);
@@ -204,6 +222,15 @@
 //                             console.log('End: ' + (info.event.end ? toKST(info.event.end) : 'N/A'));                      
                         },
                         datesSet: function (view) {
+                        	
+                        	  if (view.type === 'dayGridMonth') {
+                                  calendar.setOption('eventStartEditable', false);
+                                  calendar.setOption('eventDurationEditable', false);
+                              } else {
+                                  calendar.setOption('eventStartEditable', true);
+                                  calendar.setOption('eventDurationEditable', true);
+                              }
+                        	
                             if (view.view.type === 'dayGridMonth') {
                                 $('#external-events').hide();
                                 $('.fc-mySaveButton-button').hide();
@@ -272,17 +299,16 @@
                                 mainEventEl.style.backgroundColor = color;
                                 mainEventEl.setAttribute('data-color', color);
                             }
-
-	
+                            
                             var eventEl = document.createElement('div');
                             eventEl.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
                             eventEl.setAttribute('data-color', color); 
                             if (matchingSlot) {
                                 eventEl.setAttribute('data-showTm', matchingSlot.showTm); // showTm 설정
                             }
-                            
-                            eventEl.appendChild(mainEventEl);
 
+                            eventEl.appendChild(mainEventEl);
+                            
                             containerEl.appendChild(eventEl);
 
                             externalEventsList.append(containerEl);
@@ -317,14 +343,14 @@
 
                                     var slotInfo = $('<p>').text(viewAge + '/' + showTm + '분');
                                     var slotColor = $('<p>').text('색상: ').append($('<input type="color" id="color">').val(color || '#ffffff'));
-                                    var slotBtn = $('<button class="updateBtn">').text('등록');
+                                   	var slotBtn = $('.updateBtn');
 
                                     // 버튼에 이벤트 리스너 추가
                                     slotBtn.on('click', function (event) {
                                         submitSlot(event);
                                     });
 
-                                    $('.modal-body').append(slotInfo).append(slotColor).append(slotBtn);
+                                    $('.modal-body').append(slotInfo).append(slotColor);
                                 },
                                 error: function (error) {
                                     console.log("에러 :", error);
@@ -357,7 +383,6 @@
                 }
             });
             
-
         </script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,7 +60,7 @@ main {
 }
 
 .login-wrapper {
-    max-width: 400px;
+    max-width: 600px;
     margin: 0 auto;
     text-align: left;
 }
@@ -88,7 +89,11 @@ input[type="password"] {
 
 /* 로그인 버튼 스타일 */
 #loginButton {
-	width: 25%;
+	width: 150px;
+	height: 100px;
+	position: absolute;
+	top: 0;
+	right: 35px;
   background-color: #d9534f; /* 붉은색 배경 */
   color: #fff; /* 흰색 글꼴 */
   padding: 10px 20px; /* 여백 추가 */
@@ -102,10 +107,72 @@ input[type="password"] {
   background-color: #c9302c;
 }
 
-a {
-  color: #d9534f; /* 롯데시네마 페이지 링크 색상 */
+.a-links {
+/*   color: #d9534f; /* 롯데시네마 페이지 링크 색상 */ */
   text-decoration: none;
-  margin-left: 10px;
+  margin-left: 15px;
+  position: relative;
+  left: 295px;
+}
+
+span {
+	text-align: right;
+	margin-right: 15px;
+	display: inline-block;
+	width: 150px;
+}
+
+#joinButton {
+	background-color: #fff;
+}
+
+#non-member-loginButton {
+	background-color: black;
+	color: #ffffff;
+}
+
+#joinButton, #non-member-loginButton {
+	width: 25%;
+	height: 50px;
+	border: 2px solid;
+	border-radius: 5px;
+	margin: 20px;
+}
+
+#joinButton:hover {
+	cursor: pointer;
+	background-color: #E6E6E6;
+}
+
+#non-member-loginButton:hover {
+	cursor: pointer;
+	background-color: #585858;
+}
+
+.non-member-btn {
+	text-align: center;
+}
+
+.space {
+	height: 30px;
+}
+
+.space2 {
+	display: inline-block;
+	width: 150px;
+	margin-right: 15px; 
+}
+
+#id, #password {
+	margin-bottom: 25px;
+}
+
+.input-box {
+	position: relative;
+}
+
+.txt {
+	font-size: 13px;
 }
 
 </style>
@@ -117,24 +184,58 @@ a {
 	<main>
 		<div class="tab">
 			<button class="tab-member" onclick="memberLogin()">회원</button> 
-			<button class="tab-non-member" onclick="nonMemberLogin()">비회원</button> 
+			<button class="tab-non-member" onclick="tabNonMemberLogin()">비회원</button> 
 		</div>
 		<div class="login-wrapper">
 			<div class="loginBox">
-				<h1>로그인 폼 페이지</h1>
-				<form id="frm">
-					<div class="input-group">
+<!-- 				<h1>로그인 폼 페이지</h1> -->
+				<div class="space"></div>
+				<form id="member-frm">
+					<div class="input-group input-box">
 						<input type="text" id="id" name="username" placeholder="아이디를 입력하세요">
+						<input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요">
+						<button type="button" id="loginButton" onclick="login()">로그인</button> 
 					</div>
 					<div class="input-group">
-						<input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요">
 					</div>
-					<button type="button" id="loginButton" onclick="login()">로그인</button> <button type="button" onclick="tokenExpiredCheck()">Test</button>
 					<div class="links">
-	                    <a href="/joinForm">회원가입</a>
-	                    <a href="#">아이디 찾기</a>
-	                    <a href="#">비밀번호 찾기</a>
+<!-- 	                    <button type="button" onclick="tokenExpiredCheck2()">Test</button> -->
+	                    <a class="a-links" href="/joinForm">회원가입</a>
+	                    <a class="a-links" href="#">아이디 찾기</a>
+	                    <a class="a-links" href="#">비밀번호 찾기</a>
                 	</div>
+				</form>
+				<form id="non-member-frm" style="display: none;">
+					<div class="input-group">
+						<span>이름</span>
+						<input type="text" id="non-username" placeholder="이름을 입력해주세요.">
+					</div>
+					<div class="input-group">
+						<span>휴대폰 번호</span>
+						<input type="text" id="tel" placeholder="휴대폰 번호를 입력해주세요.">
+					</div>
+					<div class="input-group input-date">
+						<span>생년월일</span>
+						<input type="date" id="birthdate">
+					</div>
+					<div class="input-group">
+						<span>예매 비밀번호</span>
+						<input type="password" id="ticketingPw" placeholder="예매 비밀번호 (4자리)를 입력해 주세요.">
+					</div>
+					<div class="input-group">
+						<span>예매 비밀번호 확인</span>
+						<input type="password" id="ticketingPwCheck" placeholder="예매 비밀번호 (4자리)를 재입력해 주세요.">
+					</div>
+					<div class="input-group txt">
+						비회원 로그인 시 예매 및 예매확인/취소 메뉴만 이용 가능하며 관람권, 할인권을 포함한 기타 결제, 할인수단은 정회원 로그인 시 사용 가능 합니다.
+					</div>
+					<div class="input-group txt">
+						무분별한 서비스 이용 방지를 위하여 티켓 구매 제한 기준을 두고 있습니다. 회사가 정한 기준을 초과하는 경우 구매가 제한될 수 있습니다. 티켓 구매 제한 기준은 공지사항 참고 바랍니다.
+					</div>
+					<div class="non-member-btn">
+						<button type="button" id="joinButton" onclick="goJoinForm()">회원가입</button>
+						<button type="button" id="non-member-loginButton" onclick="nonMemberLogin()">비회원 로그인</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -148,12 +249,23 @@ a {
 			console.log("member");
 			document.querySelector('.tab-member').classList.add('active');
             document.querySelector('.tab-non-member').classList.remove('active');
+            
+            const memberFrm = document.querySelector("#member-frm");
+            const nonMemberFrm = document.querySelector("#non-member-frm");
+            
+            memberFrm.style.display = "block";
+            nonMemberFrm.style.display = "none";
 		}
 		
-		function nonMemberLogin(){
+		function tabNonMemberLogin(){
 			console.log("non-member");
 			document.querySelector('.tab-member').classList.remove('active');
             document.querySelector('.tab-non-member').classList.add('active');
+            const memberFrm = document.querySelector("#member-frm");
+            const nonMemberFrm = document.querySelector("#non-member-frm");
+            
+            memberFrm.style.display = "none";
+            nonMemberFrm.style.display = "block";
 		}
 		
 		function login(){
@@ -175,6 +287,7 @@ a {
 		                    localStorage.setItem('jwtToken', token);
 		                    alert('로그인 성공!');
 		                    //alert('Login successful! Token stored in local storage.');
+		                    window.location.href = "/";
 		                } else {
 		                    alert('로그인 실패 아이디나 비밀번호가 다릅니다.')
 		                	//alert('Login failed. Please check your credentials.');
@@ -187,8 +300,22 @@ a {
 				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				xhttp.send("username=" + username + "&password=" + password);
 			
+		}
+		
+		function nonMemberLogin(){
+			const xhttp = new XMLHttpRequest();
+			const name = document.querySelector("#non-username").value;
+			const tel = document.querySelector("#tel").value;
+			const birthdate = document.querySelector("#birthdate").value;
+			const password2 = document.querySelector("#ticketingPw").value;
 			
+			xhttp.onload = function(){
+				
+			}
 			
+			xhttp.open("POST", "/nonMemberLogin");
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.send("name=" + name + "&tel=" + tel + "&birthdate=" + birthdate + "&password2=" + password2);
 		}
 		
 		function tokenExpiredCheck(){
@@ -212,6 +339,37 @@ a {
 			xhttp.open("GET", "http://localhost:9001/api/v1/tokenExpired");
 			xhttp.setRequestHeader("Authorization", "Bearer " + token);
 			xhttp.send();
+		}
+		
+		function tokenExpiredCheck2(){
+			const xhttp = new XMLHttpRequest();
+			const token = localStorage.getItem('jwtToken');
+			console.log(token);
+			xhttp.onload = function(){
+				let result;
+				if(this.responseText == "유효한 토큰입니다."){
+					console.log(this.responseText);
+					result = true;
+					alert(result + ", 유효한 토큰");
+				}else {
+					console.log(this.responseText);
+					result = false;
+					alert(result + ", 만료된 토큰");
+				}
+				return result;
+			}
+			
+			xhttp.open("GET", "http://localhost:9001/api/v1/tokenExpired2");
+			xhttp.setRequestHeader("Authorization", "Bearer " + token);
+			xhttp.send();
+		}
+		
+		function goJoinForm(){
+			window.location.href = "/joinForm";
+		}
+		
+		function goBack(){
+			window.location.href = "/";
 		}
 		
 	</script>

@@ -99,12 +99,12 @@ public class SecurityConfig {
                         .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
         
-        // JWTFilter 추가 
+        // JWTFilter 추가 --> LoginFilter를 UsernamePasswordAuthenticationFilter 전에 추가
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
         
         http
-                .addFilterAt(new JWTFilter(jwtUtil), LoginFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         
         // 세션 설정 : STATELESS 
         http

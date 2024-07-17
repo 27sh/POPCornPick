@@ -40,10 +40,8 @@ table, tr, th, td{
 }
 </style>
 </head>
+<%@ include file="../layout/adminHeader.jsp"%>
 <body>
-	<header>
-		<%@ include file="../../layout/header.jsp"%>
-	</header>
 	<main>
 		<div id="container">
 			<h2>전체 이벤트</h2>

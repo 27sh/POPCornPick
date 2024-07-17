@@ -33,6 +33,8 @@ public class EventController {
 		return "event/member/eventList";
 	}
 	
+	
+	
 	@RequestMapping("/commonDetail")
 	public String eventCommonDetail() {
 		return "event/member/eventDetail";

@@ -57,3 +57,12 @@ main {
   max-width: 1100px;
   margin: 0 auto;
 }
+
+.btn-close{
+	border-radius: 0 !important;
+	margin: 5px auto;
+}
+
+.fc-event-main-frame{
+	text-align: center;
+}

@@ -50,7 +50,6 @@ public class EventController {
 	
 	@PostMapping
 	public String eventRegistForm(EventDto eventDto) {
-		
 		Event event = new Event();
 		String originName = eventDto.getFileName();
 		
@@ -67,6 +66,7 @@ public class EventController {
 			File file = new File(uploadDir, newName);
 			try {
 				eventDto.getImgFile().transferTo(file);
+				eventService.registEvent(event);
 				return "이벤트 등록이 완료되었습니다.";
 			} catch(IllegalStateException | IOException e) {
 				e.printStackTrace();
@@ -89,6 +89,16 @@ public class EventController {
 		
 		return list;
 	}
+	//진행중인 이벤트 리스트
+	@GetMapping("/progress")
+	public List<Event> getProgressEvent(){
+		return eventService.getProgressEventList();
+	}
+	//종료된 이벤트 리스트
+	@GetMapping("/end")
+	public List<Event> getEndEventList(){
+		return eventService.getEndEventList();
+	}
 	
 	@GetMapping("/detail")
 	public ResponseEntity<Event> getEventDetail(@RequestParam("eventNo") Long eventNo) {
@@ -101,24 +111,6 @@ public class EventController {
 		}
 	}
 	
-	@GetMapping("/img/{filename:.+}")
-	public ResponseEntity<Resource> serveFile(@PathVariable("filename") String filename){
-		System.out.println("serveFileController" + filename);
-		try {
-			Path file = uploadDir2.resolve(filename);
-			Resource resource = new UrlResource(file.toUri());
-			
-			if(resource.exists() || resource.isReadable()) {
-				return ResponseEntity.ok()
-						.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+resource.getFilename()+"\"")
-						.body(resource);
-			} else {
-				throw new RuntimeException("Could not read the file!");
-			}
-		} catch(MalformedURLException e) {
-			throw new RuntimeException("Error: " + e.getMessage());
-		}
-	}
 	
 	@PutMapping
 	public String eventModify(EventDto eventDto){

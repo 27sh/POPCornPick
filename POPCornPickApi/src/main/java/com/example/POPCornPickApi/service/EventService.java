@@ -36,9 +36,17 @@ public class EventService {
 			return false;
 		}
 	}
-	
+	//전체 이벤트
 	public List<Event> getAllEventList(){
 		return eventRepository.findAll();
+	}
+	//진행중인 이벤트
+	public List<Event> getProgressEventList(){
+		return eventRepository.getProgressEventList();
+	}
+	//종료된 이벤트
+	public List<Event> getEndEventList(){
+		return eventRepository.getEndEventList();
 	}
 	
 	public Event getEventDetail(Long eventNo) {

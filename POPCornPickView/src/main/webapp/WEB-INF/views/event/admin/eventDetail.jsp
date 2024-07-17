@@ -87,7 +87,7 @@ input[type="radio"]{
 
 </style>
 </head>
-<%@ include file="../layout/adminHeader.jsp"%>
+<%@ include file="../../layout/adminHeader.jsp"%>
 <body>
 	<main>
 		<div class="sidebar-container">
@@ -140,10 +140,9 @@ input[type="radio"]{
 					detail += '<label for="eventContent" id="eventContent"><b>이벤트 내용</b></label><br><br>';
 					detail += '<span id="result">'+ data.eventContent +'</span><br>';
 					detail += '<label for="eventImg" id="eventImg"><b>이벤트 대표 이미지</b></label>';
-					detail += '<span id="result">'+ data.eventImgOriginName +'</span><br>';
 					document.getElementById("eventDetail").innerHTML = detail;
 					
-					//image.src = 'http://localhost:9001/img/' + filename;
+					image.src = '/img/' + data.eventImgOriginName;
 					const buttonStr1 = '<input type="button" id="submitModify" value="수정하기" onclick="submitCinemaModify('+ data.eventNo +')">';
 					const buttonStr2 = '<input type="button" id="submitDelete" value="삭제하기" onclick="submitCinemaDelete('+ data.eventNo +')">';
 					document.getElementById("modifyButton").innerHTML = buttonStr1;

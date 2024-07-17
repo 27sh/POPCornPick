@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>이벤트 상세조회</title>
+<title>관리자 - 이벤트 상세조회</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js"
 	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 	crossorigin="anonymous"></script>
@@ -33,28 +33,62 @@ h2{
 	font-size: 22px;
 }
 
-table, tr, th, td{
-	border-collapse:collapse;
-	border:1px solid #eee;
-	border-right:0;
-	border-left:0;
-	padding:20px;
-	text-align:center;
-}
 
 #eventDetail .table{
 	width: 100%;
 }
 
+#submitDelete {
+	padding: 15px 50px;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	cursor: pointer;
+	margin: 0 10px;
+	background:#f1f1f1;
+	border:1px solid #ccc;
+	color:#333;
+	margin-top: 30px;
+}
+	
+#submitModify {
+	padding: 15px 50px;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	cursor: pointer;
+	margin: 0 10px;
+	background: #816bff;
+	border: 1px solid #816bff;
+	color:#fff;
+	margin-left: 200px;
+}
 
+label b{
+	display: inline-block;
+	width: 160px;
+	font-weight: 500;
+	margin-top: 40px;
+}
+
+#question{
+	font-size: 18px;
+	font-weight: 400;
+	margin-top: 40px;
+	margin-bottom: 10px;
+}
+
+input[type="radio"]{
+	margin-left: 10px;
+}
+
+#eventContentBox{
+	text-align: center;
+}
 
 
 </style>
 </head>
+<%@ include file="../layout/adminHeader.jsp"%>
 <body>
-	<header>
-		<%@ include file="../../layout/adminHeader.jsp"%>
-	</header>
 	<main>
 		<div class="sidebar-container">
 			<%@ include file="../../layout/serviceSideBar.jsp"%>
@@ -62,13 +96,11 @@ table, tr, th, td{
 		<div id="container">
 			<h2>이벤트 상세</h2>
 			<div id="eventDetail">
-				<table class="table">
-					<tbody id="roomList">
-					
-					</tbody>					
-				</table>
-				<div id="eventContent"></div>
+				
+				
 			</div>
+			<div><img src='' id="myImage"></div>
+			<div><span id="modifyButton"></span><span id="deleteButton"></span></div>
 		</div>
 	</main>
 	<footer>
@@ -93,13 +125,29 @@ table, tr, th, td{
 			success : function(data) {
 				console.log(data);
 				if(data != null){
-					let table = '';
-					table += '<tr><td>' + data.eventNo + '</td>';
-					table += '<td>' + data.eventTitle + '</td>';
-					table += '<td>' + data.startEvent + ' ~ ' + data.endEvent + '</td></tr>';
+					var image = document.getElementById('myImage');
+					const filename = data.eventImgNewName;
+					console.log("newName",filename);
+					let detail = '';
+					detail += '<label for="eventNo" id="eventNo"><b>이벤트 번호</b></label>';
+					detail += '<span id="result">'+ data.eventNo +'</span><br>';
+					detail += '<label for="eventTitle" id="eventTitle"><b>이벤트 제목</b></label>';
+					detail += '<span id="result">'+ data.eventTitle +'</span><br>';
+					detail += '<label for="startEvent" id="startEvent"><b>이벤트 시작일</b></label>';
+					detail += '<span id="result">'+ data.startEvent +'</span><br>';
+					detail += '<label for="endEvent" id="endEvent"><b>이벤트 종료일</b></label>';
+					detail += '<span id="result">'+ data.endEvent +'</span><br>';
+					detail += '<label for="eventContent" id="eventContent"><b>이벤트 내용</b></label><br><br>';
+					detail += '<span id="result">'+ data.eventContent +'</span><br>';
+					detail += '<label for="eventImg" id="eventImg"><b>이벤트 대표 이미지</b></label>';
+					detail += '<span id="result">'+ data.eventImgOriginName +'</span><br>';
+					document.getElementById("eventDetail").innerHTML = detail;
 					
-					document.getElementById("eventContent").innerHTML = data.eventContent;
-					document.getElementById("roomList").innerHTML = table;
+					//image.src = 'http://localhost:9001/img/' + filename;
+					const buttonStr1 = '<input type="button" id="submitModify" value="수정하기" onclick="submitCinemaModify('+ data.eventNo +')">';
+					const buttonStr2 = '<input type="button" id="submitDelete" value="삭제하기" onclick="submitCinemaDelete('+ data.eventNo +')">';
+					document.getElementById("modifyButton").innerHTML = buttonStr1;
+					document.getElementById("deleteButton").innerHTML = buttonStr2;
 				} else {
 					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
 					//window.location.href="/cinema/list";
@@ -107,11 +155,32 @@ table, tr, th, td{
 			},
 			error : function(error) {
 				alert("불러오는데 실패했습니다. 다시 시도해주세요.", error);
-				//window.location.href="/cinema/list";
+				//wifgndow.location.href="/cinema/list";
 			}
 		});
 		
 	});
+	
+	function submitCinemaModify(eventNo){
+		window.location.href="/event/regist?eventNo=" + eventNo;
+	}
+	
+	function submitCinemaDelete(eventNo){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function() {
+			if (this.status === 200) {
+				alert(this.responseText);
+				window.location.href = "/event/allList";
+			} else {
+				alert(this.responseText);
+			}
+		};
+		xhttp.open("DELETE", "http://localhost:9001/api/v1/event?eventNo=" + eventNo);
+		xhttp.send();
+	}
+	
+	
+	
 	</script>
 </body>
 </html>

@@ -94,10 +94,8 @@ input[type="file"]{
 }
 </style>
 </head>
+<%@ include file="../layout/adminHeader.jsp"%>
 <body>
-	<header>
-		<%@ include file="../layout/adminHeader.jsp"%>
-	</header>
 	<main>
 		<div class="sidebar-container">
 			<%@ include file="../layout/cinemaSideBar.jsp"%>
@@ -208,8 +206,7 @@ input[type="file"]{
 			cache : false,
 			success : function(data){
 				alert(data);
-				//alert("지점 정보 수정이 완료되었습니다.");
-				//window.location.href="/cinema/list";
+				window.location.href="/cinema/list";
 			},
 			error : function(e){
 				console.log("error : ", e);

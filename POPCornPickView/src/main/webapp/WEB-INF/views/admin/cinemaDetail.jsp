@@ -36,7 +36,7 @@ label b{
 	display: inline-block;
 	width: 160px;
 	font-weight: 500;
-	margin-top: 50px;
+	margin-top: 40px;
 }
 
 button {
@@ -65,10 +65,8 @@ button {
 }
 </style>
 </head>
+<%@ include file="../layout/adminHeader.jsp"%>
 <body>
-	<header>
-		<%@ include file="../layout/adminHeader.jsp"%>
-	</header>
 	<main>
 		<div class="sidebar-container">
 			<%@ include file="../layout/cinemaSideBar.jsp"%>

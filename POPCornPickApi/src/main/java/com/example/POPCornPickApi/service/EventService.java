@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.POPCornPickApi.entity.Event;
+import com.example.POPCornPickApi.entity.Participation;
 import com.example.POPCornPickApi.repository.EventRepository;
 
 @Service
@@ -45,4 +46,47 @@ public class EventService {
 		Event eventDetail = optionalEvent.orElse(null);
 		return eventDetail;
 	}
+	
+	public boolean eventImgModify(Event event) {
+		try {
+			eventRepository.save(event);
+			return true;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean eventModify(Event event) {
+		System.out.println("modifyService.....");
+		System.out.println("eventService : " + event);
+		try {
+			int count = eventRepository.updateEventById(event.getEventTitle(), event.getEventContent(), event.getStartEvent(), event.getEndEvent(), event.getEventNo());
+			System.out.println("count: " + count);
+			if(count > 0) {
+				System.out.println("수정 완료");
+				return true;
+			} else {
+				System.out.println("수정 실패");
+				return false;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean deleteEvent(Long eventNo) {
+		int result = eventRepository.deleteEventById(eventNo);
+		if(result > 0) {
+			System.out.println("삭제 성공");
+			return true;
+		} else {
+			System.out.println("삭제 실패");
+			return false;
+		}
+	}
+	
+	
+	
 }

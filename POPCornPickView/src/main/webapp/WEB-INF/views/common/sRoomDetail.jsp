@@ -160,10 +160,8 @@ img{
 }
 </style>
 </head>
+<%@ include file="../layout/adminHeader.jsp"%>
 <body>
-	<header>
-		<%@ include file="../layout/header.jsp"%>
-	</header>
 	<main>
     <section class="special-theater">
         <div class="theater-header">

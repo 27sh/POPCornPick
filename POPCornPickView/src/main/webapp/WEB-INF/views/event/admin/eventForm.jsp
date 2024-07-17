@@ -91,6 +91,18 @@ textarea {
 	margin-left: 300px;
 }
 
+#submitModify {
+	padding: 15px 50px;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	cursor: pointer;
+	margin: 0 10px;
+	background: #816bff;
+	border: 1px solid #816bff;
+	color:#fff;
+	margin-left: 300px;
+}
+
 textarea{
 	width: 500px;
 	height: 500px;
@@ -98,10 +110,8 @@ textarea{
 
 </style>
 </head>
+<%@ include file="../layout/adminHeader.jsp"%>
 <body>
-	<header>
-		<%@ include file="../../layout/adminHeader.jsp"%>
-	</header>
 	<main>
 	<div class="sidebar-container">
 			<%@ include file="../../layout/serviceSideBar.jsp"%>
@@ -109,47 +119,21 @@ textarea{
 		<div id="container">
 			<h2>이벤트 등록</h2>
 			<form name="eventFrm">
+				<input type="hidden" name="eventNo" id="eventNo">
 				<label for="startEvent" id="startEvent"><b>시작일<span>*</span></b></label>
-				<input type="date" name="startEvent"><br>
+				<input type="date" name="startEvent" id="startEvent"><br>
 				<label for="endEvent"><b>종료일<span>*</span></b></label>
-				<input type="date" name="endEvent"><br>
+				<input type="date" name="endEvent" id="endEvent"><br>
 				<label for="eventTitle"><b>제목<span>*</span></b></label>
-				<input type="text" name="eventTitle"><br>
+				<input type="text" name="eventTitle" id="eventTitle"><br>
 				<label for="eventContent"><b>내용<span>*</span></b></label>
-				<textarea name="eventContent">
-	<div>
-		<p>1. 친구들을 만나고 집으로 돌아갈 때 당신은?</p>
-		<input type="radio" id="q1a1" name="q1" value="E">
-		<label for="q1a1">아~ 잘놀았다! 충전완료~!</label>
-		<input type="radio" id="q1a2" name="q1" value="I">
-		<label for="q1a2">아~ 잘놀았다! 이제 집에 가서 쉬어야지...</label>
-	</div>
-	<div>
-		<p>2. 말이 술집에 들어가서 하는 말은?</p>
-		<input type="radio" id="q2a1" name="q2" value="N">
-		<label for="q2a1">우유랑 당근 주문요~</label>
-		<input type="radio" id="q2a2" name="q2" value="S">
-		<label for="q2a2">말이 술집에 왜 들어가..?</label>
-	</div>
-	<div>
-		<p>3. 달을 봤는데 너 생각이 나서 전화했어!</p>
-		<input type="radio" id="q3a1" name="q3" value="F">
-		<label for="q3a1">(헐 감동이야ㅠㅜ)</label>
-		<input type="radio" id="q3a2" name="q3" value="T">
-		<label for="q3a2">(왜..?)</label>
-	</div>
-	<div>
-		<p>4. 약속이 잡혔다면?</p>
-		<input type="radio" id="q4a1" name="q4" value="J">
-		<label for="q4a1">약속에 늦지 않게 미리 나간다.</label>
-		<input type="radio" id="q4a2" name="q4" value="P">
-		<label for="q4a2">약속에 맞춰서 나가야지!</label>
-	</div>
+				<textarea name="eventContent" id="eventContent">
+	
 				</textarea><br>
 				<label for="eventFile"><b>파일등록<span>*</span></b></label>
-				<input type="file" name="eventFile"><br>
-				<input type="button" id="submitWrite" value="등록하기" onclick="submitMbti(event)">
-				<input type="hidden" id="eventModifySubmit" value="수정하기" onclick="">
+				<input type="file" name="eventFile" id="eventFile"><br>
+				<input type="button" id="submitWrite" value="등록하기" onclick="submitEvent(event)">
+				<input type="button" id="submitModify" value="수정하기" onclick="submitEventModify(event)">
 			</form>
 		</div>
 	</main>
@@ -157,7 +141,26 @@ textarea{
 	
 	</footer>
 	<script>
-	function submitMbti(event){
+	$(document).ready(function(){
+		const xhttp = new XMLHttpRequest();
+		const urlParams = new URLSearchParams(window.location.search);
+		let eventNo = urlParams.get('eventNo');
+		
+		var writeForm = $('#submitWrite');
+		var modifyForm = $('#submitModify');
+		
+		if(eventNo){
+			writeForm.hide();
+			modifyForm.show();
+			eventModify(eventNo);
+		} else{
+			writeForm.show();
+			modifyForm.hide();
+		}
+	});
+	
+	
+	function submitEvent(event){
 		event.preventDefault();
 		
 		var form = document.forms['eventFrm'];
@@ -184,7 +187,61 @@ textarea{
 				console.log("error : ",e );
 			}
 		});
-			
+	}
+	
+	function submitEventModify(event){
+		event.preventDefault();
+		
+		var form = document.forms['eventFrm'];
+		var formData = new FormData(form);
+		
+		formData.forEach((value, key) => {
+			console.log(key + " : " + value);
+		});
+		
+		$.ajax({
+			type : "PUT",
+			enctype : 'multipart/form-data',
+			url : "http://localhost:9001/api/v1/event",
+			data : formData,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			cache : false,
+			success : function(data){
+				alert(data);
+				window.location.href="/event/allList";
+				//alert("지점 정보 수정이 완료되었습니다.");
+			},
+			error : function(e){
+				console.log("error : ", e);
+			}
+		});
+	}
+	
+	function eventModify(eventNo){
+		console.log('modify');
+		$.ajax({
+			url : "http://localhost:9001/api/v1/event/detail",
+			type : "GET",
+			data : {
+				eventNo : eventNo
+			},
+			success : function(data){
+				console.log(data);
+				console.log(data.startEvent);
+				$('#eventNo').val(data.eventNo);
+				$('#startEvent').val(data.startEvent);
+				$('#endEvent').val(data.endEvent);
+				$('#eventTitle').val(data.eventTitle);
+				$('#eventContent').val(data.eventContent);
+				$('#eventFile').val(data.eventOriginName);
+			},
+			error : function(error){
+				alert("정보를 불러오는데 실패했습니다. 다시 시도해 주세요.");
+				window.location.href="/event/detail?eventNo="+eventNo;
+			}
+		});
 	}
 	</script>
 </body>

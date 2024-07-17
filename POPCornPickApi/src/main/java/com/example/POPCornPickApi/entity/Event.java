@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,8 @@ public class Event extends BaseEntity{
 	@Column(nullable = false)
 	private String eventTitle;
 	
-	@Column(nullable = false)
+	@Lob
+	@Column(columnDefinition = "LONGTEXT")
 	private String eventContent;
 	
 	@Column(nullable = false)

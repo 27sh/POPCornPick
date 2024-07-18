@@ -42,11 +42,13 @@ public class JWTUtil {
     	return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().after(new Date());
     }
     
-	public String createJwt(String username, String role, Long expiredMs) {
+	public String createJwt(String username, String role, String tel, String password2, Long expiredMs) {
 		
 		return Jwts.builder()
 				.claim("username", username)
 				.claim("role", role)
+				.claim("tel", tel)
+				.claim("password2", password2)
 				.issuedAt(new Date(System.currentTimeMillis()))
 				.expiration(new Date(System.currentTimeMillis() + expiredMs))
 				.signWith(secretKey)

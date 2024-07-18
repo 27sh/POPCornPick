@@ -240,7 +240,7 @@
         }
     </style>
 </head>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <header>
     <div id="phrase">" 당신이 선택하는 영화는 당신의 이야기를 말합니다. "</div>
@@ -409,36 +409,38 @@
         }
     };
     
-    function loginCheck(){
-    	const xhttp = new XMLHttpRequest();
-    	const token = localStorage.getItem("jwtToken");
-    	let username = "";
-    	let role = "";
-    	if(token != null){
+//     function loginCheck(){
+//     	const xhttp = new XMLHttpRequest();
+//     	const token = localStorage.getItem("jwtToken");
+//     	let username = "";
+//     	let role = "";
+//     	if(token != null){
     		
-	    	xhttp.onload = function(){
-	    		if(this.responseText != "유효하지 못한 토큰입니다."){
-	    			const response = this.responseText.split(" ");
-	    			username = response[0];
-	    			role = response[1];
-	    			console.log(username + " " + role);
-	    			document.querySelector("#username").innerHTML = username;
-	    			document.querySelector("#role").innerHTML = role;
-	    			document.querySelector("#login").style.display = "block";
-	    			document.querySelector("#notLogin").style.display = "none";
-	//     			window.location.href = "/";
-	    		}else {
-					alert("토큰의 유효기간이 만료되었습니다. 다시 로그인을 해주세요. 확인 버튼을 누르면 자동으로 로그인 페이지로 이동합니다.");
-					window.location.href = "/loginForm";
-	    		}
-	    	}
+// 	    	xhttp.onload = function(){
+// 	    		console.log("체크하기용 : " + this.responseText);
+// 	    		if(xhttp.responseText != "유효하지 못한 토큰입니다."){
+// 	    			const response = xhttp.responseText.split(" ");
+// 	    			username = response[0];
+// 	    			role = response[1];
+// 	    			console.log(username + " " + role);
+// 	    			document.querySelector("#username").innerHTML = username;
+// 	    			document.querySelector("#role").innerHTML = role;
+// 	    			document.querySelector("#login").style.display = "block";
+// 	    			document.querySelector("#notLogin").style.display = "none";
+// 	//     			window.location.href = "/";
+// 	    		}else {
+// 	    			localStorage.removeItem("jwtToken");
+// 					alert("토큰의 유효기간이 만료되었습니다. 다시 로그인을 해주세요. 확인 버튼을 누르면 자동으로 로그인 페이지로 이동합니다.");
+// 					window.location.href = "/loginForm";
+// 	    		}
+// 	    	}
 	    	
-	    	xhttp.open("GET", "http://localhost:9001/api/v1/loginCheck");
-	    	xhttp.setRequestHeader("Authorization", "Bearer " + token);
-	    	xhttp.send();
+// 	    	xhttp.open("GET", "http://localhost:9001/api/v1/common/loginCheck");
+// 	    	xhttp.setRequestHeader("Authorization", "Bearer " + token);
+// 	    	xhttp.send();
 	    	
-    	}
-    }
+//     	}
+//     }
     
     function logout(){
     	localStorage.removeItem("jwtToken");
@@ -446,8 +448,69 @@
     	window.location.href = "/";
     }
     
-    loginCheck();
-    
+    $(document).ready(function() {
+    	// 현재 페이지의 경로를 가져옴
+        const path = window.location.pathname;
+
+     // 비회원이 접근 가능한 경로
+        const publicPaths = [
+            '/',
+            '/main',
+            '/film/movieList',
+            '/memberCinema/cinemaPage',
+            '/memberCinema/sRoomDetail',
+            '/reservation/scheduleLIst',
+            '/reservation/storeMain',
+			'/reservation/eventList',
+            '/joinForm',
+			'/loginForm',
+			'/reservation/faqList'
+        ];
+
+//         // 현재 경로가 비회원 접근 가능 경로에 포함되는지 확인
+//         if (publicPaths.includes(path) && !token) {
+//             return; // 스크립트 실행 중단
+//         }
+		
+        const token = localStorage.getItem('jwtToken');
+        // JWT 검증 스크립트
+        if (token !== null) {
+            $.ajax({
+                url: 'http://localhost:9001/api/v1/common/loginCheck', // REST API 서버의 JWT 검증 엔드포인트
+				type: 'GET',
+                beforeSend: function(request) {
+                    request.setRequestHeader("Authorization", "Bearer " + token);
+                },
+                success: function(response) {
+                	let username = response.user.split(" ")[0];
+                	let role = response.user.split(" ")[1];
+                	console.log("토큰 검증 완료, 유효한 토큰임, usernmae : " + username + ", role : " + role);
+                	document.querySelector("#username").innerHTML = username;
+                	document.querySelector("#login").style.display = "block";
+	    			document.querySelector("#notLogin").style.display = "none";
+                    if (role !== 'ROLE_ADMIN' && role !== 'ROLE_MEMBER') {
+						alert('로그인을 해야지 이용하실 수 있습니다. 로그인을 해주세요. 확인 클릭시 메인페이지로 돌아갑니다.');
+						window.location.href = '/';
+//                         if (window.location.pathname === '/admin') {
+//                         }
+                    }
+                },
+                error: function() {
+					alert('인증이 만료되었습니다. 다시 로그인 해주세요. 버튼을 누르면 자동으로 로그인 페이지로 이동합니다.');
+					localStorage.removeItem('jwtToken');
+					window.location.href = '/loginForm';
+                }
+            });
+        } else {
+        	if(publicPaths.includes(path)){
+        		console.log("비회원도 허가된 주소");
+        		return; // 스크립트 실행 중단
+        	}else {
+				alert("로그인을 해야 이용하실 수 있습니다. 로그인을 해주세요. 확인 클릭시 로그인페이지로 넘어갑니다.");
+	            window.location.href = '/loginForm';
+        	}
+        }
+    });
     
     
 </script>

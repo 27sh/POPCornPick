@@ -20,7 +20,7 @@ main {
 }
 
 .join-wrapper {
-	max-width: 400px;
+	max-width: 600px;
 	margin: 0 auto;
 	text-align: left;
 }
@@ -40,20 +40,22 @@ main {
 
 span {
 	display: inline-block;
-	width: 70px;
+	width: 100px;
+	text-align: right;
+	margin-right: 25px;
 }
 
 .input-group {
-	width: 400px;
+	width: 600px;
 	
 }
 
 .input {
-	width: 230px;
-	padding: 8px;
+	width: 300px;
+	padding: 10px;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
 	
 }
 
@@ -62,16 +64,16 @@ span {
 }
 
 .input-button {
-	width: 400px;
-	position: relative;
-	left: 90px;
-	
+	width: 600px;
+	text-align: center;
 }
 
 #joinBtn, #backBtn{
+	width: 100px;
 	padding: 10px;
 	margin-top: 10px;
 	margin-right: 30px;
+	margin-left: 10px;
 	border-radius: 5px;
 	border: 2px ;
 }
@@ -82,7 +84,7 @@ span {
 }
 
 #backBtn {
-	background-color: #ffffff;
+	background-color: #F2F2F2;
 	font-weight: bold;
 }
 
@@ -179,7 +181,7 @@ span {
 				}
 			}
 			
-			xhttp.open("POST", "http://localhost:9001/api/v1/join");
+			xhttp.open("POST", "http://localhost:9001/api/v1/common/join");
 			xhttp.setRequestHeader("Content-type", "application/json");
 			xhttp.send(sendData);
 		}

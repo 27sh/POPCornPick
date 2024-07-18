@@ -165,7 +165,7 @@ public class LoginController {
 	@PostMapping("/nonMemberLogin")
 	public String nonMemberLogin(NonMemberLoginDto nonMemberLoginDto, HttpServletResponse response) {
 		String str = "";
-		String token = jwtUtil.createJwt(nonMemberLoginDto.getName(), "nonMember", nonMemberLoginDto.getTel(), nonMemberLoginDto.getPassword2(), 60*60*500L);
+		String token = jwtUtil.createJwt(nonMemberLoginDto.getName(), "nonMember", nonMemberLoginDto.getTel(), nonMemberLoginDto.getPassword2(), 24*60*60*1000L);
 		
 		response.addHeader("Authorization", "Bearer " + token);
 		

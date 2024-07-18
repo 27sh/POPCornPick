@@ -38,6 +38,7 @@
     align-items: center;
     justify-content: center;
 }
+
 .btn_goreservation {
     display: none;
     position: fixed;
@@ -57,6 +58,7 @@
     font-weight: bold;
     text-align: center;
 }
+
 </style>
 
 <script>
@@ -71,14 +73,13 @@
             $("#sRoom-img").css("background-image", "url('/img/PRIVATEBOX.png')");
         });
     });
-    
+
     $(document).ready(function() {
         $.ajax({
             url: 'http://localhost:9001/api/v1/main/packages',
             method: 'GET',
             success: function(data) {
-
-            	if (typeof data === 'string') {
+                if (typeof data === 'string') {
                     try {
                         data = JSON.parse(data); // 데이터가 문자열이면 JSON 파싱
                     } catch (e) {
@@ -168,8 +169,7 @@
             }
         });
     }
-    
-    
+
     $(document).ready(function() {
         $.ajax({
             url: 'http://localhost:9001/api/v1/main/gift',
@@ -218,34 +218,28 @@
             }
         });
     }
-    
+
     $(window).scroll(function(){
-    	if ($(this).scrollTop() > 150){
-    		$('.btn_gotop').show();
-    	} else{
-    		$('.btn_gotop').hide();
-    	}
+        if ($(this).scrollTop() > 150){
+            $('.btn_gotop').fadeIn(200);
+            $('.btn_goreservation').fadeIn(200);
+        } else{
+            $('.btn_gotop').fadeOut(200);
+            $('.btn_goreservation').fadeOut(200);
+        }
     });
+
     $('.btn_gotop').click(function(){
-    	$('html, body').animate({scrollTop:0},400);
-    	return false;
+        $('html, body').animate({scrollTop:0},400);
+        return false;
     });
-    
-    $(window).scroll(function(){
-    	if ($(this).scrollTop() > 150){
-    		$('.btn_goreservation').show();
-    	} else{
-    		$('.btn_goreservation').hide();
-    	}
-    });
-    
+
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('go-to-movieList').addEventListener('click', function() {
             window.location.href = '/film/movieList';
         });
     });
 
-    
     document.addEventListener('DOMContentLoaded', function() {
         // 공지사항 데이터 가져오기
         $.ajax({
@@ -263,17 +257,15 @@
 
     // 최신 공지사항을 HTML에 출력하는 함수
     function displayLatestNotice(notice) {
-	    const noticeElement = document.getElementById('latest-notice');
-	    let fullText = '[' + notice.noticeCategory + '] ' + notice.noticeTitle;
-	    
-	    if (fullText.length > 32) {
-	        fullText = fullText.substring(0, 32) + '...';
-	    }
-	
-	    noticeElement.innerHTML = fullText;
-	}
-
+        const noticeElement = document.getElementById('latest-notice');
+        let fullText = '[' + notice.noticeCategory + '] ' + notice.noticeTitle;
+        
+        if (fullText.length > 32) {
+            fullText = fullText.substring(0, 32) + '...';
+        }
     
+        noticeElement.innerHTML = fullText;
+    }
 </script>
 </head>
 <body>
@@ -352,9 +344,9 @@
     </div>
 </div>
 
-	<!-- 스토어 -->
-	<div id="store-container">
-	<div class="store-item-box" id="pack-container">
+    <!-- 스토어 -->
+    <div id="store-container">
+    <div class="store-item-box" id="pack-container">
         <div class="store-high-container">
             <h3>패키지</h3>
             <button class="go-to-store">더보기</button>
@@ -368,7 +360,7 @@
             <h3>영화관람권</h3>
             <button class="go-to-store">더보기</button>
         </div>
-		<div class="item-box-info-container" id="store-movie-info">
+        <div class="item-box-info-container" id="store-movie-info">
             <!-- 아이템 컨텐츠는 AJAX 요청으로 추가됩니다. -->
         </div>
     </div>
@@ -377,7 +369,7 @@
             <h3>기프트카드</h3>
             <button class="go-to-store">더보기</button>
         </div>
-		<div class="item-box-info-container" id="gift-info">
+        <div class="item-box-info-container" id="gift-info">
             <!-- 아이템 컨텐츠는 AJAX 요청으로 추가됩니다. -->
         </div>
     </div>
@@ -387,26 +379,26 @@
 <div id="etc-container">
     <div id="etc-right-container">
         <div id="main-notice">
-		    <h4>공지사항</h4>
-		    <p id="latest-notice">[행사/이벤트][팝콘픽]<선재 업고 튀어> 최종화 단...</p>
-		    <button>더보기</button>
-		</div>
-		<hr> <!-- 가로 줄 -->
-		<div id="main-cs">
-		    <div id="main-cs-high">
-		        <h4>고객센터</h4>
-		        <div id="etc-cs-info">
-		            <p style="font-weight: bold; margin: 0 0 2px 0;">1544-1122</p>
-		            <p>고객센터 운영시간 (평일 09:00~18:00)</p>
-		            <p style="color: lightgray;">업무시간 외 자동응답 안내 가능합니다.</p>
-		        </div>
-		    </div>
-		    <div id="etc-button">
-		        <button id="etc-FAQ">FAQ</button>
-		        <button id="etc-one-to-one">1:1 문의</button>
-		        <button id="etc-inquiry">대관/단체 문의</button>
-		    </div>
-		</div>
+            <h4>공지사항</h4>
+            <p id="latest-notice">[행사/이벤트][팝콘픽]<선재 업고 튀어> 최종화 단...</p>
+            <button>더보기</button>
+        </div>
+        <hr> <!-- 가로 줄 -->
+        <div id="main-cs">
+            <div id="main-cs-high">
+                <h4>고객센터</h4>
+                <div id="etc-cs-info">
+                    <p style="font-weight: bold; margin: 0 0 2px 0;">1544-1122</p>
+                    <p>고객센터 운영시간 (평일 09:00~18:00)</p>
+                    <p style="color: lightgray;">업무시간 외 자동응답 안내 가능합니다.</p>
+                </div>
+            </div>
+            <div id="etc-button">
+                <button id="etc-FAQ">FAQ</button>
+                <button id="etc-one-to-one">1:1 문의</button>
+                <button id="etc-inquiry">대관/단체 문의</button>
+            </div>
+        </div>
     </div>
     <div id="vertical-divider"></div> <!-- 세로 줄 -->
     <div id="etc-left-container">
@@ -434,4 +426,5 @@
 
 </body>
 </html>
+
 

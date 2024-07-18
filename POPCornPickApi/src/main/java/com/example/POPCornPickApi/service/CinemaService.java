@@ -112,7 +112,13 @@ public class CinemaService {
 		return cinemaRepository.getCinemaName(cinemaNo);
 	}
 	
-	
-	
+	public Long findCinemaNoByCinemaName(String cinemaName) {
+        return cinemaRepository.findByCinemaName(cinemaName);
+    }
+
+    public Cinema findCinemaByCinemaName(String cinemaName) {
+        Long cinemaNo = cinemaRepository.findByCinemaName(cinemaName);
+        return cinemaNo != null ? cinemaRepository.findById(cinemaNo).orElse(null) : null;
+    }
 	
 }

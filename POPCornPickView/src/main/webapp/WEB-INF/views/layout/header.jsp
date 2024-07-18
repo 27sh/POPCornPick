@@ -482,8 +482,8 @@
                     request.setRequestHeader("Authorization", "Bearer " + token);
                 },
                 success: function(response) {
-                	let username = response.user.split(" ")[0];
-                	let role = response.user.split(" ")[1];
+                	let username = response.result.split(" ")[0];
+                	let role = response.result.split(" ")[1];
                 	console.log("토큰 검증 완료, 유효한 토큰임, usernmae : " + username + ", role : " + role);
                 	document.querySelector("#username").innerHTML = username;
                 	document.querySelector("#login").style.display = "block";

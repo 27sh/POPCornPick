@@ -27,5 +27,10 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	@Query(value= "select * from room where room_no = :roomNo", nativeQuery = true)
 	public List<Room> getRoomInfo(@Param("roomNo") Long roomNo);
 	
-	
+	@Query("SELECT COUNT(r) FROM Room r WHERE r.cinema.cinemaNo = :cinemaNo")
+	int countRoomsByCinemaNo(@Param("cinemaNo") Long cinemaNo);
+
+	@Query("SELECT SUM(r.roomType.roomTotalRow * r.roomType.roomTotalColumn) FROM Room r WHERE r.cinema.cinemaNo = :cinemaNo")
+	int sumSeatCountByCinemaNo(@Param("cinemaNo") Long cinemaNo);
+
 }

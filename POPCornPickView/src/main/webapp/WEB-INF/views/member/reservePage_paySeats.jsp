@@ -1134,9 +1134,12 @@ main {
 	        
 	        if(tr.className.includes("issueNo_")){
 				$("#" + tr.className).removeClass("selected");
+				$("#coupon_table").empty();
 			}else if(tr.className.includes("giftCardNo_")){
 				$("#" + tr.className).removeClass("selected");
 
+				
+				
 				const giftCardType = $("#" + tr.className).children(".giftCardType").text();
 				
 				const object = {

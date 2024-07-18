@@ -1,20 +1,25 @@
 package com.example.POPCornPickApi.controller.Gaksitan;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.dto.AuthResponse;
+import com.example.POPCornPickApi.dto.NonMemberLoginDto;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.jwt.JWTUtil;
 import com.example.POPCornPickApi.repository.MemberRepository;
@@ -24,7 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/common")
 //@CrossOrigin("*")
 public class LoginController {
 	
@@ -50,33 +55,16 @@ public class LoginController {
 //		return "loginForm";
 //	}
 	
-	@PostMapping("/join")
-	public String join(@RequestBody Member member) {
-		String str = "";
-		System.out.println(member);
-		boolean tf = memberRepository.existsByUsername(member.getUsername());
-		
-		if(tf == false) {
-			if(member.getRole() == null) {
-				member.setRole("ROLE_MEMBER");
-			}
-			member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
-			memberRepository.save(member);
-			str = "가입 성공";
-		}else {
-			str = "이미 존재하는 Id 입니다.";
-		}
-		
-		return str;
-	}
 	
 	// 로그인 
 	@PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(Member member, HttpServletResponse response) throws Exception {
         authenticate(member.getUsername(), member.getPassword());
-
+        System.out.println("role 값 체크 : " + member.getRole());
         final UserDetails userDetails = customUserDetailService.loadUserByUsername(member.getUsername());
-        final String token = jwtUtil.createJwt(member.getUsername(), member.getRole(), 60*60*500L);
+        GrantedAuthority auth = userDetails.getAuthorities().iterator().next();
+        String role = auth.getAuthority();
+        final String token = jwtUtil.createJwt(member.getUsername(), role, null, null, 60*60*100L); // 30분 1800초 (500L)
         
         // JWT 토큰을 responseHeader에 추가
         response.setHeader("Authorization", "Bearer " + token);
@@ -131,35 +119,61 @@ public class LoginController {
 		return str;
 	}
 	
+//	@GetMapping("/loginCheck")
+//	public String loginCheck(HttpServletRequest request) {
+//		String str = "";
+//		String token = request.getHeader("Authorization").split(" ")[1];
+//		System.out.println("token : " + token);
+//		
+//		String username = jwtUtil.getUsername(token);
+//		Member member = memberRepository.findByUsername(username);
+//		String role = jwtUtil.getRole(token);
+//		
+//		if(role == null) {
+//			role = member.getRole();
+//		}
+//		
+//		boolean tf = jwtUtil.isExpired2(token);
+//		
+//		if(tf == true) {
+//			System.out.println("username : " + username);
+//			System.out.println("role : " + role);
+//			str = username + " " + role;
+//			System.out.println(str);
+//		}else {
+//			str = "유효하지 못한 토큰입니다.";
+//		}
+//		
+//		return str;
+//	}
+	
 	@GetMapping("/loginCheck")
-	public String loginCheck(HttpServletRequest request) {
-		String str = "";
-		String token = request.getHeader("Authorization").split(" ")[1];
-		System.out.println("token : " + token);
-		
+	public ResponseEntity<?> loginCheck(@RequestHeader("Authorization") String bearerToken){
+		String token = bearerToken.split(" ")[1];
 		String username = jwtUtil.getUsername(token);
-		Member member = memberRepository.findByUsername(username);
 		String role = jwtUtil.getRole(token);
 		
-		if(role == null) {
-			role = member.getRole();
+		if(jwtUtil.isExpired(token)) {
+			return ResponseEntity.status(401).body("Token Expired");
 		}
 		
-		boolean tf = jwtUtil.isExpired2(token);
+		String usernameAndRole = username + " " + role;
 		
-		if(tf == true) {
-			System.out.println("username : " + username);
-			System.out.println("role : " + role);
-			str = username + " " + role;
-			System.out.println(str);
-		}else {
-			str = "유효하지 못한 토큰입니다.";
-		}
-		
-		return str;
+		return ResponseEntity.ok().body(Collections.singletonMap("user", usernameAndRole));
 	}
 	
-	
+	@PostMapping("/nonMemberLogin")
+	public String nonMemberLogin(NonMemberLoginDto nonMemberLoginDto, HttpServletResponse response) {
+		String str = "";
+		String token = jwtUtil.createJwt(nonMemberLoginDto.getName(), "nonMember", nonMemberLoginDto.getTel(), nonMemberLoginDto.getPassword2(), 60*60*500L);
+		
+		response.addHeader("Authorization", "Bearer " + token);
+		
+		System.out.println("nonMemberLogin Success");
+		
+		str = "nonMemberLogin Success";
+		return str;
+	}
 	
 	
 	

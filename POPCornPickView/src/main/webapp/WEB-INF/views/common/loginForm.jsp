@@ -296,7 +296,7 @@ span {
 					
 				}
 				
-				xhttp.open("POST", "http://localhost:9001/api/v1/login");
+				xhttp.open("POST", "http://localhost:9001/api/v1/common/login");
 				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				xhttp.send("username=" + username + "&password=" + password);
 			
@@ -310,10 +310,15 @@ span {
 			const password2 = document.querySelector("#ticketingPw").value;
 			
 			xhttp.onload = function(){
-				
+				if(this.responseText == "nonMemberLogin Success"){
+					alert(this.responseText);
+					window.location.href = "/";
+				}else {
+					alert("nonMemberLogin Faile");
+				}
 			}
 			
-			xhttp.open("POST", "/nonMemberLogin");
+			xhttp.open("POST", "http://localhost:9001/api/v1/common/nonMemberLogin");
 			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			xhttp.send("name=" + name + "&tel=" + tel + "&birthdate=" + birthdate + "&password2=" + password2);
 		}
@@ -336,7 +341,7 @@ span {
 				return result;
 			}
 			
-			xhttp.open("GET", "http://localhost:9001/api/v1/tokenExpired");
+			xhttp.open("GET", "http://localhost:9001/api/v1/common/tokenExpired");
 			xhttp.setRequestHeader("Authorization", "Bearer " + token);
 			xhttp.send();
 		}
@@ -359,7 +364,7 @@ span {
 				return result;
 			}
 			
-			xhttp.open("GET", "http://localhost:9001/api/v1/tokenExpired2");
+			xhttp.open("GET", "http://localhost:9001/api/v1/common/tokenExpired2");
 			xhttp.setRequestHeader("Authorization", "Bearer " + token);
 			xhttp.send();
 		}

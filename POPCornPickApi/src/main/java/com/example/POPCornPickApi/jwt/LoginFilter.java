@@ -11,6 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.POPCornPickApi.dto.CustomUserDetails;
+import com.example.POPCornPickApi.entity.Member;
+import com.example.POPCornPickApi.repository.MemberRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +24,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter{
 	
 	private final JWTUtil jwtUtil;
 	
-	
+	private MemberRepository memberRepository;
 	
 	public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 		this.authenticationManager = authenticationManager;
@@ -50,12 +52,24 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter{
 		String username = customUserDetails.getUsername();
 		
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		
+		Member member = memberRepository.findByUsername(username);
+		
+		// 권한 정보 추출 (Iterator 사용 대신 권한 목록 전체 사용)
+//	    String role = authorities.stream()
+//	            .map(GrantedAuthority::getAuthority)
+////	            .collect(Collectors.joining(","));
+//	            .findFirst()
+//	            .orElse("");
+		
+//		String role = member.getRole();
+		
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
 		GrantedAuthority auth = iterator.next();
 		
 		String role = auth.getAuthority();
-		
-		String token = jwtUtil.createJwt(username, role, 60*60*500L); // 900 초 : 15 분
+		System.out.println("토큰 발급시 role 값 : " + role);
+		String token = jwtUtil.createJwt(username, role, null, null, 60*60*500L); // 1800 초 : 30 분
 		
 		response.addHeader("Authorization", "Bearer " + token);
 		

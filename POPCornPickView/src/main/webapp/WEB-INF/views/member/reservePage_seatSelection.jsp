@@ -34,19 +34,36 @@
 	width: 80px;
 }
 
-.simple_info_title {
+#simple_info_title_reservation, #simple_info_title_seat {
 	position: absolute;
 	text-align: center;
 	width: 80px;
 	background: rgb(248, 47, 98);
 	height: 216.5px;
 }
-
-.simple_info_title p {
+.simple_info_title{
+	position: absolute;
+	text-align: center;
+	width: 80px;
+	background: #c2bebe;
+	height: 216.5px;
+}
+#simple_info_title_reservation p, #simple_info_title_seat p{
 	position: relative;
 	color: white;
 	top: 50%;
 	transform: translateY(-50%);
+    font-size: 14px;
+    font-weight: bold;
+}
+.simple_info_title p {
+	position: relative;
+	color: black;
+	top: 50%;
+	transform: translateY(-50%);
+   font-size: 14px;
+    font-weight: bold;
+	
 }
 
 .simple_info_content {
@@ -55,24 +72,20 @@
 	left: 80px;
 	width: 230px;
 	background: rgb(248, 47, 98);
-	color: white;
 	height: 216.5px;
 	z-index: 9999;
 }
 .simple_info_content_all{
-	position: relative;
-}
-.simple_info_content_all {
-	position: absolute;
-	top: 50%;
-}
-.simple_info_content_all {
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 .simple_info_content_all li{
-	color: white;
+	font-size: 12px;
+    margin: 10px 0;
+    color: white;
 }
 .none-active {
 	display: none;
@@ -407,21 +420,21 @@ main {
 			<div id="wrapper">
 				<div id="simple_infos">
 					<div class="simple_info">
-						<div class="simple_info_title">
+						<div class="simple_info_title" id="simple_info_title_reservation">
 							<p>01</p>
 							<p>상영시간</p>
 						</div>
 						<div class="simple_info_content none-active">
-							<ul id="simple_info_content_all">
-								<li class="simple_info_content_movie"></li>
-								<li class="simple_info_content_specific"></li>
-								<li class="simple_info_content_date"></li>
-								<li class="simple_info_content_time"></li>
+							<ul class="simple_info_content_all">
+								<li class="simple_info_content_movie"> </li>
+								<li class="simple_info_content_specific"> </li>
+								<li class="simple_info_content_date"> </li>
+								<li class="simple_info_content_time"> </li>
 							</ul>
 						</div>
 					</div>
 					<div class="simple_info">
-						<div class="simple_info_title">
+						<div class="simple_info_title" id="simple_info_title_seat">
 							<p>02</p>
 							<p>인원/좌석</p>
 						</div>
@@ -657,14 +670,27 @@ main {
 						}
 					});
 					
-					$(".simple_info_title").on(
+					$("#simple_info_title_reservation").on(
 							"mouseenter",
 							function() {
 								$(this).next(".simple_info_content")
 										.removeClass("none-active");
 							});
 
-					$(".simple_info_title").on(
+					$("#simple_info_title_reservation").on(
+							"mouseleave",
+							function() {
+								$(this).next(".simple_info_content").addClass(
+										"none-active");
+							});
+					$("#simple_info_title_seat").on(
+							"mouseenter",
+							function() {
+								$(this).next(".simple_info_content")
+										.removeClass("none-active");
+							});
+
+					$("#simple_info_title_seat").on(
 							"mouseleave",
 							function() {
 								$(this).next(".simple_info_content").addClass(
@@ -745,7 +771,7 @@ main {
 		let array = new Array();
 		
 		function minusAmount(event){
-			$("#total_cost").text(0);
+			$("#total_cost").text(" " + 0 + " ");
 			const id = event.target.id;
 			const type = id.substring(6, id.length);
 			const totalAmount = 4;
@@ -937,7 +963,8 @@ main {
 				
 				const totalCost = adultAmount * 14000 + teenagerAmount * 11000 + senileAmount * 7000 + disabledAmount * 5000;				
 				
-				$("#total_cost").text(totalCost);
+				$("#total_cost").text(" " + totalCost + " ");
+				
 			}
 			
 			const seatRow = event.target.parentNode.firstChild.innerText;
@@ -958,7 +985,7 @@ main {
 					event.target.style.backgroundColor = '#3498db';
 					selectedAmount--;
 					array.pop(object);
-					$("#total_cost").text(0);
+					$("#total_cost").text(" " + 0 + " ");
 					
 					let resultStr = ''; 
 					

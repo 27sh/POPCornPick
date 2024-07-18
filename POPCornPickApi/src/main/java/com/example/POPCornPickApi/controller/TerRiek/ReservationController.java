@@ -15,11 +15,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.POPCornPickApi.entity.Schedule;
+import com.example.POPCornPickApi.jwt.JWTUtil;
 import com.example.POPCornPickApi.dto.ScheduleDto_JYC;
 import com.example.POPCornPickApi.entity.Cinema;
+import com.example.POPCornPickApi.entity.Coupon;
+import com.example.POPCornPickApi.entity.ExpCinema;
+import com.example.POPCornPickApi.entity.GiftCard;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.service.ReservationService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 // @CrossOrigin("*")
@@ -27,9 +33,11 @@ import com.example.POPCornPickApi.service.ReservationService;
 public class ReservationController {
 	
 	private ReservationService reservationService;
+	private JWTUtil jwtUtil;
 	
-	public ReservationController(ReservationService reservationService){
+	public ReservationController(ReservationService reservationService, JWTUtil jwtUtil){
 		this.reservationService = reservationService;
+		this.jwtUtil = jwtUtil;
 	}
 	
 	// 지역 선택시 지점 정보 가지고 오는 메소드
@@ -49,9 +57,13 @@ public class ReservationController {
 	
 	// My영화관, 지역별 지점 갯수 가지고 오는 메소드0
 	@GetMapping("/count")
-	public ResponseEntity<Map<String, String>> getCount(){
+	public ResponseEntity<Map<String, String>> getCount(HttpServletRequest request){
 		
-		Map<String, String> countMap = reservationService.getCountPerLocation();
+		String jwtToken = request.getHeader("Authorization").split(" ")[1];
+		
+		String username = jwtUtil.getUsername(jwtToken);
+		
+		Map<String, String> countMap = reservationService.getCountPerLocation(username);
 		
 		if(countMap != null) {
 			return ResponseEntity.status(HttpStatus.OK)
@@ -159,5 +171,61 @@ public class ReservationController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body(null);
 	}
-
+	
+	// My 영화관 리스트 출력 컨트롤리
+	@GetMapping("/myCinema/list")
+	public ResponseEntity<List<ExpCinema>> getMyCinemaList(HttpServletRequest request){
+		
+		String jwtToken = request.getHeader("Authorization").split(" ")[1];
+		
+		String username = jwtUtil.getUsername(jwtToken);
+		
+		List<ExpCinema> expCinemaList = reservationService.getMyCinemaList(username);
+		
+		if(expCinemaList != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(expCinemaList);
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(null);
+	}
+	
+	// 개인 기프트카드 리스트 데이터 출력 컨트롤러
+	@GetMapping("/my/gift/card")
+	public ResponseEntity<List<GiftCard>> getMyValidGiftCard(HttpServletRequest request){
+		
+		String jwtToken = request.getHeader("Authorization").split(" ")[1];
+		
+		String username = jwtUtil.getUsername(jwtToken);
+		
+		List<GiftCard> giftCardList = reservationService.getMyValidGiftCard(username);
+		
+		if(giftCardList != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(giftCardList);
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(null);
+	}
+	
+	// 개인 할인쿠폰 리스트 데이터 출력 컨트롤러
+	@GetMapping("/my/discount/coupon")
+	public ResponseEntity<List<Coupon>> getMyValidDiscountCoupon(HttpServletRequest request){
+		
+		String jwtToken = request.getHeader("Authorization").split(" ")[1];
+		
+		String username = jwtUtil.getUsername(jwtToken);
+		
+		List<Coupon> couponList = reservationService.getMyValidDiscountCoupon(username);
+		
+		if(couponList != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(couponList);
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(null);
+	}
 }

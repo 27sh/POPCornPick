@@ -13,4 +13,8 @@ public interface ExpCinemaRepository extends JpaRepository<ExpCinema, Long>{
 	List<ExpCinema> findByMember_Username(String username);
 	
 	ExpCinema findByMemberUsernameAndCinemaCinemaNo(String username, Long cinemaNo);
+	
+	List<ExpCinema> findByMemberUsernameOrderByCinema_CinemaNameAsc(String username);
+
+	public int countByMember_Username(String username);
 }

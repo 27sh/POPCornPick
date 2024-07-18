@@ -2,6 +2,7 @@ package com.example.POPCornPickApi.service;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,13 +20,18 @@ import org.springframework.stereotype.Service;
 import com.example.POPCornPickApi.dto.ScheduleDto;
 import com.example.POPCornPickApi.dto.ScheduleDto_JYC;
 import com.example.POPCornPickApi.entity.Cinema;
+import com.example.POPCornPickApi.entity.Coupon;
+import com.example.POPCornPickApi.entity.ExpCinema;
+import com.example.POPCornPickApi.entity.GiftCard;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.MovieShowDetail;
 import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.repository.CinemaRepository;
+import com.example.POPCornPickApi.repository.CouponRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
+import com.example.POPCornPickApi.repository.GiftCardRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
 import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
 import com.example.POPCornPickApi.repository.ReservatedSeatRepository;
@@ -45,11 +51,15 @@ public class ReservationService {
 	private ScheduleRepository shceduleRepository;
 	private SeatRepository seatRepository;
 	private ReservatedSeatRepository reservatedSeatRepository;
+	private GiftCardRepository giftCardRepository;
+	private CouponRepository couponRepository;
 
 	public ReservationService(CinemaRepository cinemaRepository, ExpCinemaRepository expCinemaRepository,
 			RoomRepository roomRepository, MovieRepository movieRepository,
 			MovieShowDetailRepository movieShowDetailRepository, TicketingRepository ticketingRepository,
-			ScheduleRepository shceduleRepository, SeatRepository seatRepository, ReservatedSeatRepository reservatedSeatRepository) {
+			ScheduleRepository shceduleRepository, SeatRepository seatRepository, ReservatedSeatRepository reservatedSeatRepository,
+			GiftCardRepository giftCardRepository, CouponRepository couponRepository
+			) {
 		this.cinemaRepository = cinemaRepository;
 		this.expCinemaRepository = expCinemaRepository;
 		this.roomRepository = roomRepository;
@@ -59,6 +69,8 @@ public class ReservationService {
 		this.shceduleRepository = shceduleRepository;
 		this.seatRepository = seatRepository;
 		this.reservatedSeatRepository = reservatedSeatRepository;
+		this.giftCardRepository = giftCardRepository;
+		this.couponRepository = couponRepository;
 	}
 
 	public List<Cinema> getCinemaByLocaiton(String cinemaLocation) {
@@ -69,11 +81,11 @@ public class ReservationService {
 		return cinemaList;
 	}
 
-	public Map<String, String> getCountPerLocation() {
+	public Map<String, String> getCountPerLocation(String username) {
 
-		Map<String, String> countMap = new HashMap<>();
-
-		// int countMyCinema = expCinemaRepository.countByUsername(username);
+		Map<String, String> countMap = new LinkedHashMap<>();
+		
+		int countMyCinema = expCinemaRepository.countByMember_Username(username);
 		int countSeoul = cinemaRepository.countByCinemaLocation("seoul");
 		int countGyeonggi_incheon = cinemaRepository.countByCinemaLocation("gyeonggi_incheon");
 		int countChungcheong_daejeon = cinemaRepository.countByCinemaLocation("chungcheong_daejeon");
@@ -82,9 +94,8 @@ public class ReservationService {
 		int countGyeongnam_busan_ulsan = cinemaRepository.countByCinemaLocation("gyeongnam_busan_ulsan");
 		int countGangwon = cinemaRepository.countByCinemaLocation("gangwon");
 		int countJeju = cinemaRepository.countByCinemaLocation("jeju");
-
 		
-		// countMap.put("myCinema", "My 영화관(" + countMyCinema + ")");
+		countMap.put("myCinema", "My 영화관(" + countMyCinema + ")");
 		countMap.put("seoul", "서울(" + countSeoul + ")");
 		countMap.put("gyeonggi_incheon", "경기/인천(" + countGyeonggi_incheon + ")");
 		countMap.put("chungcheong_daejeon", "충청/대전(" + countChungcheong_daejeon + ")");
@@ -93,15 +104,13 @@ public class ReservationService {
 		countMap.put("gyeongnam_busan_ulsan", "경남/부산/울산(" + countGyeongnam_busan_ulsan + ")");
 		countMap.put("gangwon", "강원(" + countGangwon + ")");
 		countMap.put("jeju", "제주(" + countJeju + ")");
-
 		
 		return countMap;
 	}
 
 	public Map<String, String> getCountPerSpecial() {
 
-		Map<String, String> countMap = new HashMap<>();
-
+		Map<String, String> countMap = new LinkedHashMap<>();
 		
 		int count4DX = roomRepository.getCountByRoomTypeNo(4L);
 		int countIMAX = roomRepository.getCountByRoomTypeNo(3L);
@@ -120,6 +129,13 @@ public class ReservationService {
 
 		
 		return roomList;
+	}
+	
+	public List<ExpCinema> getMyCinemaList(String username){
+		
+		List<ExpCinema> expCinemaList = expCinemaRepository.findByMemberUsernameOrderByCinema_CinemaNameAsc(username);
+		
+		return expCinemaList;
 	}
 
 	public List<Movie> getMovieList() {
@@ -369,6 +385,23 @@ public class ReservationService {
 		scheduleDto.setLeftSeat(leftSeats);
 		
 		return scheduleDto;
+	}
+	
+	public List<GiftCard> getMyValidGiftCard(String username){
+		
+		LocalDate today = LocalDate.now();
+		List<GiftCard> giftCardList = giftCardRepository.findByMember_UsernameAndGiftCardEndDateAfterOrderByGiftCardEndDateAsc(username, today);
+		
+		return giftCardList;
+	}
+
+	public List<Coupon> getMyValidDiscountCoupon(String username){
+		
+		LocalDate today = LocalDate.now();
+		
+		List<Coupon> couponList = couponRepository.findByMember_UsernameAndCouponNo_EndDateAfterOrderByCouponNo_EndDateAsc(username, today);
+		
+		return couponList;
 	}
 
 }

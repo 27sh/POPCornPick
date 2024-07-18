@@ -9,4 +9,8 @@ import com.example.POPCornPickApi.entity.ExpCinema;
 public interface ExpCinemaRepository extends JpaRepository<ExpCinema, Long>{
 	
 	List<ExpCinema> findByMemberUsername(String username);
+	
+	List<ExpCinema> findByMember_Username(String username);
+	
+	ExpCinema findByMemberUsernameAndCinemaCinemaNo(String username, Long cinemaNo);
 }

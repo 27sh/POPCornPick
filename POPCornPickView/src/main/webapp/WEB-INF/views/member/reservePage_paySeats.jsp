@@ -113,9 +113,8 @@ h4{
 	left: 866px;
 	width: 413px;
 	height: 866px;
-	overflow-y: scroll;
 }
-#payment_result div:nth-child(3), #payment_result div:nth-child(4), #payment_result div:nth-child(5){
+#payment_result div:nth-child(4), #payment_result div:nth-child(5), #payment_result div:nth-child(6){
 	height: 53px;
 	background: black;
 	text-align: center;
@@ -124,32 +123,79 @@ h4{
 	align-items: center;
 	padding: 0 10px;
 }
-#payment_result div:nth-child(3) p, #payment_result div:nth-child(3) span, #payment_result div:nth-child(4) p, #payment_result div:nth-child(4) span, #payment_result div:nth-child(5) p, #payment_result div:nth-child(5) span {
+#payment_result div:nth-child(4) p, #payment_result div:nth-child(4) span, #payment_result div:nth-child(5) p, #payment_result div:nth-child(5) span, #payment_result div:nth-child(6) p, #payment_result div:nth-child(6) span {
 	color: white;
 }
-#payment_result div:nth-child(3) h6, #payment_result div:nth-child(4) h6, #payment_result div:nth-child(5) h6{
+#payment_result div:nth-child(4) h6, #payment_result div:nth-child(5) h6, #payment_result div:nth-child(6) h6{
 	color: white;
 	font-size: 1rem;
 	font-weight: bold;
 }
-#payment_result div:nth-child(6){
+#payment_result div:nth-child(7){
 	background: red;
 	height: 53px;
 	width: 100%;
 	text-align: center;
 }
-#payment_result div:nth-child(6) p{
+#payment_result div:nth-child(7) p{
 	color: white;
 	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
 	font-weight: bold;
 }
+#avaliable_point{
+	height: 70px;
+	width: 100%;
+	background: #ddd;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	
+}
+#avaliable_point p, #avaliable_point span {
+	color: black;
+}
+#use_all_point{
+	display: flex;
+	margin-left: 20px;
+}
+#use_all_point p{
+	margin-right: 5px;
+}
+#point_inputs{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: auto 0;
+}
+#left_point{
+	text-align: right;
+	font-size: 12px;
+	position: relative;
+	right: 20px;
+	bottom: 10px;	
+}
+#use_point_div{
+	margin-right: 20px;
+	display: flex;
+	align-items: center;
+}
+#use_point_div input{
+	width: 100px;
+	font-size: 17px;
+	padding: 2px;
+	text-align: right;
+}
 #movie_detail {
 	position: relative;
 	height: 350px;
-	padding: 30.5px;
+	padding-top: 40px;
+	padding-bottom: 50px;
+	padding-left: 40px;
+	padding-right: 40px;
 	border-bottom: 1px solid grey;
+	
 }
 #movie_detail .movie_detail_img {
 	width: 170px;
@@ -159,28 +205,33 @@ h4{
 }
 #movie_detail_grade_title {
 	font-weight: bold;
+	position: relative;
+	right: 10px;
 	font-size: 1.2rem;
 	display: flex;
 	align-items: center;
 	margin-top: 15px;
 }
 #movie_detail_grade_title img{
-	margin-right: 5px;
+	margin-right: 10px;
 }
 #movie_detail_date_time {
 	font-size: 0.8rem;
-	margin-top: 10px;
+	margin: 10px 0;
 	font-weight: bold;
+	position: relative;
+	right: 10px;
 }
 #movie_detail_date_time span:nth-child(2){
 	position: relative;
-	left: 20px;
+	left: 22px;
 }
 #cinema_detail{
 	font-size: 0.8rem;
-	margin-top: 10px;
+	margin-top: 10px 0;
 	font-weight: bold;
 	position: relative;
+	right: 10px;
 }
 #cinema_detail span:nth-child(2){
 	display: inline-block;
@@ -208,21 +259,19 @@ h4{
 	margin-top: 10px;
 }
 #countType span:first-child{
-	margin-right: 19px;
+	margin-right: 21px;
 }
 #selectedSeats span:first-child{
-	margin-right: 19px;
-}
-#pay_type_discount{
-	height: 411px;
-	overflow-y: scroll;
+	margin-right: 21px;
 }
 #pay_type_tool{
 	height: 400px;
-	overflow-y: scroll;
 }
 #pay_type_discount{
 	border-bottom: 1px solid grey;
+	overflow-y: scroll;
+	height: 400px;
+	padding-bottom: 11px;
 }
 #pay_type_discount h5, #pay_type_tool h5{
 	padding: 15px;
@@ -297,14 +346,183 @@ h4{
 	width: 100%;
 }
 #payment_receipt{
-	height: 600px;
+	height: 529px;
 	background: white;
+	overflow-y: scroll;
 }
 .unactivated{
 	visibility: hidden;
 }
 .activated{
 	visibility: visible;
+}
+#pay_type_discount_types_list{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	gap: 10px;
+	margin-top: 20px;
+	margin-left: 20px;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+.gift_card{
+	width: 80px;
+	border-radius: 5px;
+	height: 40px;
+	border: 1px solid #ddd;
+	background: white;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	cursor: pointer;
+}
+.gift_card:hover{
+	background: #f7f5f5;
+}
+.gift_card p{
+	margin: 1px 0;
+	text-align: center;
+}
+
+.gift_card p:first-child{
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+}
+.gift_card p:nth-child(2){
+	font-size: 10px;
+	color: red;
+}
+
+.discount_coupon{
+	width: 90px;
+	height: 47px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	background: white;
+	padding: 10px 5px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	cursor: pointer;
+}
+.discount_coupon:hover{
+	background: #f7f5f5;
+}
+.discount_coupon p{
+	text-align: center;
+}
+.discount_coupon p:first-child{
+	font-size: 13px;
+	color: black;
+	font-weight: bold;
+}
+.discount_coupon p:nth-child(2){
+	font-size: 11px;
+	margin: 2px 0;
+	color: blue;
+}
+.discount_coupon p:nth-child(3){
+	font-size: 10px;
+	color: red;
+}
+#reservation_receipt{
+	width: 100%;
+	text-align: center;
+	table-layout: fixed;
+	border-spacing: 0;
+}
+#reservation_receipt th{
+	padding-bottom: 5px;
+	background: #ddd;
+	font-size: 13px;
+}
+#reservation_receipt tbody td{
+	padding: 10px 0;
+}
+#reservation_receipt tbody tr:last-child td{
+	padding-bottom: 10px;
+}
+#reservation_receipt tbody td:first-child{
+	font-weight: bold;
+}
+#reservation_receipt tbody td:last-child{
+	font-weight: bold;
+}
+
+#reservation_receipt tbody td:nth-child(2){
+	font-size: 12px;
+	color: grey;
+}
+
+.giftcard_or_coupon{
+	width: 100%;
+	text-align: center;
+	border-spacing: 0;
+	table-layout: fixed;
+}
+
+.giftcard_or_coupon th{
+	border-bottom: 1px solid #ddd;
+	background: #ddd;
+	padding-bottom: 5px;
+	font-size: 13px;
+}
+.giftcard_or_coupon tbody td{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.giftcard_or_coupon tbody td:first-child{
+	font-weight: bold;
+}
+
+.giftcard_or_coupon tbody td:nth-child(2){
+	font-size: 12px;
+	color: grey;
+}
+.discount_coupon.selected{
+	background: #ddd;
+}
+.gift_card.selected{
+	background: #ddd;
+}
+.giftcard_or_coupon tbody tr:hover{
+	cursor: pointer;
+	background: #e8e6e6;
+}
+#discount_title{
+	position: relative;
+	text-align: left;
+	background: #ddd;
+	padding-left: 10px;
+	padding-top: 5px;
+	font-size: 12px;
+	color: white;
+}
+#receipt_title{
+	position: relative;
+	top: 0;
+	left: 0;
+	text-align: left;
+	background: #ddd;
+	padding-left: 10px;
+	padding-top: 5px;
+	font-size: 12px;
+	color: white;
+}
+#giftcard_title{
+	position: relative;
+	top: 0;
+	left: 0;
+	text-align: left;
+	background: #ddd;
+	padding-left: 10px;
+	padding-top: 5px;
+	font-size: 12px;
+	color: white;
+	
 }
 main {
 	width: 100%;
@@ -390,7 +608,8 @@ main {
 								<p id="my_gift_card">기프트 카드</p>
 								<p id="my_discount_coupon">할인 쿠폰</p>
 							</div>
-							<div>
+							<div id="pay_type_discount_types_list">
+								
 							</div>
 						</div>
 						<div id="pay_type_tool">
@@ -461,15 +680,72 @@ main {
 					</div>
 					<div id="payment_result">
 						<h4>결제하기</h4>
-						<div id="payment_receipt"></div>
+						<div id="payment_receipt">
+							<div>
+								<table id="reservation_receipt">
+									<caption id="receipt_title">영수증</caption>
+									<thead>
+										<tr>
+											<th>인원</th>
+											<th>수량</th>
+											<th>가격</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>성인</td>
+											<td>1</td>
+											<td>14000</td>
+										</tr>
+										<tr>
+											<td>청소년</td>
+											<td>1</td>
+											<td>11000</td>
+										</tr>
+										<tr>
+											<td>경로</td>
+											<td>1</td>
+											<td>7000</td>
+										</tr>
+										<tr>
+											<td>장애인</td>
+											<td>1</td>
+											<td>5000</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div id="giftcard_and_coupon_container">
+								<table class="giftcard_or_coupon" id="coupon_table">
+									
+								</table>
+								<table class="giftcard_or_coupon" id="giftcard_table">
+									
+								</table>
+							</div>
+						</div>
+						
+						<div id="avaliable_point">
+							<div id="point_inputs">
+								<div id="use_all_point">
+									<p>포인트</p>
+									<input type="button" value="전액사용" id="use_all_point_btn">
+								</div>
+								<div id="use_point_div">
+									<input type="text" value="0" name="using_point" id="use_point_input">
+									<p>원</p>
+								</div>
+							</div>
+							<p id="left_point">잔여 : <span>18000</span> 원</p>
+						</div>
 						<div id="payment_result_before_cost">
 							<h6>상품금액</h6>
-							<p><span id="before_cost_total">200,000,000 </span>원</p>
+							<p><span id="before_cost_total"></span>원</p>
 						</div>
 						<div id="payment_result_discount">
 							<h6>할인금액</h6>
 							
-							<p>- <span>200,000,000 </span>원</p>
+							<p>- <span>0 </span>원</p>
 						</div>
 						<div id="payment_result_pay_cost">
 							<h6>결제금액</h6>
@@ -509,8 +785,8 @@ main {
 					totalMoney += parseInt(ageType.substring(2, ageType.length)) * 14000;		
 				}else if(ageType.includes("청소년")){
 					totalMoney += parseInt(ageType.substring(3, ageType.length)) * 11000;	
-				}else if(ageType.includes("노약자")){
-					totalMoney += parseInt(ageType.substring(3, ageType.length)) * 7000;	
+				}else if(ageType.includes("경로")){
+					totalMoney += parseInt(ageType.substring(2, ageType.length)) * 7000;	
 				}else if(ageType.includes("장애인")){
 					totalMoney += parseInt(ageType.substring(3, ageType.length)) * 5000;	
 				}
@@ -586,11 +862,37 @@ main {
 			});
 			
 			$("#my_gift_card").on("click", function(){
+				
+				const jwtToken = localStorage.getItem("jwtToken");
+				
 				$.ajax({
-					url : "http://localhost:9001/api/v1/reservation/my/gift/card/",
+					url : "http://localhost:9001/api/v1/reservation/my/gift/card",
 					method : "GET",
 					dataType : "json",
+					headers: {
+				        'Authorization': 'Bearer ' + jwtToken  // Authorization 헤더에 JWT 토큰 추가
+				    },
 					success : function(response){
+						
+						let str = "";
+						
+						// 기프트 카드가 한 개 이상일 때
+						if(response.length > 0){
+							
+							response.forEach(giftCard => {
+								
+								const formattedDate = formatDate(giftCard.giftCardEndDate, 'YYYY.MM.DD');
+								
+								str += '<div class="gift_card" id="giftCardNo_' + giftCard.giftCardNo + '" onclick="selectGiftCard(event)"> ' +
+									   '<p class="giftCardType">' + giftCard.giftCardType + '</p> ' +
+									   '<p class="date">~ ' + formattedDate + '</p> ' +
+									   '</div> ';
+							});
+						}
+						
+						
+						
+						$("#pay_type_discount_types_list").html(str);
 						
 					},
 					error: function(xhr, status, error){
@@ -600,11 +902,38 @@ main {
 			});
 
 			$("#my_discount_coupon").on("click", function(){
+				
+				const jwtToken = localStorage.getItem("jwtToken");
+				
 				$.ajax({
-					url : "http://localhost:9001/api/v1/reservation/my/discount/coupon/",
+					url : "http://localhost:9001/api/v1/reservation/my/discount/coupon",
 					method: "GET",
 					dataType : "json",
+					headers: {
+						"Authorization" : "Bearer " + jwtToken
+					},
 					success : function(response){
+						
+						let str = "";
+						
+						// 할인 쿠폰이 1개 이상일 때 
+						if(response.length > 0){
+							
+							response.forEach(coupon => {
+								
+								const formattedDate = formatDate(coupon.couponNo.endDate, 'YYYY.MM.DD');
+								
+								str += '<div class="discount_coupon" id="issueNo_' + coupon.issueNo + '" onclick="selectDiscountCoupon(event)"> ' +
+									   '<p class="couponName">' + coupon.couponNo.couponName + '</p> ' +
+									   '<p class="discount">' + coupon.couponNo.discount + '%</p> ' +
+									   '<p class="date">~ ' + formattedDate + '</p> ' +
+									   '</div> ';							
+							
+							});
+							
+						}
+						
+						$("#pay_type_discount_types_list").html(str);
 						
 					},
 					error : function(xhr, status, error){
@@ -612,6 +941,8 @@ main {
 					}
 				});
 			});
+			
+			
 		});
 		
 		function fetchPoster(movieNm) {
@@ -646,6 +977,195 @@ main {
 		    return 'https://via.placeholder.com/200x300'; // 기본 포스터 이미지 (여기까지 올 수 있는 경우)
 		}
 		
+		function formatDate(dateString, format) {
+		    const date = new Date(dateString);
+
+		    const map = {
+		        'YYYY': date.getFullYear(),
+		        'MM': String(date.getMonth() + 1).padStart(2, '0'),
+		        'DD': String(date.getDate()).padStart(2, '0'),
+		        'HH': String(date.getHours()).padStart(2, '0'),
+		        'mm': String(date.getMinutes()).padStart(2, '0'),
+		        'ss': String(date.getSeconds()).padStart(2, '0')
+		    };
+
+		    return format.replace(/YYYY|MM|DD|HH|mm|ss/g, matched => map[matched]);
+		}
+		
+		const parentElement = document.getElementById("pay_type_discount_types_list");
+		
+		const couponChild = parentElement.querySelectorAll(".discount_coupon");
+		
+		const giftCardChild = parentElement.querySelectorAll(".gift_card");
+		
+		console.log(couponChild);
+		console.log(giftCardChild);
+		
+		for (let i = 0; i < couponChild.length; i++) {
+			couponChild[i].addEventListener("click", function() {
+		        console.log("sssss");
+		    });
+		}
+		
+		for (let i = 0; i < giftCardChild.length; i++) {
+			giftCardChild[i].addEventListener("click", function() {
+		        console.log("sssss");
+		    });
+		}
+		
+		function selectDiscountCoupon(event){
+			
+			let id = '';
+			
+			if(event.target.tagName === "P") {
+				id = event.target.parentNode.id;
+			}else {
+				id = event.target.id;
+			}
+			
+			$("#" + id).siblings().removeClass("selected");
+			$("#" + id).addClass("selected");
+			
+			const couponName = $("#" + id).children(".couponName").text();
+			const discount = $("#" + id).children(".discount").text();
+			
+			let str = '<table class="giftcard_or_coupon"> ' +
+					  '<caption id="discount_title">할인쿠폰</caption> ' +
+					  '<thead><tr><th>이름 ' +
+ 					  '</th><th>수량</th><th>할인율</th></tr></thead><tbody><tr class="' + id +'" onclick="deleteSelf(event)"><td> ' +
+					  couponName	+
+					  '</td><td> ' +
+					  1 +											
+					  '</td><td> ' +
+					  discount +
+					  '</td> ' +
+					  '</tr></tbody></table> ';
+			
+			$("#coupon_table").html(str);
+			
+		}
+		
+		let giftCardArray = new Array();
+		let idArray = new Array();
+		
+		function selectGiftCard(event){
+	
+			let id = '';
+			
+			if(event.target.tagName === "P") {
+				id = event.target.parentNode.id;
+			}else {
+				id = event.target.id;
+			}
+			
+			$("#" + id).addClass("selected");
+			
+			const giftCardType = $("#" + id).children(".giftCardType").text();
+			
+			const object = {
+				"name" : giftCardType
+			};
+			
+			const isDuplicated = hasDuplicateId(idArray, id);
+			
+			if(!isDuplicated){
+				giftCardArray.push(object);
+			}
+			
+			let str = '<table class="giftcard_or_coupon"> ' +
+			  '<caption id="giftcard_title">기프트카드</caption> ' +
+			  '<thead><tr><th>이름</th><th>수량</th></tr></thead><tbody> ';
+			
+			const nameCountsPairs = countNames(giftCardArray, idArray, id); 
+			
+			idArray.push(id);
+			
+			nameCountsPairs.forEach(giftCardType => {
+				str += ' <tr class="' + id + '" onclick="deleteSelf(event)"><td> ' +
+				  giftCardType.name + 	
+				  '</td><td> ' +
+				  giftCardType.count + 											
+				  '</td></tr> '; 
+			});
+			
+			str += '</tbody></table> ';
+			
+			$("#giftcard_table").html(str);
+		}
+		
+		function countNames(list, idArray, id) {
+		    // 이름과 해당 이름의 출현 횟수를 저장할 객체
+			const nameCounts = {};
+
+		    // 리스트의 각 요소를 순회하면서 이름의 출현 횟수를 카운트
+		    list.forEach(function(item) {
+		        const name = item.name; // 리스트 요소의 이름 속성을 가져옴
+		        
+			        if (name in nameCounts) {
+			            nameCounts[name]++; // 이미 있는 이름이면 카운트 증가
+			        } else {
+		    	        nameCounts[name] = 1; // 새로운 이름이면 카운트를 1로 초기화
+		        	}
+		    });
+
+		    // 이름과 카운트를 매칭시키는 객체를 반환
+		    const nameCountPairs = Object.entries(nameCounts).map(([name, count]) => ({ name, count }));
+
+		    return nameCountPairs;
+		}
+		
+		function hasDuplicateId(list, idToCheck) {
+		    // 리스트를 순회하면서 같은 이름이 있는지 검사
+		    for (let i = 0; i < list.length; i++) {
+		        if (list[i] === idToCheck) {
+		            return true; // 같은 이름을 찾으면 true 반환
+		        }
+		    }
+		    return false; // 같은 이름을 찾지 못하면 false 반환
+		}
+		
+		function deleteSelf(event){
+			const tr = event.target.closest('tr');
+	        if (tr) {
+	            tr.remove();
+	        }
+				        
+	        console.log(tr.className);
+	        
+	        if(tr.className.includes("issueNo_")){
+				$("#" + tr.className).removeClass("selected");
+			}else if(tr.className.includes("giftCardNo_")){
+				$("#" + tr.className).removeClass("selected");
+
+				const giftCardType = $("#" + tr.className).children(".giftCardType").text();
+				
+				const object = {
+					"name" : giftCardType						
+				};
+				
+				giftCardArray = removeObjectFromArray(giftCardArray, object);
+				idArray = removeElementFromArray(idArray, tr.className);
+			}
+			
+		}
+		
+		function removeObjectFromArray(arr, objToRemove) {
+		    // filter 메서드를 사용하여 주어진 객체와 같지 않은 객체들로 이루어진 새 배열 생성
+		    let filteredArray = arr.filter(obj => !isEqual(obj, objToRemove));
+		    return filteredArray;
+		}
+		
+		function isEqual(obj1, obj2) {
+		    // 간단하게 모든 속성이 일치하는지 확인
+		    return JSON.stringify(obj1) === JSON.stringify(obj2);
+		}
+		
+		// 주어진 요소와 같은 요소를 찾아 제거하는 함수
+		function removeElementFromArray(arr, elementToRemove) {
+		    // filter 메서드를 사용하여 주어진 요소와 같지 않은 요소들로 이루어진 새 배열 생성
+		    let filteredArray = arr.filter(element => element !== elementToRemove);
+		    return filteredArray;
+		}
 		
 	</script>
 </body>

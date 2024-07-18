@@ -31,7 +31,17 @@ public class JWTUtil {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
-
+    
+    public String getTel(String token) {
+    	
+    	return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("tel", String.class);
+    }
+    
+    public String getPassword2(String token) {
+    	
+    	return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("password2", String.class);
+    }
+    
     public Boolean isExpired(String token) { // 토큰의 유효기간을 검증해서 유효하면 false 를 리턴
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());

@@ -149,17 +149,26 @@ public class LoginController {
 	
 	@GetMapping("/loginCheck")
 	public ResponseEntity<?> loginCheck(@RequestHeader("Authorization") String bearerToken){
+		
 		String token = bearerToken.split(" ")[1];
 		String username = jwtUtil.getUsername(token);
 		String role = jwtUtil.getRole(token);
+		String tel = jwtUtil.getTel(token);
+		String password2 = jwtUtil.getPassword2(token);
 		
 		if(jwtUtil.isExpired(token)) {
 			return ResponseEntity.status(401).body("Token Expired");
 		}
 		
-		String usernameAndRole = username + " " + role;
+		if(tel == null) {
+			String memberInfo = username + " " + role;
+			
+			return ResponseEntity.ok().body(Collections.singletonMap("result", memberInfo));
+		}else {
+			String nonMemberInfo = username + " " + role + " " + tel + " " + password2;
+			return ResponseEntity.ok().body(Collections.singletonMap("result", nonMemberInfo));
+		}
 		
-		return ResponseEntity.ok().body(Collections.singletonMap("user", usernameAndRole));
 	}
 	
 	@PostMapping("/nonMemberLogin")
@@ -172,6 +181,7 @@ public class LoginController {
 		System.out.println("nonMemberLogin Success");
 		
 		str = "nonMemberLogin Success";
+		
 		return str;
 	}
 	

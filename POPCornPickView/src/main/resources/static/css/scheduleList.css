@@ -1,14 +1,14 @@
 @charset "UTF-8";
 
-body {
-    background-color: #444;
-}
 
 #wrap {
     width: 100%;
+    background-color: #333;
 }
 
 #tab_wrap {
+	position: relative;
+	top: 10px;
     width: 100%;
     height: 870px;
 }
@@ -19,33 +19,15 @@ body {
     float: left;
 }
 
-.main_tab:last-child {
-	display: none;
-    position: relative;
-    top: -820px;
-    left: 0;
-}
 
-.btn_wrap {
-    height: 50px;
+.schedule_title {
     width: 100%;
-}
-
-.tab_btn {
-    width: 50%;
-    height: 100%;
-    float: left;
+    height: 30px;
+    line-height: 30px;
     background-color: #f82f62;
-    border: 0;
     color: #fff;
+    text-align: center;
     font-size: 16px;
-}
-
-.btn2 {
-	display: none;
-    background-color: black;
-    color: #fff;
-    /* 임시 */
 }
 
 .tab_con {

@@ -40,12 +40,6 @@ public class MemberCinemaController {
     @Autowired
     private ExpCinemaRepository expCinemaRepository;
     
-    @Autowired
-    private ExpCinemaService expCinemaService;
-
-    @Autowired
-    private UnknownMemberRepository unknownMemberRepository;
-    
     private final MemberCinemaService memberCinemaService;
 
     public MemberCinemaController(MemberCinemaService memberCinemaService) {

@@ -19,6 +19,9 @@ public interface PointRepository extends JpaRepository<Point, Long>{
 	
 	@Query(value = "SELECT COALESCE(SUM(point_use), 0) FROM point WHERE username = :username", nativeQuery = true)
     public int getTotalPointUserByUsername(@Param("username") String username);
+	
+	@Query("SELECT SUM(p.acheive) - SUM(p.pointUse) FROM Point p WHERE p.member.username = :username")
+    Integer findTotalPointsByUsername(@Param("username") String username);
 }
 
 

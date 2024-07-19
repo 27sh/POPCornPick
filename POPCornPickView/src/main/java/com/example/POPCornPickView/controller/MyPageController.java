@@ -24,4 +24,10 @@ public class MyPageController {
 		
 		return "member/couponList";
 	}
+	
+	@RequestMapping("/giftCardList")
+	public String giftCardList() {
+		
+		return "member/giftCardList";
+	}
 }

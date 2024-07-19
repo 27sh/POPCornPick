@@ -210,7 +210,8 @@ tr[name="qnaContent"] {
 }
 
 #select-box {
-	margin-left: 
+	display: inline-block;
+/* 	margin-left:  */
 }
 
 
@@ -269,23 +270,23 @@ tr[name="qnaContent"] {
 						<th class="th">종류 <span class="required-input">*</span></th>
 						<td>
 							<label><input type="radio" name="radioBtn" value="영화관문의" onclick="able()"> 영화관문의 </label> <label><input type="radio" name="radioBtn" value="기타 문의" onclick="disable()"> 기타 문의 </label>
-							<span id="select-box">
-							<select id="select-big-location">
+							<div id="select-box">
+							<select id="select-big-location" onchange="loadCinemaNo(event)">
 								<option selected>지역 선택</option>
-								<option value="My 영화관">My 영화관</option>
-								<option value="서울">서울</option>
-								<option value="경기/인천">경기/인천</option>
-								<option value="충청/대전">충청/대전</option>
-								<option value="전라/광주">전라/광주</option>
-								<option value="경북/대구">경북/대구</option>
-								<option value="경남/부산/울산">경남/부산/울산</option>
-								<option value="강원">강원</option>
-								<option value="제주">제주</option>
+								<option value="My 영화관" >My 영화관</option>
+								<option value="서울" >서울</option>
+								<option value="경기/인천" >경기/인천</option>
+								<option value="충청/대전" >충청/대전</option>
+								<option value="전라/광주" >전라/광주</option>
+								<option value="경북/대구" >경북/대구</option>
+								<option value="경남/부산/울산" >경남/부산/울산</option>
+								<option value="강원" >강원</option>
+								<option value="제주" >제주</option>
 							</select>
-							<select id="select-cinemaNo">
+							<select id="select-cinemaNo" name="qnaCategory">
 								<option selected>영화관 선택</option>
 							</select>
-							</span>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -326,6 +327,8 @@ tr[name="qnaContent"] {
 		}
 		
 		function qnaWrite(){
+			tokenCheck();
+			const qnaCategory = document.querySelector("select[name='qnaCategory']").value;
 			const xhttp = new XMLHttpRequest();
 			
 			xhttp.onload = function(){
@@ -335,6 +338,32 @@ tr[name="qnaContent"] {
 			xhttp.open("POST", "http://localhost:9001/api/v1/memInquiry/writeInquiry/{qnaCategory}");
 			xhttp.setRequestHeader();
 			xhttp.send();
+		}
+		
+		function loadCinemaNo(event){
+			const xhttp = new XMLHttpRequest();
+			const location = event.target.value;
+			console.log(location + ", " + event.target);
+			
+			xhttp.onload = function(){
+				if(xhttp.responseText != null){
+					if (xhttp.status === 200) {
+						const cinemaList = JSON.parse(xhttp.responseText);
+						const selectCinemaNo = document.querySelector("#select-cinemaNo");
+						selectCinemaNo.innerHTML = ''; // 기존 옵션 요소 비우기
+						selectCinemaNo.innerHTML = '<option selected>영화관 선택</option>';
+						cinemaList.forEach(cinema => {
+							selectCinemaNo.innerHTML += `<option value="${cinema}">${cinema}</option>`;
+							console.log(cinema);
+						});
+					}
+				}
+				alert("Faile");
+			}
+			
+			xhttp.open("GET", "http://localhost:9001/api/v1/cinemaList?location=" + location);
+			xhttp.send();
+			
 		}
 		
 		function tokenCheck(){
@@ -368,7 +397,7 @@ tr[name="qnaContent"] {
 		function able() {
 			const selectBox = document.querySelector("#select-box");
 			selectBox.innerHTML = 
-				`<select id="select-big-location">
+				`<select id="select-big-location" onchange="loadCinemaNo(event)">
 					<option selected>지역 선택</option>
 		            <option value="My 영화관">My 영화관</option>
     	    	    <option value="서울">서울</option>
@@ -380,17 +409,17 @@ tr[name="qnaContent"] {
     		        <option value="강원">강원</option>
 	        	    <option value="제주">제주</option>
 		        </select>
-				<select id="select-cinemaNo">
+				<select id="select-cinemaNo" name="qnaCategory">
 					<option selected>영화관 선택</option>
 				</select>`;
 				
-				selectBox.style.display = "block";
+				//selectBox.style.display = "block"; // style.display 를 이용하면 기존 css를 무시하고 생성되서 구조가 달라질 수 있다.
 		}
 
 		function disable() {
 			const selectBox = document.querySelector("#select-box");
 			selectBox.innerHTML = ''; // 내용 지우기
-			selectBox.style.display = "none";
+			//selectBox.style.display = "none";
 		}
 		
 		

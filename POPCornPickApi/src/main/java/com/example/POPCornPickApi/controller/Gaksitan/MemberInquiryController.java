@@ -1,5 +1,6 @@
 package com.example.POPCornPickApi.controller.Gaksitan;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,8 +11,8 @@ public class MemberInquiryController {
 	
 	
 	
-	@PostMapping("/writeInquiry")
-	public String writeInquiry() {
+	@PostMapping("/writeInquiry/{qnaCategory}")
+	public String writeInquiry(@PathVariable("") String qnaCategory) {
 		String str = "";
 		
 		

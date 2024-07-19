@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관람권/할인쿠폰 관리</title>
+<title>기프트카드 관리</title>
 <link href="/css/style.css" rel="stylesheet" type="text/css">
 <style>
 </style>
@@ -16,7 +16,7 @@
 			<%@ include file="./sideMenu.jsp" %>
 		</div>
 		<div id="container">
-		    <h1>관람권/할인쿠폰 관리</h1>
+		    <h1>기프트카드 관리</h1>
 		</div>
 	</main>
 	<footer>

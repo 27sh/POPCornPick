@@ -1,21 +1,21 @@
 package com.example.POPCornPickApi.controller.sh27;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.POPCornPickApi.dto.CustomUserDetails;
 import com.example.POPCornPickApi.entity.ExpCinema;
+import com.example.POPCornPickApi.entity.Member;
+import com.example.POPCornPickApi.repository.CouponRepository;
+import com.example.POPCornPickApi.repository.ExpCinemaRepository;
+import com.example.POPCornPickApi.repository.GiftCardRepository;
 import com.example.POPCornPickApi.repository.MemberRepository;
-import com.example.POPCornPickApi.service.CouponService;
-import com.example.POPCornPickApi.service.ExpCinemaService;
-import com.example.POPCornPickApi.service.GiftCardService;
-import com.example.POPCornPickApi.service.PointService;
+import com.example.POPCornPickApi.repository.PointRepository;
 
 @RestController
 @RequestMapping("/api/v1/myPage")
@@ -25,38 +25,50 @@ public class MyPageController {
 	MemberRepository memberRepository;
 	
 	@Autowired
-	CouponService couponService;
+    CouponRepository couponRepository;
 	
 	@Autowired
-	GiftCardService giftCardService;
+    GiftCardRepository giftCardRepository;
 	
 	@Autowired
-	PointService pointService;
+    PointRepository pointRepository;
 	
 	@Autowired
-	ExpCinemaService expCinemaService;
+    ExpCinemaRepository expCinemaRepository;
 	
 	@GetMapping("/info")
-    public Map<String, Object> getMemberInfo(@RequestHeader("Authorization") String token) {
-        // Assuming you have a method to extract username from token
-        String username = extractUsernameFromToken(token);
-
-        int couponCount = couponService.getCouponCount(username);
-        int giftCardCount = giftCardService.getGiftCardCount(username);
-        int totalPoints = pointService.getTotalPoints(username);
-        List<ExpCinema> favoriteCinemas = expCinemaService.getFavoriteCinemas(username);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("couponCount", couponCount);
-        response.put("giftCardCount", giftCardCount);
-        response.put("totalPoints", totalPoints);
-        response.put("favoriteCinemas", favoriteCinemas);
-
-        return response;
+    public Member getUserInfo(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        return memberRepository.findByUsername(username);
     }
-
-    private String extractUsernameFromToken(String token) {
-        // Logic to extract username from token
-        return "ghdrlfehd"; // Replace with actual extraction logic
+	
+	@GetMapping("/couponCount")
+    public int getCouponCount(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        return couponRepository.countByMemberUsername(username);
+    }
+	
+	@GetMapping("/giftCardCount")
+    public int getGiftCardCount(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        return giftCardRepository.countByMemberUsername(username);
+    }
+	
+	@GetMapping("/totalPoints")
+    public int getTotalPoints(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        Integer totalPoints = pointRepository.findTotalPointsByUsername(username);
+        return totalPoints != null ? totalPoints : 0; // null일 경우 0을 반환
+    }
+	
+	@GetMapping("/expCinemas")
+    public List<ExpCinema> getExpCinemas(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        return expCinemaRepository.findByMemberUsername(username);
     }
 }

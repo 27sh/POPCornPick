@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>QnA 작성 페이지</title>
 <style>
+
+* {
+	box-sizing: border-box;
+}
 
 main {
 	display: flex;
@@ -57,7 +62,158 @@ main {
 	height: 200px;
 	border: 1px solid #08088A;
 	margin-top: 20px;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
+
+#text-red {
+	color: #FE2E64;
+}
+
+#text-grey {
+	color: grey;
+	font-size: 11px;
+}
+
+.text-box {
+	width: 500px;
+	text-align: left;
+}
+
+.text-box p, .text-box h4 {
+	margin-bottom: 10px;
+}
+
+.text-box h4 a {
+	border-bottom: 2px solid;
+}
+
+.text-warning {
+	margin-top: 20px;
+}
+
+.qna-content {
+	position: relative;
+	margin-top: 50px;
+	padding-bottom: 15px;
+	border-bottom: 1.5px solid #848484;
+}
+
+#required-input {
+	display: inline-block;
+	font-size: 16px;
+	color: #FA5858;
+	font-weight: 600;
+	position: absolute;
+	right: 23px;
+}
+
+.required-input {
+	color: #FA5858;
+}
+
+table {
+	width: 100%;
+	margin-top: 20px;
+}
+
+input[type="radio"] {
+	margin: 0 10px;
+}
+
+select {
+	padding: 0 10px;
+}
+
+#select-cinemaNo, #select-big-location {
+	padding: 0 10px;
+	margin: 0 0 0 20px;;
+}
+
+.th {
+	display: flex;
+	padding-left: 10px;
+	width: 108px;
+}
+
+td {
+	width: 735px;
+}
+
+th, td {
+	border-bottom: 1px solid #EEEEEE;
+    height: 50px;
+    padding: 7px 4px;
+    font-size: 15px;
+    align-items: center;
+}
+
+input[type="text"] {
+	height: 35px;
+	padding: 0 18px;
+	font-size: 15px;
+	width: 100%;
+}
+
+textarea[name="qnaContent"] {
+	height: 100%;
+	width: 100%;
+	padding: 10px 15px;
+	font-size: 15px;
+}
+
+tr[name="qnaContent"] {
+	height: 300px;
+}
+
+.text-area {
+	width: 100%;
+	height: 100%;
+}
+
+.th-content {
+	height: 300px;
+	
+}
+
+.btn-box {
+	text-align: center;
+}
+
+.btn {
+	width: 120px;
+	padding: 12px 0;
+	margin: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	transition: background-color 0.3s ease;
+	cursor: pointer;
+}
+
+#cancer-btn {
+	background-color: #E6E6E6;
+}
+
+#write-btn {
+	color: #fff;
+	background-color: #d9534f;
+}
+
+#cancer-btn:hover {
+	background-color: #BDBDBD;
+}
+
+#write-btn:hover {
+	background-color: #c9302c;
+}
+
+#select-box {
+	margin-left: 
+}
+
+
 </style>
 </head>
 <body>
@@ -73,15 +229,172 @@ main {
 				<a href="#1">FAQ</a><a href="#2">공지사항</a><a href="#3">1:1 문의</a><a href="#4">단체관람/대관문의</a>
 			</div>
 			<div class="FAQ">
-				FAQ 들어갈 자리
+				<div class="text-box">
+					<h4>FAQ를 이용하시면 궁금증을 더 빠르게 해결하실 수 있습니다.</h4>
+					<h4><a href="#FAQ">FAQ 바로가기</a></h4>
+					<p class="text">· 1:1 문의글 답변 운영시간 : 평일 09:00 ~ 18:00</p>
+					<p class="text">· 주말/공휴일 미운영하며, 영업시간 내 순차적 답변 처리됩니다.</p>
+				</div>
 			</div>
-			<div class="text">
-				<p>고객님의 문의에 답변하는 직원은 고객 여러분의 가족 중 한 사람</p>
+			<div class="text-warning">
+				<p>고객님의 문의에 <span id="text-red">답변하는 직원은 고객 여러분의 가족 중 한 사람</span>일 수 있습니다.</p>
+				<p id="text-grey">고객의 언어폭력(비하, 욕설, 반말, 성희롱)으로부터 직원을 보호하기 위해 관련 범에 따라 수사기관에 필요한 조치를 요구 할 수 있으며, 형법에 의해 처벌 대상이 될 수 있습니다.</p>
 			</div>
+			<div class="qna-content">
+				<h2>문의 내용<span id="required-input">* 필수입력</span></h2>
+			</div>
+			<form>
+				<table >
+					<tr>
+						<th class="th">분류 <span class="required-input">*</span></th>
+						<td>
+							<select id="big-classification">
+								<option selected>분류 선택</option>
+								<option value="영화관">영화관</option>
+								<option value="영화">영화</option>
+								<option value="멤버십">멤버십</option>
+								<option value="예매/결제">예매/결제</option>
+								<option value="대관문의">대관문의</option>
+							</select>
+							<select id="small-classification">
+								<option value="0" selected>문의 종류</option>
+								<option value="문의">문의</option>
+								<option value="칭찬">칭찬</option>
+								<option value="불만">불만</option>
+								<option value="건의">건의</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th class="th">종류 <span class="required-input">*</span></th>
+						<td>
+							<label><input type="radio" name="radioBtn" value="영화관문의" onclick="able()"> 영화관문의 </label> <label><input type="radio" name="radioBtn" value="기타 문의" onclick="disable()"> 기타 문의 </label>
+							<span id="select-box">
+							<select id="select-big-location">
+								<option selected>지역 선택</option>
+								<option value="My 영화관">My 영화관</option>
+								<option value="서울">서울</option>
+								<option value="경기/인천">경기/인천</option>
+								<option value="충청/대전">충청/대전</option>
+								<option value="전라/광주">전라/광주</option>
+								<option value="경북/대구">경북/대구</option>
+								<option value="경남/부산/울산">경남/부산/울산</option>
+								<option value="강원">강원</option>
+								<option value="제주">제주</option>
+							</select>
+							<select id="select-cinemaNo">
+								<option selected>영화관 선택</option>
+							</select>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<th class="th">제목 <span class="required-input">*</span></th>
+						<td><div class="text-area"><input type="text" name="qnaTitle" placeholder="제목을 입력해주세요."></div></td>
+					</tr>
+					<tr name="qnaContent">
+						<th class="th th-content" >내용 <span class="required-input">*</span></th>
+						<td><div class="text-area"><textarea name="qnaContent" placeholder="내용 및 첨부파일에 개인정보(카드번호, 계좌번호, 주민번호)가 포함되지 않도록 유의하여 입력해주세요." onkeydown="pressEnter(event)"></textarea></div></td>
+					</tr>
+					<tr>
+						<th class="th">첨부파일 </th>
+						<td><div class="text-area"><input type="file" value="파일 첨부"></div></td>
+					</tr>
+					
+				</table>
+					<div class="btn-box">
+						<button class="btn" id="cancer-btn" type="button" onclick="cancer()">취소 </button> <button class="btn" id="write-btn" type="button" onclick="qnaWrite()">확인</button>
+					</div>
+			</form>
 		</div>
 	</main>
 	<footer>
 	
 	</footer>
+	<script>
+	
+		function pressEnter(event){
+			if(event.keyCode === 13){ // 엔터키 코드 (13) 사용
+				event.preventDefault(); // 엔터키 기본 동작 방지 (줄바꿈 방지)
+				// 줄바꿈 처리 로직
+				console.log(event.target);
+				let inputValue = document.querySelector("textarea[name='qnaContent']").value;
+				let inputValue2 = event.target.value;
+				inputValue += '\r\n';
+				document.querySelector("textarea[name='qnaContent']").value = inputValue;
+			}
+		}
+		
+		function qnaWrite(){
+			const xhttp = new XMLHttpRequest();
+			
+			xhttp.onload = function(){
+				
+			}
+			
+			xhttp.open("POST", "http://localhost:9001/api/v1/memInquiry/writeInquiry/{qnaCategory}");
+			xhttp.setRequestHeader();
+			xhttp.send();
+		}
+		
+		function tokenCheck(){
+			const token = localStorage.getItem("jwtToken");
+			const xhr = new XMLHttpRequest();
+			
+			xhr.onload = function(){
+				
+			}
+			
+			xhr.open("POST", "http://localhost:9001/api/v1/common/loginCheck");
+			xhr.setRequestHeader("Authorization", "Bearer " + token);
+			xhr.send();
+		}
+		
+		
+		function cancer(){
+			window.location.href = "/";
+		}
+		
+// 		function able(){
+// 			const select = document.querySelector("#select-box");
+// 			select.style.display = "block";
+// 		}
+		
+// 		function disable(){
+// 			const select = document.querySelector("#select-box");
+// 			select.style.display = "none";
+// 		}
+		
+		function able() {
+			const selectBox = document.querySelector("#select-box");
+			selectBox.innerHTML = 
+				`<select id="select-big-location">
+					<option selected>지역 선택</option>
+		            <option value="My 영화관">My 영화관</option>
+    	    	    <option value="서울">서울</option>
+        		    <option value="경기/인천">경기/인천</option>
+		            <option value="충청/대전">충청/대전</option>
+	    	        <option value="전라/광주">전라/광주</option>
+        		    <option value="경북/대구">경북/대구</option>
+	    	        <option value="경남/부산/울산">경남/부산/울산</option>
+    		        <option value="강원">강원</option>
+	        	    <option value="제주">제주</option>
+		        </select>
+				<select id="select-cinemaNo">
+					<option selected>영화관 선택</option>
+				</select>`;
+				
+				selectBox.style.display = "block";
+		}
+
+		function disable() {
+			const selectBox = document.querySelector("#select-box");
+			selectBox.innerHTML = ''; // 내용 지우기
+			selectBox.style.display = "none";
+		}
+		
+		
+		
+	</script>
 </body>
 </html>

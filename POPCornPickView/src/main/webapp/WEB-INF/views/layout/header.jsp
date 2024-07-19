@@ -300,7 +300,7 @@
                         <li id="ticketing"><a href="/reservation/main">예매</a>
                             <ul class="sme">
                                 <li><a href="/reservation/main">빠른 예매</a></li>
-                                <li><a href="scheduleLIst">상영스케쥴</a></li>
+                                <li><a href="/common/scheduleList">상영스케쥴</a></li>
                             </ul>
                         </li>
                         <li><a href="storeMain">스토어</a>
@@ -360,7 +360,7 @@
                         <li id="ticketing"><a href="reservePage">예매</a>
                             <ul class="sme">
                                 <li><a href="reservePage">빠른 예매</a></li>
-                                <li><a href="scheduleLIst">상영스케쥴</a></li>
+                                <li><a href="/common/scheduleList">상영스케쥴</a></li>
                             </ul>
                         </li>
                         <li><a href="storeMain">스토어</a>

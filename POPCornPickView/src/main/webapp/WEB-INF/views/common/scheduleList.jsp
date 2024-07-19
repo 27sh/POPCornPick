@@ -72,6 +72,10 @@ integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="ano
 											<img src="" alt="">
 											<p class="movie_tit"></p>
 										</div>
+                                        <div class="time_hover">
+                                            <div class="tool"></div>
+                                            <div class="tool_tip"></div>
+                                        </div>
 										<ul class="sche_box">
 											<li class="sche_start"></li>
 											<li class="sche_seats"></li>
@@ -118,67 +122,79 @@ integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="ano
 </body>
 <script>
 $(document).ready(function(){
-    var cinemas = [];
-    var selectedCinemaNo = 0;
-    var selectedDate = new Date();
-    var selectedRoomNo = 0;
+	var cinemas = [];
+	var selectedCinemaNo = 0;
+	var selectedDate = new Date();
+	var selectedRoomNo = 0;
 
-    function toKST(date) {
-        return new Date(date).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-    }
+	function toKST(date) {
+	    return new Date(date).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+	}
 
-    var arDays = ["일", "월", "화", "수", "목", "금", "토"];
-    var date = new Date();
-    var calendarToday = date.getDate();
-    var calendarMonth = date.getMonth() + 1;
-    var arWeek = [];
+	var arDays = ["일", "월", "화", "수", "목", "금", "토"];
+	var date = new Date();
+	var arWeek = [];
 
-    for (var i = 0; i < 14; i++) {
-        var nextDate = new Date(date);
-        nextDate.setDate(calendarToday + i);
+	for (var i = 0; i < 14; i++) {
+	    var nextDate = new Date(date);
+	    nextDate.setDate(date.getDate() + i);
 
-        var day = nextDate.getDay();
-        var dateNum = nextDate.getDate();
-        var monthNum = nextDate.getMonth() + 1;
+	    var day = nextDate.getDay();
+	    var dateNum = nextDate.getDate();
+	    var monthNum = nextDate.getMonth() + 1;
 
-        arWeek.push({
-            day: arDays[day],
-            date: dateNum,
-            month: monthNum
-        });
-    }
+	    arWeek.push({
+	        day: arDays[day],
+	        date: dateNum,
+	        month: monthNum
+	    });
+	}
 
-    var $dateTabList = $('#dateTabList');
-    var $monthLi = $('<div style="margin-top: 10px; font-size: 13px; font-weight: 700; text-align: center;"></div>');
-    $monthLi.text(arWeek[0].month + '월');
-    $dateTabList.append($monthLi);
+	var $dateTabList = $('#dateTabList');
+	var $monthLi = $('<div style="margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center;"></div>');
+	$monthLi.text(('0' + (date.getMonth() + 1)).slice(-2) + '월');
+	$dateTabList.append($monthLi);
 
-    $.each(arWeek, function(index, item) {
-        var $li = $('<li></li>');
-        var displayText = (index === 0) ? '오늘' : item.day;
-        $li.html('<p class="dateInfo">' + item.date + '</p><p class="dayInfo">' + displayText + '</p>');
-        if (index === 0) {
-            $li.addClass('today selected');
-        }
-        $li.data('date', new Date(date.getFullYear(), date.getMonth(), item.date));
-        $dateTabList.append($li);
-    });
+	$.each(arWeek, function(index, item) {
+	    var $li = $('<li></li>');
+	    var displayText = (index === 0) ? '오늘' : item.day;
 
-    $(document).on('click', '.date_tab li', function() {
-        $('.date_tab li').removeClass('selected');
-        $(this).addClass('selected');
-        selectedDate = $(this).data('date');
+	    var colorStyle = '';
+	    if (item.day === '토') {
+	        colorStyle = 'style="color: #233ca3;"';
+	    } else if (item.day === '일') {
+	        colorStyle = 'style="color: #f24a6a;"';
+	    }
 
-        var formattedDate;
-        if (selectedDate.toDateString() === new Date().toDateString()) {
-            formattedDate = selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2) + "(오늘)";
-        } else {
-            var dayOfWeek = ['일', '월', '화', '수', '목', '금', '토'][selectedDate.getDay()];
-            formattedDate = selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2) + '(' + dayOfWeek + ')';
-        }
-        $('.dateTime').text(formattedDate);
-        updateSchedule();
-    });
+	    $li.html('<p class="dateInfo" ' + colorStyle + '>' + item.date + '</p><p class="dayInfo" ' + colorStyle + '>' + displayText + '</p>');
+
+	    if (index === 0) {
+	        $li.addClass('today selected');
+	    }
+	    $li.data('date', new Date(date.getFullYear(), date.getMonth(), date.getDate() + index));
+	    $dateTabList.append($li);
+	});
+
+	$(document).on('click', '.date_tab li', function() {
+	    $('.date_tab li').removeClass('selected');
+	    $(this).addClass('selected');
+	    selectedDate = $(this).data('date');
+
+	    var formattedDate;
+	    if (selectedDate.toDateString() === new Date().toDateString()) {
+	        formattedDate = selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2) + "(오늘)";
+	    } else {
+	        var dayOfWeek = ['일', '월', '화', '수', '목', '금', '토'][selectedDate.getDay()];
+	        formattedDate = selectedDate.getFullYear() + '-' + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + selectedDate.getDate()).slice(-2) + '(' + dayOfWeek + ')';
+	    }
+	    $('.dateTime').text(formattedDate);
+
+	    $monthLi.text(('0' + (selectedDate.getMonth() + 1)).slice(-2) + '월');
+
+	    updateSchedule();
+	});
+
+
 
 
     $.ajax({
@@ -189,10 +205,11 @@ $(document).ready(function(){
 
             var cinemaLocation = $('.region');
             cinemaLocation.empty();
-
+            var li;
             var locations = new Set(cinemas.map(item => item.cinemaLocation));
             locations.forEach(function (location) {
-                var li = $('<li>').text(location).addClass('region-item');
+                li = $('<li>').text(location).addClass('region-item');
+                
                 cinemaLocation.append(li);
             });
 
@@ -200,6 +217,7 @@ $(document).ready(function(){
             if ($('.region-item').length > 0) {
                 $('.region-item').first().click();
             }
+
         },
         error: function (error) {
             console.log("에러 :", error);
@@ -208,6 +226,9 @@ $(document).ready(function(){
     });
 
     $(document).on('click', '.region-item', function () {
+        $('.region-item').removeClass('movieSelected');
+        $(this).addClass('movieSelected');
+    	
         var selectedLocation = $(this).text();
 
         cinemas.forEach(function (item) {
@@ -222,6 +243,7 @@ $(document).ready(function(){
         cinemas.forEach(function (item) {
             if (item.cinemaLocation === selectedLocation) {
                 var li = $('<li>').text(item.cinemaName).addClass('cinema-item');
+                li.addClass('movieSelected');
                 cinemaName.append(li);
             }
         });
@@ -230,9 +252,13 @@ $(document).ready(function(){
         if ($('.cinema-item').length > 0) {
             $('.cinema-item').first().click();
         }
+
     });
 
     $(document).on('click', '.cinema-item', function () {
+        $('.cinema-item').removeClass('movieSelected');
+        $(this).addClass('movieSelected');
+    	
         var selectedCinemaName = $(this).text();
         $('.cName').text(selectedCinemaName);
 
@@ -279,50 +305,77 @@ $(document).ready(function(){
             url: "http://localhost:9001/api/v1/schedule/" + selectedRoomNo,
             method: "GET",
             success: function (schedule) {
-            	
-            	console.log(schedule[0].movieShowDetail.movie.viewAge);
-            	
-            	
+                
                 var scheduleCon = $('.schedule_con');
                 scheduleCon.empty();
 
                 var movieSchedules = {};
                 var now = new Date();
-
+                
                 schedule.forEach(function(item) {
-                	
-                	
+                    
+                    var viewAge = item.movieShowDetail.movie.viewAge;
+                    
+                    var viewAgeImg;
+                    if (viewAge === "전체 관람가") {
+                        viewAgeImg = $('<img src="/img/grade_all.png">').addClass('grade');					
+                    } else if (viewAge === "12세 이상 관람가") {
+                        viewAgeImg = $('<img src="/img/grade_12.png">').addClass('grade');			
+                    } else if (viewAge === "15세 이상 관람가") {
+                        viewAgeImg = $('<img src="/img/grade_15.png">').addClass('grade');						
+                    } else if (viewAge === "청소년 관람불가") {
+                        viewAgeImg = $('<img src="/img/pc_grade_19.png">').addClass('grade');					
+                    }
+                    
                     var start = new Date(item.start);
+                    var end = new Date(item.end);
                     var startDateOnly = new Date(start.getFullYear(), start.getMonth(), start.getDate());
 
                     if (selectedDate.toDateString() === startDateOnly.toDateString() && start > now) {
                         var title = item.movieShowDetail.movie.title;
                         if (!movieSchedules[title]) {
-                            movieSchedules[title] = [];
+                            movieSchedules[title] = {
+                                viewAgeImg: viewAgeImg,
+                                schedules: []
+                            };
                         }
-                        movieSchedules[title].push({
+                        movieSchedules[title].schedules.push({
                             time: start.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }),
+                            end: end.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }),
                             seats: item.room.seats
                         });
                     }
                 });
 
                 Object.keys(movieSchedules).forEach(function(title) {
-                	
-                	
-                    var movieInfo = $('<div>').addClass('movie_info');                    
-                    var movieTitle = $('<p>').text(title).addClass('movie_tit');
+                    var movieInfo = $('<div>').addClass('movie_info');
+                    var movieTitle = $('<span>').text(title).addClass('movie_tit');
+                     
+                    movieInfo.append(movieSchedules[title].viewAgeImg);
                     movieInfo.append(movieTitle);
                     scheduleCon.append(movieInfo);
 
-                    movieSchedules[title].forEach(function(scheduleItem) {
+                    movieSchedules[title].schedules.forEach(function(scheduleItem) {
+                        
                         var scheBox = $('<ul>').addClass('sche_box');
                         var scheStart = $('<li>').text(scheduleItem.time).addClass('sche_start');
                         var scheSeats = $('<li>').text(scheduleItem.seats).addClass('sche_seats');
+                        var timeHover = $('<div>').addClass('time_hover')
+                            .append($('<div>').addClass('tool').text('종료 ' + scheduleItem.end))
+                            .append($('<div>').addClass('tool_tip'));
+
                         scheBox.append(scheStart);
                         scheBox.append(scheSeats);
+                        scheBox.append(timeHover);
                         scheduleCon.append(scheBox);
                     });
+                });
+
+                // Hover event to show time_hover
+                $(document).on('mouseenter', '.sche_box', function() {
+                    $(this).find('.time_hover').show();
+                }).on('mouseleave', '.sche_box', function() {
+                    $(this).find('.time_hover').hide();
                 });
             },
             error: function (error) {

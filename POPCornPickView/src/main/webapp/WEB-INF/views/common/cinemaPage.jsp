@@ -22,31 +22,23 @@
     }
 
     .modal-content {
-        background-color: #fefefe;
+        background-color: #f6f6f4;
         margin: 10% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 600px;
-        height: 500px;
+        border: 5px solid #313131;
+        width: 620px;
+        height: 520px;    
     }
 
     .close {
-        color: #aaa;
-        float: right;
+        color: white;
         font-size: 28px;
         font-weight: bold;
     }
 
     .close:hover,
     .close:focus {
-        color: black;
         text-decoration: none;
         cursor: pointer;
-    }
-    .modal-box-cinema {
-    	border: 1px solid;
-	    width: 150px;
-	    height: 40px;
     }
 </style>
 <script>
@@ -71,127 +63,6 @@ $(document).ready(function() {
         "jeju": "제주"
     };
 
-    var originalValues = [];
-
-    function saveOriginalValues() {
-        originalValues = $('.modal-box-cinema-name').map(function() {
-            return $(this).text();
-        }).get();
-    }
-
-    function getChangedValues() {
-        return $('.modal-box-cinema-name').map(function() {
-            return $(this).text();
-        }).get();
-    }
-
-    function handleSave() {
-        var newValues = getChangedValues();
-
-        for (var i = 0; i < originalValues.length; i++) {
-            var originalValue = originalValues[i];
-            var newValue = newValues[i];
-
-            if (originalValue && !newValue) {
-                // 값이 사라졌다면 delete 처리
-                deleteExpCinema(originalValue);
-            } else if (originalValue && newValue && originalValue !== newValue) {
-                // 값이 변경되었다면 update 처리
-                updateExpCinema(originalValue, newValue);
-            } else if (!originalValue && newValue) {
-                // 새로운 값이 추가되었다면 insert 처리
-                insertExpCinema(newValue);
-            }
-        }
-
-        // 저장 후 원래 값을 다시 저장
-        saveOriginalValues();
-    }
-
-    function deleteExpCinema(cinemaName) {
-        $.ajax({
-            url: 'http://localhost:9001/api/v1/memberCinema/deleteExpCinema',
-            method: 'DELETE',
-            data: JSON.stringify({ cinemaName: cinemaName }),
-            contentType: 'application/json',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-            },
-            success: function(response) {
-                console.log('Deleted:', response);
-            },
-            error: function(error) {
-                console.log('Error:', error);
-            }
-        });
-    }
-
-    function updateExpCinema(oldCinemaName, newCinemaName) {
-        $.ajax({
-            url: 'http://localhost:9001/api/v1/memberCinema/updateExpCinema',
-            method: 'PUT',
-            data: JSON.stringify({ oldCinemaName: oldCinemaName, newCinemaName: newCinemaName }),
-            contentType: 'application/json',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-            },
-            success: function(response) {
-                console.log('Updated:', response);
-            },
-            error: function(error) {
-                console.log('Error:', error);
-            }
-        });
-    }
-
-    function insertExpCinema(cinemaName) {
-        $.ajax({
-            url: 'http://localhost:9001/api/v1/memberCinema/insertExpCinema',
-            method: 'POST',
-            data: JSON.stringify({ cinemaName: cinemaName }),
-            contentType: 'application/json',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-            },
-            success: function(response) {
-                console.log('Inserted:', response);
-            },
-            error: function(error) {
-                console.log('Error:', error);
-            }
-        });
-    }
-
-    $('#modal-close-btn').click(function() {
-        $('#myModal').hide();
-    });
-
-    $('#plus-like-cinema-btn-temporary').click(function() {
-        var selectedCinema = $('#select-cinema-cinemaName').val();
-        var isAlreadySelected = $('.modal-box-cinema-name').filter(function() {
-            return $(this).text() === selectedCinema;
-        }).length > 0;
-
-        if (isAlreadySelected) {
-            alert('이미 선택된 영화관입니다.');
-        } else {
-            var emptyBox = $('.modal-box-cinema-name').filter(function() {
-                return $(this).text() === '';
-            }).first();
-            if (emptyBox.length) {
-                emptyBox.text(selectedCinema);
-            } else {
-                alert('이미 3개의 자주 가는 팝콘픽이 등록되어 있습니다.');
-            }
-        }
-    });
-
-    $('.modal-box-cinema-x').click(function() {
-        $(this).siblings('.modal-box-cinema-name').text('');
-    });
-
-    $('#save-changes-btn').click(handleSave);
-
     function loadFavoriteCinemas() {
         $.ajax({
             url: 'http://localhost:9001/api/v1/memberCinema/favoriteCinemas',
@@ -212,6 +83,8 @@ $(document).ready(function() {
                     $('#box-cinema-name' + (index + 1)).data('cinema-name', cinemaName);
                     $('#box-cinema-name' + (index + 1)).data('cinema-location', cinema.cinemaLocation);
                 });
+                // 로드가 완료된 후 inner-select-1 클릭 이벤트 호출
+                $('#inner-select-1').trigger('click');
             },
             error: function(error) {
                 console.log("Error:", error);
@@ -260,27 +133,24 @@ $(document).ready(function() {
                         var cinemaName = $(this).data('cinema-name');
                         var cinemaLocation = $(this).data('cinema-location');
                         if (!cinemaName) {
-                            if (isLoggedIn()) {
-                                showModal();
-                            } else {
-                                if (confirm('로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?')) {
-                                    window.location.href = '/loginForm';
-                                }
-                            }
+                            showModal();
                         } else {
-                            var cinemaItem = $('.cinema-item').filter(function() {
-                                return $(this).data('cinema-name') === cinemaName;
+                            var locationText = reverseLocationMap[cinemaLocation];
+                            var locationLi = $('#nav-container ul li').filter(function() {
+                                return $(this).text() === locationText;
                             });
 
-                            // cinemaLocation과 일치하는 li 요소를 클릭
-                            var locationText = reverseLocationMap[cinemaLocation];
-                            $('#nav-container ul li').filter(function() {
-                                return $(this).text() === locationText;
-                            }).click();
+                            if (locationLi.length) {
+                                locationLi.click();
+                                setTimeout(function() {
+                                    var cinemaItem = $('.cinema-item').filter(function() {
+                                        return $(this).data('cinema-name') === cinemaName;
+                                    });
 
-                            // cinema-item 클릭
-                            if (cinemaItem.length) {
-                                cinemaItem.click();
+                                    if (cinemaItem.length) {
+                                        cinemaItem.click();
+                                    }
+                                }, 1000); // 1초 지연 후 실행 (적절한 지연 시간을 설정하세요)
                             }
                         }
                     });
@@ -290,27 +160,24 @@ $(document).ready(function() {
                         var cinemaName = $(this).data('cinema-name');
                         var cinemaLocation = $(this).data('cinema-location');
                         if (!cinemaName) {
-                            if (isLoggedIn()) {
-                                showModal();
-                            } else {
-                                if (confirm('로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?')) {
-                                    window.location.href = '/loginForm';
-                                }
-                            }
+                            showModal();
                         } else {
-                            var cinemaItem = $('.cinema-item').filter(function() {
-                                return $(this).data('cinema-name') === cinemaName;
+                            var locationText = reverseLocationMap[cinemaLocation];
+                            var locationLi = $('#nav-container ul li').filter(function() {
+                                return $(this).text() === locationText;
                             });
 
-                            // cinemaLocation과 일치하는 li 요소를 클릭
-                            var locationText = reverseLocationMap[cinemaLocation];
-                            $('#nav-container ul li').filter(function() {
-                                return $(this).text() === locationText;
-                            }).click();
+                            if (locationLi.length) {
+                                locationLi.click();
+                                setTimeout(function() {
+                                    var cinemaItem = $('.cinema-item').filter(function() {
+                                        return $(this).data('cinema-name') === cinemaName;
+                                    });
 
-                            // cinema-item 클릭
-                            if (cinemaItem.length) {
-                                cinemaItem.click();
+                                    if (cinemaItem.length) {
+                                        cinemaItem.click();
+                                    }
+                                }, 1000); // 1초 지연 후 실행 (적절한 지연 시간을 설정하세요)
                             }
                         }
                     });
@@ -328,13 +195,43 @@ $(document).ready(function() {
         modal.style.display = "block";
         span.onclick = function() {
             modal.style.display = "none";
+            location.reload();
         };
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
+                location.reload();
             }
         };
     }
+
+    $('#save-changes-btn').click(function() {
+        var selectedCinemas = [];
+        $('.modal-box-cinema-name').each(function() {
+            var cinemaName = $(this).text();
+            if (cinemaName) {
+                selectedCinemas.push(cinemaName);
+            }
+        });
+
+        console.log(selectedCinemas); // 추가된 로그
+        $.ajax({
+            url: 'http://localhost:9001/api/v1/memberCinema/saveFavoriteCinemas',
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(selectedCinemas),
+            success: function() {
+                alert('자주 가는 팝콘픽이 저장되었습니다.');
+                location.reload();
+            },
+            error: function(error) {
+                console.log("Error:", error);
+            }
+        });
+    });
 
     function showCinemaInfo(cinema) {
         $('#cinema-info-title').text('팝콘픽 ' + cinema.cinemaName);
@@ -342,7 +239,24 @@ $(document).ready(function() {
         $('#cinema-info-addr').text(cinema.cinemaAddr);
         $('#cinema-info-tel').text(cinema.cinemaTel);
         $('#cinema-info-notice-inner-text').text(cinema.cinemaIntro);
+        checkFavoriteCinema(cinema.cinemaName); // 추가된 부분
         $('#cinema-info').show();
+    }
+
+    function checkFavoriteCinema() {
+        var cinemaTitle = $('#cinema-info-title').text().replace('팝콘픽 ', '').trim();
+        var favorite = false;
+        $('.inner-select-cinema').each(function() {
+            if ($(this).text().trim() === cinemaTitle) {
+                favorite = true;
+                return false; // break the loop
+            }
+        });
+        if (favorite) {
+            $('#star-img').html('<img src="/img/like_star.png" alt="Favorite">');
+        } else {
+            $('#star-img').empty();
+        }
     }
 
     function loadRooms(cinemaNo) {
@@ -440,7 +354,7 @@ $(document).ready(function() {
         var isAlreadySelected = $('.modal-box-cinema-name').filter(function() {
             return $(this).text() === selectedCinema;
         }).length > 0;
-
+        
         if (isAlreadySelected) {
             alert('이미 선택된 영화관입니다.');
         } else {
@@ -459,7 +373,10 @@ $(document).ready(function() {
         $(this).siblings('.modal-box-cinema-name').text('');
     });
 
-    $('#save-changes-btn').click(handleSave);
+    $('#modal-close-btn').click(function() {
+        $('#myModal').hide();
+        location.reload();
+    });
 
     $('#nav-container ul li').click(function() {
         var location = $(this).text();
@@ -473,18 +390,63 @@ $(document).ready(function() {
     loadCinemasForLocation('seoul');
     $('#select-cinema-location').val('seoul');
 
+    // 로그인 여부에 따라 자주 가는 팝콘픽 로드
     if (isLoggedIn()) {
         loadFavoriteCinemas();
-        saveOriginalValues();
     }
 
     loadCinemas("서울");
     $('#nav-container ul li').first().addClass('selected');
+    checkFavoriteCinema(); // 페이지 로드 시 실행
     
     $('#cinema-snotice-btn').click(function() {
         $('#cinema-info-between').hide();
     });
 });
+
+$(document).ready(function() {
+    function getUsernameFromToken() {
+        var token = localStorage.getItem('jwtToken');
+        if (token) {
+            var payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.username; // 'username' 필드가 토큰의 페이로드에 포함되어 있다고 가정합니다.
+        }
+        return null;
+    }
+
+    function toggleSaveButton() {
+        var isAgreed = $('input[name="chkY"][value="동의함"]').is(':checked');
+        $('#save-changes-btn').prop('disabled', !isAgreed);
+    }
+
+    var username = getUsernameFromToken();
+    if (username) {
+        $('#modal-ex-title').text(username + '님이 자주 가는 팝콘픽');
+    }
+
+    // 페이지 로드 시 초기 상태 설정
+    toggleSaveButton();
+
+    // 라디오 버튼 클릭 시 상태 변경
+    $('input[name="chkY"]').change(function() {
+        toggleSaveButton();
+    });
+});
+
+    $(window).scroll(function(){
+        if ($(this).scrollTop() > 150){
+            $('.btn_gotop').fadeIn(200);
+            $('.btn_goreservation').fadeIn(200);
+        } else{
+            $('.btn_gotop').fadeOut(200);
+            $('.btn_goreservation').fadeOut(200);
+        }
+    });
+    
+    $('.btn_gotop').click(function(){
+        $('html, body').animate({scrollTop:0},400);
+        return false;
+    });
 
 </script>
 
@@ -522,7 +484,10 @@ $(document).ready(function() {
     </div>
     <div id="cinema-info">
         <div id="cinema-info-top">
-            <div id="cinema-info-title"></div>
+            <div id="cinema-info-title-container">
+                <div id="cinema-info-title"></div>
+                <div id="star-img"></div>
+            </div>
             <button id="inquery-btn">단체/대관문의</button>
         </div>
         <div id="cinema-info-between">
@@ -551,85 +516,102 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
-	<!-- 모달 창 구조 -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div id="modal-high-div">
-            <div id="modal-select-container">
-                <div id="modal-ex-div">영화관을 선택하여 등록해주세요. 최대 3개까지 등록하실 수 있습니다.</div>
-                <div id="modal-select-div">
-                    <select name="location" id="select-cinema-location">
-                    	<option value="seoul">서울</option>
-					    <option value="gyeonggi_incheon">경기/인천</option>
-					    <option value="chungcheong_daejeon">충청/대전</option>
-					    <option value="gyeongbuk_daegu">경북/대구</option>
-					    <option value="gyeongnam_busan_ulsan">경남/부산/울산</option>
-					    <option value="jeonla_gwangju">전라/광주</option>
-					    <option value="jeju">제주</option>
-                    </select>
-                    
-                    <select name="cinema" id="select-cinema-cinemaName">
-                    </select>
-                    <button id="plus-like-cinema-btn-temporary">자주가는 팝콘픽 추가</button>
+    <!-- 모달 창 구조 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div id="bar-content">
+                <div id="bar-title">자주가는 팝콘픽 설정</div>
+                <span class="close">&times;</span>
+            </div>
+            <div id="modal-high-div">
+                <div id="modal-select-container">
+                    <div id="modal-ex-div">영화관을 선택하여 등록해주세요. 최대 3개까지 등록하실 수 있습니다.</div>
+                    <div id="modal-select-div">
+                        <select name="location" id="select-cinema-location">
+                            <option value="seoul">서울</option>
+                            <option value="gyeonggi_incheon">경기/인천</option>
+                            <option value="chungcheong_daejeon">충청/대전</option>
+                            <option value="gyeongbuk_daegu">경북/대구</option>
+                            <option value="gyeongnam_busan_ulsan">경남/부산/울산</option>
+                            <option value="jeonla_gwangju">전라/광주</option>
+                            <option value="jeju">제주</option>
+                        </select>
+                        <select name="cinema" id="select-cinema-cinemaName">
+                        </select>
+                        <button id="plus-like-cinema-btn-temporary">자주가는 팝콘픽 추가</button>
+                    </div>
+                </div>
+                <div id="modal-box-container">
+                    <div id="modal-ex-title">user님이 자주 가는 팝콘픽</div>
+                    <div id="box-cinema-name-container">
+                        <div class="modal-box-cinema">
+                            <div class="modal-box-cinema-name" id="box-cinema-name1"></div>
+                            <button class="modal-box-cinema-x">x</button>
+                        </div>
+                        <div class="modal-box-cinema">
+                            <div class="modal-box-cinema-name" id="box-cinema-name2"></div>
+                            <button class="modal-box-cinema-x">x</button>
+                        </div>
+                        <div class="modal-box-cinema">
+                            <div class="modal-box-cinema-name" id="box-cinema-name3"></div>
+                            <button class="modal-box-cinema-x">x</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="modal-box-container">
-                <div id="modal-ex-title">user님이 자주 가는 팝콘픽</div>
-                <div class="modal-box-cinema">
-                    <div class="modal-box-cinema-name" id="box-cinema-name1"></div>
-                    <button class="modal-box-cinema-x">x</button>
-                </div>
-                <div class="modal-box-cinema">
-                    <div class="modal-box-cinema-name" id="box-cinema-name2"></div>
-                    <button class="modal-box-cinema-x">x</button>
-                </div>
-                <div class="modal-box-cinema">
-                    <div class="modal-box-cinema-name" id="box-cinema-name3"></div>
-                    <button class="modal-box-cinema-x">x</button>
-                </div>
+            <hr style="
+                border: dashed 1px lightgray;
+                margin: 0 20px;
+            ">
+            <div id="modal-row-div">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>이용목적</th>
+                            <th>보유기간</th>
+                            <th>동의여부</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>자주가는
+                                <br>
+                                팝콘픽
+                                <br>
+                                (최대3개)
+                            </td>
+                            <td>
+                                - 상품 결제시(영화 예매시) 편의 제공 <br>
+                                - 선호 극장의 상영작 및 상영시간 우선 제공
+                            </td>
+                            <td>
+                                별도 동의 철회시까지 또는 약관 철회 후 1주일까지
+                            </td>
+                            <td>
+                                <input type="radio" name="chkY" value="동의함" checked>동의함<br>
+                                <input type="radio" name="chkY" value="동의안함">동의안함
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="padding: 10px 0; color: gray; font-size: 11px;">※ 동의를 거부하시는 경우에도 본 서비스 외 다른 팝콘픽 서비스를 이용하실 수 있습니다.</p>
             </div>
-        </div>
-        <hr>
-        <div id="modal-row-div">
-            <table>
-                <thead>
-                    <tr>
-                        <th>항목</th>
-                        <th>이용목적</th>
-                        <th>보유기간</th>
-                        <th>동의여부</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>자주가는 팝콘픽
-                            <br>
-                            (최대3개)
-                        </td>
-                        <td>
-                            - 상품 결제시(영화 예매시) 편의 제공
-                            - 선호 극장의 상영작 및 상영시간 우선 제공
-                        </td>
-                        <td>
-                            별도 동의 철회시까지 또는 약관 철회 후 1주일까지
-                        </td>
-                        <td>
-                            <input type="radio" name="chkY" value="동의함">동의함
-                            <input type="radio" name="chkY" value="동의안함" checked>동의안함
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            ※ 동의를 거부하시는 경우에도 본 서비스 외 다른 팝콘픽 서비스를 이용하실 수 있습니다.
-        </div>
-        <div id="modal-button-container">
-            <button id="modal-close-btn">취소</button>
-            <button id="save-changes-btn">등록하기</button>
-            
+            <div id="modal-button-container">
+                <button id="modal-close-btn">취소</button>
+                <button id="save-changes-btn">등록하기</button>
+            </div>
         </div>
     </div>
-</div>
+    
+    <a href="#" class="btn_gotop">
+      TOP
+    </a>
+    
+    <a href="/reservation/main" class="btn_goreservation">
+      예매하기
+    </a>
+    
 </main>
 </body>
 </html>

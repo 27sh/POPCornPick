@@ -6,13 +6,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,9 @@ import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
+import com.example.POPCornPickApi.repository.UnknownMemberRepository;
 import com.example.POPCornPickApi.service.ExpCinemaService;
+import com.example.POPCornPickApi.service.MemberCinemaService;
 
 @RestController
 @RequestMapping("/api/v1/memberCinema")
@@ -42,6 +43,15 @@ public class MemberCinemaController {
     @Autowired
     private ExpCinemaService expCinemaService;
 
+    @Autowired
+    private UnknownMemberRepository unknownMemberRepository;
+    
+    private final MemberCinemaService memberCinemaService;
+
+    public MemberCinemaController(MemberCinemaService memberCinemaService) {
+        this.memberCinemaService = memberCinemaService;
+    }
+    
     @GetMapping("/cinemaLocation/{location}")
     public List<Cinema> getCinemasByLocation(@PathVariable("location") String location) {
         return cinemaRepository.findByCinemaLocation(location);
@@ -76,36 +86,21 @@ public class MemberCinemaController {
     
     //crud
     
-    @PostMapping("/insertExpCinema")
-    public ResponseEntity<?> insertExpCinema(@RequestBody Map<String, String> request) {
-        String cinemaName = request.get("cinemaName");
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    @DeleteMapping("/favoriteCinemas")
+    @PreAuthorize("isAuthenticated(	)")
+    public void deleteFavoriteCinemas() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         
-        expCinemaService.insertExpCinema(username, cinemaName);
-        
-        return ResponseEntity.ok("Cinema added to favorites");
+        expCinemaRepository.deleteByMember_Username(username);
     }
     
-    @PutMapping("/updateExpCinema")
-    public ResponseEntity<?> updateExpCinema(@RequestBody Map<String, String> request) {
-        String oldCinemaName = request.get("oldCinemaName");
-        String newCinemaName = request.get("newCinemaName");
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        
-        expCinemaService.updateExpCinema(username, oldCinemaName, newCinemaName);
-        
-        return ResponseEntity.ok("Cinema updated in favorites");
+    @PutMapping("/saveFavoriteCinemas")
+    @PreAuthorize("isAuthenticated()")
+    public void saveFavoriteCinemas(@RequestBody List<String> cinemaNames) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        memberCinemaService.saveFavoriteCinemas(username, cinemaNames);
     }
-    
-    @DeleteMapping("/deleteExpCinema")
-    public ResponseEntity<?> deleteExpCinema(@RequestBody Map<String, String> request) {
-        String cinemaName = request.get("cinemaName");
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        
-        expCinemaService.deleteExpCinema(username, cinemaName);
-        
-        return ResponseEntity.ok("Cinema removed from favorites");
-    }
-
 }
 	

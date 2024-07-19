@@ -177,13 +177,18 @@ span {
 				if(this.responseText == "가입 성공"){
 					window.location.href = "/";
 				}else {
-					window.location.href = "/joinForm";
+					alert("가입 실패");
+					//window.location.href = "/joinForm";
 				}
 			}
 			
 			xhttp.open("POST", "http://localhost:9001/api/v1/common/join");
 			xhttp.setRequestHeader("Content-type", "application/json");
 			xhttp.send(sendData);
+		}
+		
+		function goBack(){
+			window.location.href = "/";
 		}
 	</script>
 </body>

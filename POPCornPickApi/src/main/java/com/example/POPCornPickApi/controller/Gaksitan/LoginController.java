@@ -64,7 +64,7 @@ public class LoginController {
         final UserDetails userDetails = customUserDetailService.loadUserByUsername(member.getUsername());
         GrantedAuthority auth = userDetails.getAuthorities().iterator().next();
         String role = auth.getAuthority();
-        final String token = jwtUtil.createJwt(member.getUsername(), role, null, null, 60*60*100L); // 30분 1800초 (500L)
+        final String token = jwtUtil.createJwt(member.getUsername(), role, null, null, 24*60*60*1000L); // 30분 1800초 (500L)
         
         // JWT 토큰을 responseHeader에 추가
         response.setHeader("Authorization", "Bearer " + token);

@@ -50,6 +50,10 @@ public class Member extends BaseEntity{
 	
 	@Column(nullable = true)
 	private String token;
+	
+	public Member(String username) {
+        this.username = username;
+    }
 }	
 	
 	

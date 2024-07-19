@@ -22,6 +22,7 @@ import com.example.POPCornPickApi.entity.Coupon;
 import com.example.POPCornPickApi.entity.ExpCinema;
 import com.example.POPCornPickApi.entity.GiftCard;
 import com.example.POPCornPickApi.entity.Movie;
+import com.example.POPCornPickApi.entity.Point;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.service.ReservationService;
 
@@ -227,5 +228,19 @@ public class ReservationController {
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(null);
+	}
+	
+	// 개인 포인트 구하는 컨트롤러
+	@GetMapping("/my/point")
+	public ResponseEntity<Integer> getMyTotalPoint(HttpServletRequest request){
+		
+		String jwtToken = request.getHeader("Authorization").split(" ")[1];
+		
+		String username = jwtUtil.getUsername(jwtToken);
+		
+		int myPoint = reservationService.getMyPoint(username);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(myPoint);
 	}
 }

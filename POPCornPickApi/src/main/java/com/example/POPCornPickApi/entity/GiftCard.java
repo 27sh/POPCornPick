@@ -27,10 +27,8 @@ public class GiftCard extends BaseEntity{
 	@JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
 	private Member member;
 	
-	@Column(nullable = false)
-	private String giftCardType;
-	
-	@Column(nullable = false)
-	private Date giftCardEndDate;
+	@ManyToOne
+	@JoinColumn(name = "productNo", referencedColumnName = "productNo", nullable = false)
+	private Product product;
 	
 }

@@ -272,6 +272,7 @@ h4{
 	overflow-y: scroll;
 	height: 400px;
 	padding-bottom: 11px;
+	width: 100%;
 }
 #pay_type_discount h5, #pay_type_tool h5{
 	padding: 15px;
@@ -387,11 +388,16 @@ h4{
 }
 
 .gift_card p:first-child{
-	font-size: 12px;
+	font-size: 13px;
 	color: black;
 	font-weight: bold;
 }
 .gift_card p:nth-child(2){
+	font-size: 10px;
+	margin: 2px 0;
+	color: blue;
+}
+.gift_card p:nth-child(3){
 	font-size: 10px;
 	color: red;
 }
@@ -482,6 +488,10 @@ h4{
 	font-size: 12px;
 	color: grey;
 }
+.giftcard_or_coupon tbody td:nth-child(3){
+	font-size: 14px;
+	font-weight: bold;
+}
 .discount_coupon.selected{
 	background: #ddd;
 }
@@ -523,6 +533,35 @@ h4{
 	font-size: 12px;
 	color: white;
 	
+}
+#my_discount_coupon.selected{
+	background: white;
+	font-weight: bold;
+	border-radius: 5px;
+}
+#my_gift_card.selected{
+	background: white;
+	border-top-left-radius: 5px; 
+	border-bottom-left-radius: 5px; 
+	font-weight: bold;
+}
+#creditcard_types div.selected{
+	background: #ddd;
+}
+#pay_type_discount_alert{
+	color: red;
+	font-size: 13px;
+	position: relative;
+	top: -35px;
+	left: 220px;
+	font-weight: bold;
+}
+#pay_type_discount_alert span{
+	position: relative;
+	top: 2px;
+	color: red;
+	font-weight: bold;
+	right: 2px;
 }
 main {
 	width: 100%;
@@ -604,6 +643,7 @@ main {
 						<h4>결제수단</h4>
 						<div id="pay_type_discount">
 							<h5>할인/포인트</h5>
+							<p id="pay_type_discount_alert"><span>*</span>기프트카드 할인쿠폰 중 1개만 사용 가능합니다.</p>
 							<div id="pay_type_discount_types">
 								<p id="my_gift_card">기프트 카드</p>
 								<p id="my_discount_coupon">할인 쿠폰</p>
@@ -691,27 +731,7 @@ main {
 											<th>가격</th>
 										</tr>
 									</thead>
-									<tbody>
-										<tr>
-											<td>성인</td>
-											<td>1</td>
-											<td>14000</td>
-										</tr>
-										<tr>
-											<td>청소년</td>
-											<td>1</td>
-											<td>11000</td>
-										</tr>
-										<tr>
-											<td>경로</td>
-											<td>1</td>
-											<td>7000</td>
-										</tr>
-										<tr>
-											<td>장애인</td>
-											<td>1</td>
-											<td>5000</td>
-										</tr>
+									<tbody id="receipt_result">
 									</tbody>
 								</table>
 							</div>
@@ -732,11 +752,11 @@ main {
 									<input type="button" value="전액사용" id="use_all_point_btn">
 								</div>
 								<div id="use_point_div">
-									<input type="text" value="0" name="using_point" id="use_point_input">
+									<input type="number" min="0" value="0" name="using_point" id="use_point_input">
 									<p>원</p>
 								</div>
 							</div>
-							<p id="left_point">잔여 : <span>18000</span> 원</p>
+							<p id="left_point">잔여 : <span id="totalPoint"></span> 원</p>
 						</div>
 						<div id="payment_result_before_cost">
 							<h6>상품금액</h6>
@@ -745,11 +765,11 @@ main {
 						<div id="payment_result_discount">
 							<h6>할인금액</h6>
 							
-							<p>- <span>0 </span>원</p>
+							<p>- <span id="discount_price_total">0 </span>원</p>
 						</div>
 						<div id="payment_result_pay_cost">
 							<h6>결제금액</h6>
-							<p><span>0 </span>원</p>
+							<p><span id="pay_result">0 </span>원</p>
 						</div>
 						<div id="payment_confirm">
 							<p>결제하기</p>
@@ -761,6 +781,23 @@ main {
 	</main>
 	<footer> </footer>
 	<script type="text/javascript">
+	
+	 function getTableRowClassNames() {
+         // 배열을 생성하여 각 tr 요소의 클래스 이름을 저장
+         const classNames = [];
+         
+         // jQuery를 사용하여 모든 tr 요소를 선택하고 each 메서드로 순회
+         $('#giftcard_table tbody tr').each(function() {
+             // 현재 tr 요소의 클래스 이름을 가져옴
+             const className = $(this).attr('class');
+             if (className) { // 클래스 이름이 있을 때만 추가
+                 classNames.push(className);
+             }
+         });
+
+         return classNames;
+     }
+	
 		$(document).ready(function(){
 			
 			const scheduleNo = "${scheduleNo}";
@@ -774,26 +811,49 @@ main {
 			const seatSelectedArray = seatSelected.split(", ");
 			const typeCountArray = typeCount.split(", ");
 			
-			console.log(seatSelectedArray);
-			console.log(typeCountArray);
-			
 			let totalMoney = 0;
-			
+			let receiptStr = '';
+							
+			console.log(typeCountArray);
+							
 			for(let i = 0; i < typeCountArray.length ; i++){
 				let ageType = typeCountArray[i];
 				if(ageType.includes("성인")){
-					totalMoney += parseInt(ageType.substring(2, ageType.length)) * 14000;		
+					totalMoney += parseInt(ageType.substring(2, ageType.length)) * 14000;
+					receiptStr += '<tr> ' +
+									'<td>성인</td> ' +
+									'<td>' + ageType.substring(2, ageType.length) + '</td> ' + 
+							    	'<td>' +  parseInt(ageType.substring(2, ageType.length)) * 14000 + '</td> ' +
+									'</tr> ';
+									
 				}else if(ageType.includes("청소년")){
-					totalMoney += parseInt(ageType.substring(3, ageType.length)) * 11000;	
+					totalMoney += parseInt(ageType.substring(3, ageType.length)) * 11000;
+					receiptStr += '<tr> ' +
+									'<td>청소년</td> ' +
+									'<td>' + ageType.substring(3, ageType.length) + '</td> ' + 
+							    	'<td>' +  parseInt(ageType.substring(3, ageType.length)) * 11000 + '</td> ' +
+									'</tr> ';
 				}else if(ageType.includes("경로")){
-					totalMoney += parseInt(ageType.substring(2, ageType.length)) * 7000;	
+					totalMoney += parseInt(ageType.substring(2, ageType.length)) * 7000;
+					receiptStr += '<tr> ' +
+									'<td>경로</td> ' +
+									'<td>' + ageType.substring(2, ageType.length) + '</td> ' + 
+							    	'<td>' +  parseInt(ageType.substring(2, ageType.length)) * 7000 + '</td> ' +
+									'</tr> ';
 				}else if(ageType.includes("장애인")){
 					totalMoney += parseInt(ageType.substring(3, ageType.length)) * 5000;	
+					receiptStr += '<tr> ' +
+									'<td>장애인</td> ' +
+									'<td>' + ageType.substring(3, ageType.length) + '</td> ' + 
+							    	'<td>' +  parseInt(ageType.substring(3, ageType.length)) * 5000 + '</td> ' +
+									'</tr> ';
 				}
 			}
 			
-			const formattedTotalMoney = totalMoney.toLocaleString(); // 숫자를 3자리 단위로 , 를 붙여주는 함수
+			$("#receipt_result").html(receiptStr);
 			
+			const formattedTotalMoney = totalMoney.toLocaleString(); // 숫자를 3자리 단위로 , 를 붙여주는 함수
+			$("#pay_result").text(formattedTotalMoney);
 			$("#before_cost_total").text(formattedTotalMoney);
 			
 			// 화면이 시작될때 상세 정보 가지고 오는 ajax
@@ -863,7 +923,14 @@ main {
 			
 			$("#my_gift_card").on("click", function(){
 				
+				$("#my_gift_card").addClass("selected");
+				$("#my_discount_coupon").removeClass("selected");
+				
 				const jwtToken = localStorage.getItem("jwtToken");
+				
+				const classNames = getTableRowClassNames();
+				
+				console.log(classNames);
 				
 				$.ajax({
 					url : "http://localhost:9001/api/v1/reservation/my/gift/card",
@@ -875,18 +942,30 @@ main {
 					success : function(response){
 						
 						let str = "";
-						
 						// 기프트 카드가 한 개 이상일 때
 						if(response.length > 0){
 							
 							response.forEach(giftCard => {
+
+								const formattedDate = formatDate(giftCard.product.productEndDate, 'YYYY.MM.DD');
+								const formattedTotalMoney = giftCard.product.productPrice.toLocaleString();
 								
-								const formattedDate = formatDate(giftCard.giftCardEndDate, 'YYYY.MM.DD');
+								console.log(formattedTotalMoney);
 								
-								str += '<div class="gift_card" id="giftCardNo_' + giftCard.giftCardNo + '" onclick="selectGiftCard(event)"> ' +
-									   '<p class="giftCardType">' + giftCard.giftCardType + '</p> ' +
+								if(classNames.includes("giftCardNo_" + giftCard.giftCardNo)){
+									str += '<div class="gift_card selected" id="giftCardNo_' + giftCard.giftCardNo + '" onclick="selectGiftCard(event)"> ' +
+										   '<p class="giftCardName">' + giftCard.product.productName + '</p> ' +
+										   '<p class="giftCardPrice">- ' + formattedTotalMoney + '원</p> ' +
+										   '<p class="date">~ ' + formattedDate + '</p> ' +
+										   '</div> ';
+								}else {
+									str += '<div class="gift_card" id="giftCardNo_' + giftCard.giftCardNo + '" onclick="selectGiftCard(event)"> ' +
+									   '<p class="giftCardName">' + giftCard.product.productName + '</p> ' +
+									   '<p class="giftCardPrice">- ' + formattedTotalMoney + '원</p> ' +
 									   '<p class="date">~ ' + formattedDate + '</p> ' +
 									   '</div> ';
+								}
+								
 							});
 						}
 						
@@ -899,11 +978,16 @@ main {
 						console.log(error);
 					}
 				});
+				
+				
 			});
 
 			$("#my_discount_coupon").on("click", function(){
 				
 				const jwtToken = localStorage.getItem("jwtToken");
+				
+				$("#my_discount_coupon").addClass("selected");
+				$("#my_gift_card").removeClass("selected");
 				
 				$.ajax({
 					url : "http://localhost:9001/api/v1/reservation/my/discount/coupon",
@@ -915,6 +999,7 @@ main {
 					success : function(response){
 						
 						let str = "";
+						const className = $('#coupon_table tbody tr').attr("class");
 						
 						// 할인 쿠폰이 1개 이상일 때 
 						if(response.length > 0){
@@ -923,11 +1008,20 @@ main {
 								
 								const formattedDate = formatDate(coupon.couponNo.endDate, 'YYYY.MM.DD');
 								
-								str += '<div class="discount_coupon" id="issueNo_' + coupon.issueNo + '" onclick="selectDiscountCoupon(event)"> ' +
+								
+								if(className === "issueNo_" + coupon.issueNo){
+									str += '<div class="discount_coupon selected" id="issueNo_' + coupon.issueNo + '" onclick="selectDiscountCoupon(event)"> ' +
+										   '<p class="couponName">' + coupon.couponNo.couponName + '</p> ' +
+										   '<p class="discount">' + coupon.couponNo.discount + '%</p> ' +
+										   '<p class="date">~ ' + formattedDate + '</p> ' +
+										   '</div> ';							
+								}else {
+									str += '<div class="discount_coupon" id="issueNo_' + coupon.issueNo + '" onclick="selectDiscountCoupon(event)"> ' +
 									   '<p class="couponName">' + coupon.couponNo.couponName + '</p> ' +
 									   '<p class="discount">' + coupon.couponNo.discount + '%</p> ' +
 									   '<p class="date">~ ' + formattedDate + '</p> ' +
-									   '</div> ';							
+									   '</div> ';	
+								}		
 							
 							});
 							
@@ -942,6 +1036,127 @@ main {
 				});
 			});
 			
+			const jwtToken = localStorage.getItem("jwtToken");
+			
+			$.ajax({
+				url : "http://localhost:9001/api/v1/reservation/my/point",
+				method : "GET",
+				dataType : "json",
+				headers: {
+			        'Authorization': 'Bearer ' + jwtToken  // Authorization 헤더에 JWT 토큰 추가
+			    },
+			    success : function(response){
+			    	
+			    	$("#totalPoint").text(response);
+			    },
+			    error : function(xhr, status, error){
+			    	console.log(error);
+			    }
+				
+			});
+			
+			let savePoint = 0;
+			
+			$("#use_all_point_btn").on("click", function(){
+				$.ajax({
+					url : "http://localhost:9001/api/v1/reservation/my/point",
+					method : "GET",
+					dataType : "json",
+					headers: {
+				        'Authorization': 'Bearer ' + jwtToken  // Authorization 헤더에 JWT 토큰 추가
+				    },
+				    success : function(response){
+				    	$("#totalPoint").text(response);
+				    	$("#use_point_input").val(response);
+				    	$("#totalPoint").text(response - response);
+				    	
+				    	
+				    	
+				    },
+				    error : function(xhr, status, error){
+				    	console.log(error);
+				    }
+					
+				});
+			});
+			
+			$("#use_point_input").on("input", function(event){
+			
+				$.ajax({
+					url : "http://localhost:9001/api/v1/reservation/my/point",
+					method : "GET",
+					dataType : "json",
+					headers: {
+				        'Authorization': 'Bearer ' + jwtToken  // Authorization 헤더에 JWT 토큰 추가
+				    },
+				    success : function(response){
+				    	$("#totalPoint").text(response);
+				    	const inputPoint = Number($("#use_point_input").val());
+				    	if($("#before_cost_total").text() === $("#pay_result").text()){
+
+				    		const before_cost_total = $("#before_cost_total").text();
+				    		const beforeCostTotalWithoutCommas = before_cost_total.replace(/,/g, '');
+				    		
+				    		$("#discount_price_total").text(inputPoint.toLocaleString());
+				    		
+				    		if(beforeCostTotalWithoutCommas - inputPoint < 0){
+				    			$("#pay_result").text(0 + " ");
+				    		}else {
+					    		$("#pay_result").text((beforeCostTotalWithoutCommas - inputPoint).toLocaleString());
+				    		}
+				    		
+				    	}else {
+				    		
+				    		if($("#coupon_table").find("tbody tr").length === 0 && $("#giftcard_table").find("tbody tr").length === 0){
+				    			console.log("aaaaaaaaaaaaaaa");
+				    			
+				    			const before_cost_total = $("#before_cost_total").text();
+					    		const beforeCostTotalWithoutCommas = before_cost_total.replace(/,/g, '');
+					    		
+					    		$("#discount_price_total").text(inputPoint.toLocaleString());
+					    		
+					    		if(beforeCostTotalWithoutCommas - inputPoint < 0) {
+					    			$("#pay_result").text(0 + " ");
+					    		}else {
+						    		$("#pay_result").text((beforeCostTotalWithoutCommas - inputPoint).toLocaleString());
+					    		}
+				    		} else {
+				    			
+				    			const before_cost_total = $("#before_cost_total").text();
+					    		const beforeCostTotalWithoutCommas = before_cost_total.replace(/,/g, '');
+				    			
+				    			const discount_price_total = $("#discount_price_total").text();
+				    			const discountPriceTotalWithoutCommas = discount_price_total.replace(/,/g, '');
+				    			
+				    			const payFinal =  Number(beforeCostTotalWithoutCommas) - Number(discountPriceTotalWithoutCommas) - inputPoint;
+				    			
+				    			if(payFinal < 0){
+									$("#pay_result").text(0 + " ");				    				
+				    			}else {
+					    			$("#pay_result").text(payFinal);
+				    			}
+				    			
+				    			
+				    		}
+				    		
+				    	}
+				    	
+				    },
+				    error : function(xhr, status, error){
+				    	console.log(error);
+				    }
+				});
+			});
+			
+			$("#use_point_input").on("blur", function(){ // 인풋이 실행될때 이벤트가 발생하는 것을 인풋에서 블러 될때 발생하게 수정해야 한다.
+				$("#use_point_input").val();					
+				
+			})
+			
+			$("#creditcard_types").on("click", "div", function(){
+				$(this).addClass("selected");
+				$(this).siblings().removeClass("selected");
+			});
 			
 		});
 		
@@ -992,28 +1207,101 @@ main {
 		    return format.replace(/YYYY|MM|DD|HH|mm|ss/g, matched => map[matched]);
 		}
 		
-		const parentElement = document.getElementById("pay_type_discount_types_list");
+// 		const parentElement = document.getElementById("pay_type_discount_types_list");
 		
-		const couponChild = parentElement.querySelectorAll(".discount_coupon");
+// 		const couponChild = parentElement.querySelectorAll(".discount_coupon");
 		
-		const giftCardChild = parentElement.querySelectorAll(".gift_card");
+// 		const giftCardChild = parentElement.querySelectorAll(".gift_card");
 		
-		console.log(couponChild);
-		console.log(giftCardChild);
+// 		for (let i = 0; i < couponChild.length; i++) {
+// 			couponChild[i].addEventListener("click", function() {
+// 		        console.log("sssss");
+// 		    });
+// 		}
 		
-		for (let i = 0; i < couponChild.length; i++) {
-			couponChild[i].addEventListener("click", function() {
-		        console.log("sssss");
-		    });
-		}
+// 		for (let i = 0; i < giftCardChild.length; i++) {
+// 			giftCardChild[i].addEventListener("click", function() {
+// 		        console.log("sssss");
+// 		    });
+// 		}
 		
-		for (let i = 0; i < giftCardChild.length; i++) {
-			giftCardChild[i].addEventListener("click", function() {
-		        console.log("sssss");
-		    });
+		
+		
+		let giftCardArray = new Array();
+		let idArray = new Array();
+		
+		function selectGiftCard(event){
+	
+			let id = '';
+			
+			if(event.target.tagName === "P") {
+				id = event.target.parentNode.id;
+			}else {
+				id = event.target.id;
+			}
+			
+			$("#coupon_table").empty();
+			
+			$("#" + id).addClass("selected");
+			
+			const giftCardName = $("#" + id).children(".giftCardName").text();
+			const giftCardPrice = $("#" + id).children(".giftCardPrice").text();
+			
+			const object = {
+				"name" : giftCardName,
+				"price" : giftCardPrice,
+				"id" : id
+			};
+			
+			const isDuplicated = hasDuplicateId(idArray, id);
+			
+			if(!isDuplicated){
+				giftCardArray.push(object);
+			}
+			
+			let str = '<table class="giftcard_or_coupon"> ' +
+			  '<caption id="giftcard_title">기프트카드</caption> ' +
+			  '<thead><tr><th>이름</th><th>수량</th><th>할인금액</th></tr></thead><tbody> ';
+			
+			// const nameCountsPairs = countNames(giftCardArray, idArray, id); 
+			
+			idArray.push(id);
+			
+			const before_cost_totalString = $("#before_cost_total").text();
+			
+			const numberWithoutCommas = before_cost_totalString.replace(/,/g, ''); // "20000"
+			let before_cost_totalNumber = Number(numberWithoutCommas);
+			let discountPrice = 0;
+			giftCardArray.forEach(giftCard => {
+				str += ' <tr class="' + giftCard.id + '" onclick="deleteSelf(event)"><td> ' +
+					  giftCard.name + 	
+					  '</td><td>' + 
+					  1 + 
+					  '</td><td> ' +
+					  giftCard.price +
+					  '</td></tr> '; 
+					  const priceString = giftCard.price.split(" ")[1].replace("원",  "");
+					  const priceWithoutCommas = priceString.replace(/,/g, '');
+					  let price = Number(priceWithoutCommas);
+					  discountPrice += price;
+					  before_cost_totalNumber = before_cost_totalNumber - price;
+					  if(before_cost_totalNumber < 0){
+					 	before_cost_totalNumber = 0;
+					  }
+			});
+			
+			$("#discount_price_total").text(discountPrice.toLocaleString());
+			
+			$("#pay_result").text(before_cost_totalNumber.toLocaleString());
+			str += '</tbody></table> ';
+			$("#giftcard_table").html(str);
+			
 		}
 		
 		function selectDiscountCoupon(event){
+			
+			$("#discount_price_total").text(0 + " ");
+			$("#pay_result").text(0 + " ");
 			
 			let id = '';
 			
@@ -1022,6 +1310,11 @@ main {
 			}else {
 				id = event.target.id;
 			}
+			
+			giftCardArray.splice(0, giftCardArray.length);
+			idArray.splice(0, idArray.length);
+			
+			$("#giftcard_table").empty();
 			
 			$("#" + id).siblings().removeClass("selected");
 			$("#" + id).addClass("selected");
@@ -1043,54 +1336,18 @@ main {
 			
 			$("#coupon_table").html(str);
 			
-		}
-		
-		let giftCardArray = new Array();
-		let idArray = new Array();
-		
-		function selectGiftCard(event){
-	
-			let id = '';
+			const before_cost_total = $("#before_cost_total").text();
+			const priceWithoutCommas = before_cost_total.replace(/,/g, '');
+			const discountNumber = Number(discount.replace("%", ""));
 			
-			if(event.target.tagName === "P") {
-				id = event.target.parentNode.id;
-			}else {
-				id = event.target.id;
-			}
+			const discountPrice = (priceWithoutCommas * discountNumber / 100);
+			const resultPrice = priceWithoutCommas - discountPrice;
+			const formattedResultPrice= resultPrice.toLocaleString()
+			const formattedDiscountPrice = discountPrice.toLocaleString();
+			$("#discount_price_total").text(formattedDiscountPrice);
+			$("#pay_result").text(formattedResultPrice);
 			
-			$("#" + id).addClass("selected");
 			
-			const giftCardType = $("#" + id).children(".giftCardType").text();
-			
-			const object = {
-				"name" : giftCardType
-			};
-			
-			const isDuplicated = hasDuplicateId(idArray, id);
-			
-			if(!isDuplicated){
-				giftCardArray.push(object);
-			}
-			
-			let str = '<table class="giftcard_or_coupon"> ' +
-			  '<caption id="giftcard_title">기프트카드</caption> ' +
-			  '<thead><tr><th>이름</th><th>수량</th></tr></thead><tbody> ';
-			
-			const nameCountsPairs = countNames(giftCardArray, idArray, id); 
-			
-			idArray.push(id);
-			
-			nameCountsPairs.forEach(giftCardType => {
-				str += ' <tr class="' + id + '" onclick="deleteSelf(event)"><td> ' +
-				  giftCardType.name + 	
-				  '</td><td> ' +
-				  giftCardType.count + 											
-				  '</td></tr> '; 
-			});
-			
-			str += '</tbody></table> ';
-			
-			$("#giftcard_table").html(str);
 		}
 		
 		function countNames(list, idArray, id) {
@@ -1130,24 +1387,51 @@ main {
 	            tr.remove();
 	        }
 				        
-	        console.log(tr.className);
-	        
 	        if(tr.className.includes("issueNo_")){
 				$("#" + tr.className).removeClass("selected");
 				$("#coupon_table").empty();
+				
+				const before_cost_total = $("#before_cost_total").text();
+				
+				$("#pay_result").text(before_cost_total + " ");
+				$("#discount_price_total").text(0 + " ");
+				
 			}else if(tr.className.includes("giftCardNo_")){
 				$("#" + tr.className).removeClass("selected");
 
+				const giftCardName = $("#" + tr.className).children(".giftCardName").text();
+				const giftCardPrice = $("#" + tr.className).children(".giftCardPrice").text();
+				const before_cost_total = $("#before_cost_total").text();
 				
+				const beforeCostToalWithoutCommas = before_cost_total.replace(/,/g, '');
 				
-				const giftCardType = $("#" + tr.className).children(".giftCardType").text();
 				
 				const object = {
-					"name" : giftCardType						
+					"name" : giftCardName,
+					"price" : giftCardPrice,
+					"id" : tr.className
 				};
 				
-				giftCardArray = removeObjectFromArray(giftCardArray, object);
-				idArray = removeElementFromArray(idArray, tr.className);
+				const before_cost = $("#discount_price_total").text();
+				const pay_result = $("#pay_result").text();
+				const priceString = giftCardPrice.split(" ")[1].replace("원",  "");
+				const priceWithoutCommas = priceString.replace(/,/g, '');
+				let beforeCostWithoutCommas = before_cost.replace(/,/g, '');
+				let price = Number(priceWithoutCommas);
+				beforeCostWithoutCommas -= price; // 기프트카드를 삭제할때 결제 금액이 올라가야한다. 하지만 만약 결제 금액이 0보다 작으면 0으로 고정했기 때문에 올라가는 금액이 원래 결제해야할 금액보다 커진다.
+// 				$("#pay_result").text(Number(pay_result) + price);
+				
+				$("#discount_price_total").text(beforeCostWithoutCommas.toLocaleString());
+				
+				$("#pay_result").text((beforeCostToalWithoutCommas - beforeCostWithoutCommas).toLocaleString());
+				
+				giftCardArray = removeObjectFromArray(giftCardArray, object); // 기프트카드 리스트에서 선택한 요소 제거 제거
+				idArray = removeElementFromArray(idArray, tr.className); // 아이디 리스트에서 선택한 요소 제거
+				
+				if(giftCardArray.length === 0){
+					$("#giftcard_table").empty();
+				}
+				
 			}
 			
 		}

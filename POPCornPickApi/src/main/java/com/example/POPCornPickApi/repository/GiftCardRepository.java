@@ -12,5 +12,8 @@ public interface GiftCardRepository extends JpaRepository<GiftCard, Long>{
 
 	List<GiftCard> findByMemberUsername(String username);
 	
-	public List<GiftCard> findByMember_UsernameAndGiftCardEndDateAfterOrderByGiftCardEndDateAsc(String username, LocalDate currentDate);
+	public List<GiftCard> findByMember_UsernameAndProduct_ProductTypeAndProduct_ProductEndDateAfterOrderByProduct_ProductEndDateAsc(String username, String productType, LocalDate currentDate);
+
+
+
 }

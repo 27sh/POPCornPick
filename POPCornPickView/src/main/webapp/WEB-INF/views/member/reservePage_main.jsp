@@ -706,8 +706,13 @@ main {
 						</ul>
 					</div>
 					<div id="section_schedule_box">
-						<div id="movie_room"></div>
-
+						<div id="movie_room">
+							<div id="section_schedule_box_information" class="nofilm">
+							  <img alt="필름 사진" src="/img/film.png">
+							  <p>조회 가능한 상영시간이 없습니다.</p>
+						 	 <p>조건을 변경해주세요.</p>
+				 			</div>
+						</div>
 					</div>
 				</section>
 			</div>

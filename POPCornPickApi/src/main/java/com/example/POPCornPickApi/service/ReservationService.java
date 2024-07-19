@@ -1,7 +1,5 @@
 package com.example.POPCornPickApi.service;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +15,6 @@ import java.util.Set;
 import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.stereotype.Service;
 
-import com.example.POPCornPickApi.dto.ScheduleDto;
 import com.example.POPCornPickApi.dto.ScheduleDto_JYC;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Coupon;
@@ -25,6 +22,7 @@ import com.example.POPCornPickApi.entity.ExpCinema;
 import com.example.POPCornPickApi.entity.GiftCard;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.MovieShowDetail;
+import com.example.POPCornPickApi.entity.Point;
 import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.Schedule;
@@ -34,6 +32,7 @@ import com.example.POPCornPickApi.repository.ExpCinemaRepository;
 import com.example.POPCornPickApi.repository.GiftCardRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
 import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
+import com.example.POPCornPickApi.repository.PointRepository;
 import com.example.POPCornPickApi.repository.ReservatedSeatRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.ScheduleRepository;
@@ -53,12 +52,13 @@ public class ReservationService {
 	private ReservatedSeatRepository reservatedSeatRepository;
 	private GiftCardRepository giftCardRepository;
 	private CouponRepository couponRepository;
+	private PointRepository pointRepository;
 
 	public ReservationService(CinemaRepository cinemaRepository, ExpCinemaRepository expCinemaRepository,
 			RoomRepository roomRepository, MovieRepository movieRepository,
 			MovieShowDetailRepository movieShowDetailRepository, TicketingRepository ticketingRepository,
 			ScheduleRepository shceduleRepository, SeatRepository seatRepository, ReservatedSeatRepository reservatedSeatRepository,
-			GiftCardRepository giftCardRepository, CouponRepository couponRepository
+			GiftCardRepository giftCardRepository, CouponRepository couponRepository, PointRepository pointRepository
 			) {
 		this.cinemaRepository = cinemaRepository;
 		this.expCinemaRepository = expCinemaRepository;
@@ -71,6 +71,7 @@ public class ReservationService {
 		this.reservatedSeatRepository = reservatedSeatRepository;
 		this.giftCardRepository = giftCardRepository;
 		this.couponRepository = couponRepository;
+		this.pointRepository = pointRepository;
 	}
 
 	public List<Cinema> getCinemaByLocaiton(String cinemaLocation) {
@@ -390,8 +391,9 @@ public class ReservationService {
 	public List<GiftCard> getMyValidGiftCard(String username){
 		
 		LocalDate today = LocalDate.now();
-		List<GiftCard> giftCardList = giftCardRepository.findByMember_UsernameAndGiftCardEndDateAfterOrderByGiftCardEndDateAsc(username, today);
-		
+		List<GiftCard> giftCardList = giftCardRepository.findByMember_UsernameAndProduct_ProductTypeAndProduct_ProductEndDateAfterOrderByProduct_ProductEndDateAsc(username, "영화관람권" ,today);
+		System.out.println(giftCardList.size());
+		System.out.println(giftCardList);
 		return giftCardList;
 	}
 
@@ -402,6 +404,17 @@ public class ReservationService {
 		List<Coupon> couponList = couponRepository.findByMember_UsernameAndCouponNo_EndDateAfterOrderByCouponNo_EndDateAsc(username, today);
 		
 		return couponList;
+	}
+	
+	public int getMyPoint(String username) {
+		
+		int totalAcheivePoint = pointRepository.getTotalAcheiveByUsername(username);
+		
+		int totalPointUsePoint = pointRepository.getTotalPointUserByUsername(username);
+		
+		int resultPoint = totalAcheivePoint -  totalPointUsePoint;
+		
+		return resultPoint;
 	}
 
 }

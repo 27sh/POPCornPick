@@ -464,7 +464,8 @@
 			'/reservation/eventList',
             '/joinForm',
 			'/loginForm',
-			'/reservation/faqList'
+			'/reservation/faqList',
+			'/common/scheduleList'
         ];
 
 //         // 현재 경로가 비회원 접근 가능 경로에 포함되는지 확인

@@ -104,10 +104,10 @@ public class SecurityConfig {
         
         // JWTFilter 추가 --> LoginFilter를 UsernamePasswordAuthenticationFilter 전에 추가
         http
-        		.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        		.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
         
         http
-                .addFilterBefore(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
         
         
         // 세션 설정 : STATELESS 

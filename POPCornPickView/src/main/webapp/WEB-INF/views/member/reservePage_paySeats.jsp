@@ -1080,7 +1080,9 @@ main {
 				});
 			});
 			
-			$("#use_point_input").on("input", function(event){
+			let beforeDiscountPrice = 0;
+			
+			$("#use_point_input").on("blur", function(event){
 			
 				$.ajax({
 					url : "http://localhost:9001/api/v1/reservation/my/point",
@@ -1100,15 +1102,18 @@ main {
 				    		$("#discount_price_total").text(inputPoint.toLocaleString());
 				    		
 				    		if(beforeCostTotalWithoutCommas - inputPoint < 0){
+				    			$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
 				    			$("#pay_result").text(0 + " ");
+				    			$("#use_point_input").val(beforeCostTotalWithoutCommas);
+				    			$("#totalPoint").text($("#totalPoint").text() - beforeCostTotalWithoutCommas);
 				    		}else {
 					    		$("#pay_result").text((beforeCostTotalWithoutCommas - inputPoint).toLocaleString());
+					    		$("#totalPoint").text($("#totalPoint").text() - inputPoint);
 				    		}
 				    		
 				    	}else {
 				    		
 				    		if($("#coupon_table").find("tbody tr").length === 0 && $("#giftcard_table").find("tbody tr").length === 0){
-				    			console.log("aaaaaaaaaaaaaaa");
 				    			
 				    			const before_cost_total = $("#before_cost_total").text();
 					    		const beforeCostTotalWithoutCommas = before_cost_total.replace(/,/g, '');
@@ -1117,10 +1122,40 @@ main {
 					    		
 					    		if(beforeCostTotalWithoutCommas - inputPoint < 0) {
 					    			$("#pay_result").text(0 + " ");
+					    			$("#totalPoint").text($("#totalPoint").text() - beforeCostTotalWithoutCommas);
+					    			$("#use_point_input").val(beforeCostTotalWithoutCommas);
+					    			$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
 					    		}else {
 						    		$("#pay_result").text((beforeCostTotalWithoutCommas - inputPoint).toLocaleString());
+						    		$("#totalPoint").text($("#totalPoint").text() - inputPoint);
+						    		$("#discount_price_total").text(inputPoint.toLocaleString());
+
 					    		}
 				    		} else {
+				    			
+				    			if($("#coupon_table").find("tbody tr").length > 0) {
+				    				const className = $("#coupon_table").children("tbody").children("tr").attr("class");
+				    				
+				    				const discount = $($("." + className).children("td")[2]).text();
+				    				
+				    				const formattedDiscount = discount.replace("%", "").replace(" ", "");
+				    				
+				    				const before_cost_total = $("#before_cost_total").text();
+						    		const beforeCostTotalWithoutCommas = Number(before_cost_total.replace(/,/g, ''));
+				    				
+						    		const payFinal =  beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) - inputPoint;
+						    		
+						    		if(payFinal < 0){ // 결제 금액이 0보다 작으면
+										$("#pay_result").text(0 + " ");				    				
+					    			}else {
+						    			$("#pay_result").text(payFinal);
+						    			$("#discount_price_total").text((((beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) + inputPoint).toLocaleString());
+						    			$("#totalPoint").text($("#totalPoint").text() - inputPoint);
+					    			}
+						    		
+				    			} else if($("#giftcard_table").find("tbody tr").length > 0) {
+				    				console.log("기프트카드 적용");
+				    			}
 				    			
 				    			const before_cost_total = $("#before_cost_total").text();
 					    		const beforeCostTotalWithoutCommas = before_cost_total.replace(/,/g, '');
@@ -1128,12 +1163,17 @@ main {
 				    			const discount_price_total = $("#discount_price_total").text();
 				    			const discountPriceTotalWithoutCommas = discount_price_total.replace(/,/g, '');
 				    			
+				    			console.log(beforeDiscountPrice);
+				    			
 				    			const payFinal =  Number(beforeCostTotalWithoutCommas) - Number(discountPriceTotalWithoutCommas) - inputPoint;
 				    			
-				    			if(payFinal < 0){
+				    			
+				    			if(payFinal < 0){ // 결제 금액이 0보다 작으면
 									$("#pay_result").text(0 + " ");				    				
 				    			}else {
 					    			$("#pay_result").text(payFinal);
+					    			$("#discount_price_total").text((Number(discountPriceTotalWithoutCommas) + inputPoint).toLocaleString());
+					    			$("#totalPoint").text($("#totalPoint").text() - inputPoint);
 				    			}
 				    			
 				    			
@@ -1329,7 +1369,7 @@ main {
 					  couponName	+
 					  '</td><td> ' +
 					  1 +											
-					  '</td><td> ' +
+					  '</td><td class="discount"> ' +
 					  discount +
 					  '</td> ' +
 					  '</tr></tbody></table> ';

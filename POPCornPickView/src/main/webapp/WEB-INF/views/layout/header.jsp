@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <style>
         * {
@@ -389,7 +390,7 @@
 
         var headerFixed = document.getElementById("header_fixed");
         var headerBottom = document.getElementById('header_bottom');
-        console.log(document.documentElement.scrollTop);
+        //console.log(document.documentElement.scrollTop);
         if (document.body.scrollTop > 90 || document.documentElement.scrollTop > 90) {
             headerFixed.style.display = "block";
             headerBottom.style.display = "none";

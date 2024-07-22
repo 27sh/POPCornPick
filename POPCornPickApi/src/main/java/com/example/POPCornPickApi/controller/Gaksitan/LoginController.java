@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -185,7 +184,13 @@ public class LoginController {
 		return str;
 	}
 	
-	
+	@GetMapping("/getUsername")
+	public String getUsername(HttpServletRequest request) {
+		String token = request.getHeader("Authorization").split(" ")[1];
+		String username = jwtUtil.getUsername(token);
+		
+		return username;
+	}
 	
 	
 	

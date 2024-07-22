@@ -2,6 +2,7 @@ package com.example.POPCornPickApi.controller.Gaksitan;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.POPCornPickApi.entity.ExpCinema;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Qna;
 import com.example.POPCornPickApi.jwt.JWTUtil;
@@ -44,7 +46,7 @@ public class MemberInquiryController {
 	private ExpCinemaRepository expCinemaRepository;
 	
 	@PostMapping("/writeInquiry")
-	public ResponseEntity<?> writeInquiry(@RequestParam("qnaFile") MultipartFile file, Qna qna) {
+	public ResponseEntity<?> writeInquiry(@RequestParam("qnaFile") MultipartFile file, Qna qna, @RequestParam("username") String username) {
 		try {
 			// 파일 저장 경로 설정
 			String uploadDir = "C:/upload";
@@ -52,7 +54,11 @@ public class MemberInquiryController {
 			
 			// 파일 저장
 			file.transferTo(dest);
-
+			// 
+			Member member = new Member();
+			member.setUsername(username);
+			qna.setMember(member);
+			qnaRepository.save(qna);
 			return ResponseEntity.ok("파일 업로드 성공");
 		} catch (IOException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패");
@@ -69,13 +75,20 @@ public class MemberInquiryController {
 		}else {
 			String token = request.getHeader("Authorization").split(" ")[1];
 			String username = jwtUtil.getUsername(token);
-			Member member = memberRepository.findByUsername(username);
+			List<ExpCinema> expCinemaList = expCinemaRepository.findByMemberUsername(username);
+			List<String> cinemaNameList = new ArrayList<>();
 			
+			for(int i = 0; i < expCinemaList.size(); i++) {
+				System.out.println(expCinemaList.get(i).getCinema().getCinemaNo());
+				String cinemaName = cinemaRepository.getCinemaName(expCinemaList.get(i).getCinema().getCinemaNo());
+				cinemaNameList.add(cinemaName);
+			}
+			
+			return cinemaNameList;
 		}
 		
 		
-		
-		return null;
+//		return null;
 		
 	}
 	

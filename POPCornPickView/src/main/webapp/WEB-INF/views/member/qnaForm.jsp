@@ -332,10 +332,11 @@ tr[name="qnaContent"] {
 			const token = localStorage.getItem("jwtToken");
 			const formData = new FormData();
 			
+			let username = getUsername();
 			const fileInput = document.getElementByName("file");
 			const file = fileInput.files[0];
 			formData.append("qnaFile", file);
-			formData.append("username", dpcument.querySelector(""));
+			formData.append("username", username);
 			formData.append("qnaTitle", document.querySelector("input[name='qnaTitle']").value);
 			formData.append("qnaContent", document.querySelector("input[name='qnaContent']").value);
 			formData.append("qnaBigCategory", document.querySelector("#big-classification").value);
@@ -347,13 +348,29 @@ tr[name="qnaContent"] {
 			const xhttp = new XMLHttpRequest();
 			
 			xhttp.onload = function(){
-				
+				if(xhttp.responseText != null){
+					if(xhttp.status === 200){
+						alert("")
+					}
+				}
 			}
 			
 			xhttp.open("POST", "http://localhost:9001/api/v1/memInquiry/writeInquiry");
 			xhttp.setRequestHeader("Authorization", "Bearer " + token);
 			//xhttp.setRequestHeader("Content-type", "multipart/form-data"); FormData 객체가 표준화된 방식으로 데이터를 준비해서 자동으로 이 설정이 됨.
 			xhttp.send(formData);
+		}
+		
+		function getUsername(){
+			const token = localStorage.getItem("jwtToken");
+			const xhttp = new XMLHttpRequest();
+			xhttp.onload = function(){
+				console.log(this.responseText);
+				return this.responseText;
+			}
+			xhttp.open("GET", "http://localhost:9001/api/v1/common/getUsername");
+			xhttp.setRequestHeader("Authorization", "Bearer " + token);
+			xhttp.send();
 		}
 		
 		function loadCinemaNo(event){

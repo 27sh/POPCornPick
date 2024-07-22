@@ -231,7 +231,7 @@
             background-color: black;
         }
     </style>
-</head>
+
 <header>
     <div id="phrase">" 당신이 선택하는 영화는 당신의 이야기를 말합니다. "</div>
 

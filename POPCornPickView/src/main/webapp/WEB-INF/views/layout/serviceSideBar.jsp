@@ -67,7 +67,7 @@ ul {
 }
 
 #sidebar .sidebar-box2{
-	height:200px;
+	height:170px;
 	padding-top:30px;
 }
 
@@ -94,8 +94,7 @@ ul {
 			<h3>이벤트</h3>
 			<p><a href="/event/regist">이벤트 등록</a></p>
 			<p><a href="/event/allList">이벤트 목록</a></p>
-			<p><a href="">이벤트 종료목록</a></p>
-			<p><a href="">이벤트 참여목록</a></p>
+			<p><a href="/event/participationList">이벤트 참여목록</a></p>
 		</div>
 		<div class="sidebar-box sidebar-box3">
 			<h3>Q&A</h3>

@@ -13,14 +13,14 @@ import com.example.POPCornPickApi.entity.RoomType;
 import com.example.POPCornPickApi.service.RoomService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/admin/room")
 //@CrossOrigin("*")
 public class RoomController {
 
 	@Autowired
 	private RoomService roomService;
 	
-	@PostMapping("/room")
+	@PostMapping
 	public ResponseEntity<String> registRoom(@RequestBody RoomType roomType ) {
 		int result = roomService.registRoom(roomType);
 		System.out.println(result);

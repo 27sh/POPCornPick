@@ -5,21 +5,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원 관리</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<title>이벤트 참여 리스트</title>
 <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 main {
 	width: 1200px;
 	margin: 80px auto;
-	min-height: 700px;
-	border:1px solid #eee;
+	display:flex;
+	justify-content:space-between;
+}
+
+main #container {
+	width:900px;
+	min-height:700px;
+	box-sizing:border-box;
+}
+
+.sidebar-box2 p:nth-child(4) a{
+	color: #816bff !important;
 }
 
 h2{
 	margin-bottom: 20px;
-	font-weight: 600;
+	font-weight: 400;
 	font-size: 22px;
 }
 
@@ -32,25 +42,28 @@ table, tr, th, td{
 	text-align:center;
 }
 
-#memberListBox .table{
+#participationListBox .table{
 	width: 100%;
 }
 
 </style>
 </head>
-<%@ include file="../layout/adminHeader.jsp"%>
+<%@ include file="../../layout/adminHeader.jsp"%>
 <body>
 	<main>
+		<div class="sidebar-container">
+			<%@ include file="../../layout/serviceSideBar.jsp"%>
+		</div>
 		<div id="container">
-			<h2>회원 관리</h2>
-			<div id="memberListBox">
+			<h2>이벤트 참여 리스트</h2>
+			<div id="participationListBox">
 				<table class="table">
 					<thead>
 						<tr>
-							<th scope="col">번호</th><th scope="col">아이디</th><th scope="col">이름</th><th scope="col">가입일</th><th scope="col">신고 횟수</th><th scope="col">활동 상태</th>
+							<th scope="col">번호</th><th scope="col">이벤트 제목</th><th scope="col">참여 아이디</th><th scope="col">참여 결과</th>
 						</tr>
 					</thead>
-					<tbody id="memberList">
+					<tbody id="participationList">
 					
 					</tbody>					
 				</table>
@@ -72,26 +85,25 @@ table, tr, th, td{
 					for(let i = 0 ; i < data.length ; i++){
 						table += '<tr>';
 						table += '<td class="listNum">' + (i + 1) + '</td>';
-						table += '<td class="username"><a href="/event/detail?eventNo='+ data[i].username +'">' + data[i].username + '</a></td>';
-						table += '<td class="name">'+data[i].name + '</td>';
-						table += '<td class="joinDate">' + data[i].formattedJoinDate + '</td>';
-						table += '<td class="warnAmount">' + data[i].warnAmount + '</td>';
-						table += '<td class="state">' + data[i].memberState + '</td>';
+						table += '<td class="eventTitle"><a href="/event/detail?eventNo='+ data[i].eventNo +'">' + data[i].event.eventTitle + '</a></td>';
+						table += '<td class="startEvent">'+data[i].member.username + '</td>';
+						table += '<td class="endEvent">' + data[i].participationResult + '</td>';
 						table += '</tr>';
 					}
-					document.getElementById("memberList").innerHTML = table;
+					document.getElementById("participationList").innerHTML = table;
 					
 				} else{
-					document.getElementById("memberList").innerHTML = table;
+					document.getElementById("participationList").innerHTML = table;
 				}
 			} else if(this.readyState == 4 && this.status != 200){
-				alert("회원 목록을 불러올 수 없습니다. 다시 시도해주세요.");
+				alert("지점 목록을 불러올 수 없습니다. 다시 시도해주세요.");
 			}
 		}
 		
-		xhttp.open("GET", "http://localhost:9001/api/v1/admin/member", true);
+		xhttp.open("GET", "http://localhost:9001/api/v1/admin/event/participationList", true);
 		xhttp.send();
 	});
+	
 	</script>
 </body>
 </html>

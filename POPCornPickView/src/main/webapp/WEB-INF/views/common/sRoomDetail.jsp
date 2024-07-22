@@ -5,6 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>특별관 소개</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
 main {
 	width: 1200px;

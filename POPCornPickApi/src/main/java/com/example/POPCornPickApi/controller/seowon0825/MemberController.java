@@ -11,7 +11,7 @@ import com.example.POPCornPickApi.dto.MemberDto;
 import com.example.POPCornPickApi.service.MemberService;
 
 @RestController
-@RequestMapping("/api/v1/memManage")
+@RequestMapping("/api/v1/admin/member")
 public class MemberController {
 
 	@Autowired

@@ -1,3 +1,4 @@
+/*
 package com.example.POPCornPickApi.entity;
 
 import jakarta.persistence.Column;
@@ -34,3 +35,4 @@ public class Utube {
 	
 	
 }
+*/

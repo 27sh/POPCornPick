@@ -96,7 +96,6 @@
     #nav-container ul li {
         display: inline-block;
         margin: 0 30px;
-        padding: 0 10px;
         position: relative;
         font-weight: bold;
         color: #c7c7c7;
@@ -269,7 +268,7 @@
         border: transparent;
         color: white;
         font-size: 20px;
-        margin: 0 0 50px 150px;
+        margin: 0 0 50px 130px;
         cursor: pointer;
     }
     

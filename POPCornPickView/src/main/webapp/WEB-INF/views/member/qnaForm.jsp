@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -358,7 +359,7 @@ tr[name="qnaContent"] {
 		function loadCinemaNo(event){
 			const xhttp = new XMLHttpRequest();
 			const location = event.target.value;
-			console.log(location + ", " + event.target);
+			console.log(location + ", " + event.target.value);
 			const token = localStorage.getItem("jwtToken");
 			
 			xhttp.onload = function(){
@@ -366,16 +367,35 @@ tr[name="qnaContent"] {
 					if (xhttp.status === 200) {
 						const cinemaList = JSON.parse(xhttp.responseText);
 						const selectCinemaNo = document.querySelector("#select-cinemaNo");
+// 						selectCinemaNo.empty(); // 기존 옵션 요소 비우기 jquery
+// 						selectCinemaNo.append('<option selected>영화관 선택</option>');
+// 						selectCinemaNo.innerHTML = '<option selected onchange="consoleCheck(event)">영화관 선택</option>';
 						selectCinemaNo.innerHTML = ''; // 기존 옵션 요소 비우기
-						selectCinemaNo.innerHTML = '<option selected onchange="consoleCheck(event)">영화관 선택</option>';
+						let defaultOption = document.createElement("option");
+						defaultOption.selected = true;
+						defaultOption.textContent = "영화관 선택";
+						selectCinemaNo.appendChild(defaultOption);
+						selectCinemaNo.onchange = function(event){
+							console.log("value : " + event.target.value);
+						}
+						
 						cinemaList.forEach(cinema => {
-							selectCinemaNo.innerHTML += `<option value="${cinema}" >${cinema}</option>`;
-							//selectCinemaNo.innerHTML += `<option value="${cinema}">${cinema}</option>`;
+// 							selectCinemaNo.append(`<option value="${cinema}">${cinema}</option>`); // jquery
+// 							selectCinemaNo.innerHTML += `<option value="${cinema}">${cinema}</option>`; // 기본 JS 문법
+							let option = document.createElement("option");
+							option.value = cinema;
+							option.textContent = cinema;
+							selectCinemaNo.appendChild(option);
+							
 							console.log(cinema);
 						});
+// 						for(let i = 0; i < cinemaList.length; i++){
+// 							selectCinemaNo.innerHTML += `<option value="${cinemaList[i]}">${cinemaList[i]}</option>`;
+// 							console.log(${cinemaList[i]});
+// 						};
+					}else {
+						alert("Faile");
 					}
-				}else {
-					alert("Faile");
 				}
 			}
 			

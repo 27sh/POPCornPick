@@ -102,6 +102,7 @@
                         url: "http://localhost:9001/api/v1/schedule/cinema/" + selectedCinemaNo,
                         method: "GET",
                         success: function (rooms) {
+                        	console.log(selectedCinemaNo);
                             console.log("선택된 극장의 관람관 정보: ", rooms);
 
                          // 각 관람관의 스케쥴을 가져오기 위한 반복문

@@ -1,0 +1,178 @@
+@charset "UTF-8";
+
+
+#wrap {
+    width: 100%;
+    background-color: #333;
+    height: 950px;
+
+}
+
+#tab_wrap {
+	position: relative;
+	top: 50px;
+    width: 100%;
+    height: 870px;
+}
+
+
+
+.tab_tit {
+    text-align: center;
+    line-height: 55px;
+    font-size: 20px;
+    height: 55px;
+    background-color: #e2e2e2;
+}
+
+
+.tab_con_2 {
+    width: 100%;
+    height: 100%;
+    float: left;
+}
+
+.calendar {
+    width: 100%;
+    height: 765px;
+    background-color: #fff;
+    float: left;
+}
+
+.date_wrap {
+    width: 1200px;
+    height: 96px;
+    border-bottom: 1px solid lightgray;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+#dateTabList{
+	width: 1200px;
+    height: 80px;;
+}
+
+.date_tab>li{
+    width: 77px;
+    text-align: center;
+    float: left;
+    padding: 0 4px;
+}
+
+.month_tit{
+	width: 100%;
+}
+
+.room_wrap {
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid lightgray;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+.room_tab{
+	line-height: 50px;
+	text-align: center;
+}
+
+.room_tab>li {
+    width: 16.7%;
+    font-size: 14px;
+    float: left;
+}
+.room-item{
+	color: lightgray;
+}
+
+.schedule_wrap{
+	width: 100%;
+	margin: 0 auto;
+}
+.movie_info{
+	clear: both;
+	margin: 10px;
+}
+
+.grade{
+	float: left;
+	margin-right: 10px;
+}
+
+.movie_tit{
+    display: inline-block;
+    height: 22px;
+    font-size: 15.5px;
+    line-height: 22px;
+    font-weight: 600;
+}
+.dateInfo{
+	width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-weight: 700;
+    margin: 0 auto;
+    font-size: 17px;
+}
+.dayInfo{
+	font-weight: 500;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 6px;
+}
+
+.sche_box{
+
+	width: 80px;
+    height: 30px;
+    margin: 10px 0px 20px 10px;
+    padding: 8px 14px 5px;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid #ddd;
+    float: left;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(248, 248, 248, 1) 100%);
+}
+.sche_start{
+	color: #333;
+	font-weight: 700;
+}
+
+.time_hover{
+    display: none;
+    position: relative;
+    top: -60px;
+}
+
+.tool{
+	width: 80px;
+	line-height: 32px;
+	background-color: #333;
+	border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.tool_tip{
+    width: 1px;
+    border-top: 4px solid #333;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    margin: 0 auto;
+    content: "";
+}
+
+
+.selected2 .dateInfo {
+	line-height: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #000;
+    color: #fff !important;
+}
+
+.room-item.selected2 {
+    color: #000;
+    box-sizing: border-box;
+    border-bottom: 2px solid #000;
+}

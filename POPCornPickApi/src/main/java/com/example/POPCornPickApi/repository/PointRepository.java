@@ -22,6 +22,7 @@ public interface PointRepository extends JpaRepository<Point, Long>{
 	
 	@Query("SELECT SUM(p.acheive) - SUM(p.pointUse) FROM Point p WHERE p.member.username = :username")
     Integer findTotalPointsByUsername(@Param("username") String username);
+	
 }
 
 

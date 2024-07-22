@@ -28,4 +28,10 @@ public class ParticipationService {
 		return participationRepository.findAll();
 	}
 	
+	public int memberParticipationCheck(String username, Long eventNo) {
+		int check = participationRepository.countByEventEventNoAndMemberUsername(eventNo, username);
+		System.out.println(check);
+		return check;
+	}
+	
 }

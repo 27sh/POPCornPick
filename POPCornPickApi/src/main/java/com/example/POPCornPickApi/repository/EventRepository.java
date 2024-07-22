@@ -32,4 +32,6 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 	@Query(value = "select * from event where end_event < CURDATE() order by end_event desc", nativeQuery = true)
 	public List<Event> getEndEventList();
 	
+	
+	
 }

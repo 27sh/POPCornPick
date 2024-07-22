@@ -110,8 +110,8 @@ textarea{
 
 </style>
 </head>
-<%@ include file="../../layout/adminHeader.jsp"%>
 <body>
+<%@ include file="../../layout/adminHeader.jsp"%>
 	<main>
 	<div class="sidebar-container">
 			<%@ include file="../../layout/serviceSideBar.jsp"%>
@@ -208,7 +208,7 @@ textarea{
 		$.ajax({
 			type : "PUT",
 			enctype : 'multipart/form-data',
-			url : "http://localhost:9001/api/v1/event-admin",
+			url : "http://localhost:9001/api/v1/admin/event",
 			data : formData,
 			dataType : 'text',
 			processData : false,
@@ -228,7 +228,7 @@ textarea{
 	function eventModify(eventNo){
 		console.log('modify');
 		$.ajax({
-			url : "http://localhost:9001/api/v1/event-admin/detail",
+			url : "http://localhost:9001/api/v1/admin/event/detail",
 			type : "GET",
 			data : {
 				eventNo : eventNo

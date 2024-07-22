@@ -68,6 +68,7 @@ input[type="radio"]{
 	text-align: center;
 	margin-top: 20px;
 }
+
 #submitEvent {
 	padding: 15px 50px;
 	font-family: "Pretendard Variable", Pretendard;
@@ -83,9 +84,11 @@ hr{
 	margin-top: 20px;
 	color: #b8b6aa;
 }
+
 #buttonBox{
 	text-align: right;
 }
+
 #backButton{
 	padding: 10px 15px;
 	font-family: "Pretendard Variable", Pretendard;
@@ -97,11 +100,138 @@ hr{
 }
 
 
+ --------- 모달창 --------- 
+.modal{
+ 	display: none; 
+   	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: top;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0,0,0,0);
+	opacity: 1;
+}
+
+.modal-box{
+	background-color: #fefefe;
+	border: 1px solid #888;
+	width: 60%;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 2;
+}
+
+.modal-content{
+	padding: 20px;
+}
+
+.top-box{
+	width: 100%;
+	height: 40px;
+	background-color: #f82f62;
+}
+
+.modal-content{
+	text-align: center;
+}
+.modal-title{
+	font-size: 25px;
+    font-weight: 400;
+    margin: 20px;
+}
+
+#mbtiResult{
+	font-size: 50px;
+    font-weight: 800;
+    margin: 20px;
+}
+
+#mbtiInfo-box{
+	font-size: 20px;
+    font-weight: 500;
+    margin: 20px;
+}
+
+#mbtiInfo{
+	font-size: 30px;
+    font-weight: 500;
+}
+
+.close{
+	color: #fff;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	padding-right: 10px;
+}
+
+.close:hover,
+.close:focus{
+	color: black;
+	text-decoration: none;
+}
+
+#myEvent {
+	width: 200px;
+ 	padding: 15px 0;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	cursor: pointer;
+	margin: 0 10px;
+	background: #f82f62;
+	border: 1px solid #f82f62;
+	color:#fff;
+	margin: 20px;
+}
+
+#home {
+	width: 200px;
+ 	padding: 15px 0; 
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	cursor: pointer;
+	margin: 0 10px;
+	background: #f2f2f2;
+	border: 1px solid #f2f2f2;
+	color:#333;
+	margin: 20px;
+}
+
+.no-scroll{
+	overflow: hidden;
+}
+
+#background{  
+  	width: 100%;  
+  	height: 100%;  
+   	background:rgb(0, 0, 0, 0.4);  
+  	position: fixed;  
+  	top: 0;  
+  	left: 0;  
+  	z-index: 999;  
+  	/* backdrop-filter: blur(5px); */
+  	display: none;
+  	align-items: center;
+  	justify-content: center;
+  }  
+
+/* #background div{ */
+/* 	opacity: 1 !important; */
+/* } */
+
+
 </style>
 </head>
-<%@ include file="../../layout/header.jsp"%>
+
+
 <body>
-	<main>
+	<%@ include file="../../layout/header.jsp"%>
+		<main>
 		<div class="event-header">
 		<div class="event-info">
 			<div class="event-state"><b id="eventState"></b></div>
@@ -113,6 +243,25 @@ hr{
 		<div id="eventSubmitButton"></div>
 		<hr>
 		<div id="buttonBox"></div>
+		
+		<div id="background">
+		<!-- modal -->
+		<div id="eventModal" class="modal">
+		<div class="modal-box" id="modalBox">
+			<div class="top-box">
+				<span class="close"><a href="" onclick="closeModal()">&times;</a></span>
+			</div>
+			<div class="modal-content">
+				<div class="modal-title">당신의 mbti는</div>
+				<div id="mbtiResult">ISTP</div>
+				<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo">분위기를 고조시키는 우호적인 사람</span>이군요?!</span></div>
+				<div>※ 500포인트가 지급되었어요</div>
+				<button type="button" id="myEvent" onclick="">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>
+			</div>
+		</div>
+		</div>
+		
+	</div>
 	</main>
 	<footer>
 	
@@ -168,6 +317,8 @@ hr{
 			}
 		});
 		
+		
+		
 	});
 	
 	function submitEvent(event){
@@ -178,7 +329,7 @@ hr{
 		console.log(q1);
 		let selectedValue1 = null;
 		let selectedValue2 = null;
-		let selectedValue3 = null;2
+		let selectedValue3 = null;
 		let selectedValue4 = null;
 		for(const radio of q1){
 			if(radio.checked){
@@ -227,10 +378,13 @@ hr{
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = function() {
 			if (this.status === 200) {
-				alert(this.responseText);
-				window.location.href = "http://localhost:8080/event/commonList?eventState=1"
+				document.getElementById("mbtiResult").innerText = mbtiResult;
+				document.getElementById("mbtiInfo").innerText = this.responseText;
+				//alert(this.responseText);
+				openModal();
+				
 			} else {
-				alert("다시 입력해주세요.");
+				alert(this.responseText);
 			}
 		};
 		xhttp.open("POST", "http://localhost:9001/api/v1/event/member/form");
@@ -250,6 +404,24 @@ hr{
 		window.location.href="/event/commonList?eventState=1";
 	}
 	
+	function moveHome(){
+		window.location.href="/";
+	}
+	
+	function openModal(){
+		const modal = document.getElementById("eventModal");
+		modal.style.display = "block";
+		
+		const background = document.getElementById("background");
+		document.body.classList.add('no-scroll');
+		document.body.style.backgroundColor = "rgba(0, 0, 0, 0.5) !important";
+		background.style.display = "flex";
+	}
+	
+	function closeModal(){
+		const modal = document.getElementById("eventModal");
+		modal.style.display = "none";
+	}
 	
 	</script>
 </body>

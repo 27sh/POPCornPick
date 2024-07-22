@@ -1,14 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEW</title>
-    <link rel="stylesheet" as="style" crossorigin
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    
 
     <style>
         * {
@@ -102,7 +94,7 @@
 
         #mme>li {
             width: 20%;
-            height: 100%;
+            height: 45px;
             text-align: center;
             font-weight: bold;
             font-size: 16px;
@@ -155,7 +147,7 @@
             height: 26px;
             float: right;
             border: 0;
-            background: transparent url(img/search.png) center center / 26px scroll no-repeat;
+            background: transparent url(/img/search.png) center center / 26px scroll no-repeat;
             cursor: pointer;
         }
 
@@ -187,7 +179,7 @@
             width: 100%;
             height: 45px;
             box-sizing: border-box;
-            background: transparent url(img/headerBg.png);
+            background: transparent url(/img/headerBg.png);
             display: none;
         }
 
@@ -240,8 +232,6 @@
         }
     </style>
 </head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <header>
     <div id="phrase">" 당신이 선택하는 영화는 당신의 이야기를 말합니다. "</div>
 
@@ -515,5 +505,3 @@
     
     
 </script>
-
-</html>

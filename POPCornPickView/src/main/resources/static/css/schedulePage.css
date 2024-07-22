@@ -29,13 +29,17 @@ select:focus {
     font-weight: 500;
     float: left;
     line-height: 30px;
-    margin-right: 10px;
+    margin-right: 10px;    
 }
 
 .calendar-title {
     padding: 10px;
     font-size: 20px;
     font-weight: 700;
+}
+
+.calendar-title>a:hover{
+	border-bottom: 1px solid #333;	
 }
 
 .source-calendar,

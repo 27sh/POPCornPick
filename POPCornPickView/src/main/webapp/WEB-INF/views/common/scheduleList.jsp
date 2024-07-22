@@ -85,6 +85,7 @@
                         </div> <!-- tab_con  END -->
                     </li>
                     <!-- 영화관별 상영시간표 -->
+                    </ul>
             </main>
         </div>
     </body>

@@ -220,10 +220,40 @@ hr{
   	justify-content: center;
   }  
 
-/* #background div{ */
-/* 	opacity: 1 !important; */
-/* } */
+/*---- 룰렛 -----*/
+.roulette{
+	width: 300px;
+	height: 300px;
+	border: 1px solid #000;
+	border-radius: 50%;
+	position: relative;
+}
 
+.segment{
+	width: 50%;
+	height: 50%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform-origin: 0 0;
+	clip-path: polygon(50%, 50%, 100%, 0, 100%, 100%);
+}
+.segment:nth-child(1){
+	transform: rotate(0deg) skewY(-30deg);
+	background: red;
+}
+.segment:nth-child(2){
+	transform: rotate(-90deg) skewY(-30deg);
+	background: yellow;
+}
+.segment:nth-child(3){
+	transform: rotate(-180deg) skewY(-30deg);
+	background: green;
+}
+.segment:nth-child(4){
+	transform: rotate(-270deg) skewY(-30deg);
+	background: blue;
+}
 
 </style>
 </head>
@@ -278,6 +308,10 @@ hr{
 		if(eventNo === null || eventState === null){
 			alert("올바르지 않은 경로입니다.");
 		} 
+		
+		if(eventNo == 15){
+			
+		}
 		
 		if(eventState == 1){
 			document.getElementById('eventState').innerText = "진행중인 이벤트";
@@ -423,6 +457,13 @@ hr{
 		modal.style.display = "none";
 	}
 	
+	function rouletteEvent(){
+		const roulette = document.getElementById("roulette");
+		roulette.style.width = "300px";
+		roulette.style.border = "5px solid #000";
+		
+		
+	}
 	</script>
 </body>
 </html>

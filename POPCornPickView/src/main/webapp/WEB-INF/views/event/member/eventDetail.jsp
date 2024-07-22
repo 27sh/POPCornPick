@@ -178,7 +178,7 @@ hr{
 		console.log(q1);
 		let selectedValue1 = null;
 		let selectedValue2 = null;
-		let selectedValue3 = null;
+		let selectedValue3 = null;2
 		let selectedValue4 = null;
 		for(const radio of q1){
 			if(radio.checked){

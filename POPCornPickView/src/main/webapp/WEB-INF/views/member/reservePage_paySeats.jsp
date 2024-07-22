@@ -6,6 +6,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"
 	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 	crossorigin="anonymous"></script>
+ <link rel="stylesheet" as="style" crossorigin
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
@@ -33,8 +35,15 @@
 	height: 216.5px;
 	width: 80px;
 }
+.simple_info:last-child .simple_info_title{
+	position: absolute;
+	text-align: center;
+	width: 80px;
+	background: #c2bebe;
+	height: 216.5px;
+}
 
-.simple_info_title {
+.simple_info:first-child .simple_info_title, .simple_info:nth-child(2) .simple_info_title, .simple_info:nth-child(3) .simple_info_title {
 	position: absolute;
 	text-align: center;
 	width: 80px;
@@ -42,11 +51,21 @@
 	height: 216.5px;
 }
 
-.simple_info_title p {
+.simple_info:first-child .simple_info_title p, .simple_info:nth-child(2) .simple_info_title p, .simple_info:nth-child(3) .simple_info_title p {
 	position: relative;
 	color: white;
 	top: 50%;
 	transform: translateY(-50%);
+	font-size: 14px;
+    font-weight: bold;
+}
+.simple_info:last-child .simple_info_title p {
+	position: relative;
+	color: black;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 14px;
+    font-weight: bold;
 }
 
 .simple_info_content {
@@ -59,24 +78,16 @@
 	height: 216.5px;
 	z-index: 9999;
 }
-
-.simple_info_content_all {
-	position: relative;
+ul.simple_info_content_all{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
 }
-
-.simple_info_content_all {
-	position: absolute;
-	top: 50%;
-}
-
-.simple_info_content_all {
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
-.simple_info_content_all {
-	color: white;
+ul.simple_info_content_all li{
+	font-size: 12px;
+    color: white;
+    margin: 10px 0;
 }
 
 .none-active {
@@ -563,6 +574,9 @@ h4{
 	font-weight: bold;
 	right: 2px;
 }
+#payment_confirm{
+	cursor: pointer;
+}
 main {
 	width: 100%;
 	padding: 50px 0;
@@ -579,42 +593,42 @@ main {
 			<div id="wrapper">
 				<div id="simple_infos">
 					<div class="simple_info">
-						<div class="simple_info_title">
+						<div class="simple_info_title" id="simple_info_title_reservation">
 							<p>01</p>
 							<p>상영시간</p>
 						</div>
 						<div class="simple_info_content none-active">
-							<ul id="simple_info_content_all">
-								<li class="simple_info_content_movie"></li>
-								<li class="simple_info_content_specific"></li>
-								<li class="simple_info_content_date"></li>
-								<li class="simple_info_content_time"></li>
+							<ul class="simple_info_content_all">
+								<li class="simple_info_content_movie" style="color: white"></li>
+								<li class="simple_info_content_specific" style="color: white"></li>
+								<li class="simple_info_content_date" style="color: white"></li>
+								<li class="simple_info_content_time" style="color: white"></li>
 							</ul>
 						</div>
 					</div>
 					<div class="simple_info">
-						<div class="simple_info_title">
+						<div class="simple_info_title" id="simple_info_title_seats">
 							<p>02</p>
 							<p>인원/좌석</p>
 						</div>
 						<div class="simple_info_content none-active">
 							<ul class="simple_info_content_all">
-								<li id="type_count"></li>
-								<li id="seat_selected"></li>
+								<li id="type_count" style="color: white"></li>
+								<li id="seat_selected" style="color: white"></li>
 							</ul>
 						</div>
 					</div>
 					<div class="simple_info">
-						<div class="simple_info_title">
+						<div class="simple_info_title" id="simple_info_title_pay">
 							<p>03</p>
 							<p>결제</p>
 						</div>
 						<div class="simple_info_content none-active">
 							<ul class="simple_info_content_all">
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
+								<li style="color: white" id="ticket_price"></li>
+								<li style="color: white" id="ticket_discount"></li>
+								<li style="color: white" id="ticket_result"></li>
+								<li style="color: white"></li>
 							</ul>
 						</div>
 					</div>
@@ -625,10 +639,10 @@ main {
 						</div>
 						<div class="simple_info_content none-active">
 							<ul class="simple_info_content_all">
-								<li></li>
-								<li></li>
-								<li></li>
-								<li></li>
+								<li style="color: white"></li>
+								<li style="color: white"></li>
+								<li style="color: white"></li>
+								<li style="color: white"></li>
 							</ul>
 						</div>
 					</div>
@@ -901,15 +915,19 @@ main {
 					$(".simple_info_content_movie").text(movieTitle);
 					$(".simple_info_content_specific").text(cinemaName);
 					$(".simple_info_content_date").text(date);
+					$(".simple_info_content_time").text(time);
 					$("#reservation_information").html(str);
-					
+					$("#type_count").text(typeCount);
+					$("#seat_selected").text(seatSelected);
+					$("#ticket_price").text("티켓금액 " + formattedTotalMoney + "원");
+					$("#ticket_discount").text("할인금액 " + 0 + "원");
+					$("#ticket_result").text("총합계 " + formattedTotalMoney + "원");
 					
 				},
 				error : function(xhr, status, error) { 
 					console.log(error);
 				}
 			});
-			
 			
 			$("#pay_type_tool_creditcard").on("click", function(){
 				if($("#creditcard_types").attr("class") === "unactivated"){
@@ -1066,11 +1084,24 @@ main {
 				        'Authorization': 'Bearer ' + jwtToken  // Authorization 헤더에 JWT 토큰 추가
 				    },
 				    success : function(response){
-				    	$("#totalPoint").text(response);
-				    	$("#use_point_input").val(response);
-				    	$("#totalPoint").text(response - response);
 				    	
+				    	const pay_result = $("#pay_result").text();
+				    	const payResultWithoutCommas = Number(pay_result.replace(/,/g, ""));
 				    	
+				    	if(response > payResultWithoutCommas){
+				 			// 내 총 포인트가 결제금액보다 크다면 
+				 			
+				    		$("#use_point_input").val(payResultWithoutCommas);
+					    	$("#totalPoint").text(response - payResultWithoutCommas);
+												    	
+				    	}else {
+				    		// 내 총 포인트가 결제금액보다 같거나 작다면
+				    		
+				    		$("#use_point_input").val(response);
+					    	$("#totalPoint").text(response - response);
+				    		
+				    	}
+				    	// 포인트 전체 사용시 작동하는 함수
 				    	
 				    },
 				    error : function(xhr, status, error){
@@ -1106,9 +1137,17 @@ main {
 				    			$("#pay_result").text(0 + " ");
 				    			$("#use_point_input").val(beforeCostTotalWithoutCommas);
 				    			$("#totalPoint").text($("#totalPoint").text() - beforeCostTotalWithoutCommas);
+				    			
+				    			$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
+			    				$("#ticket_result").text("총합계 " + 0 + "원");
+				    			
 				    		}else {
 					    		$("#pay_result").text((beforeCostTotalWithoutCommas - inputPoint).toLocaleString());
 					    		$("#totalPoint").text($("#totalPoint").text() - inputPoint);
+				    		
+					    		$("#ticket_discount").text("할인금액 " + inputPoint.toLocaleString() + "원");
+			    				$("#ticket_result").text("총합계 " + (beforeCostTotalWithoutCommas - inputPoint).toLocaleString() + "원");
+			    				
 				    		}
 				    		
 				    	}else {
@@ -1125,11 +1164,17 @@ main {
 					    			$("#totalPoint").text($("#totalPoint").text() - beforeCostTotalWithoutCommas);
 					    			$("#use_point_input").val(beforeCostTotalWithoutCommas);
 					    			$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
+					    			
+					    			$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
+				    				$("#ticket_result").text("총합계 " + 0 + "원");
+					    			
 					    		}else {
 						    		$("#pay_result").text((beforeCostTotalWithoutCommas - inputPoint).toLocaleString());
 						    		$("#totalPoint").text($("#totalPoint").text() - inputPoint);
 						    		$("#discount_price_total").text(inputPoint.toLocaleString());
 
+						    		$("#ticket_discount").text("할인금액 " + inputPoint.toLocaleString() + "원");
+				    				$("#ticket_result").text("총합계 " + (beforeCostTotalWithoutCommas - inputPoint).toLocaleString() + "원");
 					    		}
 				    		} else {
 				    			
@@ -1146,36 +1191,69 @@ main {
 						    		const payFinal =  beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) - inputPoint;
 						    		
 						    		if(payFinal < 0){ // 결제 금액이 0보다 작으면
-										$("#pay_result").text(0 + " ");				    				
-					    			}else {
-						    			$("#pay_result").text(payFinal);
-						    			$("#discount_price_total").text((((beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) + inputPoint).toLocaleString());
+										$("#pay_result").text(0 + " ");	
+										$("#use_point_input").val((beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount / 100))).toLocaleString());
+					    				$("#totalPoint").text($("#totalPoint").text() - (beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount / 100))));
+					    				$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
+						    		
+					    				$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
+					    				$("#ticket_result").text("총합계 " + 0 + "원");
+					    				
+						    		}else {
+						    			$("#pay_result").text(payFinal.toLocaleString());
+						    			$("#discount_price_total").text(((beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) + inputPoint).toLocaleString());
 						    			$("#totalPoint").text($("#totalPoint").text() - inputPoint);
+						    			
+						    			$("#ticket_discount").text("할인금액 " + ((beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) + inputPoint).toLocaleString() + "원");
+					    				$("#ticket_result").text("총합계 " + payFinal.toLocaleString() + "원");
+						    			
 					    			}
 						    		
 				    			} else if($("#giftcard_table").find("tbody tr").length > 0) {
-				    				console.log("기프트카드 적용");
+				    				
+									const tableRows = $("#giftcard_table").find("tbody tr");
+							
+									let totalDiscount = 0;
+									
+									for(let i = 0; i < tableRows.length; i++){
+										const className = $(tableRows[i]).attr("class");
+										const discount = $($("." + className).children("td")[2]).text();										
+										const formattedDiscount = Number(discount.split(" ")[2].replace("원", "").replace(/,/g, ""));
+										
+										totalDiscount += formattedDiscount;
+									}									
+									
+									const before_cost_total = $("#before_cost_total").text();
+									const beforeCostTotalWithoutCommas = Number(before_cost_total.replace(/,/g, ''));
+									
+									const payFinal = beforeCostTotalWithoutCommas - totalDiscount - inputPoint;
+									
+									if(payFinal < 0){
+										
+										$("#pay_result").text(0 + " ");	
+										$("#use_point_input").val(beforeCostTotalWithoutCommas - totalDiscount);
+					    				$("#totalPoint").text($("#totalPoint").text() - (beforeCostTotalWithoutCommas - totalDiscount));
+					    				$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
+										
+					    				$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
+					    				$("#ticket_result").text("총합계 " + 0 + "원");
+					    				
+									}else {
+										
+										$("#pay_result").text(payFinal);
+										$("#discount_price_total").text((totalDiscount + inputPoint));
+										$("#totalPoint").text($("#totalPoint").text() - inputPoint);
+										
+										$("#ticket_discount").text("할인금액 " + (totalDiscount + inputPoint).toLocaleString() + "원");
+										$("#ticket_result").text("총합계 " + payFinal.toLocaleString() + "원");
+										
+									}
+									
+									
+									
+									
+									
 				    			}
-				    			
-				    			const before_cost_total = $("#before_cost_total").text();
-					    		const beforeCostTotalWithoutCommas = before_cost_total.replace(/,/g, '');
-				    			
-				    			const discount_price_total = $("#discount_price_total").text();
-				    			const discountPriceTotalWithoutCommas = discount_price_total.replace(/,/g, '');
-				    			
-				    			console.log(beforeDiscountPrice);
-				    			
-				    			const payFinal =  Number(beforeCostTotalWithoutCommas) - Number(discountPriceTotalWithoutCommas) - inputPoint;
-				    			
-				    			
-				    			if(payFinal < 0){ // 결제 금액이 0보다 작으면
-									$("#pay_result").text(0 + " ");				    				
-				    			}else {
-					    			$("#pay_result").text(payFinal);
-					    			$("#discount_price_total").text((Number(discountPriceTotalWithoutCommas) + inputPoint).toLocaleString());
-					    			$("#totalPoint").text($("#totalPoint").text() - inputPoint);
-				    			}
-				    			
 				    			
 				    		}
 				    		
@@ -1186,6 +1264,7 @@ main {
 				    	console.log(error);
 				    }
 				});
+				
 			});
 			
 			$("#use_point_input").on("blur", function(){ // 인풋이 실행될때 이벤트가 발생하는 것을 인풋에서 블러 될때 발생하게 수정해야 한다.
@@ -1196,6 +1275,53 @@ main {
 			$("#creditcard_types").on("click", "div", function(){
 				$(this).addClass("selected");
 				$(this).siblings().removeClass("selected");
+			});
+			
+			$("#payment_confirm").on("click", function(){
+				const hasSelected = $("#creditcard_types > div").hasClass("selected");
+				if(hasSelected){
+					if(confirm("이 정보로 결제하시겠습니까?")) {
+						alert("결제를 진행하겠습니다.");
+						const selectedElements = $('#creditcard_types > div.selected');
+						
+						const selectedCardName = selectedElements.attr("id"); // 카드사 이름
+						const scheduleNo = "${scheduleNo}"; // 상영스케줄 번호
+						const movieTitle = "${movieTitle}"; // 영화 제목
+						const cinemaName = "${cinemaName}"; // 영화관 이름
+						const date = "${date}"; // 상영 날짜
+						const time = "${time}"; // 상영 시간
+						const typeCount = "${typeCount}"; // 인원 카운트
+						const seatSelected = "${seatSelected}"; // 선택된 좌석
+						const beforeDiscount = $("#before_cost_total").text();
+						const discountTotal = $("#discount_price_total").text();
+						const payResult = $("#pay_result").text();
+						
+						// 결제 확인을 클릭 했을 때 ajax를 사용해서 결과를 출력한다 만약 결제 성공이면 걸제 성공 페이지로 아니면 결제 실패 페이지로 이동시킨다.
+						
+						$.ajax({
+							url : "http://localhost:9001/reservation/final/pay/result",
+							method: "GET",
+							dataType : "text",
+							success : function(response){
+								
+							},
+							error : function(xhr, status, error){
+								console.log(error);
+							}
+						});
+						
+						location.href="http://localhost:8080/reservation/pay/result/" + selectedCardName + "/" + scheduleNo + "/" + movieTitle + 
+								"/" + cinemaName + "/" + date + "/" + time + "/" + typeCount + "/" + seatSelected + "/" + beforeDiscount + "/" + discountTotal + "/" + payResult;
+						
+					}else {
+						
+						
+					}
+					
+				}	else {
+					alert("카드사를 선택해주세요.");
+				}			
+				
 			});
 			
 		});
@@ -1280,6 +1406,29 @@ main {
 				id = event.target.id;
 			}
 			
+			const jwtToken = localStorage.getItem("jwtToken");
+			
+			const inputPoint = $("#use_point_input").val();
+			if(inputPoint > 0 ){
+				$("#use_point_input").val(0);
+				$.ajax({
+					url : "http://localhost:9001/api/v1/reservation/my/point",
+					method : "GET",
+					dataType : "json",
+					headers: {
+				        'Authorization': 'Bearer ' + jwtToken  
+				    },
+				    success : function(response){
+						$("#totalPoint").text(response);			    	
+				    			
+				    },
+				    error : function(xhr, status, error){
+				    	console.log(error);
+				    }
+				});
+			}
+			
+			
 			$("#coupon_table").empty();
 			
 			$("#" + id).addClass("selected");
@@ -1317,7 +1466,7 @@ main {
 					  giftCard.name + 	
 					  '</td><td>' + 
 					  1 + 
-					  '</td><td> ' +
+					  '</td><td class="price"> ' +
 					  giftCard.price +
 					  '</td></tr> '; 
 					  const priceString = giftCard.price.split(" ")[1].replace("원",  "");
@@ -1335,6 +1484,9 @@ main {
 			$("#pay_result").text(before_cost_totalNumber.toLocaleString());
 			str += '</tbody></table> ';
 			$("#giftcard_table").html(str);
+			$("#ticket_discount").text("할인금액 " + discountPrice.toLocaleString() + "원");
+			$("#ticket_result").text("총합계 " + before_cost_totalNumber.toLocaleString() + "원");
+			
 			
 		}
 		
@@ -1344,6 +1496,28 @@ main {
 			$("#pay_result").text(0 + " ");
 			
 			let id = '';
+			
+			const jwtToken = localStorage.getItem("jwtToken");
+			
+			const inputPoint = $("#use_point_input").val();
+			if(inputPoint > 0 ){
+				$("#use_point_input").val(0);
+				$.ajax({
+					url : "http://localhost:9001/api/v1/reservation/my/point",
+					method : "GET",
+					dataType : "json",
+					headers: {
+				        'Authorization': 'Bearer ' + jwtToken  
+				    },
+				    success : function(response){
+						$("#totalPoint").text(response);			    	
+				    			
+				    },
+				    error : function(xhr, status, error){
+				    	console.log(error);
+				    }
+				});
+			}
 			
 			if(event.target.tagName === "P") {
 				id = event.target.parentNode.id;
@@ -1387,6 +1561,8 @@ main {
 			$("#discount_price_total").text(formattedDiscountPrice);
 			$("#pay_result").text(formattedResultPrice);
 			
+			$("#ticket_discount").text("할인금액 " + formattedDiscountPrice + "원");
+			$("#ticket_result").text("총합계 " + formattedResultPrice + "원");
 			
 		}
 		
@@ -1436,6 +1612,9 @@ main {
 				$("#pay_result").text(before_cost_total + " ");
 				$("#discount_price_total").text(0 + " ");
 				
+				$("#ticket_discount").text("할인금액 " + 0 + "원");
+				$("#ticket_result").text("총합계 " + before_cost_total + "원");
+				
 			}else if(tr.className.includes("giftCardNo_")){
 				$("#" + tr.className).removeClass("selected");
 
@@ -1472,6 +1651,10 @@ main {
 					$("#giftcard_table").empty();
 				}
 				
+				$("#ticket_discount").text("할인금액 " + beforeCostWithoutCommas.toLocaleString() + "원");
+				$("#ticket_result").text("총합계 " + (beforeCostToalWithoutCommas - beforeCostWithoutCommas).toLocaleString() + "원");
+				
+				
 			}
 			
 		}
@@ -1493,6 +1676,46 @@ main {
 		    let filteredArray = arr.filter(element => element !== elementToRemove);
 		    return filteredArray;
 		}
+		
+		$("#simple_info_title_reservation").on(
+				"mouseenter",
+				function() {
+					$(this).next(".simple_info_content")
+							.removeClass("none-active");
+				});
+
+		$("#simple_info_title_reservation").on(
+				"mouseleave",
+				function() {
+					$(this).next(".simple_info_content").addClass(
+							"none-active");
+				});
+		$("#simple_info_title_seats").on(
+				"mouseenter",
+				function() {
+					$(this).next(".simple_info_content")
+							.removeClass("none-active");
+				});
+
+		$("#simple_info_title_seats").on(
+				"mouseleave",
+				function() {
+					$(this).next(".simple_info_content").addClass(
+							"none-active");
+				});
+		$("#simple_info_title_pay").on(
+				"mouseenter",
+				function() {
+					$(this).next(".simple_info_content")
+							.removeClass("none-active");
+				});
+
+		$("#simple_info_title_pay").on(
+				"mouseleave",
+				function() {
+					$(this).next(".simple_info_content").addClass(
+							"none-active");
+				});
 		
 	</script>
 </body>

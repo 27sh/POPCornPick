@@ -76,9 +76,27 @@ public class ReservationService {
 
 	public List<Cinema> getCinemaByLocaiton(String cinemaLocation) {
 
-		List<Cinema> cinemaList = cinemaRepository.findByCinemaLocationOrderByCinemaNameAsc(cinemaLocation);
-
+		String location = "";
 		
+		if(cinemaLocation.equals("seoul")) {
+			location = "서울";
+		}else if(cinemaLocation.equals("gyeonggi_incheon")){
+			location = "경기/인천";
+		}else if(cinemaLocation.equals("chungcheong_daejeon")){
+			location = "충청/대전";
+		}else if(cinemaLocation.equals("jeonla_gwangju")){
+			location = "전라/광주";
+		}else if(cinemaLocation.equals("gyeongnam_busan_ulsan")){
+			location = "경남/부산/울산";
+		}else if(cinemaLocation.equals("gangwon")){
+			location = "강원";
+		}else if(cinemaLocation.equals("jeju")){
+			location = "제주";
+		}else if(cinemaLocation.equals("gyeongbuk_daegu")) {
+			location = "경북/대구";
+		}
+		
+		List<Cinema> cinemaList = cinemaRepository.findByCinemaLocationOrderByCinemaNameAsc(location);
 		return cinemaList;
 	}
 
@@ -87,14 +105,14 @@ public class ReservationService {
 		Map<String, String> countMap = new LinkedHashMap<>();
 		
 		int countMyCinema = expCinemaRepository.countByMember_Username(username);
-		int countSeoul = cinemaRepository.countByCinemaLocation("seoul");
-		int countGyeonggi_incheon = cinemaRepository.countByCinemaLocation("gyeonggi_incheon");
-		int countChungcheong_daejeon = cinemaRepository.countByCinemaLocation("chungcheong_daejeon");
-		int countJeonla_gwangju = cinemaRepository.countByCinemaLocation("jeonla_gwangju");
-		int countGyeongbuk_daegu = cinemaRepository.countByCinemaLocation("gyeongbuk_daegu");
-		int countGyeongnam_busan_ulsan = cinemaRepository.countByCinemaLocation("gyeongnam_busan_ulsan");
-		int countGangwon = cinemaRepository.countByCinemaLocation("gangwon");
-		int countJeju = cinemaRepository.countByCinemaLocation("jeju");
+		int countSeoul = cinemaRepository.countByCinemaLocation("서울");
+		int countGyeonggi_incheon = cinemaRepository.countByCinemaLocation("경기/인천");
+		int countChungcheong_daejeon = cinemaRepository.countByCinemaLocation("충청/대전");
+		int countJeonla_gwangju = cinemaRepository.countByCinemaLocation("전라/광주");
+		int countGyeongbuk_daegu = cinemaRepository.countByCinemaLocation("경북/대구");
+		int countGyeongnam_busan_ulsan = cinemaRepository.countByCinemaLocation("경남/부산/울산");
+		int countGangwon = cinemaRepository.countByCinemaLocation("강원");
+		int countJeju = cinemaRepository.countByCinemaLocation("제주");
 		
 		countMap.put("myCinema", "My 영화관(" + countMyCinema + ")");
 		countMap.put("seoul", "서울(" + countSeoul + ")");

@@ -11,6 +11,7 @@
 <title>관람관 등록</title>
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
 <style type="text/css">
 body {
 	box-sizing: border-box;
@@ -878,6 +879,8 @@ main {
 						}
 					});
 				}else {
+					
+					
 					$.ajax({
 						url : "http://localhost:9001/api/v1/reservation/cinema/location/list/" + location,
 						method : "GET",

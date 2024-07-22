@@ -6,6 +6,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"
 	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 	crossorigin="anonymous"></script>
+ <link rel="stylesheet" as="style" crossorigin
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
@@ -1044,11 +1046,11 @@ main {
 				}
 			}
 			
-			
-			
 		}
 		
-		
+		$(".simple_info_title").on("mouseenter", function(){
+			$(this)
+		});
 		
 	</script>
 </body>

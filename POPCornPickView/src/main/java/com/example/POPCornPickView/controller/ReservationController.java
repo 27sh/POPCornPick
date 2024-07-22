@@ -80,4 +80,55 @@ public class ReservationController {
 		
 		return "member/reservePage_paySeats";
 	}
+	@GetMapping("/pay/result/{selectedCardName}/{scheduleNo}/{movieTitle}/{cinemaName}/{date}/{time}/{typeCount}/{seatSelected}/{beforeDiscount}/{discountTotal}/{payResult}")
+	public String givePayResultParameters(@PathVariable("selectedCardName") String selectedCardName, @PathVariable("scheduleNo") Long scheduleNo, @PathVariable("movieTitle") String movieTitle,
+			@PathVariable("cinemaName") String cinemaName, @PathVariable("date") String date, @PathVariable("time") String time, 
+			@PathVariable("typeCount") String typeCount, @PathVariable("seatSelected") String seatSelected, @PathVariable("beforeDiscount") String beforeDiscount, 
+			@PathVariable("discountTotal") String discountTotal, @PathVariable("payResult") String payResult,RedirectAttributes redirectAttributes) {
+		
+		redirectAttributes.addFlashAttribute("selectedCardName", selectedCardName);
+		redirectAttributes.addFlashAttribute("scheduleNo", scheduleNo);
+		redirectAttributes.addFlashAttribute("movieTitle", movieTitle);
+		redirectAttributes.addFlashAttribute("cinemaName", cinemaName);
+		redirectAttributes.addFlashAttribute("date", date);
+		redirectAttributes.addFlashAttribute("time", time);
+		redirectAttributes.addFlashAttribute("typeCount", typeCount);
+		redirectAttributes.addFlashAttribute("seatSelected", seatSelected);
+		redirectAttributes.addFlashAttribute("beforeDiscount", beforeDiscount);
+		redirectAttributes.addFlashAttribute("discountTotal", discountTotal);
+		redirectAttributes.addFlashAttribute("payResult", payResult);
+		
+		return "redirect:/reservation/pay/result";
+	}
+	
+	@RequestMapping("/pay/result")
+	public String goToPayResult(Model model) {
+		
+		String selectedCardName = (String)model.getAttribute("selectedCardName");
+		Long scheduleNo = (Long) model.getAttribute("scheduleNo");
+		String movieTitle = (String) model.getAttribute("movieTitle");
+		String cinemaName = (String) model.getAttribute("cinemaName");
+		String date = (String) model.getAttribute("date");
+		String time = (String) model.getAttribute("time");
+		String typeCount = (String) model.getAttribute("typeCount");
+		String seatSelected = (String) model.getAttribute("seatSelected");
+		String beforeDiscount = (String) model.getAttribute("beforeDiscount");
+		String discountTotal = (String) model.getAttribute("discountTotal");
+		String payResult = (String) model.getAttribute("payResult");
+		
+		model.addAttribute("selectedCardName", selectedCardName);
+		model.addAttribute("scheduleNo", scheduleNo);
+		model.addAttribute("movieTitle", movieTitle);
+		model.addAttribute("cinemaName", cinemaName);
+		model.addAttribute("date", date);
+		model.addAttribute("time", time);
+		model.addAttribute("typeCount", typeCount);
+		model.addAttribute("seatSelected", seatSelected);
+		model.addAttribute("beforeDiscount", beforeDiscount);
+		model.addAttribute("discountTotal", discountTotal);
+		model.addAttribute("payResult", payResult);
+		
+		return "member/reservePage_payResult";
+	}
+	
 }

@@ -173,97 +173,112 @@ body {
 		<%@ include file="../layout/header.jsp"%>
 	</header>
 	<main>
-
-		<div class="container">
-			<div class="header">
-				<div class="movie-poster"></div>
-				<div class="movie-info">
-					<h1>인사이드 아웃 2</h1>
-					<button class="watch-button">예매하기</button>
-					<div class="formats">
-                    <span class="format">IMAX</span>
-                    <span class="format">4DX</span>
-                </div>
-				</div>
-			</div>
-
-			<div class="description">
-				<h2>영화 설명</h2>
-				<p>
-					어린이들이 볼 수 있는 감동적인 이야기...
-					<!-- Movie description goes here -->
-				</p>
-			</div>
-
-			<div class="stats">
-				<h2>관객 통계</h2>
-				<div class="stats-graphs">
-					<div class="age-group">
-						<h3>연령별 관람비율</h3>
-						<div class="graph age-graph"></div>
-					</div>
-					<div class="gender-group">
-						<h3>성별 관람비율</h3>
-						<div class="graph gender-graph"></div>
-					</div>
-				</div>
-			</div>
-
-			<div class="reviews">
-				<h2>트레일러(유투브 예고편이 올라갈 예정)</h2>
-				<div class="review-list">
-					<div class="review-item"></div>
-					<div class="review-item"></div>
-					<div class="review-item"></div>
-				</div>
-			</div>
-
-			<div class="still-cuts">
-				<h2>스틸컷</h2>
-				<div class="slider">
-					<div class="slides">
-						<div class="slide">
-							<img src="" alt="Still Cut 1">
-						</div>
-						<div class="slide">
-							<img src="" alt="Still Cut 2">
-						</div>
-						<div class="slide">
-							<img src="" alt="Still Cut 3">
-						</div>
-					</div>
-					<button class="prev" onclick="moveSlide(-1)">&#10094;</button>
-					<button class="next" onclick="moveSlide(1)">&#10095;</button>
-				</div>
-			</div>
-
-
-			<div class="rating">
-				<h2>평점</h2>
-				<div class="rating-score">
-					<span>8.8 / 10</span> <span>★ ★ ★ ★ ★</span>
-				</div>
-				<div class="rating-breakdown">
-					<div>5점: 100</div>
-					<div>4점: 50</div>
-					<div>3점: 20</div>
-					<div>2점: 10</div>
-					<div>1점: 5</div>
-				</div>
-				<button class="watch-button">평점작성</button>
-			</div>
-		</div>
-
-
-
+	<div id="targetElement"></div>
 
 	</main>
 	<footer> </footer>
 
 	<script>
-	let currentSlide = 0;
+	$(document).ready(function(){
+		const movieDetailDC = "${movieDC}"
+		console.log(movieDetailDC);
+		
+		$.ajax({
+			url : "http://localhost:9001/api/v1/film/movieDetail/" + movieDetailDC,
+			method : "GET",
+			success: function(data){
+			    let str = '';
+			    str += '<div class="container">';
+			    str += '    <div class="header">';
+			    str += '        <div class="movie-poster"></div>';
+			    str += '        <div class="movie-info">';
+			    str += '            <h1>' + data.movieNm + '</h1>';
+			    str += '            <span>감독: ' + data.directors + '/배우: ' + data.actors + '</span><br>';
+			    str += '            <span>장르: ' + data.genres + '/기본정보: ' + data.nations +',' + data.showTm + '</span><br>';
+			    str += '            <span>개봉: ' + data.openDt + '</span><br><br>';
+			    str += '            <button class="watch-button">예매하기</button>';
+			    str += '            <div class="formats">';
+			    str += '                <span class="format">IMAX</span>';
+			    str += '                <span class="format">4DX</span>';
+			    str += '            </div>';
+			    str += '        </div>';
+			    str += '    </div>';
+			    str += '    <div class="description">';
+			    str += '        <h2>영화 설명</h2>';
+			    str += '        <p>';
+			    str += '           ' + data.description + '
+			    str += '        </p>';
+			    str += '    </div>';
+			    str += '    <div class="stats">';
+			    str += '        <h2>관객 통계</h2>';
+			    str += '        <div class="stats-graphs">';
+			    str += '            <div class="age-group">';
+			    str += '                <h3>연령별 관람비율</h3>';
+			    str += '                <div class="graph age-graph"></div>';
+			    str += '            </div>';
+			    str += '            <div class="gender-group">';
+			    str += '                <h3>성별 관람비율</h3>';
+			    str += '                <div class="graph gender-graph"></div>';
+			    str += '            </div>';
+			    str += '        </div>';
+			    str += '    </div>';
+			    str += '    <div class="reviews">';
+			    str += '        <h2>트레일러(유투브 예고편이 올라갈 예정)</h2>';
+			    str += '        <div class="review-list">';
+			    str += '            <div class="review-item"></div>';
+			    str += '            <div class="review-item"></div>';
+			    str += '            <div class="review-item"></div>';
+			    str += '        </div>';
+			    str += '    </div>';
+			    str += '    <div class="still-cuts">';
+			    str += '        <h2>스틸컷</h2>';
+			    str += '        <div class="slider">';
+			    str += '            <div class="slides">';
+			    str += '                <div class="slide">';
+			    str += '                    <img src="" alt="Still Cut 1">';
+			    str += '                </div>';
+			    str += '                <div class="slide">';
+			    str += '                    <img src="" alt="Still Cut 2">';
+			    str += '                </div>';
+			    str += '                <div class="slide">';
+			    str += '                    <img src="" alt="Still Cut 3">';
+			    str += '                </div>';
+			    str += '            </div>';
+			    str += '            <button class="prev" onclick="moveSlide(-1)">&#10094;</button>';
+			    str += '            <button class="next" onclick="moveSlide(1)">&#10095;</button>';
+			    str += '        </div>';
+			    str += '    </div>';
+			    str += '    <div class="rating">';
+			    str += '        <h2>평점</h2>';
+			    str += '        <div class="rating-score">';
+			    str += '            <span>8.8 / 10</span> <span>★ ★ ★ ★ ★</span>';
+			    str += '        </div>';
+			    str += '        <div class="rating-breakdown">';
+			    str += '            <div>5점: 100</div>';
+			    str += '            <div>4점: 50</div>';
+			    str += '            <div>3점: 20</div>';
+			    str += '            <div>2점: 10</div>';
+			    str += '            <div>1점: 5</div>';
+			    str += '        </div>';
+			    str += '        <button class="watch-button">평점작성</button>';
+			    str += '    </div>';
+			    str += '</div>';
+
+			    
+			    $('#targetElement').html(str); 
+			},
+			error : function(){
+				
+			}
+			
+			
+		})
+		
+		
+	});
 
 	function moveSlide(n) {
+		let currentSlide = 0;
 	    const slides = document.querySelectorAll('.slide');
 	    const totalSlides = slides.length;
 

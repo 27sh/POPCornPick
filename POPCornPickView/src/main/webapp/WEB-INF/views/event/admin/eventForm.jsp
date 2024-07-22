@@ -128,7 +128,15 @@ textarea{
 				<input type="text" name="eventTitle" id="eventTitle"><br>
 				<label for="eventContent"><b>내용<span>*</span></b></label>
 				<textarea name="eventContent" id="eventContent">
-	
+				<div class="roulette">
+					<div class="segment"></div>
+					<div class="segment"></div>
+					<div class="segment"></div>
+					<div class="segment"></div>
+					<div class="marker"></div>
+				</div>
+				<button onclick="spin()"></button>
+				<p id="result"></p>
 				</textarea><br>
 				<label for="eventFile"><b>파일등록<span>*</span></b></label>
 				<input type="file" name="eventFile" id="eventFile"><br>
@@ -176,7 +184,7 @@ textarea{
 		$.ajax({
 			type : "POST",
 			enctype : 'multipart/form-data',
-			url : "http://localhost:9001/api/v1/event-admin",
+			url : "http://localhost:9001/api/v1/admin/event",
 			data : formData,
 			dataType : 'text',
 			processData : false,

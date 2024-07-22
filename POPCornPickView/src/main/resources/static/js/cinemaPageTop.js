@@ -40,7 +40,10 @@ $(document).ready(function() {
                     $('#box-cinema-name' + (index + 1)).data('cinema-location', cinema.cinemaLocation);
                 });
                 // 로드가 완료된 후 inner-select-1 클릭 이벤트 호출
-                $('#inner-select-1').trigger('click');
+				if ($('#inner-select-1').data('cinema-name')) {
+				    $('#inner-select-1').trigger('click');
+				}
+
             },
             error: function(error) {
                 console.log("Error:", error);

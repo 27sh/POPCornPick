@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <title>마이페이지 기본정보</title>
 <link href="/css/style.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" as="style" crossorigin
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
     #mainInfoContainer {

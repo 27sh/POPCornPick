@@ -58,7 +58,7 @@ public class QNAController {
 		
 		System.out.println("zbdpsdpdl : " + qna);
 		if (qna != null) {
-	        qna.setQnaCategory(updatedQna.getQnaCategory());
+	        qna.setQnaBigCategory(updatedQna.getQnaBigCategory());
 	        qna.setQnaTitle(updatedQna.getQnaTitle());
 	        qna.setQnaContent(updatedQna.getQnaContent());
 	        qna.setQnaAnswer(updatedQna.getQnaAnswer());

@@ -117,7 +117,7 @@ th {
 													var answerStatus = (qna.qnaAnswer === null)? '답변대기<input type="button" class="btn"'+ answerClass +' onclick="answerToQna(event)" id="answer' + qna.qnaNo + '" value="답변하기">' : '답변완료'; // 답변 상태 처리
 													var row = '<tr>'+
 													'<td>' + qna.qnaNo + '</td>'+
-													'<td>' + qna.qnaCategory + '</td>' +
+													'<td>' + qna.qnaBigCategory + '</td>' +
 													'<td>' + qna.qnaTitle + '</td>'	+
 													'<td>' + qna.member.username + '</td>' +
 													'<td>' + formattedDate + '</td>'+

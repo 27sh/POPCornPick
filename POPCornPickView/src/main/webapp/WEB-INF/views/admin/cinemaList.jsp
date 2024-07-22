@@ -80,8 +80,8 @@ select {
 
 </style>
 </head>
-<%@ include file="../layout/adminHeader.jsp"%>
 <body>
+<%@ include file="../layout/adminHeader.jsp"%>
 	<main>
 		<div class="sidebar-container">
 			<%@ include file="../layout/cinemaSideBar.jsp"%>

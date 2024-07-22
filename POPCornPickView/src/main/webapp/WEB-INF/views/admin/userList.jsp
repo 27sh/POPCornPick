@@ -38,8 +38,8 @@ table, tr, th, td{
 
 </style>
 </head>
-<%@ include file="../layout/adminHeader.jsp"%>
 <body>
+<%@ include file="../layout/adminHeader.jsp"%>
 	<main>
 		<div id="container">
 			<h2>회원 관리</h2>

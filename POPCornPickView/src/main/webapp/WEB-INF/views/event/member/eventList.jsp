@@ -86,8 +86,8 @@ hr{
 
 </style>
 </head>
-<%@ include file="../../layout/header.jsp"%>
 <body>
+<%@ include file="../../layout/header.jsp"%>
 	<main>
 		<div id="container">
 			<div id="titleContainer">

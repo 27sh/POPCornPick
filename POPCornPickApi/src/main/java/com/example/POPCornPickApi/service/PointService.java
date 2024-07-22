@@ -20,4 +20,13 @@ public class PointService {
         int totalUsed = points.stream().mapToInt(Point::getPointUse).sum();
         return totalAchieved - totalUsed;
     }
+	
+	public boolean acheivePoint(Point point) {
+		try {
+			pointRepository.save(point);
+			return true;
+		} catch(Exception e) {
+			return false;
+		}
+	}
 }

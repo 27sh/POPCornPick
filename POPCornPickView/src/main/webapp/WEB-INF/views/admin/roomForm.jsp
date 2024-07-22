@@ -6,6 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>관람관 등록</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
 main {
 	width: 1200px;
@@ -181,7 +184,7 @@ select {
 					alert("다시 등록해주세요.");
 				}
 			};
-			xhttp.open("POST", "http://localhost:9001/api/v1/room");
+			xhttp.open("POST", "http://localhost:9001/api/v1/admin/room");
 			xhttp.setRequestHeader("Content-type", "application/json");
 			xhttp.send(sendData);
 		}

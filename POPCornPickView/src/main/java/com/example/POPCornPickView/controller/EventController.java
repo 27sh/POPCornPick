@@ -33,10 +33,19 @@ public class EventController {
 		return "event/member/eventList";
 	}
 	
-	
 	@RequestMapping("/commonDetail")
 	public String eventCommonDetail() {
 		return "event/member/eventDetail";
+	}
+	
+	@RequestMapping("/participationList")
+	public String eventMemberParticipationList() {
+		return "event/admin/eventMemberList";
+	}
+	
+	@RequestMapping("/endList")
+	public String eventEndList() {
+		return "event/admin/eventEndList";
 	}
 	
 

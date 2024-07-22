@@ -30,7 +30,7 @@ import com.example.POPCornPickApi.service.SeatService;
 
 //@CrossOrigin("*")
 @RestController
-@RequestMapping("/api/v1/cinema")
+@RequestMapping("/api/v1/admin/cinema")
 public class CinemaController {
 
 	@Value("${spring.servlet.multipart.location}")

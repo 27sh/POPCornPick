@@ -5,9 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>영화관 등록</title>
-<script src="https://code.jquery.com/jquery-3.7.1.js"
-	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
 main {
 	width: 1200px;
@@ -169,7 +169,7 @@ input[type="file"]{
 		$.ajax({
 			type : "POST",
 			enctype : 'multipart/form-data',
-			url : "http://localhost:9001/api/v1/cinema",
+			url : "http://localhost:9001/api/v1/admin/cinema",
 			data : formData,
 			dataType : 'text',
 			processData : false,
@@ -198,7 +198,7 @@ input[type="file"]{
 		$.ajax({
 			type : "PUT",
 			enctype : 'multipart/form-data',
-			url : "http://localhost:9001/api/v1/cinema",
+			url : "http://localhost:9001/api/v1/admin/cinema",
 			data : formData,
 			dataType : 'text',
 			processData : false,
@@ -216,7 +216,7 @@ input[type="file"]{
 	
 	function cinemaModify(cinemaNo){
 		$.ajax({
-			url : "http://localhost:9001/api/v1/cinema/detail",
+			url : "http://localhost:9001/api/v1/admin/cinema/detail",
 			type : "GET",
 			data : {
 				cinemaNo : cinemaNo

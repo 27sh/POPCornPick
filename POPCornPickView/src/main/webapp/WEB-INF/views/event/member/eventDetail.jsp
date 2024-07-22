@@ -6,9 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>이벤트 상세조회</title>
-<script src="https://code.jquery.com/jquery-3.7.1.js"
-	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
 main {
 	width: 1200px;
@@ -103,11 +103,11 @@ hr{
 <body>
 	<main>
 		<div class="event-header">
-			<div class="event-info">
-				<div class="event-state"><b id="eventState"></b></div>
-				<div id="eventTitle" class="event-title"></div>
-			</div>
-			<div id="eventPeriod" class="event-period"></div>
+		<div class="event-info">
+			<div class="event-state"><b id="eventState"></b></div>
+			<div id="eventTitle" class="event-title"></div>
+		</div>
+		<div id="eventPeriod" class="event-period"></div>
 		</div>
 		<div id="eventContent"></div>
 		<div id="eventSubmitButton"></div>
@@ -207,35 +207,38 @@ hr{
 				break;
 			}
 		}
-		
-		console.log(selectedValue1);
-		console.log(selectedValue2);
-		console.log(selectedValue3);
-		console.log(selectedValue4);
+		const mbtiResult = selectedValue1+selectedValue2+selectedValue3+selectedValue4;
+		console.log(mbtiResult);
+		console.log(selectedValue1, selectedValue2, selectedValue3, selectedValue4);
 		
 		const urlParams = new URLSearchParams(window.location.search);
 		let eventNo = urlParams.get('eventNo');
 		console.log("eventNo22 : ", eventNo);
 		
-		const participation = {
-			eventNo : eventNo
+		const eventTable = {
+			eventNo : eventNo,
+			contentsResult : mbtiResult
 		}
-		console.log("participation", participation);
+		console.log("event", eventTable);
 
-		const sendData = JSON.stringify(participation);
+		const sendData = JSON.stringify(eventTable);
 		console.log("sendData: " + sendData);
 
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = function() {
 			if (this.status === 200) {
 				alert(this.responseText);
-				window.location.href = "http://localhost:8080/event/commonList"
+				window.location.href = "http://localhost:8080/event/commonList?eventState=1"
 			} else {
 				alert("다시 입력해주세요.");
 			}
 		};
 		xhttp.open("POST", "http://localhost:9001/api/v1/event/member/form");
 		xhttp.setRequestHeader("Content-type", "application/json");
+		
+		const token = localStorage.getItem("jwtToken");
+		xhttp.setRequestHeader("token", token);
+		console.log(token);
 		xhttp.send(sendData);
 	}
 	

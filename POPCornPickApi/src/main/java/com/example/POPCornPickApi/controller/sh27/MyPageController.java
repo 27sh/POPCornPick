@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.dto.CustomUserDetails;
+import com.example.POPCornPickApi.entity.Coupon;
 import com.example.POPCornPickApi.entity.ExpCinema;
+import com.example.POPCornPickApi.entity.GiftCard;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.repository.CouponRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
@@ -70,5 +73,16 @@ public class MyPageController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
         return expCinemaRepository.findByMemberUsername(username);
+    }
+	
+	@GetMapping("/having")
+    public List<Object> getHavingItems(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+
+        List<Coupon> coupons = couponRepository.findByMemberUsername(username);
+        List<GiftCard> giftCards = giftCardRepository.findByMemberUsername(username);
+
+        return List.of(coupons, giftCards);
     }
 }

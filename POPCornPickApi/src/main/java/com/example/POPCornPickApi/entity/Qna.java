@@ -35,7 +35,19 @@ public class Qna extends BaseEntity{
 	private String qnaFile;
 	
 	@Column(nullable = false)
-	private String qnaCategory;
+	private String qnaBigCategory;
+	
+	@Column(nullable = false)
+	private String qnaSmallCategory;
+	
+	@Column(nullable = false)
+	private String qnaType;
+	
+	@Column(nullable = false)
+	private String qnaCinemaLocation;
+	
+	@Column(nullable = false)
+	private String qnaCinemaNo;
 	
 	@Column(nullable = true)
 	private String qnaAnswer;

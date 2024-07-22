@@ -26,6 +26,8 @@ public class MemCinemaController {
 			return cinemaList;
 		}
 		
+		
+		
 		return null;
 		
 	}

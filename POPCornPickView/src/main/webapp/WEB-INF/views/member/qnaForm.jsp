@@ -299,7 +299,7 @@ tr[name="qnaContent"] {
 					</tr>
 					<tr>
 						<th class="th">첨부파일 </th>
-						<td><div class="text-area"><input type="file" value="파일 첨부"></div></td>
+						<td><div class="text-area"><input type="file" name="file" value="파일 첨부"></div></td>
 					</tr>
 					
 				</table>
@@ -328,22 +328,38 @@ tr[name="qnaContent"] {
 		
 		function qnaWrite(){
 			tokenCheck();
-			const qnaCategory = document.querySelector("select[name='qnaCategory']").value;
+			const token = localStorage.getItem("jwtToken");
+			const formData = new FormData();
+			
+			const fileInput = document.getElementByName("file");
+			const file = fileInput.files[0];
+			formData.append("qnaFile", file);
+			formData.append("username", dpcument.querySelector(""));
+			formData.append("qnaTitle", document.querySelector("input[name='qnaTitle']").value);
+			formData.append("qnaContent", document.querySelector("input[name='qnaContent']").value);
+			formData.append("qnaBigCategory", document.querySelector("#big-classification").value);
+			formData.append("qnaSmallCategory", document.querySelector("#small-classification").value);
+			formData.append("qnaType", document.querySelector("input[name='radioBtn']").value);
+			formData.append("qnaCinemaLocation", document.querySelector("#select-big-location").value);// 영화관문의, 기타문의
+			formData.append("qnaCinemaNo", document.querySelector("#select-cinemaNo").value);
+			
 			const xhttp = new XMLHttpRequest();
 			
 			xhttp.onload = function(){
 				
 			}
 			
-			xhttp.open("POST", "http://localhost:9001/api/v1/memInquiry/writeInquiry/{qnaCategory}");
-			xhttp.setRequestHeader();
-			xhttp.send();
+			xhttp.open("POST", "http://localhost:9001/api/v1/memInquiry/writeInquiry");
+			xhttp.setRequestHeader("Authorization", "Bearer " + token);
+			//xhttp.setRequestHeader("Content-type", "multipart/form-data"); FormData 객체가 표준화된 방식으로 데이터를 준비해서 자동으로 이 설정이 됨.
+			xhttp.send(formData);
 		}
 		
 		function loadCinemaNo(event){
 			const xhttp = new XMLHttpRequest();
 			const location = event.target.value;
 			console.log(location + ", " + event.target);
+			const token = localStorage.getItem("jwtToken");
 			
 			xhttp.onload = function(){
 				if(xhttp.responseText != null){
@@ -351,19 +367,26 @@ tr[name="qnaContent"] {
 						const cinemaList = JSON.parse(xhttp.responseText);
 						const selectCinemaNo = document.querySelector("#select-cinemaNo");
 						selectCinemaNo.innerHTML = ''; // 기존 옵션 요소 비우기
-						selectCinemaNo.innerHTML = '<option selected>영화관 선택</option>';
+						selectCinemaNo.innerHTML = '<option selected onchange="consoleCheck(event)">영화관 선택</option>';
 						cinemaList.forEach(cinema => {
-							selectCinemaNo.innerHTML += `<option value="${cinema}">${cinema}</option>`;
+							selectCinemaNo.innerHTML += `<option value="${cinema}" >${cinema}</option>`;
+							//selectCinemaNo.innerHTML += `<option value="${cinema}">${cinema}</option>`;
 							console.log(cinema);
 						});
 					}
+				}else {
+					alert("Faile");
 				}
-				alert("Faile");
 			}
 			
 			xhttp.open("GET", "http://localhost:9001/api/v1/cinemaList?location=" + location);
+			xhttp.setRequestHeader("Authorization", "Bearer " + token);
 			xhttp.send();
 			
+		}
+		
+		function consoleCheck(event){
+			console.log(event.target);
 		}
 		
 		function tokenCheck(){

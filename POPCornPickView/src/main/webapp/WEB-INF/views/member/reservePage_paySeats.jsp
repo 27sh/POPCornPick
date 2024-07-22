@@ -1088,18 +1088,70 @@ main {
 				    	const pay_result = $("#pay_result").text();
 				    	const payResultWithoutCommas = Number(pay_result.replace(/,/g, ""));
 				    	
-				    	if(response > payResultWithoutCommas){
-				 			// 내 총 포인트가 결제금액보다 크다면 
-				 			
-				    		$("#use_point_input").val(payResultWithoutCommas);
-					    	$("#totalPoint").text(response - payResultWithoutCommas);
-												    	
-				    	}else {
-				    		// 내 총 포인트가 결제금액보다 같거나 작다면
-				    		
-				    		$("#use_point_input").val(response);
-					    	$("#totalPoint").text(response - response);
-				    		
+				    	const before_cost_total = $("#before_cost_total").text();
+				    	const beforeCostTotalWithoutCommas = Number(before_cost_total.replace(/,/g, ""));
+				    	
+				    	const discount_price_total = $("#discount_price_total").text();
+				    	const discountPriceTotalWithoutCommas = Number(discount_price_total.replace(/,/g, ""));
+				    	
+				    	
+				    	if(payResultWithoutCommas > 0){
+					    	if(response > payResultWithoutCommas){
+					 			// 내 총 포인트가 결제금액보다 크다면 
+					 			
+					    		$("#use_point_input").val(payResultWithoutCommas);
+						    	$("#totalPoint").text(response - payResultWithoutCommas);
+								$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
+								$("#pay_result").text(0);
+								
+					    	}else {
+					    		// 내 총 포인트가 결제금액보다 같거나 작다면
+					    		
+				    			if($("#coupon_table").find("tbody tr").length > 0) {
+				    				const className = $("#coupon_table").children("tbody").children("tr").attr("class");
+				    				
+				    				const discount = $($("." + className).children("td")[2]).text();
+				    				
+				    				const formattedDiscount = discount.replace("%", "").replace(" ", "");
+				    				
+				    				const before_cost_total = $("#before_cost_total").text();
+						    		const beforeCostTotalWithoutCommas = Number(before_cost_total.replace(/,/g, ''));
+				    				
+						    		const payFinal =  beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) - inputPoint;
+						    		
+						    		$("#use_point_input").val(response);
+		 					    	$("#totalPoint").text(response - response);
+		 					    	$("#discount_price_total").text((discountPriceTotalWithoutCommas + response).toLocaleString());
+		 					    	$("#pay_result").text()
+						    		
+						    		
+				    			} else if($("#giftcard_table").find("tbody tr").length > 0) {
+				    				
+									const tableRows = $("#giftcard_table").find("tbody tr");
+							
+									let totalDiscount = 0;
+									
+									for(let i = 0; i < tableRows.length; i++){
+										const className = $(tableRows[i]).attr("class");
+										const discount = $($("." + className).children("td")[2]).text();										
+										const formattedDiscount = Number(discount.split(" ")[2].replace("원", "").replace(/,/g, ""));
+										
+										totalDiscount += formattedDiscount;
+									}									
+									
+									const before_cost_total = $("#before_cost_total").text();
+									const beforeCostTotalWithoutCommas = Number(before_cost_total.replace(/,/g, ''));
+									
+									const payFinal = beforeCostTotalWithoutCommas - totalDiscount - inputPoint;
+									
+									$("#use_point_input").val(response);
+		 					    	$("#totalPoint").text(response - response);
+		 					    	$("#discount_price_total").text((discountPriceTotalWithoutCommas + response).toLocaleString());
+		 					    	$("#pay_result").text()
+									
+					    		
+					    	}
+					    	
 				    	}
 				    	// 포인트 전체 사용시 작동하는 함수
 				    	
@@ -1248,10 +1300,6 @@ main {
 										$("#ticket_result").text("총합계 " + payFinal.toLocaleString() + "원");
 										
 									}
-									
-									
-									
-									
 									
 				    			}
 				    			

@@ -12,10 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.jwt.JWTUtil;
+import com.example.POPCornPickApi.dto.ReservationFinalPayDto;
 import com.example.POPCornPickApi.dto.ScheduleDto_JYC;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Coupon;
@@ -242,5 +245,18 @@ public class ReservationController {
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(myPoint);
+	}
+	
+	@PostMapping("/final/pay/result")
+	public ResponseEntity<String> getPayResult(@RequestBody ReservationFinalPayDto reservationFinalPay, HttpServletRequest request){
+
+		String jwtToken = request.getHeader("Authorization").split(" ")[1];
+		
+		String username = jwtUtil.getUsername(jwtToken);
+		
+		String result = reservationService.getPayResult(reservationFinalPay, username);
+	
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(result);
 	}
 }

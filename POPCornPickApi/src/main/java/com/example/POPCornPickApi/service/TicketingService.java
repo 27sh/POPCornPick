@@ -15,7 +15,7 @@ public class TicketingService {
     private TicketingRepository ticketingRepository;
 
 	public List<String> getTopMoviesByTicketCount() {
-        List<Object[]> result = ticketingRepository.findTopMoviesByTicketCount();
+        List<Object[]> result = ticketingRepository.getTopMoviesByTicketCount();
         return result.stream()
                 .map(record -> (String) record[0])
                 .collect(Collectors.toList());

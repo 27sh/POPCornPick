@@ -613,7 +613,10 @@ main {
 								        '<span>' + date + '</span> <span>' + resultTime + '</span>' +
 								        '</div>' +
 								        '<div id="movie_room">' +
-								        '<span>' + response.room.cinema.cinemaName + "<span> | </span>" + response.room.roomType.roomName + " " + response.room.roomType.smallType + " "; 
+								        '<span>' + response.room.cinema.cinemaName + "<span> | </span>" + response.room.roomType.roomName + " ";
+								 if(response.room.roomType.smallType !== null){
+									str += response.room.roomType.smallType + " "; 
+								 } 
 								        
 								        // 자막 더빙 여부
 							    	 	if(response.movieShowDetail.dubbing === true){
@@ -1048,9 +1051,7 @@ main {
 			
 		}
 		
-		$(".simple_info_title").on("mouseenter", function(){
-			$(this)
-		});
+		
 		
 	</script>
 </body>

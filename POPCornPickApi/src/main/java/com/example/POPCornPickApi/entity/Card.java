@@ -29,4 +29,7 @@ public class Card extends BaseEntity{
 	
 	@Column(nullable = false)
 	private Date cardEndDate;
+	
+	@Column(nullable = false)
+	private int money;
 }

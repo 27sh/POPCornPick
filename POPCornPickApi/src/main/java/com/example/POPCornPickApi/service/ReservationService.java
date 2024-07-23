@@ -4,32 +4,40 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.dto.ReservationFinalPayDto;
 import com.example.POPCornPickApi.dto.ScheduleDto_JYC;
+import com.example.POPCornPickApi.entity.Card;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Coupon;
 import com.example.POPCornPickApi.entity.ExpCinema;
 import com.example.POPCornPickApi.entity.GiftCard;
+import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.MovieShowDetail;
 import com.example.POPCornPickApi.entity.Point;
 import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.Schedule;
+import com.example.POPCornPickApi.entity.Ticketing;
+import com.example.POPCornPickApi.repository.CardRepository;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.CouponRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
 import com.example.POPCornPickApi.repository.GiftCardRepository;
+import com.example.POPCornPickApi.repository.MemberRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
 import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
 import com.example.POPCornPickApi.repository.PointRepository;
@@ -47,18 +55,22 @@ public class ReservationService {
 	private MovieRepository movieRepository;
 	private MovieShowDetailRepository movieShowDetailRepository;
 	private TicketingRepository ticketingRepository;
-	private ScheduleRepository shceduleRepository;
+	private ScheduleRepository scheduleRepository;
 	private SeatRepository seatRepository;
 	private ReservatedSeatRepository reservatedSeatRepository;
 	private GiftCardRepository giftCardRepository;
 	private CouponRepository couponRepository;
 	private PointRepository pointRepository;
-
+	private CardRepository cardRepository;
+	private MemberRepository memberRepository;
+	
+	
 	public ReservationService(CinemaRepository cinemaRepository, ExpCinemaRepository expCinemaRepository,
 			RoomRepository roomRepository, MovieRepository movieRepository,
 			MovieShowDetailRepository movieShowDetailRepository, TicketingRepository ticketingRepository,
-			ScheduleRepository shceduleRepository, SeatRepository seatRepository, ReservatedSeatRepository reservatedSeatRepository,
-			GiftCardRepository giftCardRepository, CouponRepository couponRepository, PointRepository pointRepository
+			ScheduleRepository scheduleRepository, SeatRepository seatRepository, ReservatedSeatRepository reservatedSeatRepository,
+			GiftCardRepository giftCardRepository, CouponRepository couponRepository, PointRepository pointRepository, 
+			CardRepository cardRepository, MemberRepository memberRepository
 			) {
 		this.cinemaRepository = cinemaRepository;
 		this.expCinemaRepository = expCinemaRepository;
@@ -66,12 +78,14 @@ public class ReservationService {
 		this.movieRepository = movieRepository;
 		this.movieShowDetailRepository = movieShowDetailRepository;
 		this.ticketingRepository = ticketingRepository;
-		this.shceduleRepository = shceduleRepository;
+		this.scheduleRepository = scheduleRepository;
 		this.seatRepository = seatRepository;
 		this.reservatedSeatRepository = reservatedSeatRepository;
 		this.giftCardRepository = giftCardRepository;
 		this.couponRepository = couponRepository;
 		this.pointRepository = pointRepository;
+		this.cardRepository = cardRepository;
+		this.memberRepository = memberRepository;
 	}
 
 	public List<Cinema> getCinemaByLocaiton(String cinemaLocation) {
@@ -162,13 +176,12 @@ public class ReservationService {
 		List<MovieShowDetail> movieShowDetailList = movieShowDetailRepository.findAll();
 		Map<Long, Long> countMap = new HashMap<>();
 		movieShowDetailList.forEach(movieShowDetail -> {
-			Long count = ticketingRepository.countByMovieShowDetail_DetailNo(movieShowDetail.getDetailNo());
+			Long count = ticketingRepository.getTicketingCountByDetailNo(movieShowDetail.getDetailNo());
 			if(count > 0) {
 				countMap.put(movieShowDetail.getDetailNo(), count);
 			}
 		});
 
-		
 		Set<Long> detailNoSet = new HashSet<>();
 
 		for (int i = 0; i < countMap.size(); i++) {
@@ -191,7 +204,6 @@ public class ReservationService {
 				totalCountMap.put(movie, countMap.get(detailNo));
 			}
 		});
-
 		
 		Map<Movie, Long> map = sortByValue(totalCountMap);
 
@@ -206,7 +218,6 @@ public class ReservationService {
 
 		
 		Collections.reverse(result);
-
 		
 		movieList.forEach(movie -> {
 			if (result.contains(movie)) {
@@ -215,7 +226,7 @@ public class ReservationService {
 				result.add(movie);
 			}
 		});
-
+		
 		return result;
 	}
 
@@ -273,7 +284,7 @@ public class ReservationService {
 
 		// 디테일 넘버로 상영시간 테이블에서 가지고 오는데 순서는 상영시작 시간 오름차순이다.
 		detailNoList.forEach(detailNo -> {
-			List<Schedule> scheduleList = shceduleRepository.findByMovieShowDetail_DetailNoOrderByStartAsc(detailNo);
+			List<Schedule> scheduleList = scheduleRepository.findByMovieShowDetail_DetailNoOrderByStartAsc(detailNo);
 			scheduleListList.add(scheduleList);
 		});
 
@@ -350,8 +361,6 @@ public class ReservationService {
 								resultScheduleList.add(scheduleDto);
 							}
 						}
-
-
 					}
 				}
 
@@ -385,7 +394,7 @@ public class ReservationService {
 	
 		
 	public ScheduleDto_JYC getScheduleDetail(Long scheduleNo) {
-		Schedule schedule = shceduleRepository.findByScheduleNo(scheduleNo);
+		Schedule schedule = scheduleRepository.findByScheduleNo(scheduleNo);
 		ScheduleDto_JYC scheduleDto = new ScheduleDto_JYC();
 		scheduleDto.setScheduleNo(schedule.getScheduleNo());
 		scheduleDto.setMovieShowDetail(schedule.getMovieShowDetail());
@@ -419,7 +428,7 @@ public class ReservationService {
 		
 		LocalDate today = LocalDate.now();
 		
-		List<Coupon> couponList = couponRepository.findByMember_UsernameAndCouponNo_EndDateAfterOrderByCouponNo_EndDateAsc(username, today);
+		List<Coupon> couponList = couponRepository.findByMember_UsernameAndCouponNo_EndDateAfterAndModdateIsNullOrderByCouponNo_EndDateAsc(username, today);
 		
 		return couponList;
 	}
@@ -434,5 +443,79 @@ public class ReservationService {
 		
 		return resultPoint;
 	}
-
+	
+	public String getPayResult(ReservationFinalPayDto reservationFinalPay, String username) {
+		
+		List<String> classNames = reservationFinalPay.getClassNames(); // 할인 쿠폰 번호
+		Long scheduleNo = Long.parseLong(reservationFinalPay.getScheduleNo()); // 상영 스케줄 번호
+		String[] seatSelected = reservationFinalPay.getSeatSelected().split(", "); // 선택된 좌석
+		int payResult = reservationFinalPay.getPayResult(); // 총 결제 금액
+		String cardName = reservationFinalPay.getCardName(); // 카드 이름
+		int inputPoint = reservationFinalPay.getInputPoint(); // 사용된 포인트 
+		
+		// 카드에 잔액이 있는지 확인하는 기능
+		Card card = cardRepository.findByMember_UsernameAndCardCompanyAndCardEndDateAfterAndMoneyGreaterThan(username, cardName, new Date(), payResult);
+		
+		if(card != null) {
+			if(card.getMoney() < payResult) {
+				return "잔액이 부족합니다.";
+			}else {
+				Card newCard = new Card(card.getCardNo(), card.getMember(), card.getCardCompany(), card.getCardEndDate(), card.getMoney() - payResult);
+				cardRepository.save(newCard);
+			}
+		}else {
+			return "사용할 수 없는 카드입니다.";
+		}
+		
+		for(int i = 0; i < seatSelected.length; i ++) { // reservatedSeat 좌석 예약 기능
+			int asciiValue = (int)seatSelected[i].charAt(0);
+			int seatRow = asciiValue - 64;
+			int seatColumn = Integer.parseInt(seatSelected[i].substring(1, seatSelected[i].length()));
+			Optional<ReservatedSeat> reservatedSeat = reservatedSeatRepository.findBySchedule_ScheduleNoAndSeatRowAndSeatColumn(scheduleNo, seatRow, seatColumn);
+			if(reservatedSeat.isPresent()) {
+				return "이미 예약된 좌석입니다.";
+			}else {
+				Optional<Schedule> schedule = scheduleRepository.findById(scheduleNo);
+				if(schedule.isPresent()) {
+					ReservatedSeat reservatedSeatEntity = new ReservatedSeat(null, schedule.get(), seatRow, seatColumn, true);
+					reservatedSeatRepository.save(reservatedSeatEntity);
+					Optional<ReservatedSeat> reservatedSeatFound = reservatedSeatRepository.findBySchedule_ScheduleNoAndSeatRowAndSeatColumn(scheduleNo, seatRow, seatColumn);
+					if(reservatedSeatFound.isPresent()) {
+						ReservatedSeat reservatedSeatEntityFound = reservatedSeatFound.get();
+						Member member = memberRepository.findByUsername(username);
+						Ticketing ticketing = new Ticketing(null, null, member, reservatedSeatEntityFound, payResult, false);
+						ticketingRepository.save(ticketing);
+					}
+				}
+			}
+		}
+		
+		if(classNames.size() > 0) {
+			// 할인 쿠폰이 적용 되어 있을 경우
+			// 할인 쿠폰을 사용하지 못하게 테이블에 값을 바꿔줘야 한다.
+			
+			Long issueNo = Long.parseLong(classNames.get(0).substring(8, classNames.get(0).length()));
+			Optional<Coupon> coupon = couponRepository.findById(issueNo);
+			
+			if(coupon.isPresent()) {
+				Coupon couponEntity = coupon.get();
+				couponEntity.setModdate(new Date());
+				couponRepository.save(couponEntity);
+			}else {
+				return "쿠폰이 존재하지 않습니다.";
+			}
+			
+		} else {
+			System.out.println("아무것도 없습니다.");
+		}
+		
+		if(inputPoint > 0) {
+			Member member = memberRepository.findByUsername(username);
+			Point point = new Point(null, member, "영화예매", 0, inputPoint);
+			
+			pointRepository.save(point);
+		}
+		return "예매가 성공적으로 처리되었습니다.";
+	}
+	
 }

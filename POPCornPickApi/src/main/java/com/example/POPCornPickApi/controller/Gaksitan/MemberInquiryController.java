@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/memInquiry")
+@PreAuthorize("hasRole('MEMBER')")
 public class MemberInquiryController {
 	
 	@Autowired
@@ -45,7 +47,7 @@ public class MemberInquiryController {
 	@Autowired
 	private ExpCinemaRepository expCinemaRepository;
 	
-	@PostMapping("/writeInquiry")
+	@PostMapping("/writeInquiry") // dto MultipratFile 필드 변수 선언 @ModelAttribute
 	public ResponseEntity<?> writeInquiry(@RequestParam("qnaFile") MultipartFile file, Qna qna, @RequestParam("username") String username) {
 		try {
 			// 파일 저장 경로 설정
@@ -59,6 +61,7 @@ public class MemberInquiryController {
 			member.setUsername(username);
 			qna.setMember(member);
 			qnaRepository.save(qna);
+			
 			return ResponseEntity.ok("파일 업로드 성공");
 		} catch (IOException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패");
@@ -92,9 +95,24 @@ public class MemberInquiryController {
 		
 	}
 	
+	@GetMapping("/writeInquiry")
+	public List<Qna> qnaList(HttpServletRequest request){
+		String token = request.getHeader("Authorization").split(" ")[1];
+		String username = jwtUtil.getUsername(token);
+		Member member = new Member();
+		member.setUsername(username);
+		List<Qna> qnaList = qnaRepository.findByMember(member);
+		
+		return qnaList;
+	}
 	
-	
-	
+	@GetMapping("/cinemaNo")
+	public Long cinemaNo(@RequestParam("cinemaName") String cinemaName) {
+		
+		Long cinemaNo = cinemaRepository.findByCinemaName(cinemaName);
+		
+		return cinemaNo;
+	}
 	
 	
 	

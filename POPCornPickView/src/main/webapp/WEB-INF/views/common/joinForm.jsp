@@ -40,7 +40,7 @@ main {
 
 span {
 	display: inline-block;
-	width: 100px;
+	width: 110px;
 	text-align: right;
 	margin-right: 25px;
 }
@@ -98,6 +98,20 @@ span {
 	cursor: pointer;
 }
 
+#confirm-text {
+	width: 460px;
+	height: 21px;
+	text-align: right;
+}
+
+.correct {
+	color: green;
+}
+
+.incorrect {
+	color: red;
+}
+
 </style>
 </head>
 <body>
@@ -116,8 +130,13 @@ span {
 					</div>
 					<div class="input-group">
 						<span>비밀번호 </span>
-						<input type="password" class="input" id="password" name="password" placeholder="비밀번호를 입력하세요.">
+						<input type="password" class="input" id="password" name="password" placeholder="비밀번호를 입력하세요." onkeyup="passwordCheck()">
 					</div>
+					<div class="input-group">
+						<span>비밀번호 확인</span>
+						<input type="password" class="input" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 입력하세요." onkeyup="passwordCheck()">
+					</div>
+					<div id="password-confirm"><p id="confirm-text"></p></div>
 					<div class="input-group">
 						<span>이름 </span>
 						<input type="text" class="input" id="name" name="name" placeholder="이름을 입력하세요.">
@@ -190,6 +209,24 @@ span {
 		function goBack(){
 			window.location.href = "/";
 		}
+		
+		function passwordCheck(){
+			const password2 = document.querySelector("#password").value;
+			const confirmPassword2 = document.querySelector("#passwordConfirm").value;
+			const text = document.querySelector("#confirm-text");
+			
+			if(password2 === confirmPassword2){
+				text.textContent = "비밀번호가 일치합니다.";
+				text.classList.add('correct');
+				text.classList.remove('incorrect');
+			}else {
+				text.textContent = "비밀번호가 일치하지 않습니다.";
+				text.classList.add('incorrect');
+				text.classList.remove('correct');
+			}
+			
+		}
+		
 	</script>
 </body>
 </html>

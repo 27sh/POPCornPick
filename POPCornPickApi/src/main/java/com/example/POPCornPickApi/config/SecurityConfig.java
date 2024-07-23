@@ -97,10 +97,10 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "api/v1/common/**", "api/v1/main/**", "api/v1/memberCinema/**", "api/v1/reservation/**", "/api/v1/schedule/**", "api/v1/myPage/**","api/v1/film/**", "api/v1/admin/**" ).permitAll()
-                        .requestMatchers("api/v1/member/**").hasRole("MEMBER")
-                        .requestMatchers("/admin","api/v1/admin/**" ,"/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated());
+                        .requestMatchers("/", "/api/v1/common/**", "/api/v1/main/**", "/api/v1/memberCinema/**", "/api/v1/reservation/**", "/api/v1/schedule/**", "/api/v1/myPage/**", "/api/v1/film/**", "/api/v1/admin/**", "/api/v1/member/**", "/api/v1/memInquiry/**").permitAll()
+                        .requestMatchers("/api/v1/member/**", "/api/v1/memInquiry/**", "/api/v1/memInquiry/writeInquiry").hasRole("MEMBER")
+                        .requestMatchers("/admin", "/api/v1/admin/**", "/admin/**").hasRole("ADMIN")
+                        .anyRequest().permitAll());
         
         // JWTFilter 추가 --> LoginFilter를 UsernamePasswordAuthenticationFilter 전에 추가
         http

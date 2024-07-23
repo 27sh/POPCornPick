@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.POPCornPickApi.dto.AuthResponse;
 import com.example.POPCornPickApi.dto.NonMemberLoginDto;
 import com.example.POPCornPickApi.entity.Member;
+import com.example.POPCornPickApi.entity.UnknownMember;
 import com.example.POPCornPickApi.jwt.JWTUtil;
 import com.example.POPCornPickApi.repository.MemberRepository;
+import com.example.POPCornPickApi.repository.UnknownMemberRepository;
 import com.example.POPCornPickApi.service.CustomUserDetailService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,7 +49,8 @@ public class LoginController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	
+	@Autowired
+	private UnknownMemberRepository unknownMemberRepository;
 	
 //	@GetMapping("/loginForm")
 //	public String loginForm() {
@@ -63,7 +66,7 @@ public class LoginController {
         final UserDetails userDetails = customUserDetailService.loadUserByUsername(member.getUsername());
         GrantedAuthority auth = userDetails.getAuthorities().iterator().next();
         String role = auth.getAuthority();
-        final String token = jwtUtil.createJwt(member.getUsername(), role, null, null, 24*60*60*1000L); // 30분 1800초 (500L)
+        final String token = jwtUtil.createJwt(member.getUsername(), role, null, null, null, 24*60*60*1000L); // 30분 1800초 (500L)
         
         // JWT 토큰을 responseHeader에 추가
         response.setHeader("Authorization", "Bearer " + token);
@@ -173,12 +176,13 @@ public class LoginController {
 	@PostMapping("/nonMemberLogin")
 	public String nonMemberLogin(NonMemberLoginDto nonMemberLoginDto, HttpServletResponse response) {
 		String str = "";
-		String token = jwtUtil.createJwt(nonMemberLoginDto.getName(), "nonMember", nonMemberLoginDto.getTel(), nonMemberLoginDto.getPassword2(), 24*60*60*1000L);
+		String token = jwtUtil.createJwt(nonMemberLoginDto.getName(), "ROLE_NONMEMBER", nonMemberLoginDto.getTel(), nonMemberLoginDto.getBirthdate(), nonMemberLoginDto.getPassword2(), 24*60*60*1000L);
 		
+		UnknownMember unknownMember = new UnknownMember(nonMemberLoginDto.getName(), nonMemberLoginDto.getTel(), nonMemberLoginDto.getPassword2());
+		unknownMemberRepository.save(unknownMember);
 		response.addHeader("Authorization", "Bearer " + token);
 		
 		System.out.println("nonMemberLogin Success");
-		
 		str = "nonMemberLogin Success";
 		
 		return str;

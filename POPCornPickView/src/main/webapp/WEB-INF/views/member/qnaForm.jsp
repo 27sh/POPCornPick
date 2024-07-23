@@ -165,7 +165,7 @@ textarea[name="qnaContent"] {
 	font-size: 15px;
 }
 
-tr[name="qnaContent"] {
+tr[name="qnaContentTr"] {
 	height: 300px;
 }
 
@@ -245,20 +245,20 @@ tr[name="qnaContent"] {
 			<div class="qna-content">
 				<h2>문의 내용<span id="required-input">* 필수입력</span></h2>
 			</div>
-			<form>
+			<form id="frm">
 				<table >
 					<tr>
 						<th class="th">분류 <span class="required-input">*</span></th>
 						<td>
-							<select id="big-classification">
+							<select id="big-classification" name="qnaBigCategory">
 								<option selected>분류 선택</option>
 								<option value="영화관">영화관</option>
 								<option value="영화">영화</option>
 								<option value="멤버십">멤버십</option>
 								<option value="예매/결제">예매/결제</option>
-								<option value="대관문의">대관문의</option>
+								<option value="대관문의" onclick="changeText()">대관문의</option>
 							</select>
-							<select id="small-classification">
+							<select id="small-classification" name="qnaSmallCategory">
 								<option value="0" selected>문의 종류</option>
 								<option value="문의">문의</option>
 								<option value="칭찬">칭찬</option>
@@ -270,9 +270,9 @@ tr[name="qnaContent"] {
 					<tr>
 						<th class="th">종류 <span class="required-input">*</span></th>
 						<td>
-							<label><input type="radio" name="radioBtn" value="영화관문의" onclick="able()"> 영화관문의 </label> <label><input type="radio" name="radioBtn" value="기타 문의" onclick="disable()"> 기타 문의 </label>
+							<label><input type="radio" name="qnaType" value="영화관문의" onclick="able()"> 영화관문의 </label> <label><input type="radio" name="qnaType" value="기타 문의" onclick="disable()"> 기타 문의 </label>
 							<div id="select-box">
-							<select id="select-big-location" onchange="loadCinemaNo(event)">
+							<select id="select-big-location" onchange="loadCinemaList(event)" name="qnaCinemaLocation">
 								<option selected>지역 선택</option>
 								<option value="My 영화관" >My 영화관</option>
 								<option value="서울" >서울</option>
@@ -284,7 +284,7 @@ tr[name="qnaContent"] {
 								<option value="강원" >강원</option>
 								<option value="제주" >제주</option>
 							</select>
-							<select id="select-cinemaNo" name="qnaCategory">
+							<select id="select-cinemaNo" name="qnaCinemaNo" onchange="loadCinemaNo(event)">
 								<option selected>영화관 선택</option>
 							</select>
 							</div>
@@ -294,13 +294,13 @@ tr[name="qnaContent"] {
 						<th class="th">제목 <span class="required-input">*</span></th>
 						<td><div class="text-area"><input type="text" name="qnaTitle" placeholder="제목을 입력해주세요."></div></td>
 					</tr>
-					<tr name="qnaContent">
+					<tr name="qnaContentTr">
 						<th class="th th-content" >내용 <span class="required-input">*</span></th>
 						<td><div class="text-area"><textarea name="qnaContent" placeholder="내용 및 첨부파일에 개인정보(카드번호, 계좌번호, 주민번호)가 포함되지 않도록 유의하여 입력해주세요." onkeydown="pressEnter(event)"></textarea></div></td>
 					</tr>
 					<tr>
 						<th class="th">첨부파일 </th>
-						<td><div class="text-area"><input type="file" name="file" value="파일 첨부"></div></td>
+						<td><div class="text-area"><input type="file" name="qnaFile" value="파일 첨부"></div></td>
 					</tr>
 					
 				</table>
@@ -330,27 +330,33 @@ tr[name="qnaContent"] {
 		function qnaWrite(){
 			tokenCheck();
 			const token = localStorage.getItem("jwtToken");
-			const formData = new FormData();
+			const form = document.querySelector("#frm");
+			const formData = new FormData(frm);
 			
 			let username = getUsername();
-			const fileInput = document.getElementByName("file");
-			const file = fileInput.files[0];
-			formData.append("qnaFile", file);
+// 			const fileInput = document.querySelector("input[name='file']");
+// 			const file = fileInput.files[0];
+// 			formData.append("qnaFile", file);
 			formData.append("username", username);
-			formData.append("qnaTitle", document.querySelector("input[name='qnaTitle']").value);
-			formData.append("qnaContent", document.querySelector("input[name='qnaContent']").value);
-			formData.append("qnaBigCategory", document.querySelector("#big-classification").value);
-			formData.append("qnaSmallCategory", document.querySelector("#small-classification").value);
-			formData.append("qnaType", document.querySelector("input[name='radioBtn']").value);
-			formData.append("qnaCinemaLocation", document.querySelector("#select-big-location").value);// 영화관문의, 기타문의
-			formData.append("qnaCinemaNo", document.querySelector("#select-cinemaNo").value);
+// 			formData.append("qnaTitle", document.querySelector("input[name='qnaTitle']").value);
+// 			formData.append("qnaContent", document.querySelector("textarea[name='qnaContent']").value);
+// 			formData.append("qnaBigCategory", document.querySelector("#big-classification").value);
+// 			formData.append("qnaSmallCategory", document.querySelector("#small-classification").value);
+// 			formData.append("qnaType", document.querySelector("input[name='qnaType']").value);
+// 			formData.append("qnaCinemaLocation", document.querySelector("#select-big-location").value);// 영화관문의, 기타문의
+// 			formData.append("qnaCinemaNo", document.querySelector("#select-cinemaNo").value);
+			console.log("getUsername() 함수 결과 : " + username);
+			console.log(formData);
 			
 			const xhttp = new XMLHttpRequest();
 			
 			xhttp.onload = function(){
 				if(xhttp.responseText != null){
 					if(xhttp.status === 200){
-						alert("")
+						alert("문의가 성공적으로 등록됬습니다.");
+						
+					}else {
+						alert(this.responseText + ", 문의 등록 실패");
 					}
 				}
 			}
@@ -360,6 +366,46 @@ tr[name="qnaContent"] {
 			//xhttp.setRequestHeader("Content-type", "multipart/form-data"); FormData 객체가 표준화된 방식으로 데이터를 준비해서 자동으로 이 설정이 됨.
 			xhttp.send(formData);
 		}
+		
+// 		function qnaWrite(){
+// 			tokenCheck();
+// 			const token = localStorage.getItem("jwtToken");
+			
+// 			const formData = new FormData();
+			
+// 			let username = getUsername();
+// 			const fileInput = document.querySelector("input[name='file']");
+// 			const file = fileInput.files[0];
+// 			formData.append("qnaFile", file);
+// 			formData.append("username", username);
+// 			formData.append("qnaTitle", document.querySelector("input[name='qnaTitle']").value);
+// 			formData.append("qnaContent", document.querySelector("textarea[name='qnaContent']").value);
+// 			formData.append("qnaBigCategory", document.querySelector("#big-classification").value);
+// 			formData.append("qnaSmallCategory", document.querySelector("#small-classification").value);
+// 			formData.append("qnaType", document.querySelector("input[name='qnaType']").value);
+// 			formData.append("qnaCinemaLocation", document.querySelector("#select-big-location").value);// 영화관문의, 기타문의
+// 			formData.append("qnaCinemaNo", document.querySelector("#select-cinemaNo").value);
+// 			console.log("getUsername() 함수 결과 : " + username);
+// 			console.log(formData);
+			
+// 			const xhttp = new XMLHttpRequest();
+			
+// 			xhttp.onload = function(){
+// 				if(xhttp.responseText != null){
+// 					if(xhttp.status === 200){
+// 						alert("문의가 성공적으로 등록됬습니다.");
+						
+// 					}else {
+// 						alert(this.responseText + ", 문의 등록 실패");
+// 					}
+// 				}
+// 			}
+			
+// 			xhttp.open("POST", "http://localhost:9001/api/v1/memInquiry/writeInquiry");
+// 			xhttp.setRequestHeader("Authorization", "Bearer " + token);
+// 			//xhttp.setRequestHeader("Content-type", "multipart/form-data"); FormData 객체가 표준화된 방식으로 데이터를 준비해서 자동으로 이 설정이 됨.
+// 			xhttp.send(formData);
+// 		}
 		
 		function getUsername(){
 			const token = localStorage.getItem("jwtToken");
@@ -373,7 +419,7 @@ tr[name="qnaContent"] {
 			xhttp.send();
 		}
 		
-		function loadCinemaNo(event){
+		function loadCinemaList(event){
 			const xhttp = new XMLHttpRequest();
 			const location = event.target.value;
 			console.log(location + ", " + event.target.value);
@@ -416,10 +462,25 @@ tr[name="qnaContent"] {
 				}
 			}
 			
-			xhttp.open("GET", "http://localhost:9001/api/v1/cinemaList?location=" + location);
+			xhttp.open("GET", "http://localhost:9001/api/v1/memInquiry/cinemaList?location=" + location);
 			xhttp.setRequestHeader("Authorization", "Bearer " + token);
 			xhttp.send();
 			
+		}
+		
+		function loadCinemaNo(event){
+			const token = localStorage.getItem("jwtToken");
+			const xhttp = new XMLHttpRequest();
+			const cinemaName = event.target.value;
+			
+			xhttp.onload = function(){
+				const cinemaNo = this.responseText;
+				document.querySelector("")
+			}
+			
+			xhttp.open("GET", "http://localhost:9001/api/v1/memInquiry/cinemaNo?cinemaName=" + cinemaName);
+			xhttp.setRequestHeader("Authorization", "Bearer " + token);
+			xhttp.send();
 		}
 		
 		function consoleCheck(event){
@@ -434,7 +495,7 @@ tr[name="qnaContent"] {
 				
 			}
 			
-			xhr.open("POST", "http://localhost:9001/api/v1/common/loginCheck");
+			xhr.open("GET", "http://localhost:9001/api/v1/common/loginCheck");
 			xhr.setRequestHeader("Authorization", "Bearer " + token);
 			xhr.send();
 		}
@@ -482,7 +543,11 @@ tr[name="qnaContent"] {
 			//selectBox.style.display = "none";
 		}
 		
-		
+		function changeText(){
+			let qnaContent = document.querySelector("textarea[name='qnaContent']");
+			qnaContent.placeholder = "대관 날짜와 몇시부터 몇시까지 인지 대관시간 및 인원(성인, 청소년, 경로, 장애인, 어린이 구분), 시청하시려는 영화명을 입력해주세요. 추가적으로 요청사항이나 저희가 알아야 할 참고사항을 뒤에 기입하셔도 됩니다.";
+			qnaContent.innerHTML = "변동 가능성";
+		}
 		
 	</script>
 </body>

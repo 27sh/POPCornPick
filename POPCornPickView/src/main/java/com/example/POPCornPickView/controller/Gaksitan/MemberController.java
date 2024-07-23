@@ -20,7 +20,10 @@ public class MemberController {
 		return "/member/qnaForm";
 	}
 	
-	
+	@GetMapping("/qnaList")
+	public String qnaList() {
+		return "/member/qnaList";
+	}
 	
 	
 	

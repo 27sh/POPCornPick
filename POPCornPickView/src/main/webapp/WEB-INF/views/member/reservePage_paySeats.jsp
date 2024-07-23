@@ -6,8 +6,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"
 	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 	crossorigin="anonymous"></script>
- <link rel="stylesheet" as="style" crossorigin
-            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<link rel="stylesheet" as="style" crossorigin
+	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
@@ -35,7 +35,8 @@
 	height: 216.5px;
 	width: 80px;
 }
-.simple_info:last-child .simple_info_title{
+
+.simple_info:last-child .simple_info_title {
 	position: absolute;
 	text-align: center;
 	width: 80px;
@@ -43,7 +44,8 @@
 	height: 216.5px;
 }
 
-.simple_info:first-child .simple_info_title, .simple_info:nth-child(2) .simple_info_title, .simple_info:nth-child(3) .simple_info_title {
+.simple_info:first-child .simple_info_title, .simple_info:nth-child(2) .simple_info_title,
+	.simple_info:nth-child(3) .simple_info_title {
 	position: absolute;
 	text-align: center;
 	width: 80px;
@@ -51,21 +53,23 @@
 	height: 216.5px;
 }
 
-.simple_info:first-child .simple_info_title p, .simple_info:nth-child(2) .simple_info_title p, .simple_info:nth-child(3) .simple_info_title p {
+.simple_info:first-child .simple_info_title p, .simple_info:nth-child(2) .simple_info_title p,
+	.simple_info:nth-child(3) .simple_info_title p {
 	position: relative;
 	color: white;
 	top: 50%;
 	transform: translateY(-50%);
 	font-size: 14px;
-    font-weight: bold;
+	font-weight: bold;
 }
+
 .simple_info:last-child .simple_info_title p {
 	position: relative;
 	color: black;
 	top: 50%;
 	transform: translateY(-50%);
 	font-size: 14px;
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .simple_info_content {
@@ -78,32 +82,37 @@
 	height: 216.5px;
 	z-index: 9999;
 }
-ul.simple_info_content_all{
+
+ul.simple_info_content_all {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	height: 100%;
 }
-ul.simple_info_content_all li{
+
+ul.simple_info_content_all li {
 	font-size: 12px;
-    color: white;
-    margin: 10px 0;
+	color: white;
+	margin: 10px 0;
 }
 
 .none-active {
 	display: none;
 }
-h4{
+
+h4 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
+
 #pay_main h4 {
 	background: black;
 	color: white;
 	text-align: center;
 	height: 55px;
 }
+
 #reservation_information {
 	position: absolute;
 	left: 80px;
@@ -111,6 +120,7 @@ h4{
 	height: 866px;
 	border-right: 1px solid grey;
 }
+
 #pay_type {
 	position: absolute;
 	left: 380px;
@@ -119,13 +129,16 @@ h4{
 	height: 866px;
 	overflow: hidden;
 }
+
 #payment_result {
 	position: absolute;
 	left: 866px;
 	width: 413px;
 	height: 866px;
 }
-#payment_result div:nth-child(4), #payment_result div:nth-child(5), #payment_result div:nth-child(6){
+
+#payment_result div:nth-child(4), #payment_result div:nth-child(5),
+	#payment_result div:nth-child(6) {
 	height: 53px;
 	background: black;
 	text-align: center;
@@ -134,70 +147,86 @@ h4{
 	align-items: center;
 	padding: 0 10px;
 }
-#payment_result div:nth-child(4) p, #payment_result div:nth-child(4) span, #payment_result div:nth-child(5) p, #payment_result div:nth-child(5) span, #payment_result div:nth-child(6) p, #payment_result div:nth-child(6) span {
+
+#payment_result div:nth-child(4) p, #payment_result div:nth-child(4) span,
+	#payment_result div:nth-child(5) p, #payment_result div:nth-child(5) span,
+	#payment_result div:nth-child(6) p, #payment_result div:nth-child(6) span
+	{
 	color: white;
 }
-#payment_result div:nth-child(4) h6, #payment_result div:nth-child(5) h6, #payment_result div:nth-child(6) h6{
+
+#payment_result div:nth-child(4) h6, #payment_result div:nth-child(5) h6,
+	#payment_result div:nth-child(6) h6 {
 	color: white;
 	font-size: 1rem;
 	font-weight: bold;
 }
-#payment_result div:nth-child(7){
+
+#payment_result div:nth-child(7) {
 	background: red;
 	height: 53px;
 	width: 100%;
 	text-align: center;
 }
-#payment_result div:nth-child(7) p{
+
+#payment_result div:nth-child(7) p {
 	color: white;
 	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
 	font-weight: bold;
 }
-#avaliable_point{
+
+#avaliable_point {
 	height: 70px;
 	width: 100%;
 	background: #ddd;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	
 }
+
 #avaliable_point p, #avaliable_point span {
 	color: black;
 }
-#use_all_point{
+
+#use_all_point {
 	display: flex;
 	margin-left: 20px;
 }
-#use_all_point p{
+
+#use_all_point p {
 	margin-right: 5px;
 }
-#point_inputs{
+
+#point_inputs {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin: auto 0;
 }
-#left_point{
+
+#left_point {
 	text-align: right;
 	font-size: 12px;
 	position: relative;
 	right: 20px;
-	bottom: 10px;	
+	bottom: 10px;
 }
-#use_point_div{
+
+#use_point_div {
 	margin-right: 20px;
 	display: flex;
 	align-items: center;
 }
-#use_point_div input{
+
+#use_point_div input {
 	width: 100px;
 	font-size: 17px;
 	padding: 2px;
 	text-align: right;
 }
+
 #movie_detail {
 	position: relative;
 	height: 350px;
@@ -206,14 +235,15 @@ h4{
 	padding-left: 40px;
 	padding-right: 40px;
 	border-bottom: 1px solid grey;
-	
 }
+
 #movie_detail .movie_detail_img {
 	width: 170px;
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
 }
+
 #movie_detail_grade_title {
 	font-weight: bold;
 	position: relative;
@@ -223,9 +253,11 @@ h4{
 	align-items: center;
 	margin-top: 15px;
 }
-#movie_detail_grade_title img{
+
+#movie_detail_grade_title img {
 	margin-right: 10px;
 }
+
 #movie_detail_date_time {
 	font-size: 0.8rem;
 	margin: 10px 0;
@@ -233,35 +265,41 @@ h4{
 	position: relative;
 	right: 10px;
 }
-#movie_detail_date_time span:nth-child(2){
+
+#movie_detail_date_time span:nth-child(2) {
 	position: relative;
 	left: 22px;
 }
-#cinema_detail{
+
+#cinema_detail {
 	font-size: 0.8rem;
 	margin-top: 10px 0;
 	font-weight: bold;
 	position: relative;
 	right: 10px;
 }
-#cinema_detail span:nth-child(2){
+
+#cinema_detail span:nth-child(2) {
 	display: inline-block;
 	width: 200px;
 	position: absolute;
 	left: 44px;
-	top:0;
+	top: 0;
 	word-break: keep-all;
 }
-#cinema_detail span:first-child{
+
+#cinema_detail span:first-child {
 	display: inline-block;
 	position: absolute;
-	top:0;
+	top: 0;
 	left: 0;
 }
-#seat_detail{
+
+#seat_detail {
 	margin-top: 30px;
 }
-#countType, #selectedSeats{
+
+#countType, #selectedSeats {
 	font-size: 0.8rem;
 	margin-top: 10px;
 	font-weight: bold;
@@ -269,27 +307,33 @@ h4{
 	padding: 0 30px;
 	margin-top: 10px;
 }
-#countType span:first-child{
+
+#countType span:first-child {
 	margin-right: 21px;
 }
-#selectedSeats span:first-child{
+
+#selectedSeats span:first-child {
 	margin-right: 21px;
 }
-#pay_type_tool{
+
+#pay_type_tool {
 	height: 400px;
 }
-#pay_type_discount{
+
+#pay_type_discount {
 	border-bottom: 1px solid grey;
 	overflow-y: scroll;
 	height: 400px;
 	padding-bottom: 11px;
 	width: 100%;
 }
-#pay_type_discount h5, #pay_type_tool h5{
+
+#pay_type_discount h5, #pay_type_tool h5 {
 	padding: 15px;
 	font-size: 1.2rem;
 }
-#pay_type_discount_types{
+
+#pay_type_discount_types {
 	display: flex;
 	text-align: center;
 	justify-content: center;
@@ -299,7 +343,8 @@ h4{
 	margin: 0 auto;
 	align-items: center;
 }
-#pay_type_discount_types p{
+
+#pay_type_discount_types p {
 	cursor: pointer;
 	width: 200px;
 	height: 50px;
@@ -308,19 +353,23 @@ h4{
 	justify-content: center;
 	width: 100%;
 }
-#pay_type_discount_types p:nth-child(2):hover{
+
+#pay_type_discount_types p:nth-child(2):hover {
 	background: white;
 	border-radius: 5px;
 }
-#pay_type_discount_types p:first-child:hover{
+
+#pay_type_discount_types p:first-child:hover {
 	background: white;
-	border-top-left-radius: 5px; 
-	border-bottom-left-radius: 5px; 
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
 }
-#pay_type_discount_types p:first-child{
+
+#pay_type_discount_types p:first-child {
 	border-right: 1px solid grey;
 }
-#pay_type_tool_creditcard{
+
+#pay_type_tool_creditcard {
 	width: 100px;
 	height: 30px;
 	padding: 20px;
@@ -331,17 +380,20 @@ h4{
 	border-radius: 5px;
 	cursor: pointer;
 }
+
 #pay_type_tool_creditcard:hover {
 	background: #f7f5f5;
 }
-#creditcard_types{
+
+#creditcard_types {
 	margin-top: 20px;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
 	margin-left: 30px;
 }
-#creditcard_types div{
+
+#creditcard_types div {
 	border: 1px solid black;
 	background: white;
 	text-align: center;
@@ -354,21 +406,26 @@ h4{
 	overflow: hidden;
 	font-size: 0.7rem;
 }
+
 #creditcard_types div p {
 	width: 100%;
 }
-#payment_receipt{
+
+#payment_receipt {
 	height: 529px;
 	background: white;
 	overflow-y: scroll;
 }
-.unactivated{
+
+.unactivated {
 	visibility: hidden;
 }
-.activated{
+
+.activated {
 	visibility: visible;
 }
-#pay_type_discount_types_list{
+
+#pay_type_discount_types_list {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
@@ -378,7 +435,8 @@ h4{
 	justify-content: flex-start;
 	align-items: flex-start;
 }
-.gift_card{
+
+.gift_card {
 	width: 80px;
 	border-radius: 5px;
 	height: 40px;
@@ -390,30 +448,34 @@ h4{
 	justify-content: center;
 	cursor: pointer;
 }
-.gift_card:hover{
+
+.gift_card:hover {
 	background: #f7f5f5;
 }
-.gift_card p{
+
+.gift_card p {
 	margin: 1px 0;
 	text-align: center;
 }
 
-.gift_card p:first-child{
+.gift_card p:first-child {
 	font-size: 13px;
 	color: black;
 	font-weight: bold;
 }
-.gift_card p:nth-child(2){
+
+.gift_card p:nth-child(2) {
 	font-size: 10px;
 	margin: 2px 0;
 	color: blue;
 }
-.gift_card p:nth-child(3){
+
+.gift_card p:nth-child(3) {
 	font-size: 10px;
 	color: red;
 }
 
-.discount_coupon{
+.discount_coupon {
 	width: 90px;
 	height: 47px;
 	border-radius: 5px;
@@ -425,95 +487,113 @@ h4{
 	justify-content: center;
 	cursor: pointer;
 }
-.discount_coupon:hover{
+
+.discount_coupon:hover {
 	background: #f7f5f5;
 }
-.discount_coupon p{
+
+.discount_coupon p {
 	text-align: center;
 }
-.discount_coupon p:first-child{
+
+.discount_coupon p:first-child {
 	font-size: 13px;
 	color: black;
 	font-weight: bold;
 }
-.discount_coupon p:nth-child(2){
+
+.discount_coupon p:nth-child(2) {
 	font-size: 11px;
 	margin: 2px 0;
 	color: blue;
 }
-.discount_coupon p:nth-child(3){
+
+.discount_coupon p:nth-child(3) {
 	font-size: 10px;
 	color: red;
 }
-#reservation_receipt{
+
+#reservation_receipt {
 	width: 100%;
 	text-align: center;
 	table-layout: fixed;
 	border-spacing: 0;
 }
-#reservation_receipt th{
+
+#reservation_receipt th {
 	padding-bottom: 5px;
 	background: #ddd;
 	font-size: 13px;
 }
-#reservation_receipt tbody td{
+
+#reservation_receipt tbody td {
 	padding: 10px 0;
 }
-#reservation_receipt tbody tr:last-child td{
+
+#reservation_receipt tbody tr:last-child td {
 	padding-bottom: 10px;
 }
-#reservation_receipt tbody td:first-child{
-	font-weight: bold;
-}
-#reservation_receipt tbody td:last-child{
+
+#reservation_receipt tbody td:first-child {
 	font-weight: bold;
 }
 
-#reservation_receipt tbody td:nth-child(2){
+#reservation_receipt tbody td:last-child {
+	font-weight: bold;
+}
+
+#reservation_receipt tbody td:nth-child(2) {
 	font-size: 12px;
 	color: grey;
 }
 
-.giftcard_or_coupon{
+.giftcard_or_coupon {
 	width: 100%;
 	text-align: center;
 	border-spacing: 0;
 	table-layout: fixed;
 }
 
-.giftcard_or_coupon th{
+.giftcard_or_coupon th {
 	border-bottom: 1px solid #ddd;
 	background: #ddd;
 	padding-bottom: 5px;
 	font-size: 13px;
 }
-.giftcard_or_coupon tbody td{
+
+.giftcard_or_coupon tbody td {
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
-.giftcard_or_coupon tbody td:first-child{
+
+.giftcard_or_coupon tbody td:first-child {
 	font-weight: bold;
 }
 
-.giftcard_or_coupon tbody td:nth-child(2){
+.giftcard_or_coupon tbody td:nth-child(2) {
 	font-size: 12px;
 	color: grey;
 }
-.giftcard_or_coupon tbody td:nth-child(3){
+
+.giftcard_or_coupon tbody td:nth-child(3) {
 	font-size: 14px;
 	font-weight: bold;
 }
-.discount_coupon.selected{
+
+.discount_coupon.selected {
 	background: #ddd;
 }
-.gift_card.selected{
+
+.gift_card.selected {
 	background: #ddd;
 }
-.giftcard_or_coupon tbody tr:hover{
+
+.giftcard_or_coupon tbody tr:hover {
 	cursor: pointer;
 	background: #e8e6e6;
 }
-#discount_title{
+
+#discount_title {
 	position: relative;
 	text-align: left;
 	background: #ddd;
@@ -522,7 +602,20 @@ h4{
 	font-size: 12px;
 	color: white;
 }
-#receipt_title{
+
+#receipt_title {
+	position: relative;
+	top: 0;
+	left: 0;
+	text-align: left;
+	background: #ddd;
+	padding-left: 10px;
+	padding-top: 5px;
+	font-size: 12px;
+	color: white;
+}
+
+#giftcard_title {
 	position: relative;
 	top: 0;
 	left: 0;
@@ -533,33 +626,25 @@ h4{
 	font-size: 12px;
 	color: white;
 }
-#giftcard_title{
-	position: relative;
-	top: 0;
-	left: 0;
-	text-align: left;
-	background: #ddd;
-	padding-left: 10px;
-	padding-top: 5px;
-	font-size: 12px;
-	color: white;
-	
-}
-#my_discount_coupon.selected{
+
+#my_discount_coupon.selected {
 	background: white;
 	font-weight: bold;
 	border-radius: 5px;
 }
-#my_gift_card.selected{
+
+#my_gift_card.selected {
 	background: white;
-	border-top-left-radius: 5px; 
-	border-bottom-left-radius: 5px; 
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
 	font-weight: bold;
 }
-#creditcard_types div.selected{
+
+#creditcard_types div.selected {
 	background: #ddd;
 }
-#pay_type_discount_alert{
+
+#pay_type_discount_alert {
 	color: red;
 	font-size: 13px;
 	position: relative;
@@ -567,16 +652,19 @@ h4{
 	left: 220px;
 	font-weight: bold;
 }
-#pay_type_discount_alert span{
+
+#pay_type_discount_alert span {
 	position: relative;
 	top: 2px;
 	color: red;
 	font-weight: bold;
 	right: 2px;
 }
-#payment_confirm{
+
+#payment_confirm {
 	cursor: pointer;
 }
+
 main {
 	width: 100%;
 	padding: 50px 0;
@@ -650,24 +738,22 @@ main {
 
 				<!-- 메인 부분 -->
 				<section id="pay_main">
-					<div id="reservation_information">
-						
-					</div>
+					<div id="reservation_information"></div>
 					<div id="pay_type">
 						<h4>결제수단</h4>
 						<div id="pay_type_discount">
 							<h5>할인/포인트</h5>
-							<p id="pay_type_discount_alert"><span>*</span>기프트카드 할인쿠폰 중 1개만 사용 가능합니다.</p>
+							<p id="pay_type_discount_alert">
+								<!-- <span>*</span>기프트카드 할인쿠폰 중 1개만 사용 가능합니다. -->
+							</p>
 							<div id="pay_type_discount_types">
-								<p id="my_gift_card">기프트 카드</p>
+								<!-- <p id="my_gift_card">기프트 카드</p>  -->
 								<p id="my_discount_coupon">할인 쿠폰</p>
 							</div>
-							<div id="pay_type_discount_types_list">
-								
-							</div>
+							<div id="pay_type_discount_types_list"></div>
 						</div>
 						<div id="pay_type_tool">
-						 	<h5>최종 결제수단</h5>
+							<h5>최종 결제수단</h5>
 							<div id="pay_type_tool_creditcard">
 								<img alt="신용카드 사진" src="/img/method_ic_card.png">
 								<p>신용카드</p>
@@ -751,14 +837,14 @@ main {
 							</div>
 							<div id="giftcard_and_coupon_container">
 								<table class="giftcard_or_coupon" id="coupon_table">
-									
+
 								</table>
 								<table class="giftcard_or_coupon" id="giftcard_table">
-									
+
 								</table>
 							</div>
 						</div>
-						
+
 						<div id="avaliable_point">
 							<div id="point_inputs">
 								<div id="use_all_point">
@@ -766,24 +852,33 @@ main {
 									<input type="button" value="전액사용" id="use_all_point_btn">
 								</div>
 								<div id="use_point_div">
-									<input type="number" min="0" value="0" name="using_point" id="use_point_input">
+									<input type="number" min="0" value="0" name="using_point"
+										id="use_point_input">
 									<p>원</p>
 								</div>
 							</div>
-							<p id="left_point">잔여 : <span id="totalPoint"></span> 원</p>
+							<p id="left_point">
+								잔여 : <span id="totalPoint"></span> 원
+							</p>
 						</div>
 						<div id="payment_result_before_cost">
 							<h6>상품금액</h6>
-							<p><span id="before_cost_total"></span>원</p>
+							<p>
+								<span id="before_cost_total"></span>원
+							</p>
 						</div>
 						<div id="payment_result_discount">
 							<h6>할인금액</h6>
-							
-							<p>- <span id="discount_price_total">0 </span>원</p>
+
+							<p>
+								- <span id="discount_price_total">0 </span>원
+							</p>
 						</div>
 						<div id="payment_result_pay_cost">
 							<h6>결제금액</h6>
-							<p><span id="pay_result">0 </span>원</p>
+							<p>
+								<span id="pay_result">0 </span>원
+							</p>
 						</div>
 						<div id="payment_confirm">
 							<p>결제하기</p>
@@ -904,8 +999,12 @@ main {
 					
 					str += '</p> ' +					
 				      '<p id="movie_detail_date_time"><span>일시</span><span>' + date + ' ' + time + '</span></p> ' +
-					  '<p id="cinema_detail"><span>영화관</span><span>' + cinemaName +  ' ' + response.room.roomType.roomName + ' ' + response.room.roomType.smallType + '</span></p> ' +	
-					  '</div> ' +
+					  '<p id="cinema_detail"><span>영화관</span><span>' + cinemaName +  ' ' + response.room.roomType.roomName + ' ';
+					  
+					  if(response.room.roomType.smallType !== null){
+							str += response.room.roomType.smallType + '</span></p> '
+						 } 			  
+					  str += '</div> ' +
 					  '<div id="seat_detail"> ' +
 					  '<p id="countType"><span>인원</span><span>' + typeCount + '</span></p> ' +
 					  '<p id="selectedSeats"><span>좌석</span><span>' + seatSelected + '</span></p> ' +
@@ -1075,7 +1174,7 @@ main {
 			
 			let savePoint = 0;
 			
-			$("#use_all_point_btn").on("click", function(){
+			$("#use_all_point_btn").on("click", function(){ // 전체 포인트 사용 버튼 클릭 시 발생하는 함수 오류 수정 필요
 				$.ajax({
 					url : "http://localhost:9001/api/v1/reservation/my/point",
 					method : "GET",
@@ -1150,16 +1249,15 @@ main {
 		 					    	$("#pay_result").text()
 									
 					    		
-					    	}
+					    		}
 					    	
+				    		}
+// 				    	// 포인트 전체 사용시 작동하는 함수
 				    	}
-				    	// 포인트 전체 사용시 작동하는 함수
-				    	
 				    },
 				    error : function(xhr, status, error){
 				    	console.log(error);
 				    }
-					
 				});
 			});
 			
@@ -1177,45 +1275,22 @@ main {
 				    success : function(response){
 				    	$("#totalPoint").text(response);
 				    	const inputPoint = Number($("#use_point_input").val());
-				    	if($("#before_cost_total").text() === $("#pay_result").text()){
-
-				    		const before_cost_total = $("#before_cost_total").text();
-				    		const beforeCostTotalWithoutCommas = before_cost_total.replace(/,/g, '');
+				    	if(response === 0){
+							$("#use_point_input").val(0);				    		
+				    	} else {
 				    		
-				    		$("#discount_price_total").text(inputPoint.toLocaleString());
-				    		
-				    		if(beforeCostTotalWithoutCommas - inputPoint < 0){
-				    			$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
-				    			$("#pay_result").text(0 + " ");
-				    			$("#use_point_input").val(beforeCostTotalWithoutCommas);
-				    			$("#totalPoint").text($("#totalPoint").text() - beforeCostTotalWithoutCommas);
-				    			
-				    			$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
-			    				$("#ticket_result").text("총합계 " + 0 + "원");
-				    			
-				    		}else {
-					    		$("#pay_result").text((beforeCostTotalWithoutCommas - inputPoint).toLocaleString());
-					    		$("#totalPoint").text($("#totalPoint").text() - inputPoint);
-				    		
-					    		$("#ticket_discount").text("할인금액 " + inputPoint.toLocaleString() + "원");
-			    				$("#ticket_result").text("총합계 " + (beforeCostTotalWithoutCommas - inputPoint).toLocaleString() + "원");
-			    				
-				    		}
-				    		
-				    	}else {
-				    		
-				    		if($("#coupon_table").find("tbody tr").length === 0 && $("#giftcard_table").find("tbody tr").length === 0){
-				    			
-				    			const before_cost_total = $("#before_cost_total").text();
+					    	if($("#before_cost_total").text() === $("#pay_result").text()){
+	
+					    		const before_cost_total = $("#before_cost_total").text();
 					    		const beforeCostTotalWithoutCommas = before_cost_total.replace(/,/g, '');
 					    		
 					    		$("#discount_price_total").text(inputPoint.toLocaleString());
 					    		
-					    		if(beforeCostTotalWithoutCommas - inputPoint < 0) {
-					    			$("#pay_result").text(0 + " ");
-					    			$("#totalPoint").text($("#totalPoint").text() - beforeCostTotalWithoutCommas);
-					    			$("#use_point_input").val(beforeCostTotalWithoutCommas);
+					    		if(beforeCostTotalWithoutCommas - inputPoint < 0){
 					    			$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
+					    			$("#pay_result").text(0 + " ");
+					    			$("#use_point_input").val(beforeCostTotalWithoutCommas);
+					    			$("#totalPoint").text($("#totalPoint").text() - beforeCostTotalWithoutCommas);
 					    			
 					    			$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
 				    				$("#ticket_result").text("총합계 " + 0 + "원");
@@ -1223,90 +1298,115 @@ main {
 					    		}else {
 						    		$("#pay_result").text((beforeCostTotalWithoutCommas - inputPoint).toLocaleString());
 						    		$("#totalPoint").text($("#totalPoint").text() - inputPoint);
-						    		$("#discount_price_total").text(inputPoint.toLocaleString());
-
+					    		
 						    		$("#ticket_discount").text("할인금액 " + inputPoint.toLocaleString() + "원");
 				    				$("#ticket_result").text("총합계 " + (beforeCostTotalWithoutCommas - inputPoint).toLocaleString() + "원");
+				    				
 					    		}
-				    		} else {
-				    			
-				    			if($("#coupon_table").find("tbody tr").length > 0) {
-				    				const className = $("#coupon_table").children("tbody").children("tr").attr("class");
-				    				
-				    				const discount = $($("." + className).children("td")[2]).text();
-				    				
-				    				const formattedDiscount = discount.replace("%", "").replace(" ", "");
-				    				
-				    				const before_cost_total = $("#before_cost_total").text();
-						    		const beforeCostTotalWithoutCommas = Number(before_cost_total.replace(/,/g, ''));
-				    				
-						    		const payFinal =  beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) - inputPoint;
+					    		
+					    	}else {
+					    		
+					    		if($("#coupon_table").find("tbody tr").length === 0 && $("#giftcard_table").find("tbody tr").length === 0){
+					    			
+					    			const before_cost_total = $("#before_cost_total").text();
+						    		const beforeCostTotalWithoutCommas = before_cost_total.replace(/,/g, '');
 						    		
-						    		if(payFinal < 0){ // 결제 금액이 0보다 작으면
-										$("#pay_result").text(0 + " ");	
-										$("#use_point_input").val((beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount / 100))).toLocaleString());
-					    				$("#totalPoint").text($("#totalPoint").text() - (beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount / 100))));
-					    				$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
+						    		$("#discount_price_total").text(inputPoint.toLocaleString());
 						    		
-					    				$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
+						    		if(beforeCostTotalWithoutCommas - inputPoint < 0) {
+						    			$("#pay_result").text(0 + " ");
+						    			$("#totalPoint").text($("#totalPoint").text() - beforeCostTotalWithoutCommas);
+						    			$("#use_point_input").val(beforeCostTotalWithoutCommas);
+						    			$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
+						    			
+						    			$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
 					    				$("#ticket_result").text("총합계 " + 0 + "원");
-					    				
+						    			
 						    		}else {
-						    			$("#pay_result").text(payFinal.toLocaleString());
-						    			$("#discount_price_total").text(((beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) + inputPoint).toLocaleString());
-						    			$("#totalPoint").text($("#totalPoint").text() - inputPoint);
-						    			
-						    			$("#ticket_discount").text("할인금액 " + ((beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) + inputPoint).toLocaleString() + "원");
-					    				$("#ticket_result").text("총합계 " + payFinal.toLocaleString() + "원");
-						    			
-					    			}
-						    		
-				    			} else if($("#giftcard_table").find("tbody tr").length > 0) {
-				    				
-									const tableRows = $("#giftcard_table").find("tbody tr");
-							
-									let totalDiscount = 0;
-									
-									for(let i = 0; i < tableRows.length; i++){
-										const className = $(tableRows[i]).attr("class");
-										const discount = $($("." + className).children("td")[2]).text();										
-										const formattedDiscount = Number(discount.split(" ")[2].replace("원", "").replace(/,/g, ""));
-										
-										totalDiscount += formattedDiscount;
-									}									
-									
-									const before_cost_total = $("#before_cost_total").text();
-									const beforeCostTotalWithoutCommas = Number(before_cost_total.replace(/,/g, ''));
-									
-									const payFinal = beforeCostTotalWithoutCommas - totalDiscount - inputPoint;
-									
-									if(payFinal < 0){
-										
-										$("#pay_result").text(0 + " ");	
-										$("#use_point_input").val(beforeCostTotalWithoutCommas - totalDiscount);
-					    				$("#totalPoint").text($("#totalPoint").text() - (beforeCostTotalWithoutCommas - totalDiscount));
-					    				$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
-										
-					    				$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
-					    				$("#ticket_result").text("총합계 " + 0 + "원");
+							    		$("#pay_result").text((beforeCostTotalWithoutCommas - inputPoint).toLocaleString());
+							    		$("#totalPoint").text($("#totalPoint").text() - inputPoint);
+							    		$("#discount_price_total").text(inputPoint.toLocaleString());
+	
+							    		$("#ticket_discount").text("할인금액 " + inputPoint.toLocaleString() + "원");
+					    				$("#ticket_result").text("총합계 " + (beforeCostTotalWithoutCommas - inputPoint).toLocaleString() + "원");
+						    		}
+					    		} else {
+					    			
+					    			if($("#coupon_table").find("tbody tr").length > 0) {
+					    				const className = $("#coupon_table").children("tbody").children("tr").attr("class");
 					    				
-									}else {
+					    				const discount = $($("." + className).children("td")[2]).text();
+					    				
+					    				const formattedDiscount = discount.replace("%", "").replace(" ", "");
+					    				
+					    				const before_cost_total = $("#before_cost_total").text();
+							    		const beforeCostTotalWithoutCommas = Number(before_cost_total.replace(/,/g, ''));
+					    				
+							    		const payFinal =  beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) - inputPoint;
+							    		
+							    		if(payFinal < 0){ // 결제 금액이 0보다 작으면
+											$("#pay_result").text(0 + " ");	
+											$("#use_point_input").val((beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount / 100))).toLocaleString());
+						    				$("#totalPoint").text($("#totalPoint").text() - (beforeCostTotalWithoutCommas - (beforeCostTotalWithoutCommas * Number(formattedDiscount / 100))));
+						    				$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
+							    		
+						    				$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
+						    				$("#ticket_result").text("총합계 " + 0 + "원");
+						    				
+							    		}else {
+							    			$("#pay_result").text(payFinal.toLocaleString());
+							    			$("#discount_price_total").text(((beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) + inputPoint).toLocaleString());
+							    			$("#totalPoint").text($("#totalPoint").text() - inputPoint);
+							    			
+							    			$("#ticket_discount").text("할인금액 " + ((beforeCostTotalWithoutCommas * Number(formattedDiscount) / 100) + inputPoint).toLocaleString() + "원");
+						    				$("#ticket_result").text("총합계 " + payFinal.toLocaleString() + "원");
+							    			
+						    			}
+							    		
+					    			} else if($("#giftcard_table").find("tbody tr").length > 0) {
+					    				
+										const tableRows = $("#giftcard_table").find("tbody tr");
+								
+										let totalDiscount = 0;
 										
-										$("#pay_result").text(payFinal);
-										$("#discount_price_total").text((totalDiscount + inputPoint));
-										$("#totalPoint").text($("#totalPoint").text() - inputPoint);
+										for(let i = 0; i < tableRows.length; i++){
+											const className = $(tableRows[i]).attr("class");
+											const discount = $($("." + className).children("td")[2]).text();										
+											const formattedDiscount = Number(discount.split(" ")[2].replace("원", "").replace(/,/g, ""));
+											
+											totalDiscount += formattedDiscount;
+										}									
 										
-										$("#ticket_discount").text("할인금액 " + (totalDiscount + inputPoint).toLocaleString() + "원");
-										$("#ticket_result").text("총합계 " + payFinal.toLocaleString() + "원");
+										const before_cost_total = $("#before_cost_total").text();
+										const beforeCostTotalWithoutCommas = Number(before_cost_total.replace(/,/g, ''));
 										
-									}
-									
-				    			}
-				    			
-				    		}
-				    		
-				    	}
-				    	
+										const payFinal = beforeCostTotalWithoutCommas - totalDiscount - inputPoint;
+										
+										if(payFinal < 0){
+											
+											$("#pay_result").text(0 + " ");	
+											$("#use_point_input").val(beforeCostTotalWithoutCommas - totalDiscount);
+						    				$("#totalPoint").text($("#totalPoint").text() - (beforeCostTotalWithoutCommas - totalDiscount));
+						    				$("#discount_price_total").text(beforeCostTotalWithoutCommas.toLocaleString());
+											
+						    				$("#ticket_discount").text("할인금액 " + beforeCostTotalWithoutCommas.toLocaleString() + "원");
+						    				$("#ticket_result").text("총합계 " + 0 + "원");
+						    				
+										}else {
+											
+											$("#pay_result").text(payFinal);
+											$("#discount_price_total").text((totalDiscount + inputPoint));
+											$("#totalPoint").text($("#totalPoint").text() - inputPoint);
+											
+											$("#ticket_discount").text("할인금액 " + (totalDiscount + inputPoint).toLocaleString() + "원");
+											$("#ticket_result").text("총합계 " + payFinal.toLocaleString() + "원");
+											
+										}
+										
+					    			}
+					    		}
+				  		 	 }
+				   		 }
 				    },
 				    error : function(xhr, status, error){
 				    	console.log(error);
@@ -1314,11 +1414,6 @@ main {
 				});
 				
 			});
-			
-			$("#use_point_input").on("blur", function(){ // 인풋이 실행될때 이벤트가 발생하는 것을 인풋에서 블러 될때 발생하게 수정해야 한다.
-				$("#use_point_input").val();					
-				
-			})
 			
 			$("#creditcard_types").on("click", "div", function(){
 				$(this).addClass("selected");
@@ -1334,6 +1429,7 @@ main {
 						
 						const selectedCardName = selectedElements.attr("id"); // 카드사 이름
 						const scheduleNo = "${scheduleNo}"; // 상영스케줄 번호
+						
 						const movieTitle = "${movieTitle}"; // 영화 제목
 						const cinemaName = "${cinemaName}"; // 영화관 이름
 						const date = "${date}"; // 상영 날짜
@@ -1343,23 +1439,59 @@ main {
 						const beforeDiscount = $("#before_cost_total").text();
 						const discountTotal = $("#discount_price_total").text();
 						const payResult = $("#pay_result").text();
+						const jwtToken = localStorage.getItem("jwtToken");
+						const inputPoint = $("#use_point_input").val();
 						
+						let classNames = new Array();
+						
+						if($("#coupon_table").find("tbody tr").length > 0) {
+		    				const className = $("#coupon_table").children("tbody").children("tr").attr("class");
+							classNames.push(className);
+							
+							
+						}else if($("#giftcard_table").find("tbody tr").length > 0) {
+							const tableRows = $("#giftcard_table").find("tbody tr");
+							
+							for(let i = 0; i < tableRows.length; i++){
+								const className = $(tableRows[i]).attr("class");
+								classNames.push(className);
+								
+							}	
+						}
+						
+						const payResultWithoutCommas = Number(payResult.replace(/,/g, ""));
+					
 						// 결제 확인을 클릭 했을 때 ajax를 사용해서 결과를 출력한다 만약 결제 성공이면 걸제 성공 페이지로 아니면 결제 실패 페이지로 이동시킨다.
 						
 						$.ajax({
-							url : "http://localhost:9001/reservation/final/pay/result",
-							method: "GET",
+							url : "http://localhost:9001/api/v1/reservation/final/pay/result",
+							method: "POST",
 							dataType : "text",
+							contentType : "application/json",
+							data : JSON.stringify({
+								scheduleNo : scheduleNo,
+								seatSelected : seatSelected,
+								payResult : payResultWithoutCommas,
+								classNames : classNames,
+								cardName : selectedCardName,
+								inputPoint : inputPoint,
+							}),
+							headers: {
+						        'Authorization': 'Bearer ' + jwtToken  // Authorization 헤더에 JWT 토큰 추가
+						    },
 							success : function(response){
-								
+								if(response === "예매가 성공적으로 처리되었습니다."){
+									alert(response);
+									location.href="http://localhost:8080/reservation/pay/result/" + selectedCardName + "/" + scheduleNo + "/" + movieTitle + 
+											"/" + cinemaName + "/" + date + "/" + time + "/" + typeCount + "/" + seatSelected + "/" + beforeDiscount + "/" + discountTotal + "/" + payResult;
+								}else {
+									alert(response);
+								}
 							},
 							error : function(xhr, status, error){
 								console.log(error);
 							}
 						});
-						
-						location.href="http://localhost:8080/reservation/pay/result/" + selectedCardName + "/" + scheduleNo + "/" + movieTitle + 
-								"/" + cinemaName + "/" + date + "/" + time + "/" + typeCount + "/" + seatSelected + "/" + beforeDiscount + "/" + discountTotal + "/" + payResult;
 						
 					}else {
 						
@@ -1367,7 +1499,7 @@ main {
 					}
 					
 				}	else {
-					alert("카드사를 선택해주세요.");
+					alert("결제하실 카드를 선택해주세요.");
 				}			
 				
 			});

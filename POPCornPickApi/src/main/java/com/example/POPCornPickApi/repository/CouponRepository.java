@@ -16,7 +16,7 @@ public interface CouponRepository extends JpaRepository<Coupon, Long>{
 	
 	public List<Coupon> findByMemberUsername(String username);
 
-	public List<Coupon> findByMember_UsernameAndCouponNo_EndDateAfterOrderByCouponNo_EndDateAsc(String username, LocalDate currentDate);
+	 public List<Coupon> findByMember_UsernameAndCouponNo_EndDateAfterAndModdateIsNullOrderByCouponNo_EndDateAsc(String username, LocalDate currentDate);
 
 	@Query("SELECT COUNT(c) FROM Coupon c WHERE c.member.username = :username")
     int countByMemberUsername(@Param("username") String username);

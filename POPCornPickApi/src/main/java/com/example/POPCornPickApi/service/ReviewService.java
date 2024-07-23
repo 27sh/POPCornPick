@@ -13,7 +13,7 @@ public class ReviewService {
     private ReviewRepository reviewRepository; // ReviewRepository 추가
 	
 	public double getAverageReviewScore(String title) {
-        List<Integer> scores = reviewRepository.findReviewScoresByMovieTitle(title);
+        List<Integer> scores = reviewRepository.getReviewScoresByMovieTitle(title);
         if (scores.isEmpty()) {
             return 0.0;
         }

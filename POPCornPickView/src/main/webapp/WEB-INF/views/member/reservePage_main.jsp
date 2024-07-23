@@ -1357,16 +1357,18 @@ main {
 												    }
 												    
 													if(scheduleList[0].movieShowDetail.dubbing === false && scheduleList[0].movieShowDetail.subtitle === false){
-														 if(scheduleList[0].room.roomType.smallType.length > 1){
+														console.log("smallType : " + scheduleList[0].room.roomType.smallType); 
+														if(scheduleList[0].room.roomType.smallType !== null){
 														        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
 														    } else {
 														        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + '</li>';
 														    }
 													}else {
-														 if(scheduleList[0].room.roomType.smallType.length > 1){
-														        str += '<li>' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
+														console.log("smallType : " + scheduleList[0].room.roomType.smallType); 
+														if(scheduleList[0].room.roomType.smallType !== null){
+														        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
 														    } else {
-														        str += '<li>' + scheduleList[0].room.roomType.roomName + '</li>';
+														        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + '</li>';
 														    }
 													}
 												    str += '</ul>';  // <ul> 태그를 닫습니다

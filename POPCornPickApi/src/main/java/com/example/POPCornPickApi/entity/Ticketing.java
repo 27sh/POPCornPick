@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,14 +31,8 @@ public class Ticketing extends BaseEntity {
 	private Member member;
 	
 	@ManyToOne
-	@JoinColumn(name = "detailNo", referencedColumnName = "detailNo", nullable = false)
-	private MovieShowDetail movieShowDetail;
-	
-	@Column(nullable = false)
-	private int ticketingRow;
-	
-	@Column(nullable = false)
-	private int ticketingColumn;
+	@JoinColumn(name = "reservatedSeatNo", referencedColumnName = "reservatedSeatNo", nullable = false)
+	private ReservatedSeat reservatedSeat;
 	
 	@Column(nullable = false)
 	private int payTotalAmount;

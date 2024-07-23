@@ -37,6 +37,11 @@ public class JWTUtil {
     	return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("tel", String.class);
     }
     
+    public String getBirthDate(String token) {
+    	
+    	return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("birthdate", String.class);
+    }
+    
     public String getPassword2(String token) {
     	
     	return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("password2", String.class);
@@ -52,12 +57,13 @@ public class JWTUtil {
     	return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().after(new Date());
     }
     
-	public String createJwt(String username, String role, String tel, String password2, Long expiredMs) {
+	public String createJwt(String username, String role, String tel, String birthDate, String password2, Long expiredMs) {
 		
 		return Jwts.builder()
 				.claim("username", username)
 				.claim("role", role)
 				.claim("tel", tel)
+				.claim("birthDate", birthDate)
 				.claim("password2", password2)
 				.issuedAt(new Date(System.currentTimeMillis()))
 				.expiration(new Date(System.currentTimeMillis() + expiredMs))

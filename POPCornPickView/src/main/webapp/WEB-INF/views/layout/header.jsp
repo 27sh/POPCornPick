@@ -480,7 +480,7 @@
                 	document.querySelector("#username").innerHTML = username;
                 	document.querySelector("#login").style.display = "block";
 	    			document.querySelector("#notLogin").style.display = "none";
-                    if (role !== 'ROLE_ADMIN' && role !== 'ROLE_MEMBER') {
+                    if (role !== 'ROLE_ADMIN' && role !== 'ROLE_MEMBER' && role !== 'ROLE_NONMEMBER') {
 						alert('로그인을 해야지 이용하실 수 있습니다. 로그인을 해주세요. 확인 클릭시 메인페이지로 돌아갑니다.');
 						window.location.href = '/';
 //                         if (window.location.pathname === '/admin') {

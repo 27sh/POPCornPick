@@ -16,7 +16,11 @@ public class QnaDto {
 	private String qnaTitle;
 	private String qnaContent;
 	private String qnaFile;
-	private String qnaCategory;
+	private String qnaBigCategory;
+	private String qnaSmallCategory;
+	private String qnaCinemaLocation;
+	private Long qnaCinemaNo;
+	private String qnaType;
 	private String qnaAnswer;
 	
 }

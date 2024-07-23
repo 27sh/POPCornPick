@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 페이지</title>
+<link rel="stylesheet" as="style" crossorigin
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
 body {
 	font-family: 'Noto Sans KR', sans-serif; /* 롯데시네마 페이지에서 사용하는 폰트 */
@@ -175,6 +177,26 @@ span {
 	font-size: 13px;
 }
 
+#confirmPassword2 {
+	height: 20px;
+	margin-bottom: 20px;
+	text-align: right;
+	position: relative;
+	right: 35px;
+}
+
+.correct {
+	color: green;
+}
+
+.incorrect {
+	color: red;
+}
+
+.confirm-password2 {
+	position: relative;
+}
+
 </style>
 </head>
 <body>
@@ -220,11 +242,14 @@ span {
 					</div>
 					<div class="input-group">
 						<span>예매 비밀번호</span>
-						<input type="password" id="ticketingPw" placeholder="예매 비밀번호 (4자리)를 입력해 주세요.">
+						<input type="password" id="ticketingPw" maxlength="4" placeholder="예매 비밀번호 (4자리)를 입력해 주세요.">
 					</div>
 					<div class="input-group">
 						<span>예매 비밀번호 확인</span>
-						<input type="password" id="ticketingPwCheck" placeholder="예매 비밀번호 (4자리)를 재입력해 주세요.">
+						<input type="password" id="ticketingPwCheck" maxlength="4" placeholder="예매 비밀번호 (4자리)를 재입력해 주세요." onkeyup="password2Check()">
+					</div>
+					<div class="confirm-password2">
+						<p id="confirmPassword2"></p>
 					</div>
 					<div class="input-group txt">
 						비회원 로그인 시 예매 및 예매확인/취소 메뉴만 이용 가능하며 관람권, 할인권을 포함한 기타 결제, 할인수단은 정회원 로그인 시 사용 가능 합니다.
@@ -312,6 +337,8 @@ span {
 			xhttp.onload = function(){
 				if(this.responseText == "nonMemberLogin Success"){
 					alert(this.responseText);
+					const token = xhttp.getResponseHeader('Authorization').split(" ")[1];
+					localStorage.setItem('jwtToken', token);
 					window.location.href = "/";
 				}else {
 					alert("nonMemberLogin Faile");
@@ -375,6 +402,23 @@ span {
 		
 		function goBack(){
 			window.location.href = "/";
+		}
+		
+		function password2Check(){
+			const password2 = document.querySelector("#ticketingPw").value;
+			const confirmPassword2 = document.querySelector("#ticketingPwCheck").value;
+			const text = document.querySelector("#confirmPassword2");
+			
+			if(password2 === confirmPassword2){
+				text.textContent = "비밀번호가 일치합니다.";
+				text.classList.add('correct');
+				text.classList.remove('incorrect');
+			}else {
+				text.textContent = "비밀번호가 일치하지 않습니다.";
+				text.classList.add('incorrect');
+				text.classList.remove('correct');
+			}
+			
 		}
 		
 	</script>

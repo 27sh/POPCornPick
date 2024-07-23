@@ -258,13 +258,6 @@
                     	개
                     </div>
                 </div>
-                <div class="mini-container">
-                    <p>영화관람권</p>
-                    <div class="mainInfo-count">
-                    	<p id="giftCardCount"></p>
-                    	개
-                    </div>
-                </div>
             </div>
             <div class="mainInfo-l-divier"></div>
             <div class="having">

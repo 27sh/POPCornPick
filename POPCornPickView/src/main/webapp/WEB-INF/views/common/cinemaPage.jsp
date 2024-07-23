@@ -38,7 +38,7 @@
 			<div id="nav-container">
 				<ul>
 					<li>서울</li>
-					<li>경기/인천</li>
+					<li>경기-인천</li>
 					<li>충청/대전</li>
 					<li>경북/대구</li>
 					<li>경남/부산/울산</li>
@@ -101,13 +101,13 @@
 							있습니다.</div>
 						<div id="modal-select-div">
 							<select name="location" id="select-cinema-location">
-								<option value="seoul">서울</option>
-								<option value="gyeonggi_incheon">경기/인천</option>
-								<option value="chungcheong_daejeon">충청/대전</option>
-								<option value="gyeongbuk_daegu">경북/대구</option>
-								<option value="gyeongnam_busan_ulsan">경남/부산/울산</option>
-								<option value="jeonla_gwangju">전라/광주</option>
-								<option value="jeju">제주</option>
+								<option value="서울">서울</option>
+								<option value="경기-인천">경기-인천</option>
+								<option value="충청/대전">충청/대전</option>
+								<option value="경북/대구">경북/대구</option>
+								<option value="경남/부산/울산">경남/부산/울산</option>
+								<option value="전라/광주">전라/광주</option>
+								<option value="제주">제주</option>
 							</select> <select name="cinema" id="select-cinema-cinemaName">
 							</select>
 							<button id="plus-like-cinema-btn-temporary">자주가는 팝콘픽 추가</button>

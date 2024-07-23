@@ -24,11 +24,6 @@
             이벤트 참여내역
         </div>
     </a>
-    <a href="/myPage/giftCardList">
-        <div class="side-box" id="box5">
-            기프트샵
-        </div>
-    </a>
     <a href="/mem/myInfo">
         <div class="side-box" id="box6">
             프로필 관리
@@ -93,7 +88,7 @@ $(document).ready(function() {
 
     $('#side-container a').each(function() {
         var linkPath = $(this).attr('href');
-        if (currentPath === linkPath) {
+        if (currentPath === linkPath || (currentPath === '/myPage/registCouponForm' && linkPath === '/myPage/couponList')) {
             $(this).find('.side-box').addClass('active');
         }
     });

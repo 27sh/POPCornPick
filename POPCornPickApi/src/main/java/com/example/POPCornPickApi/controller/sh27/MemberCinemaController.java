@@ -81,7 +81,7 @@ public class MemberCinemaController {
     //crud
     
     @DeleteMapping("/favoriteCinemas")
-    @PreAuthorize("isAuthenticated(	)")
+    @PreAuthorize("isAuthenticated()")
     public void deleteFavoriteCinemas() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -97,4 +97,3 @@ public class MemberCinemaController {
         memberCinemaService.saveFavoriteCinemas(username, cinemaNames);
     }
 }
-	

@@ -23,6 +23,13 @@ public class MovieDetailService {
 	public List<MovieDetail> getAllMovieDetails() {
         return movieDetailRepository.findAll();
     }
+
+
+//    public List<MovieUtube> getMovieDetailWithUtube(String moviedc) {
+//        
+//    	return movieDetailRepository.findMovieDetailWithUtube(moviedc);
+//    }
+	
 	
 	
 }

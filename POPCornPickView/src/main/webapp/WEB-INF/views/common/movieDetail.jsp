@@ -166,6 +166,43 @@ body {
     border-radius: 4px;
     margin-right: 5px;
 }
+
+
+ .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
 </style>
 </head>
 <body>
@@ -174,12 +211,15 @@ body {
 	</header>
 	<main>
 	<div id="targetElement"></div>
-
+-
 	</main>
-	<footer> </footer>
+	<footer> 
+	</footer>
 
 	<script>
+	
 	$(document).ready(function(){
+		
 		const movieDetailDC = "${movieDC}"
 		console.log(movieDetailDC);
 		
@@ -187,15 +227,17 @@ body {
 			url : "http://localhost:9001/api/v1/film/movieDetail/" + movieDetailDC,
 			method : "GET",
 			success: function(data){
+				console.log(data);
+				
 			    let str = '';
 			    str += '<div class="container">';
 			    str += '    <div class="header">';
 			    str += '        <div class="movie-poster"></div>';
 			    str += '        <div class="movie-info">';
-			    str += '            <h1>' + data.movieNm + '</h1>';
-			    str += '            <span>감독: ' + data.directors + '/배우: ' + data.actors + '</span><br>';
-			    str += '            <span>장르: ' + data.genres + '/기본정보: ' + data.nations +',' + data.showTm + '</span><br>';
-			    str += '            <span>개봉: ' + data.openDt + '</span><br><br>';
+			    str += '            <h1>' + data[0].movie.movieNm + '</h1>';
+			    str += '            <span>감독: ' + data[0].movie.directors + '/배우: ' + data[0].movie.actors + '</span><br>';
+			    str += '            <span>장르: ' + data[0].movie.genres + '/기본정보: ' + data[0].movie.nations +',' + data[0].movie.showTm + '</span><br>';
+			    str += '            <span>개봉: ' + data[0].movie.openDt + '</span><br><br>';
 			    str += '            <button class="watch-button">예매하기</button>';
 			    str += '            <div class="formats">';
 			    str += '                <span class="format">IMAX</span>';
@@ -205,9 +247,7 @@ body {
 			    str += '    </div>';
 			    str += '    <div class="description">';
 			    str += '        <h2>영화 설명</h2>';
-			    str += '        <p>';
-			    str += '           ' + data.description + '
-			    str += '        </p>';
+			    str += '        <p style="white-space: pre-line;">' + data[0].movie.description + '</p>';
 			    str += '    </div>';
 			    str += '    <div class="stats">';
 			    str += '        <h2>관객 통계</h2>';
@@ -225,9 +265,9 @@ body {
 			    str += '    <div class="reviews">';
 			    str += '        <h2>트레일러(유투브 예고편이 올라갈 예정)</h2>';
 			    str += '        <div class="review-list">';
-			    str += '            <div class="review-item"></div>';
-			    str += '            <div class="review-item"></div>';
-			    str += '            <div class="review-item"></div>';
+			    					for(let i=0; i<data.length; i++){
+			    str += '            <div class="review-item" value="'+ data[i].vid+'" data-vid="YouTubeVideoID1"></div>';
+			    					}
 			    str += '        </div>';
 			    str += '    </div>';
 			    str += '    <div class="still-cuts">';
@@ -265,11 +305,14 @@ body {
 			    str += '</div>';
 
 			    
+			    
+			    
 			    $('#targetElement').html(str); 
 			},
-			error : function(){
-				
-			}
+			 error: function(error) {
+                 console.log("에러 : ", error);
+                 console.log("에러상세 : ", error.responseText);
+             }
 			
 			
 		})
@@ -291,7 +334,9 @@ body {
 	    }
 
 	    const slideWidth = slides[0].clientWidth;
-	    document.querySelector('.slides').style.transform = `translateX(${-currentSlide * slideWidth}px)`;
+	    const translateValue = -currentSlide * slideWidth + 'px'; 
+	    document.querySelector('.slides').style.transform = 'translateX(' + translateValue + ')';
+
 	}
 
 	// Ensure the function is attached to the buttons

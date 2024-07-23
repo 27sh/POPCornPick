@@ -24,7 +24,7 @@ public class Utube {
 	
 	@ManyToOne
 	@JoinColumn(name = "movieDc", referencedColumnName = "movieDc", nullable = false)
-	private Movie movie;
+	private MovieDetail movie;
 	
 	
 	@Column(nullable = true)

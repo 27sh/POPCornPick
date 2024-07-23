@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.entity.MovieDetail;
+import com.example.POPCornPickApi.entity.Utube;
 import com.example.POPCornPickApi.repository.MovieDetailRepository;
+import com.example.POPCornPickApi.repository.UtubeRepository;
 import com.example.POPCornPickApi.service.MovieDetailService;
+import com.example.POPCornPickApi.service.UtubeService;
 
 @RestController
 @RequestMapping("/api/v1/film")
@@ -23,28 +26,44 @@ public class FilmController {
 	@Autowired
 	private MovieDetailService movieDetailService;
 	
+	@Autowired
+	private UtubeService utubeservice;
+	
+	@Autowired
+	private UtubeRepository utuberepository;
+
 	@PostMapping("/saveMovieList")
 	public String postmovieList() {
-		
-		return"";
+
+		return "";
 	}
-	
-	 @GetMapping("/MovieList")
-	 @CrossOrigin(origins = "http://localhost:8080")
-	    public ResponseEntity<List<MovieDetail>> movieList() {
-	        
-		 System.out.println("무비리스트 화면인데 안나와서 시스아웃찍어보는중");
-		 List<MovieDetail> movieDetails = movieDetailService.getAllMovieDetails();
-	        return ResponseEntity.ok(movieDetails);
-	    }
-	
+
+	@GetMapping("/MovieList")
+	public List<MovieDetail> movieList() {
+
+//		System.out.println("무비리스트 화면인데 안나와서 시스아웃찍어보는중");
+//		
+//		System.out.println("뭐잘못한거지" + movieDetailService.getAllMovieDetails());
+		
+		return movieDetailService.getAllMovieDetails();
+	}
+
+//	@GetMapping("/movieDetail/{movieDC}")
+//	public ResponseEntity<MovieDetail> movieDetail(@PathVariable("movieDC") String movieDC) {
+//
+//		MovieDetail moviedetail = movieDetailService.getMovieDetail(movieDC);
+//
+//		return ResponseEntity.status(HttpStatus.OK).body(moviedetail);
+//	}
+//	
 	@GetMapping("/movieDetail/{movieDC}")
-	public ResponseEntity<MovieDetail> movieDetail(@PathVariable("movieDC") String movieDC) {
+	public ResponseEntity<List<Utube>> showutube(@PathVariable("movieDC") String movieDC){
 		
+		MovieDetail mvd = new MovieDetail();
+		mvd.setMovieDC(movieDC);
+		List<Utube> utube = utuberepository.findByMovie(mvd);
 		
-		MovieDetail moviedetail = movieDetailService.getMovieDetail(movieDC);
-		
-		
-		return ResponseEntity.status(HttpStatus.OK).body(moviedetail);
+		return ResponseEntity.status(HttpStatus.OK).body(utube);
 	}
+//	
 }

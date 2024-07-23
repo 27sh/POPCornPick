@@ -16,7 +16,7 @@ public class MemberService {
 	private MemberRepository memberRepository;
 	
 	public List<MemberDto> getMemberList(){
-		return memberRepository.findAll().stream()
+		return memberRepository.getMemberList().stream()
 				.map(member -> new MemberDto(
 						member.getUsername(),
 						member.getName(),

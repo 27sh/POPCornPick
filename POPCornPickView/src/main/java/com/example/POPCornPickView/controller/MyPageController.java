@@ -30,4 +30,10 @@ public class MyPageController {
 		
 		return "member/giftCardList";
 	}
+	
+	@RequestMapping("/registCouponForm")
+	public String registCouponForm() {
+		
+		return "member/registCouponForm";
+	}
 }

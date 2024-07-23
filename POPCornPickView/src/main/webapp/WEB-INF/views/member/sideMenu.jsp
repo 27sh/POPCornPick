@@ -58,7 +58,6 @@
 <style>
     #side-container {
         width: 200px;
-        float: left; /* 사이드바를 왼쪽에 고정 */
         border: 1px solid #ccc; /* 전체 컨테이너에 테두리 추가 */
         border-radius: 4px; /* 모서리 둥글게 */
     }

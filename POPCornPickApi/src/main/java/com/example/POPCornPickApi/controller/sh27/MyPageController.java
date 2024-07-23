@@ -1,20 +1,24 @@
 package com.example.POPCornPickApi.controller.sh27;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.dto.CustomUserDetails;
 import com.example.POPCornPickApi.entity.Coupon;
+import com.example.POPCornPickApi.entity.CouponType;
 import com.example.POPCornPickApi.entity.ExpCinema;
 import com.example.POPCornPickApi.entity.GiftCard;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.repository.CouponRepository;
+import com.example.POPCornPickApi.repository.CouponTypeRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
 import com.example.POPCornPickApi.repository.GiftCardRepository;
 import com.example.POPCornPickApi.repository.MemberRepository;
@@ -39,6 +43,9 @@ public class MyPageController {
 	@Autowired
     ExpCinemaRepository expCinemaRepository;
 	
+	@Autowired
+    private CouponTypeRepository couponTypeRepository;
+	
 	@GetMapping("/info")
     public Member getUserInfo(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -50,7 +57,7 @@ public class MyPageController {
     public int getCouponCount(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
-        return couponRepository.countByMemberUsername(username);
+        return couponRepository.countByMemberUsernameAndModdateIsNull(username);
     }
 	
 	@GetMapping("/giftCardCount")
@@ -84,5 +91,34 @@ public class MyPageController {
         List<GiftCard> giftCards = giftCardRepository.findByMemberUsername(username);
 
         return List.of(coupons, giftCards);
+    }
+	
+	@PostMapping("/register")
+    public String registerCoupon(@RequestParam("couponCode") String couponCode, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+
+        Optional<CouponType> couponTypeOpt = couponTypeRepository.findByCouponNo(Long.parseLong(couponCode));
+        if (couponTypeOpt.isEmpty()) {
+            return "쿠폰이 존재하지 않습니다.";
+        }
+
+        CouponType couponType = couponTypeOpt.get();
+        Member member = memberRepository.findByUsername(username);
+        if (member == null) {
+            return "회원이 존재하지 않습니다.";
+        }
+
+        Optional<Coupon> existingCoupon = couponRepository.findByMemberAndCouponNo(member, couponType);
+        if (existingCoupon.isPresent()) {
+            return "이미 등록한 쿠폰입니다.";
+        }
+
+        Coupon coupon = new Coupon();
+        coupon.setMember(member);
+        coupon.setCouponNo(couponType);
+        couponRepository.save(coupon);
+
+        return "쿠폰이 성공적으로 등록되었습니다.";
     }
 }

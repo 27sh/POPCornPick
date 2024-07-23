@@ -36,4 +36,6 @@ public interface CinemaRepository extends JpaRepository<Cinema, Long>{
 	@Query(value = "SELECT cinema_name FROM Cinema WHERE cinema_location = :location", nativeQuery = true)
 	public List<String> getCinemaNameListByLocation(@Param("location") String location);
 	
+//	@Query(value = "select count(*), cinema_location from cinema c group by cinema_location", nativeQuery = true)
+//	public List<C>
 }

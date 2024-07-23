@@ -1,6 +1,10 @@
 package com.example.POPCornPickApi.dto;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.POPCornPickApi.entity.Cinema;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +21,8 @@ public class CinemaDto {
 	private String cinemaAddr;
 	private String cinemaTel;
 	private String cinemaName;
+	private List<Cinema> cinemaList;
+	private int locationCinemaCnt;
 	
 	public String getFileNema() {
 		return cinemaImg.getOriginalFilename();
@@ -25,4 +31,12 @@ public class CinemaDto {
 	public MultipartFile getImgfile() {
 		return cinemaImg;
 	}
+
+	public CinemaDto(List<Cinema> cinemaList, int locationCinemaCnt) {
+		super();
+		this.cinemaList = cinemaList;
+		this.locationCinemaCnt = locationCinemaCnt;
+	}
+	
+	
 }

@@ -109,14 +109,14 @@ input[type="file"]{
 				<label for="cinemaLocation"><b>지역명<span>*</span></b></label>
 				<select id="cinemaLocation" name="cinemaLocation" required>
 					<option value="" disabled selected>선택</option>
-					<option value="seoul">서울</option>
-					<option value="gyeonggi_incheon">경기/인천</option>
-					<option value="chungcheong_daejeon">충청/대전</option>
-					<option value="jeonla_gwangju">전라/광주</option>
-					<option value="gyeongbuk_daegu">경북/대구</option>
-					<option value="gyeongnam_busan_ulsan">경남/부산/울산</option>
-					<option value="gangwon">강원</option>
-					<option value="jeju">제주</option>
+					<option value="서울">서울</option>
+					<option value="경기/인천">경기/인천</option>
+					<option value="충청/대전">충청/대전</option>
+					<option value="전라/광주">전라/광주</option>
+					<option value="경북/대구">경북/대구</option>
+					<option value="경남/부산/울산">경남/부산/울산</option>
+					<option value="강원">강원</option>
+					<option value="제주">제주</option>
 				</select><br>
 				<label for="cinemaName"><b>지점명<span>*</span></b></label>
 				<input type="text" name="cinemaName" id="cinemaName"><br>

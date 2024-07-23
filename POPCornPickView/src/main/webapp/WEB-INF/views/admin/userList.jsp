@@ -36,6 +36,10 @@ table, tr, th, td{
 	width: 100%;
 }
 
+.state{
+	
+}
+
 </style>
 </head>
 <body>
@@ -70,13 +74,15 @@ table, tr, th, td{
 				if(data != null && data.length > 0){
 					let table = '';
 					for(let i = 0 ; i < data.length ; i++){
+						let color = data[i].memberState === '활동중' ? 'green' : 'red';
+						
 						table += '<tr>';
 						table += '<td class="listNum">' + (i + 1) + '</td>';
 						table += '<td class="username"><a href="/event/detail?eventNo='+ data[i].username +'">' + data[i].username + '</a></td>';
 						table += '<td class="name">'+data[i].name + '</td>';
 						table += '<td class="joinDate">' + data[i].formattedJoinDate + '</td>';
 						table += '<td class="warnAmount">' + data[i].warnAmount + '</td>';
-						table += '<td class="state">' + data[i].memberState + '</td>';
+						table += '<td class="state" style="color: '+ color + ';">' + data[i].memberState + '</td>';
 						table += '</tr>';
 					}
 					document.getElementById("memberList").innerHTML = table;

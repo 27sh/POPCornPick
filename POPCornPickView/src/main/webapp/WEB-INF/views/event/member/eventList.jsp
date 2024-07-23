@@ -84,6 +84,30 @@ hr{
     padding: 18px 11px 0 11px;
 }
 
+/* .image-container{ */
+/* 	position: relative; */
+/* 	width: 314px; */
+/* 	height: 170px; */
+/* } */
+
+/* .overlay{ */
+/* 	position: absolute; */
+/* 	top: 0; */
+/* 	left: 0; */
+/* 	width: 100%; */
+/* 	height: 100%; */
+/* 	background-color: rgba(0,0,0,0.5); */
+/* 	color: white; */
+/* 	display: flex; */
+/* 	justify-content: center; */
+/* 	align-items: center; */
+/* 	opacity: 0; */
+/* 	transition: opacity 0.3s ease; */
+/* } */
+/* #endEventImg:hover .overlay{ */
+/* 	opacity: 1; */
+/* } */
+
 </style>
 </head>
 <body>
@@ -146,7 +170,7 @@ hr{
 					document.getElementById("eventContainer").innerHTML = list;
 				}
 			} else if(this.readyState == 4 && this.status != 200){
-				alert("지점 목록을 불러올 수 없습니다. 다시 시도해주세요.");
+				alert("이벤트 목록을 불러올 수 없습니다. 다시 시도해주세요.");
 			}
 		}
 		xhttp.open("GET", "http://localhost:9001/api/v1/event/progress", true);
@@ -166,7 +190,9 @@ hr{
 					for(let i = 0 ; i < data.length ; i++){
 						list += '<a href="/event/commonDetail?eventState=0&eventNo='+ data[i].eventNo +'">';
 						list += '<div class="eventItem">';
-						list += '<img src="/img/'+ data[i].eventImgOriginName +'" alt="'+ data[i].eventTitle +'">';
+						//list += '<div class="image-container>"'
+						list += '<img src="/img/'+ data[i].eventImgOriginName +'" alt="'+ data[i].eventTitle +'" id="endEventImg">';
+						//list += '<div class="overlay"> <div class="text">종료된 이벤트</div></div></div>';
 						list += '<div class="eventTitle">'+ data[i].eventTitle +'</div>';
 						list += '<div class="eventDate">'+ data[i].startEvent + ' ~ ' + data[i].endEvent +'</div>';
 						list += '</div></a>';

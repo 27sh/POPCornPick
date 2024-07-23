@@ -16,6 +16,11 @@ main {
 	min-height: 700px;
 }
 
+#eventTotalContent{
+/* 	background: #f7f8fc; */
+	height: 560px;
+}
+
 .event-header {
     display: flex;
     justify-content: space-between;
@@ -220,40 +225,38 @@ hr{
   	justify-content: center;
   }  
 
-/*---- 룰렛 -----*/
-.roulette{
-	width: 300px;
-	height: 300px;
-	border: 1px solid #000;
-	border-radius: 50%;
-	position: relative;
+---- 룰렛 ----
+canvas {
+	margin-top: 100px;
+	transition: 2s;
 }
 
-.segment{
-	width: 50%;
-	height: 50%;
+#randomProduct {
+	width: 600px;
+	display: flex;
+	align-items: center;
+	margin-top: 100px;
+	flex-direction: column;
+	position: relative;
+/* 	height-min: 1000px; */
+/* 	overflow: hidden; */
+ 	text-align: center; 
+ 	
+}
+
+#randomProduct::before {
+	content: "";
 	position: absolute;
-	top: 50%;
+	width: 10px;
+	height: 50px;
+	border-radius: 5px;
+	background: #000;
+	top: -20px;
 	left: 50%;
-	transform-origin: 0 0;
-	clip-path: polygon(50%, 50%, 100%, 0, 100%, 100%);
+	transform: translateX(-50%);
+	z-index: 22;
 }
-.segment:nth-child(1){
-	transform: rotate(0deg) skewY(-30deg);
-	background: red;
-}
-.segment:nth-child(2){
-	transform: rotate(-90deg) skewY(-30deg);
-	background: yellow;
-}
-.segment:nth-child(3){
-	transform: rotate(-180deg) skewY(-30deg);
-	background: green;
-}
-.segment:nth-child(4){
-	transform: rotate(-270deg) skewY(-30deg);
-	background: blue;
-}
+
 
 </style>
 </head>
@@ -269,9 +272,13 @@ hr{
 		</div>
 		<div id="eventPeriod" class="event-period"></div>
 		</div>
-		<div id="eventContent"></div>
+		<div id="eventTotalContent">
+		
+		</div>
+			
 		<div id="eventSubmitButton"></div>
 		<hr>
+		<!-- a -->
 		<div id="buttonBox"></div>
 		
 		<div id="background">
@@ -282,8 +289,8 @@ hr{
 				<span class="close"><a href="" onclick="closeModal()">&times;</a></span>
 			</div>
 			<div class="modal-content">
-				<div class="modal-title">당신의 mbti는</div>
-				<div id="mbtiResult">ISTP</div>
+				<div class="modal-title"></div>
+				<div id="mbtiResult"></div>
 				<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo">분위기를 고조시키는 우호적인 사람</span>이군요?!</span></div>
 				<div>※ 500포인트가 지급되었어요</div>
 				<button type="button" id="myEvent" onclick="">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>
@@ -300,7 +307,7 @@ hr{
 	$(document).ready(function(){
 		const urlParams = new URLSearchParams(window.location.search);
 		let eventNo = urlParams.get('eventNo');
-		console.log(eventNo);
+		console.log("eventNo: ",eventNo);
 		
 		let eventState = urlParams.get('eventState');
 		console.log(eventState);
@@ -309,24 +316,51 @@ hr{
 			alert("올바르지 않은 경로입니다.");
 		} 
 		
-		if(eventNo == 15){
-			
-		}
-		
+		//진행중인 이벤트며 이벤트 번호에 따른 버튼 구성
 		if(eventState == 1){
-			document.getElementById('eventState').innerText = "진행중인 이벤트";
-			document.querySelector('#eventState').style.color = '#2275a4';
-			const buttonStr1 = '<input type="button" id="submitEvent" value="참여하기" onclick="submitEvent(event)">';
-			document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
-			
 			const buttonStr2 = '<button type="button" id="backButton" onclick="backButton1()">이전</button>';
 			document.getElementById("buttonBox").innerHTML = buttonStr2;
+			document.getElementById('eventState').innerText = "진행중인 이벤트";
+			document.querySelector('#eventState').style.color = '#2275a4';
+			if(eventNo == 6){
+				const buttonStr1 = '<input type="button" id="submitEvent" value="참여하기" onclick="submitMbtiEvent(event)">';
+				document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
+			} else if(eventNo == 15){
+				const buttonStr1 = '<input type="button" id="submitEvent" value="룰렛 돌리기" onclick="rotate()">';
+				document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
+			}
 		} else if(eventState == 0){
 			document.getElementById('eventState').innerText = "종료된 이벤트";
 			document.querySelector('#eventState').style.color = '#2275a4';
 			const buttonStr2 = '<button type="button" id="backButton" onclick="backButton0()">이전</button>';
 			document.getElementById("buttonBox").innerHTML = buttonStr2;
 		}
+		//이벤트 번호가 6번일 때 이벤트 내용 코드
+		if(eventNo == 6){
+			let eventNo6 = '';
+			eventNo6 += '<div id="eventContent"></div>';
+			eventNo6 += '<div id="eventSubmitButton"></div>';
+			eventNo6 += '<hr>';
+			eventNo6 += '<div id="buttonBox"></div>';
+			eventNo6 += '<div id="background">';
+			eventNo6 += '<div id="eventModal" class="modal">';
+			eventNo6 += '<div class="modal-box" id="modalBox">';
+			eventNo6 += '<div class="top-box">';
+			eventNo6 += '<span class="close"><a href="" onclick="closeModal()">&times;</a></span></div>';
+			eventNo6 += '<div class="modal-content">';
+			eventNo6 += '<div class="modal-title">당신의 mbti는</div>';
+			eventNo6 += '<div id="mbtiResult"></div>';
+			eventNo6 += '<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo"></span>이군요?!</span></div>';
+			eventNo6 += '<div>※ 500포인트가 지급되었어요</div>';
+			eventNo6 += '<button type="button" id="myEvent" onclick="">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>';
+			eventNo6 += '</div></div></div>';
+			document.getElementById("eventTotalContent").innerHTML = eventNo6;
+		}
+		
+		if(eventNo == 15){
+			roulette();
+		};
+		
 		
 		$.ajax({
 			url : "http://localhost:9001/api/v1/event/detail",
@@ -339,7 +373,10 @@ hr{
 				if(data != null){
 					document.getElementById("eventTitle").innerText = data.eventTitle;
 					document.getElementById("eventPeriod").innerText = "기간: "+ data.startEvent + ' ~ ' + data.endEvent;
-					document.getElementById("eventContent").innerHTML = data.eventContent;
+					//DB에 데이터 넣을 시 알맞게 수정
+					if(eventNo == 6){
+						document.getElementById("eventContent").innerHTML = data.eventContent;
+					}
 				} else {
 					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
 					//window.location.href="/cinema/list";
@@ -350,12 +387,93 @@ hr{
 				//window.location.href="/cinema/list";
 			}
 		});
-		
-		
-		
 	});
 	
-	function submitEvent(event){
+	function roulette(){
+		const eventTotalContent = document.getElementById("eventTotalContent");
+		let eventNo15 = '';
+		eventNo15 += '<div id="randomProduct">';
+		eventNo15 += '<canvas width="500" height="500"></canvas>';
+		eventNo15 += '</div>';
+		eventTotalContent.innerHTML = eventNo15;
+		console.log("eventNo15: ",eventNo15);
+		
+		const $c = document.querySelector("canvas");
+		const ctx = $c.getContext('2d');
+		const product = ["1000원 할인쿠폰", "500포인트", "꽝", "10포인트", "5포인트"];
+		const colors = ["#FFA500", "#F08080", "#ADD8E6", "#808080", "#9370DB"];
+		
+		const newMake = () => {
+			const [cw, ch] = [$c.width / 2, $c.height / 2];
+			const arc = Math.PI / (product.length / 2);
+			
+			for(let i = 0 ; i < product.length ; i++){
+				ctx.beginPath();
+				ctx.fillStyle = colors[i % colors.length];
+				ctx.moveTo(cw, ch);
+				ctx.arc(cw, ch, cw, arc * (i - 1), arc * i);
+				ctx.fill();
+				ctx.closePath();
+			}
+			
+			ctx.fillStyle = "#fff"; //글자색
+			ctx.font = "25px Pretendard";
+			ctx.textAlign = "center";
+			for(let i = 0 ; i < product.length ; i++){
+				const angle = (arc * i) + (arc / 2);
+				ctx.save();
+				ctx.translate(
+					cw + Math.cos(angle) * (cw - 50),
+					ch + Math.sin(angle) * (ch - 50)
+				);
+				ctx.rotate(angle + Math.PI / 2);
+				product[i].split(" ").forEach((text, j) => {
+					ctx.fillText(text, 0, 30 * j);
+				});
+				ctx.restore();
+			}
+		}
+		newMake();
+	}
+	
+	function rotate(){
+		roulette();
+		console.log("rotate 함수 실행");
+		const $c = document.querySelector("canvas");
+		const product = ["1000원 할인쿠폰", "500포인트", "꽝", "10포인트", "5포인트"];
+		
+		$c.style.transform = 'initial';
+		$c.style.transition = 'initial';
+		const alpha = Math.floor(Math.random() * 100);
+		
+		setTimeout(() => {
+			const ran = Math.floor(Math.random() * product.length);
+			const arc = 360 / product.length;
+			const rotate = (ran * arc) + 3600 + (arc * 3) - (arc/4) + alpha;
+			
+			
+			$c.style.transform = 'rotate(-'+rotate + 'deg)';
+			$c.style.transition = '2s';
+			
+			setTimeout(() => {
+				const finalRotate = rotate % 360;
+				console.log("finalRotate: ", finalRotate);
+				const correctedAngle = 360 - finalRotate + arc / 2;
+				const selectedIdx = Math.floor((360 - finalRotate) / arc) % product.length;
+				console.log("selectedIdx: ", selectedIdx);
+				const selectedItem = product[selectedIdx];
+				console.log(selectedItem);
+				alert("선택된 항목: "+selectedItem);
+				
+				$c.style.transition = 'initial'; // 즉각적으로 초기화하기 위해 transition을 초기화
+	            $c.style.transform = 'rotate(0deg)';
+			}, 2000);
+		}, 1);
+		
+		
+	}
+	
+	function submitMbtiEvent(event){
 		const q1 = document.getElementsByName('q1');
 		const q2 = document.getElementsByName('q2');
 		const q3 = document.getElementsByName('q3');
@@ -457,13 +575,6 @@ hr{
 		modal.style.display = "none";
 	}
 	
-	function rouletteEvent(){
-		const roulette = document.getElementById("roulette");
-		roulette.style.width = "300px";
-		roulette.style.border = "5px solid #000";
-		
-		
-	}
 	</script>
 </body>
 </html>

@@ -8,8 +8,8 @@ main {
   position: absolute;
   left: 50px;
   top: 100px;
-  width: 200px;
-  max-height: 500px;
+  width: 280px;
+  max-height: 300px;
   padding: 0 10px;
   border: 1px solid #ccc;
   background: #eee;
@@ -45,7 +45,7 @@ main {
 
 
 .fc-event-main {
-  padding: 2px;
+  padding: 5px;
   border: 0;
 }
 
@@ -65,4 +65,20 @@ main {
 
 .fc-event-main-frame{
 	text-align: center;
+}
+
+.fc-event-main:hover .btn2{
+	display: block;
+} 
+.btn2{
+	display: none;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+.btn-outline-secondary {
+    position: relative;
+	top: -87px;
+    left: 49px;
 }

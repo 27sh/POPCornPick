@@ -37,10 +37,7 @@
 		<h4>영화 목록</h4>
 
 		<div id='external-events-list' style="overflow: hidden;"></div>
-		<p>
-			<input type='checkbox' id='drop-remove' /> <label for='drop-remove'>드롭
-				후 삭제</label>
-		</p>
+
 	</div>
 	<main>
 		<div id='calendar-wrap'>
@@ -60,18 +57,23 @@
 					</div>
 					<div class="modal-body"></div>
 					<div class="modal-footer">
-					<button class="btn btn-secondary updateBtn" onclick="submitSlot(event)">등록</button>
-<!-- 						<button type="button" class="btn btn-secondary" -->
-<!-- 							data-bs-dismiss="modal">취소</button> -->
+						<button class="btn btn-secondary updateBtn"
+							onclick="submitSlot(event)">등록</button>
+						<!-- 						<button type="button" class="btn btn-secondary" -->
+						<!-- 							data-bs-dismiss="modal">취소</button> -->
 					</div>
 				</div>
 			</div>
 		</div>
+		<a href="/admin/schedulePage">
+		<button type="button" class="btn btn-outline-secondary">목록으로</button>
+		</a>
+		
 	</main>
 
 </body>
 <script>
-
+var selectedMovieDC = 0;
         // 1. 기본 캘린더 불러오기
         $(document).ready(function () {        	
             var calendarEl = document.getElementById('calendar');
@@ -170,9 +172,12 @@
                                 domNodes: []
                             };
                         },
+                        initialView: 'timeGridWeek',
                         events: events,
                         eventDidMount: function (info) {
                             var eventFrameEl = info.el.querySelector('.fc-event-main-frame');
+                            
+                            
                             if (eventFrameEl) {
                                 var btnEl = document.createElement('button');
                                 btnEl.type = 'button';
@@ -184,6 +189,7 @@
                                 });
 
                                 eventFrameEl.appendChild(btnEl);
+                                           
                             }
                         },
                         eventReceive: function (eventDropped) {
@@ -210,17 +216,6 @@
                         editable: true,
                         eventDurationEditable: false,
                         droppable: true,
-                        drop: function (arg) {
-                            if (document.getElementById('drop-remove').checked) {
-                                arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-                            }
-                        },
-                        eventDrop: function (info) {
-//                             console.log('Event dropped');
-//                             console.log('Event: ' + info.event.title);
-//                             console.log('Start: ' + toKST(info.event.start));
-//                             console.log('End: ' + (info.event.end ? toKST(info.event.end) : 'N/A'));                      
-                        },
                         datesSet: function (view) {
                         	
                         	  if (view.type === 'dayGridMonth') {
@@ -252,78 +247,114 @@
 
             });
                 // 2. 사용 할 영화 슬롯 가져오기(GET)
-                var containerEl = document.getElementById('external-events-list');
-                // FullCalendar의 Draggable 기능 초기화
-                new FullCalendar.Draggable(containerEl, {
-                    itemSelector: '.fc-event',
-                    eventData: function (eventEl) {
-                        var mainEventEl = eventEl.querySelector('.fc-event-main');
-                        return {
-                            title: mainEventEl ? mainEventEl.innerText.trim() : ''
-                        };
-                    }
-                });
+var containerEl = document.getElementById('external-events-list');
+// FullCalendar의 Draggable 기능 초기화
+new FullCalendar.Draggable(containerEl, {
+    itemSelector: '.fc-event',
+    eventData: function (eventEl) {
+        var mainEventEl = eventEl.querySelector('.fc-event-main');
+        return {
+            title: mainEventEl ? mainEventEl.innerText.trim() : ''
+        };
+    }
+});
+
+var modalBody = $('.modal-body');
+var slots = [];
 
 
+$.ajax({
+    url: "http://localhost:9001/api/v1/schedule/slot",
+    method: "GET",
+    success: function (slot) {
+        slots = slot;
 
-                var modalBody = $('.modal-body');
-                var slots = [];
-                var selectedMovieDC = 0;
+        var externalEventsList = $('#external-events-list');
+        var title = $('#title');
+        title.empty();
 
-                $.ajax({
-                    url: "http://localhost:9001/api/v1/schedule/slot",
-                    method: "GET",
-                    success: function (slot) {
-                        slots = slot;
+        var titles = new Set(slot.map(item => item.title));
 
-                        var externalEventsList = $('#external-events-list');
+        titles.forEach(function (item) {
+            // 해당 제목과 일치하는 첫 번째 슬롯을 찾습니다.
+            var matchingSlot = slots.find(s => s.title === item);
 
-                        var title = $('#title');
-                        title.empty();
+            var mainEventEl = document.createElement('div');
+            mainEventEl.className = 'fc-event-main';
+            mainEventEl.innerText = item;
 
-                        var titles = new Set(slot.map(item => item.title));
+            
+            
+            if (mainEventEl) {
+            	
+	
+                var btnEl = document.createElement('button');
+                btnEl.type = 'button';
+                btnEl.className = 'btn-close btn2';
+                btnEl.setAttribute('aria-label', 'Close');
 
-                        titles.forEach(function (item) {
-                            // 해당 제목과 일치하는 첫 번째 슬롯을 찾습니다.
-                            var matchingSlot = slots.find(s => s.title === item);
+                btnEl.addEventListener('click', function () {
+                    if (confirm('해당 영화를 삭제하시겠습니까?')) {
+                        var selectedTitle = item;
 
-                            var mainEventEl = document.createElement('div');
-                            mainEventEl.className = 'fc-event-main';
-                            mainEventEl.innerText = item;
+                        slots.forEach(function (slotItem) {
+                            if (slotItem.title === selectedTitle) {
+                                selectedMovieDC = slotItem.movieDC;
 
-                            // color 값을 설정
-                            var color = matchingSlot ? matchingSlot.color : null;
-                            if (color === null) {
-                                mainEventEl.style.display = 'none';
-                            } else {
-                                mainEventEl.style.backgroundColor = color;
-                                mainEventEl.setAttribute('data-color', color);
+                                $.ajax({
+                                    url: "http://localhost:9001/api/v1/schedule/slot/" + selectedMovieDC,
+                                    method: "PUT",
+                                    contentType: "application/json",
+                                    data: JSON.stringify({ title: selectedTitle, color: null }),
+                                    success: function () {
+                                        console.log("슬롯 색상 값 업데이트 성공");
+                                        // 슬롯의 색상 값을 null로 설정하여 삭제 표시
+                                        eventEl.style.display = 'none';
+                                    },
+                                    error: function (error) {
+                                        console.log("슬롯 색상 값 업데이트 실패:", error);
+                                    }
+                                });
                             }
-                            
-                            var eventEl = document.createElement('div');
-                            eventEl.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
-                            eventEl.setAttribute('data-color', color); 
-                            if (matchingSlot) {
-                                eventEl.setAttribute('data-showTm', matchingSlot.showTm); // showTm 설정
-                            }
-
-                            eventEl.appendChild(mainEventEl);
-                            
-                            containerEl.appendChild(eventEl);
-
-                            externalEventsList.append(containerEl);
-
-                            var option = $('<option>').text(item).val(item);
-                            title.append(option);
                         });
-
-                        title.prop('selectedIndex', 0).trigger('change');
-                    },
-                    error: function (error) {
-                        console.log("에러 :", error);
-                        console.log("에러 상세 정보: ", error.responseText);
                     }
                 });
+
+                mainEventEl.appendChild(btnEl);
+            }
+
+            // color 값을 설정
+            var color = matchingSlot ? matchingSlot.color : null;
+            if (color === null) {
+                mainEventEl.style.display = 'none';
+            } else {
+                mainEventEl.style.backgroundColor = color;
+                mainEventEl.setAttribute('data-color', color);
+            }
+
+            var eventEl = document.createElement('div');
+            eventEl.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
+            eventEl.setAttribute('data-color', color);
+            if (matchingSlot) {
+                eventEl.setAttribute('data-showTm', matchingSlot.showTm); // showTm 설정
+            }
+
+            eventEl.appendChild(mainEventEl);
+            containerEl.appendChild(eventEl);
+
+            externalEventsList.append(containerEl);
+
+            var option = $('<option>').text(item).val(item);
+            title.append(option);
+        });
+
+        title.prop('selectedIndex', 0).trigger('change');
+    },
+    error: function (error) {
+        console.log("에러 :", error);
+        console.log("에러 상세 정보: ", error.responseText);
+    }
+});
 
                 $('#title').change(function () {
                     var selectedTitle = $(this).val();
@@ -361,27 +392,31 @@
                     });
                 });
 
-                // 4. 영화 슬롯 등록하기
-                function submitSlot(event) {
-                    event.preventDefault();
+            });
+        
 
-                    var inputColor = $('#color').val(); // .value가 아니라 .val()
+        // 4. 영화 슬롯 등록하기
+        function submitSlot(event) {
+            event.preventDefault();
 
-                    $.ajax({
-                        url: "http://localhost:9001/api/v1/schedule/slot/" + selectedMovieDC,
-                        method: "PUT",
-                        contentType: "application/json", // contentType을 application/json으로 설정
-                        data: JSON.stringify({ color: inputColor }), // 데이터를 JSON 문자열로 변환하여 전송
-                        success: function (slot) {
-                            alert("저장되었습니다.");
-                        },
-                        error: function (error) {
-                            console.log("에러 :", error);
-                            console.log("에러 상세 정보: ", error.responseText);
-                        }
-                    });
+            var inputColor = $('#color').val(); // .value가 아니라 .val()
+
+            $.ajax({
+                url: "http://localhost:9001/api/v1/schedule/slot/" + selectedMovieDC,
+                method: "PUT",
+                contentType: "application/json", // contentType을 application/json으로 설정
+                data: JSON.stringify({ color: inputColor }), // 데이터를 JSON 문자열로 변환하여 전송
+                success: function (slot) {
+                	console.log("click");
+                    alert("저장되었습니다.");
+                    window.location = '/admin/scheduleDetail?roomNo='+${roomNo};
+                },
+                error: function (error) {
+                    console.log("에러 :", error);
+                    console.log("에러 상세 정보: ", error.responseText);
                 }
             });
+        }
             
         </script>
 <script

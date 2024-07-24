@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="/css/mainEventList.css">
 <link rel="stylesheet" href="/css/mainYT.css">
 <link rel="stylesheet" href="/css/mainETC.css">
+<link rel="stylesheet" as="style" crossorigin
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <script src="/js/mainMovieList.js"></script>
 <script src="/js/mainEventList.js"></script>    
 <script src="/js/mainYT.js"></script>    

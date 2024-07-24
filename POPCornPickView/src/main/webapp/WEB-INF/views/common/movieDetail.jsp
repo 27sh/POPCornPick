@@ -23,7 +23,6 @@ body {
 	margin: 0 auto;
 	padding: 20px;
 	border-radius: 8px;
-	
 }
 
 .header, .description, .stats, .reviews, .still-cuts, .rating {
@@ -153,56 +152,69 @@ body {
 .rating-breakdown div {
 	margin: 5px 0;
 }
+
 .formats {
-    display: inline-block;
-    margin-left: 10px;
+	display: inline-block;
+	margin-left: 10px;
 }
 
 .format {
-    display: inline-block;
-    background-color: #eee;
-    color: #333;
-    padding: 5px 10px;
-    border-radius: 4px;
-    margin-right: 5px;
+	display: inline-block;
+	background-color: #eee;
+	color: #333;
+	padding: 5px 10px;
+	border-radius: 4px;
+	margin-right: 5px;
 }
 
+.modal {
+	display: none; /* 모달이 기본적으로 보이지 않음 */
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.4);
+	transition: opacity 0.3s ease;
+}
 
- .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-        }
+.modal-content {
+	background-color: #000;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+}
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 700px;
-        }
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+.modal.show {
+	display: block; /* 모달이 화면에 표시됨 */
+	opacity: 1;
+}
+.video-thumbnail img {
+  width: 85%; /* 기존 스타일 유지 */
+  transition: transform 0.3s ease; /* 이미지에 부드러운 확대 효과 추가 (선택 사항) */
+}
+
+.video-thumbnail:hover img {
+  cursor: pointer; /* 클릭 커서로 변경 */
+  transform: scale(1.05); /* 이미지 확대 (선택 사항) */
+}
 </style>
 </head>
 <body>
@@ -210,13 +222,22 @@ body {
 		<%@ include file="../layout/header.jsp"%>
 	</header>
 	<main>
-	<div id="targetElement"></div>
--
+		<div id="targetElement"></div>
+
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<iframe id="modal-video" width="100%" height="1000px" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-black; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</div>
+		</div>
 	</main>
-	<footer> 
-	</footer>
+	<footer> </footer>
 
 	<script>
+	  //모달관련 변수
+	   var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        var modalVideo = document.getElementById("modal-video");
 	
 	$(document).ready(function(){
 		
@@ -227,6 +248,7 @@ body {
 			url : "http://localhost:9001/api/v1/film/movieDetail/" + movieDetailDC,
 			method : "GET",
 			success: function(data){
+				
 				console.log(data);
 				
 			    let str = '';
@@ -263,11 +285,13 @@ body {
 			    str += '        </div>';
 			    str += '    </div>';
 			    str += '    <div class="reviews">';
-			    str += '        <h2>트레일러(유투브 예고편이 올라갈 예정)</h2>';
+			    str += '        <h2>트레일러</h2>';
 			    str += '        <div class="review-list">';
-			    					for(let i=0; i<data.length; i++){
-			    str += '            <div class="review-item" value="'+ data[i].vid+'" data-vid="YouTubeVideoID1"></div>';
-			    					}
+			       			for(let i = 0; i < data.length; i++){
+	      		str += '       <div id="utuve'+ i +'" class="video-thumbnail" data-vid="' + data[i].vid + '">';
+	        	str += '          <img src="https://img.youtube.com/vi/' + data[i].vid + '/0.jpg" alt="트레일러 썸네일" style="width: 85%;">';
+	        	str += '       </div>';
+			   				 }
 			    str += '        </div>';
 			    str += '    </div>';
 			    str += '    <div class="still-cuts">';
@@ -303,11 +327,28 @@ body {
 			    str += '        <button class="watch-button">평점작성</button>';
 			    str += '    </div>';
 			    str += '</div>';
-
-			    
-			    
-			    
+		    
 			    $('#targetElement').html(str); 
+			    
+			    //예고편 modal로 출력하는부분
+			    $(document).on('click', '.video-thumbnail', function(){
+					 var videoId = $(this).data('vid');
+  			         modalVideo.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&modestbranding=0&rel=0&loop=1&playlist=" + videoId + "";
+			         modal.style.display = "block";
+			    });
+			    
+			    span.onclick = function() {
+			        modal.style.display = "none";
+			        modalVideo.src = '';
+			    }
+			    window.onclick = function(event) {
+			        if (event.target == modal) {
+			            modal.style.display = "none";
+			            modalVideo.src = '';
+			        }
+			    }
+			    
+			    
 			},
 			 error: function(error) {
                  console.log("에러 : ", error);

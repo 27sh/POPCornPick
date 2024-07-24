@@ -6,10 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.dto.CinemaDto;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.RoomType;
-import com.example.POPCornPickApi.entity.Seat;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.RoomTypeRepository;
@@ -35,22 +35,14 @@ public class CinemaService {
 			cinema = cinemaRepository.save(cinema);
 			
 			List<RoomType> roomTypes = roomTypeRepository.findAll();
-			
+			System.out.println("roomTypes: " + roomTypes);
 			for(RoomType roomType : roomTypes) {
+				System.out.println(roomTypes);
 				Room room = new Room();
 				room.setCinema(cinema);
 				room.setRoomType(roomType);
 				room = roomRepository.save(room);
-				
-				for(int i = 1; i <= roomType.getRoomTotalRow() ; i++) {
-					for(int j = 1 ; j <= roomType.getRoomTotalColumn() ;j++) {
-						Seat seat = new Seat();
-						seat.setRoom(null);
-						seat.setSeatRow(i);
-						seat.setSeatColumn(j);
-						seatRepository.save(seat);
-					}
-				}
+				System.out.println("room 등록완료");
 			}
 			return true;
 		} catch(Exception e) {
@@ -96,7 +88,7 @@ public class CinemaService {
 		}
 	}
 	
-	public List<Cinema> getCinemaRoomList(String cinemaLocation) {
+	public List<Cinema> getCinemaLocationList(String cinemaLocation) {
 		System.out.println(cinemaLocation);
 		return cinemaRepository.findByCinemaLocation(cinemaLocation);
 	}
@@ -120,5 +112,11 @@ public class CinemaService {
         Long cinemaNo = cinemaRepository.findByCinemaName(cinemaName);
         return cinemaNo != null ? cinemaRepository.findById(cinemaNo).orElse(null) : null;
     }
+    
+//    public List<Cinema> getSearchCinemaList(String searchCinemaList){
+//    	String searchContent = "%" + searchCinemaList + "%";
+//    	return cinemaRepository.getSearchCinemaList(searchContent);
+//    }
+    
 	
 }

@@ -21,8 +21,9 @@ public class CinemaDto {
 	private String cinemaAddr;
 	private String cinemaTel;
 	private String cinemaName;
+	private int locationCnt;
 	private List<Cinema> cinemaList;
-	private int locationCinemaCnt;
+	private List<CinemaDto> locationCntList;
 	
 	public String getFileNema() {
 		return cinemaImg.getOriginalFilename();
@@ -32,10 +33,10 @@ public class CinemaDto {
 		return cinemaImg;
 	}
 
-	public CinemaDto(List<Cinema> cinemaList, int locationCinemaCnt) {
+	public CinemaDto(List<Cinema> cinemaList, List<CinemaDto> locationCntList) {
 		super();
 		this.cinemaList = cinemaList;
-		this.locationCinemaCnt = locationCinemaCnt;
+		this.locationCntList = locationCntList;
 	}
 	
 	

@@ -9,7 +9,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +22,6 @@ import com.example.POPCornPickApi.dto.CinemaRoomDto;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.RoomType;
-import com.example.POPCornPickApi.entity.Seat;
 import com.example.POPCornPickApi.service.CinemaService;
 import com.example.POPCornPickApi.service.RoomService;
 import com.example.POPCornPickApi.service.SeatService;
@@ -93,7 +91,6 @@ public class CinemaController {
 	@GetMapping("/list")
 	public ResponseEntity<List<Cinema>> cinemaList(){
 		List<Cinema> list = cinemaService.getCinemaList();
-		System.out.println("list: " + list);
 		if(!list.isEmpty()) {
 			return ResponseEntity.ok(list);
 		} else {
@@ -101,16 +98,36 @@ public class CinemaController {
 		}
 	}
 	
+	@GetMapping("/choiceList")
+	public ResponseEntity<List<Cinema>> choiceCinemaList(@RequestParam("cinemaLocation") String cinemaLocation){
+		try {
+			List<Cinema> list= cinemaService.getCinemaLocationList(cinemaLocation);
+			return ResponseEntity.ok(list);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(null);
+		}
+	}
+	
+//	@GetMapping("/searchResult")
+//	public ResponseEntity<List<Cinema>> getCinemaList(@RequestParam("searchContent") String searchContent){
+//		List<Cinema> list = cinemaService.getSearchCinemaList(searchContent);
+//		System.out.println(list);
+//		return ResponseEntity.ok(list);
+//	}
+	
 	@GetMapping("/detail")
 	public ResponseEntity<Cinema> cinemaDetail(@RequestParam("cinemaNo") Long cinemaNo){
 		System.out.println("cinemaNo : " + cinemaNo);
 		Cinema detail = cinemaService.getCinemaDetail(cinemaNo);
+		
 		if(detail != null) {
 			return ResponseEntity.ok(detail);
 		} else {
 			return ResponseEntity.badRequest().body(null);
 		}
 	}
+	
 	
 	@PutMapping
 	public @ResponseBody String cinemaModify(CinemaDto cinemaDto){

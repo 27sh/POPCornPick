@@ -254,19 +254,20 @@ body {
 			url : "http://localhost:9001/api/v1/film/movieDetail/" + movieDetailDC,
 			method : "GET",
 			success: function(data){
-				const posterUrl = fetchPoster(data[0].movie.movieNm);	
-				console.log(data.movie);
-				console.log("패치포스터괄호데이터쩜무비네임괄호 : " + fetchPoster(data.movieNm));
-				console.log("뽀스터 유알아이------" + posterUrl);
+				const posterUrl = fetchPoster(data.utube[0].movie.movieNm);	
+				var basePath = 'C:\\Users\\GG\\Desktop\\popcornpick\\POPCornPickView\\src\\main\\resources\\static\\stillcut\\';
+				console.log(data);
+				console.log(data.utube[0].movie.movieNm);
+				console.log(data.stillcut); 
 			    let str = '';
 			    str += '<div class="container">';
 			    str += '    <div class="header">';
 			    str += '<div class="poster" style="background-image: url(' + posterUrl + '); width: 250px; height: 350px;"></div>';
 			    str += '        <div class="movie-info">';
-			    str += '            <h1>' + data[0].movie.movieNm + '</h1>';
-			    str += '            <span>감독: ' + data[0].movie.directors + '/배우: ' + data[0].movie.actors + '</span><br>';
-			    str += '            <span>장르: ' + data[0].movie.genres + '/기본정보: ' + data[0].movie.nations +',' + data[0].movie.showTm + '</span><br>';
-			    str += '            <span>개봉: ' + data[0].movie.openDt + '</span><br><br>';
+			    str += '            <h1>' + data.utube[0].movie.movieNm + '</h1>';
+			    str += '            <span>감독: ' + data.utube[0].movie.directors + '/배우: ' + data.utube[0].movie.actors + '</span><br>';
+			    str += '            <span>장르: ' + data.utube[0].movie.genres + '/기본정보: ' + data.utube[0].movie.nations +',' + data.utube[0].movie.showTm + '</span><br>';
+			    str += '            <span>개봉: ' + data.utube[0].movie.openDt + '</span><br><br>';
 			    str += '            <button class="watch-button">예매하기</button>';
 			    str += '            <div class="formats">';
 			    str += '                <span class="format">IMAX</span>';
@@ -276,7 +277,7 @@ body {
 			    str += '    </div>';
 			    str += '    <div class="description">';
 			    str += '        <h2>영화 설명</h2>';
-			    str += '        <p style="white-space: pre-line;">' + data[0].movie.description + '</p>';
+			    str += '        <p style="white-space: pre-line;">' + data.utube[0].movie.description + '</p>';
 			    str += '    </div>';
 			    str += '    <div class="stats">';
 			    str += '        <h2>관객 통계</h2>';
@@ -293,26 +294,23 @@ body {
 			    str += '    <div class="reviews">';
 			    str += '        <h2>트레일러</h2>';
 			    str += '        <div class="review-list">';
-			       			for(let i = 0; i < data.length; i++){
-	      		str += '       <div id="utuve'+ i +'" class="video-thumbnail" data-vid="' + data[i].vid + '">';
-	        	str += '          <img src="https://img.youtube.com/vi/' + data[i].vid + '/0.jpg" alt="트레일러 썸네일" style="width: 85%;">';
+			       			for(let i = 0; i < data.utube.length; i++){
+	      		str += '       <div id="utuve'+ i +'" class="video-thumbnail" data-vid="' + data.utube[i].vid + '">';
+	        	str += '          <img src="https://img.youtube.com/vi/' + data.utube[i].vid + '/0.jpg" alt="트레일러 썸네일" style="width: 85%;">';
 	        	str += '       </div>';
 			   				 }
 			    str += '        </div>';
 			    str += '    </div>';
 			    str += '    <div class="still-cuts">';
 			    str += '        <h2>스틸컷</h2>';
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			    str += '        <div class="slider">';
 			    str += '            <div class="slides">';
+			    					for(let i=0; i < data.stillcut.length; i++){
 			    str += '                <div class="slide">';
-			    str += '                    <img src="C:/Users/GG/Desktop/popcornpick/POPCornPickView/src/main/resources/static/escapestill/escape01.jpg" alt="Still Cut 1">';
+			    str += '                    <img src="/stillcut/' + data.stillcut[i].stillimg +'" alt="나와랏!!!">';
 			    str += '                </div>';
-			    str += '                <div class="slide">';
-			    str += '                    <img src="" alt="Still Cut 2">';
-			    str += '                </div>';
-			    str += '                <div class="slide">';
-			    str += '                    <img src="" alt="Still Cut 3">';
-			    str += '                </div>';
+			    					}
 			    str += '            </div>';
 			    str += '            <button class="prev" onclick="moveSlide(-1)">&#10094;</button>';
 			    str += '            <button class="next" onclick="moveSlide(1)">&#10095;</button>';

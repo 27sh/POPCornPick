@@ -462,59 +462,61 @@ public class ReservationService {
 			}else {
 				Card newCard = new Card(card.getCardNo(), card.getMember(), card.getCardCompany(), card.getCardEndDate(), card.getMoney() - payResult);
 				cardRepository.save(newCard);
+				
+				for(int i = 0; i < seatSelected.length; i ++) { // reservatedSeat 좌석 예약 기능
+					int asciiValue = (int)seatSelected[i].charAt(0);
+					int seatRow = asciiValue - 64;
+					int seatColumn = Integer.parseInt(seatSelected[i].substring(1, seatSelected[i].length()));
+					Optional<ReservatedSeat> reservatedSeat = reservatedSeatRepository.findBySchedule_ScheduleNoAndSeatRowAndSeatColumn(scheduleNo, seatRow, seatColumn);
+					if(reservatedSeat.isPresent()) {
+						return "이미 예약된 좌석입니다.";
+					}else {
+						Optional<Schedule> schedule = scheduleRepository.findById(scheduleNo);
+						if(schedule.isPresent()) {
+							ReservatedSeat reservatedSeatEntity = new ReservatedSeat(null, schedule.get(), seatRow, seatColumn, true);
+							reservatedSeatRepository.save(reservatedSeatEntity);
+							Optional<ReservatedSeat> reservatedSeatFound = reservatedSeatRepository.findBySchedule_ScheduleNoAndSeatRowAndSeatColumn(scheduleNo, seatRow, seatColumn);
+							if(reservatedSeatFound.isPresent()) {
+								ReservatedSeat reservatedSeatEntityFound = reservatedSeatFound.get();
+								Member member = memberRepository.findByUsername(username);
+								Ticketing ticketing = new Ticketing(null, null, member, reservatedSeatEntityFound, payResult, false);
+								ticketingRepository.save(ticketing);
+							}
+						}
+					}
+				}
+				
+				if(classNames.size() > 0) {
+					// 할인 쿠폰이 적용 되어 있을 경우
+					// 할인 쿠폰을 사용하지 못하게 테이블에 값을 바꿔줘야 한다.
+					
+					Long issueNo = Long.parseLong(classNames.get(0).substring(8, classNames.get(0).length()));
+					Optional<Coupon> coupon = couponRepository.findById(issueNo);
+					
+					if(coupon.isPresent()) {
+						Coupon couponEntity = coupon.get();
+						couponEntity.setModdate(new Date());
+						couponRepository.save(couponEntity);
+					}else {
+						return "쿠폰이 존재하지 않습니다.";
+					}
+					
+				} else {
+					System.out.println("아무것도 없습니다.");
+				}
+				
+				if(inputPoint > 0) {
+					Member member = memberRepository.findByUsername(username);
+					Point point = new Point(null, member, "영화예매", 0, inputPoint);
+					
+					pointRepository.save(point);
+				}
+				
 			}
 		}else {
 			return "사용할 수 없는 카드입니다.";
 		}
 		
-		for(int i = 0; i < seatSelected.length; i ++) { // reservatedSeat 좌석 예약 기능
-			int asciiValue = (int)seatSelected[i].charAt(0);
-			int seatRow = asciiValue - 64;
-			int seatColumn = Integer.parseInt(seatSelected[i].substring(1, seatSelected[i].length()));
-			Optional<ReservatedSeat> reservatedSeat = reservatedSeatRepository.findBySchedule_ScheduleNoAndSeatRowAndSeatColumn(scheduleNo, seatRow, seatColumn);
-			if(reservatedSeat.isPresent()) {
-				return "이미 예약된 좌석입니다.";
-			}else {
-				Optional<Schedule> schedule = scheduleRepository.findById(scheduleNo);
-				if(schedule.isPresent()) {
-					ReservatedSeat reservatedSeatEntity = new ReservatedSeat(null, schedule.get(), seatRow, seatColumn, true);
-					reservatedSeatRepository.save(reservatedSeatEntity);
-					Optional<ReservatedSeat> reservatedSeatFound = reservatedSeatRepository.findBySchedule_ScheduleNoAndSeatRowAndSeatColumn(scheduleNo, seatRow, seatColumn);
-					if(reservatedSeatFound.isPresent()) {
-						ReservatedSeat reservatedSeatEntityFound = reservatedSeatFound.get();
-						Member member = memberRepository.findByUsername(username);
-						Ticketing ticketing = new Ticketing(null, null, member, reservatedSeatEntityFound, payResult, false);
-						ticketingRepository.save(ticketing);
-					}
-				}
-			}
-		}
-		
-		if(classNames.size() > 0) {
-			// 할인 쿠폰이 적용 되어 있을 경우
-			// 할인 쿠폰을 사용하지 못하게 테이블에 값을 바꿔줘야 한다.
-			
-			Long issueNo = Long.parseLong(classNames.get(0).substring(8, classNames.get(0).length()));
-			Optional<Coupon> coupon = couponRepository.findById(issueNo);
-			
-			if(coupon.isPresent()) {
-				Coupon couponEntity = coupon.get();
-				couponEntity.setModdate(new Date());
-				couponRepository.save(couponEntity);
-			}else {
-				return "쿠폰이 존재하지 않습니다.";
-			}
-			
-		} else {
-			System.out.println("아무것도 없습니다.");
-		}
-		
-		if(inputPoint > 0) {
-			Member member = memberRepository.findByUsername(username);
-			Point point = new Point(null, member, "영화예매", 0, inputPoint);
-			
-			pointRepository.save(point);
-		}
 		return "예매가 성공적으로 처리되었습니다.";
 	}
 	

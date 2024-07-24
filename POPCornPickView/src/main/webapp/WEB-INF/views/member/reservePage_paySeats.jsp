@@ -849,7 +849,7 @@ main {
 							<div id="point_inputs">
 								<div id="use_all_point">
 									<p>포인트</p>
-									<input type="button" value="전액사용" id="use_all_point_btn">
+									<!-- <input type="button" value="전액사용" id="use_all_point_btn">  -->
 								</div>
 								<div id="use_point_div">
 									<input type="number" min="0" value="0" name="using_point"

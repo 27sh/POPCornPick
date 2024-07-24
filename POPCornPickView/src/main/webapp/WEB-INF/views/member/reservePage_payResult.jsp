@@ -8,6 +8,7 @@
 	crossorigin="anonymous"></script>
  <link rel="stylesheet" as="style" crossorigin
             href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+ <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
@@ -171,6 +172,11 @@ section{
 	justify-content: space-evenly;
 	margin-right: 30px;
 }
+#qrcode_container {
+	width: fit-content;
+	margin: 0 auto;
+	margin-bottom: 30px;
+}
 </style>
 </head>
 <body>
@@ -242,27 +248,8 @@ section{
 						</div>
 						
 						<div id="pay_result_allinfo_container">
-<!-- 							<div id="pay_result_allinfo"> -->
-<!-- 								<div id="pay_result_allinfo_movie_cinema_container"> -->
-<!-- 									<img alt="" src="https://i.namu.wiki/i/FKDq5ZRzIdkOwEX9wjH9XNSKJajvuytw9CDxDdFWMpJM78cJVjCxTfqgvz4MNWPC_UYe7epT2daozm1UuaSQlOf_2IjwszTTm-535oalBPi5FR-4TKyJxegZTZ2li-nkjKglMR44XZ4dFtIq43sDJQ.webp" id="pay_result_allinfo_img">  -->
-<!-- 									<div id="pay_result_allinfo_movie_cinema"> -->
-<!-- 										<div id="movie_title"> -->
-<!-- 											<img alt="" src="/img/grade_all.png"> -->
-<!-- 											<p>데드풀 울버린</p> -->
-<!-- 										</div> -->
-<!-- 										<div id="date_time">2024-07-23 ( 화 ) 22:58 ~ 15:00</div> -->
-<!-- 										<div id="cinema_name">고양백석 1관</div> -->
-<!-- 										<div id="typecount">성인1, 청소년1, 경로1, 장애인1</div> -->
-<!-- 										<div id="seatSelected">A4, B4, A5, B5</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div id="pay_result_allinfo_receipt_result"> -->
-<!-- 										<div id="receipt_before_discount">총 예매 금액 <span>37,000 원</span></div> -->
-<!-- 										<div id="receipt_total_discount">총 할인 금액 <span>- 0 원</span></div> -->
-<!-- 										<div id="receipt_pay_result">총 결제 금액 <span>37,000 원</span></div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
 						</div>
+						<div id="qrcode_container"></div>
 						
 						<div id="buttons_container">
 							<button>결제내역</button>
@@ -307,6 +294,7 @@ section{
 				method : "GET",
 				dataType : "json",
 				success : function(response){
+					
 					console.log(response);
 					
 					const posterUrlPath = fetchPoster(movieTitle);
@@ -328,7 +316,7 @@ section{
 					str += '<p>' + movieTitle + '</p> ' + 
 			  				   '</div> ' + 
 			 				   '<div id="date_time">' + date + ' ' + time + '</div> ' + 
-							   '<div id="cinema_name">' + cinemaName + '</div> ' + 
+							   '<div id="cinema_name">' + cinemaName + ' ' + response.room.roomType.roomName + '</div> ' + 
 							   '<div id="typecount">' + typeCount + '</div> ' + 
 							   '<div id="seatSelected">' + seatSelected + '</div> ' + 
 							   '</div> ' + 
@@ -342,11 +330,22 @@ section{
 					
 							   $("#pay_result_allinfo_container").html(str);
 					
+							   const qrcode = new QRCode(document.querySelector("#qrcode_container"), {
+									text : seatSelected + "" + movieTitle,
+									width: 200,
+									height: 200,
+									colorDark: "#000000", // QR 코드의 어두운 부분 색상
+						            colorLight: "#ffffff", // QR 코드의 밝은 부분 색상
+						            correctLevel: QRCode.CorrectLevel.L, // 오류 수정 수준
+						            version: 40,
+								});
+							   
 				},
 				error : function(xhr, status, error) { 
 					console.log(error);
 				}
 			});
+			
 			
 		});
 		

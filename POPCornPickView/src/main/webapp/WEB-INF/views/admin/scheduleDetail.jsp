@@ -122,7 +122,6 @@ var selectedMovieDC = 0;
                                                 roomNo: roomNo
                                             };
                                         });
-                                    	console.log(saveData)
 
                                     	$.ajax({
                                     		url: "http://localhost:9001/api/v1/schedule/" + roomNo,
@@ -130,7 +129,6 @@ var selectedMovieDC = 0;
                                             contentType: "application/json", // JSON 형식으로 데이터 전송
                                             data: JSON.stringify(saveData),
                                             success: function(save){
-                                            	console.log(save);
                                             	alert("저장되었습니다.");
                                             },
                                             error: function (error) {
@@ -194,6 +192,7 @@ var selectedMovieDC = 0;
                         },
                         eventReceive: function (eventDropped) {
 
+
                             var showTm = parseInt(eventDropped.draggedEl.getAttribute('data-showTm')); // 드래그된 요소에서 showTm 가져오기
                             var start = eventDropped.event.start; // 드롭된 이벤트의 시작 시간
                             var end = new Date(start.getTime() + showTm * 60000); // showTm 분 후의 시간 계산
@@ -202,18 +201,20 @@ var selectedMovieDC = 0;
                             eventDropped.event.setProp('borderColor', eventDropped.draggedEl.getAttribute('data-color'));
                             eventDropped.event.setEnd(end); // 계산된 end 시간을 설정
 
+
                         },
                         eventDragStart: function (info) {
-                        	console.log(info);
                             var backgroundColor = info.event.backgroundColor;
-                            console.log('Drag Start - Background Color: ', backgroundColor);
+                        },
+                        eventResize : function(info){
+                        	console.log(info);
                         },
                         timeZone: 'local',
                         navLinks: true,
                         selectable: true,
                         nowIndicator: true,
                         locale: 'ko',
-                        editable: true,
+                        editable: false,
                         eventDurationEditable: false,
                         droppable: true,
                         datesSet: function (view) {

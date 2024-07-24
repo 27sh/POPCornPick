@@ -73,11 +73,13 @@
                 // 극장 위치 선택 시 이벤트 처리
                 $('#cinemaLocation').change(function () {
                     var selectedLocation = $(this).val();
+                  
 
                     // 찾은 cinemaNo 저장
                     cinemas.forEach(function (item) {
                         if (item.cinemaLocation === selectedLocation) {
                             selectedCinemaNo = item.cinemaNo; // 선택된 극장의 cinemaNo를 전역 변수에 저장
+                            console.log(selectedCinemaNo);
                         }
                     });
 
@@ -109,6 +111,7 @@
                             rooms.sort((a, b) => a.roomType.roomTypeNo - b.roomType.roomTypeNo).forEach(function (room) {
                                 var roomNo = room.roomNo;
                                 var roomName = room.roomType.roomName;
+
 
                                 // <a> 태그 생성
                                 var detail = $('<a>').attr('href', '/admin/scheduleDetail?roomNo=' + roomNo).text(roomName);

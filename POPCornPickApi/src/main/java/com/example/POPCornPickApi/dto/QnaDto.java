@@ -1,5 +1,7 @@
 package com.example.POPCornPickApi.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.POPCornPickApi.entity.Member;
 
 import lombok.AllArgsConstructor;
@@ -12,14 +14,14 @@ import lombok.NoArgsConstructor;
 public class QnaDto {
 
 	private Long qnaNo;
-	private Member member;
+	private String username;
 	private String qnaTitle;
 	private String qnaContent;
-	private String qnaFile;
+	private MultipartFile qnaFile;
 	private String qnaBigCategory;
 	private String qnaSmallCategory;
 	private String qnaCinemaLocation;
-	private Long qnaCinemaNo;
+	private String qnaCinemaName;
 	private String qnaType;
 	private String qnaAnswer;
 	

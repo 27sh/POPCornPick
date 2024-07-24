@@ -412,6 +412,7 @@ section{
 					$(this).next(".simple_info_content").addClass(
 							"none-active");
 				});
+		
 		$("#simple_info_title_pay").on(
 				"mouseenter",
 				function() {

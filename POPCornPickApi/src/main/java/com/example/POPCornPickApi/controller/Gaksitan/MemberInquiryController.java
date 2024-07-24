@@ -95,7 +95,7 @@ public class MemberInquiryController {
 			if(qnaDto.getQnaFile() != null && !qnaDto.getQnaFile().isEmpty()) {
 				String originName = qnaDto.getQnaFile().getOriginalFilename();
 				String extension = originName.substring(originName.lastIndexOf('.'));
-				String newName = UUID.randomUUID().toString() + extension;
+				String newName = UUID.randomUUID().toString() + "--" + originName;// + extension;
 				File file = new File("C:/upload/" + newName);
 				qna.setQnaFile(newName);
 				
@@ -166,15 +166,25 @@ public class MemberInquiryController {
 	}
 	
 	@GetMapping("/inquiry")
-	public List<Qna> qnaList(){
+	public List<Qna> qnaList(HttpServletRequest request){
+		String token = request.getHeader("Authorization").split(" ")[1];
+		String username = jwtUtil.getUsername(token);
+		Member member = new Member();
+		member.setUsername(username);
+//		List<Qna> qnaList = new ArrayList<>();
+		List<Qna> qnaList = qnaRepository.findByMember(member);
 		
-		List<Qna> qnaList = new ArrayList<>();
-		
-		
+		System.out.println("qnaList 확인용 : " + qnaList);
 		return qnaList;
 	}
 	
-	
+	@GetMapping("/inquiryDetail")
+	public Qna inquiryDetail() {
+		
+		
+		
+		return null;
+	}
 	
 	
 	

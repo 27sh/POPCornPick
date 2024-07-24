@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보 관리 페이지</title>
+<link rel="stylesheet" as="style" crossorigin
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
 main {
 	width: 1200px;

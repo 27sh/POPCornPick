@@ -105,7 +105,7 @@
 
         #header_bottom:hover .sme,
         #header_bottom:hover #header_box {
-            height: 315px;
+            height: 180px;
         }
 
         .sme {
@@ -213,7 +213,7 @@
 
         #header_box2 {
             position: relative;
-            top: -315px;
+            top: -180px;
             width: 100%;
             height: 0;
             transition-duration: 0.2s;
@@ -222,7 +222,7 @@
 
         #header_fixed:hover .sme,
         #header_fixed:hover #header_box2 {
-            height: 315px;
+            height: 180px;
         }
 
 
@@ -280,6 +280,7 @@
                         <li><a href="/film/movieList">영화</a>
                             <ul class="sme">
                                 <li><a href="/film/movieList">무비차트</a></li>
+                                <li><a href="movieList">무비차트2</a></li>
                             </ul>
                         </li>
                         <li><a href="/memberCinema/cinemaPage">극장</a>
@@ -294,17 +295,7 @@
                                 <li><a href="/common/scheduleList">상영스케쥴</a></li>
                             </ul>
                         </li>
-                        <li><a href="storeMain">스토어</a>
-                            <ul class="sme">
-                                <li><a href="storeMain">패키지</a></li>
-                                <li><a href="storeMain">영화관람권</a></li>
-                                <li><a href="storeMain">기프트카드</a></li>
-                                <li><a href="storeMain">콤보</a></li>
-                                <li><a href="storeMain">팝콘</a></li>
-                                <li><a href="storeMain">음료</a></li>
-                                <li><a href="storeMain">스낵</a></li>
-                            </ul>
-                        </li>
+                       
                         <li><a href="eventList">이벤트</a>
                             <ul class="sme">
                                 <li><a href="eventList">진행중인 이벤트</a></li>
@@ -340,6 +331,7 @@
                         <li><a href="movieList">영화</a>
                             <ul class="sme">
                                 <li><a href="movieList">무비차트</a></li>
+                                <li><a href="movieList">무비차트2</a></li>
                             </ul>
                         </li>
                         <li><a href="cinemaPage">극장</a>
@@ -353,18 +345,7 @@
                                 <li><a href="reservePage">빠른 예매</a></li>
                                 <li><a href="/common/scheduleList">상영스케쥴</a></li>
                             </ul>
-                        </li>
-                        <li><a href="storeMain">스토어</a>
-                            <ul class="sme">
-                                <li><a href="storeMain">패키지</a></li>
-                                <li><a href="storeMain">영화관람권</a></li>
-                                <li><a href="storeMain">기프트카드</a></li>
-                                <li><a href="storeMain">콤보</a></li>
-                                <li><a href="storeMain">팝콘</a></li>
-                                <li><a href="storeMain">음료</a></li>
-                                <li><a href="storeMain">스낵</a></li>
-                            </ul>
-                        </li>
+                        </li>                       
                         <li><a href="eventList">이벤트</a>
                             <ul class="sme">
                                 <li><a href="eventList">진행중인 이벤트</a></li>

@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>QnA 작성 페이지</title>
+<link rel="stylesheet" as="style" crossorigin
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
 
 * {
@@ -284,7 +286,7 @@ tr[name="qnaContentTr"] {
 								<option value="강원" >강원</option>
 								<option value="제주" >제주</option>
 							</select>
-							<select id="select-cinemaNo" name="qnaCinemaNo" onchange="consoleCheck(event)">
+							<select id="select-cinemaNo" name="qnaCinemaName" onchange="consoleCheck(event)">
 								<option selected>영화관 선택</option>
 							</select>
 							</div>
@@ -355,7 +357,7 @@ tr[name="qnaContentTr"] {
 				if(xhttp.responseText != null){
 					if(xhttp.status === 200){
 						alert("문의가 성공적으로 등록됬습니다.");
-						
+						window.location.href = "/member/qnaList";
 					}else {
 						alert(this.responseText + ", 문의 등록 실패");
 					}
@@ -532,7 +534,7 @@ tr[name="qnaContentTr"] {
     		        <option value="강원">강원</option>
 	        	    <option value="제주">제주</option>
 		        </select>
-				<select id="select-cinemaNo" name="qnaCinemaNo" onchange="consoleCheck(event)">
+				<select id="select-cinemaNo" name="qnaCinemaName" onchange="consoleCheck(event)">
 					<option selected>영화관 선택</option>
 				</select>`;
 				

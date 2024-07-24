@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입 페이지</title>
+<link rel="stylesheet" as="style" crossorigin
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
 body {
 	font-family: 'Noto Sans KR', sans-serif;

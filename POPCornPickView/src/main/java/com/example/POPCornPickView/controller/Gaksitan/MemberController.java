@@ -25,7 +25,10 @@ public class MemberController {
 		return "/member/qnaList";
 	}
 	
-	
+	@GetMapping("/qnaDetail")
+	public String qnaDetail() {
+		return "/member/qnaDetail";
+	}
 	
 	
 	

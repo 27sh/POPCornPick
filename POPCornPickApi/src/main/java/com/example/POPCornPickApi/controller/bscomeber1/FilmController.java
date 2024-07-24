@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.POPCornPickApi.dto.MovieDetailDto;
 import com.example.POPCornPickApi.entity.MovieDetail;
+import com.example.POPCornPickApi.entity.StillCut;
 import com.example.POPCornPickApi.entity.Utube;
 import com.example.POPCornPickApi.repository.MovieDetailRepository;
+import com.example.POPCornPickApi.repository.StillCutRepository;
 import com.example.POPCornPickApi.repository.UtubeRepository;
 import com.example.POPCornPickApi.service.MovieDetailService;
 import com.example.POPCornPickApi.service.UtubeService;
@@ -31,6 +34,9 @@ public class FilmController {
 	
 	@Autowired
 	private UtubeRepository utuberepository;
+	
+	@Autowired
+	private StillCutRepository stillcutrepository;
 
 	@PostMapping("/saveMovieList")
 	public String postmovieList() {
@@ -57,13 +63,20 @@ public class FilmController {
 //	}
 //	
 	@GetMapping("/movieDetail/{movieDC}")
-	public ResponseEntity<List<Utube>> showutube(@PathVariable("movieDC") String movieDC){
+	public ResponseEntity<MovieDetailDto> showutube(@PathVariable("movieDC") String movieDC){
+		//리스트 유투브 변수랑 리스트 스틸컷변수있는 dto를 만들어서 리스트 유투브를 셋하고 리스트 스틸컷을 가져와서
 		
+		MovieDetailDto mdd = new MovieDetailDto();
+				
 		MovieDetail mvd = new MovieDetail();
 		mvd.setMovieDC(movieDC);
-	List<Utube> utube = utuberepository.findByMovie(mvd);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(utube);
+		List<Utube> utube = utuberepository.findByMovie(mvd);
+		mdd.setUtube(utube);
+		System.out.println("스틸컷을 보여라" + utube);
+		List<StillCut> sc = stillcutrepository.findByMovie(mvd);
+		mdd.setStillcut(sc);
+		System.out.println("스틸컷을 보여라" + sc);
+		return ResponseEntity.status(HttpStatus.OK).body(mdd);
 	}
 //	
 }

@@ -43,10 +43,10 @@ public class Qna extends BaseEntity{
 	@Column(nullable = false)
 	private String qnaType;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String qnaCinemaLocation;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Long qnaCinemaNo;
 	
 	@Column(nullable = true)

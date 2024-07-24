@@ -1,64 +1,53 @@
 /**
  * 
  */
-
- const eventTotalContent = document.getElementById("eventTotalContent");
-	let eventNo15 = '';
-	eventNo15 += '<div id="randomProduct">';
-	eventNo15 += '<canvas width="500" height="500"></canvas>';
-	eventNo15 += '</div>';
-	eventTotalContent.innerHTML = eventNo15;
-	console.log("eventNo15: ",eventNo15);
-	
+const spinButton = document.getElementById("spinButton");
+		
+function roulette(){
 	const $c = document.querySelector("canvas");
 	const ctx = $c.getContext('2d');
 	const product = ["1000원 할인쿠폰", "500포인트", "꽝", "10포인트", "5포인트"];
 	const colors = ["#FFA500", "#F08080", "#ADD8E6", "#808080", "#9370DB"];
-	
-	const newMake = () => {
-		const [cw, ch] = [$c.width / 2, $c.height / 2];
-		const arc = Math.PI / (product.length / 2);
+	const arc = 2 * Math.PI / product.length;
+	let startAngle = 0;
 		
-		for(let i = 0 ; i < product.length ; i++){
-			ctx.beginPath();
-			ctx.fillStyle = colors[i % colors.length];
-			ctx.moveTo(cw, ch);
-			ctx.arc(cw, ch, cw, arc * (i - 1), arc * i);
-			ctx.fill();
-			ctx.closePath();
-		}
+	for(let i = 0 ; i < product.length ; i++){
+		const angle = startAngle + i * arc;
+		ctx.beginPath();
+		ctx.arc(250, 250, 250, angle, angle + arc, false);
+		ctx.lineTo(250, 250);
+		ctx.fillStyle = colors[i % colors.length];
+		ctx.fill();
+		ctx.stroke();
 		
-		ctx.fillStyle = "#fff"; //글자색
-		ctx.font = "25px Pretendard";
-		ctx.textAlign = "center";
-		for(let i = 0 ; i < product.length ; i++){
-			const angle = (arc * i) + (arc / 2);
-			ctx.save();
-			ctx.translate(
-				cw + Math.cos(angle) * (cw - 50),
-				ch + Math.sin(angle) * (ch - 50)
-			);
-			ctx.rotate(angle + Math.PI / 2);
-			product[i].split(" ").forEach((text, j) => {
-				ctx.fillText(text, 0, 30 * j);
-			});
-			ctx.restore();
-		}
-		
-		const rotate = () => {
-			alert("실행....");
-			$c.style.transform = `initial`;
-			$c.style.transition = `initial`;
-			const alpha = Math.floor(Math.random() * 100);
-			
-			setTimeout(() => {
-				const ran = Math.floor(Math.random() * product.length);
-				const arc = 360 / product.length;
-				const rotate = (ran * arc) + 3600 + (arc * 3) - (arc/4) + alpha;
-				$c.style.transform = `rotate(-${rotate}deg)`;
-				$c.style.transition = `2s`;
-			}, 1);
-		};
-		document.getElementById("submitEvent").addEventListener("click", rotate);
+		ctx.save();
+		ctx.translate(250 + Math.cos(angle + arc / 2) * 200, 250 + Math.sin(angle + arc / 2) * 200);
+		ctx.rotate(angle + arc / 2 + Math.PI / 2);
+		ctx.fillStyle = "#000"; //글자색
+		ctx.font = "bold 16px Arial";
+		ctx.fillText(product[i], -ctx.measureText(product[i]).width / 2, 0);			
+		ctx.restore();
 	}
-	newMake();
+}
+			
+			
+function rotate(){
+	const spinAngle = Math.random() * 360 + 3600;
+	const finalAngle = spinAngle % 360;
+	const seletedIndex = Math.floor((360 - finalAngle) / (360 / product.length)) % product.length;
+	
+	const $c = document.querySelector("canvas");
+	const product = ["1000원 할인쿠폰", "500포인트", "꽝", "10포인트", "5포인트"];
+	
+	$c.style.transform = "transform 3s ease-out";
+	$c.style.transition = 'rotate(' + spinAngle + 'deg)';
+	
+	setTimeout(() => {
+		alert("당첨된 항목: ", product[seletedIndex]);
+		$c.style.transition = "none";
+		$c.style.transform = 'rotate(' + finalAngle + 'deg)';
+	}, 3000);
+}
+spinButton.addEventListener("click", rotate());
+roulette();
+	

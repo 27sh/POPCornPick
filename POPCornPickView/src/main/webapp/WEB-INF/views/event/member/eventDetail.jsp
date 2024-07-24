@@ -231,20 +231,22 @@ canvas {
 	transition: 2s;
 }
 
-#randomProduct {
+.roulette-container {
 	width: 600px;
 	display: flex;
 	align-items: center;
 	margin-top: 100px;
 	flex-direction: column;
-	position: relative;
+	position: absolute;
+	top: 50%;
+	left: 50%;
 /* 	height-min: 1000px; */
 /* 	overflow: hidden; */
- 	text-align: center; 
+ 	transform: translate(-50%, -50%);
  	
 }
 
-#randomProduct::before {
+.roulette-container::before {
 	content: "";
 	position: absolute;
 	width: 10px;
@@ -257,8 +259,20 @@ canvas {
 	z-index: 22;
 }
 
+#spinRoulette{
+	padding: 15px 50px;
+	font-family: "Pretendard Variable", Pretendard;
+	font-size: 15px;
+	cursor: pointer;
+	margin: 0 10px;
+	background: #f82f62;
+	border: 1px solid #f82f62;
+	color:#fff;
+}
+
 
 </style>
+<script src="/js/rouletteEvent.js"></script>
 </head>
 
 
@@ -303,6 +317,7 @@ canvas {
 	<footer>
 	
 	</footer>
+	
 	<script>
 	$(document).ready(function(){
 		const urlParams = new URLSearchParams(window.location.search);
@@ -326,7 +341,7 @@ canvas {
 				const buttonStr1 = '<input type="button" id="submitEvent" value="참여하기" onclick="submitMbtiEvent(event)">';
 				document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
 			} else if(eventNo == 15){
-				const buttonStr1 = '<input type="button" id="submitEvent" value="룰렛 돌리기" onclick="rotate()">';
+				const buttonStr1 = '<input type="button" id="spinRoulette" value="룰렛 돌리기" onclick="rotate()">';
 				document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
 			}
 		} else if(eventState == 0){
@@ -358,6 +373,12 @@ canvas {
 		}
 		
 		if(eventNo == 15){
+			const eventTotalContent = document.getElementById("eventTotalContent");
+			let eventNo15 = '';
+			eventNo15 += '<div class="roulette-container">';
+			eventNo15 += '<canvas id="roulette" width="500" height="500"></canvas>';
+			eventNo15 += '</div>';
+			eventTotalContent.innerHTML = eventNo15;
 			roulette();
 		};
 		
@@ -388,90 +409,6 @@ canvas {
 			}
 		});
 	});
-	
-	function roulette(){
-		const eventTotalContent = document.getElementById("eventTotalContent");
-		let eventNo15 = '';
-		eventNo15 += '<div id="randomProduct">';
-		eventNo15 += '<canvas width="500" height="500"></canvas>';
-		eventNo15 += '</div>';
-		eventTotalContent.innerHTML = eventNo15;
-		console.log("eventNo15: ",eventNo15);
-		
-		const $c = document.querySelector("canvas");
-		const ctx = $c.getContext('2d');
-		const product = ["1000원 할인쿠폰", "500포인트", "꽝", "10포인트", "5포인트"];
-		const colors = ["#FFA500", "#F08080", "#ADD8E6", "#808080", "#9370DB"];
-		
-		const newMake = () => {
-			const [cw, ch] = [$c.width / 2, $c.height / 2];
-			const arc = Math.PI / (product.length / 2);
-			
-			for(let i = 0 ; i < product.length ; i++){
-				ctx.beginPath();
-				ctx.fillStyle = colors[i % colors.length];
-				ctx.moveTo(cw, ch);
-				ctx.arc(cw, ch, cw, arc * (i - 1), arc * i);
-				ctx.fill();
-				ctx.closePath();
-			}
-			
-			ctx.fillStyle = "#fff"; //글자색
-			ctx.font = "25px Pretendard";
-			ctx.textAlign = "center";
-			for(let i = 0 ; i < product.length ; i++){
-				const angle = (arc * i) + (arc / 2);
-				ctx.save();
-				ctx.translate(
-					cw + Math.cos(angle) * (cw - 50),
-					ch + Math.sin(angle) * (ch - 50)
-				);
-				ctx.rotate(angle + Math.PI / 2);
-				product[i].split(" ").forEach((text, j) => {
-					ctx.fillText(text, 0, 30 * j);
-				});
-				ctx.restore();
-			}
-		}
-		newMake();
-	}
-	
-	function rotate(){
-		roulette();
-		console.log("rotate 함수 실행");
-		const $c = document.querySelector("canvas");
-		const product = ["1000원 할인쿠폰", "500포인트", "꽝", "10포인트", "5포인트"];
-		
-		$c.style.transform = 'initial';
-		$c.style.transition = 'initial';
-		const alpha = Math.floor(Math.random() * 100);
-		
-		setTimeout(() => {
-			const ran = Math.floor(Math.random() * product.length);
-			const arc = 360 / product.length;
-			const rotate = (ran * arc) + 3600 + (arc * 3) - (arc/4) + alpha;
-			
-			
-			$c.style.transform = 'rotate(-'+rotate + 'deg)';
-			$c.style.transition = '2s';
-			
-			setTimeout(() => {
-				const finalRotate = rotate % 360;
-				console.log("finalRotate: ", finalRotate);
-				const correctedAngle = 360 - finalRotate + arc / 2;
-				const selectedIdx = Math.floor((360 - finalRotate) / arc) % product.length;
-				console.log("selectedIdx: ", selectedIdx);
-				const selectedItem = product[selectedIdx];
-				console.log(selectedItem);
-				alert("선택된 항목: "+selectedItem);
-				
-				$c.style.transition = 'initial'; // 즉각적으로 초기화하기 위해 transition을 초기화
-	            $c.style.transform = 'rotate(0deg)';
-			}, 2000);
-		}, 1);
-		
-		
-	}
 	
 	function submitMbtiEvent(event){
 		const q1 = document.getElementsByName('q1');

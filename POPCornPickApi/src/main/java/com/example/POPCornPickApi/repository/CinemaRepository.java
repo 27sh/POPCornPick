@@ -41,4 +41,9 @@ public interface CinemaRepository extends JpaRepository<Cinema, Long>{
 	
 	@Query(value = "SELECT * FROM Cinema WHERE cinemaNo = :cinemaNo", nativeQuery = true)
 	public Cinema getCinemaFindByCinemaNo(@Param("cinemaNo") Long cinemaNo);
+	
+	@Query(value = "SELECT c FROM cinema c WHERE cinema_name LIKE :searchContent")
+	public List<Cinema> getSearchCinemaList(@Param("searchCinemaList") String searchContent);
+	
+	
 }

@@ -1,5 +1,6 @@
 package com.example.POPCornPickApi.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -35,5 +36,11 @@ public class Room extends BaseEntity{
 	
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Seat> seats;
+
+	public Room(Date regdate, Date moddate, Long roomNo) {
+		super(regdate, moddate);
+		this.roomNo = roomNo;
+	}
+	
 	
 }

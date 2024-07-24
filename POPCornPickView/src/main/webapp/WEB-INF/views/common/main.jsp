@@ -76,6 +76,7 @@
         });
     });
 
+/*
     $(document).ready(function() {
         $.ajax({
             url: 'http://localhost:9001/api/v1/main/packages',
@@ -220,7 +221,7 @@
             }
         });
     }
-
+*/
     $(window).scroll(function(){
         if ($(this).scrollTop() > 150){
             $('.btn_gotop').fadeIn(200);
@@ -347,35 +348,6 @@
 </div>
 
     <!-- 스토어 -->
-    <div id="store-container">
-    <div class="store-item-box" id="pack-container">
-        <div class="store-high-container">
-            <h3>패키지</h3>
-            <button class="go-to-store">더보기</button>
-        </div>
-        <div class="item-box-info-container" id="pack-info">
-            <!-- 아이템 컨텐츠는 AJAX 요청으로 추가됩니다. -->
-        </div>
-    </div>
-    <div class="store-item-box" id="store-movie-container">
-        <div class="store-high-container">
-            <h3>영화관람권</h3>
-            <button class="go-to-store">더보기</button>
-        </div>
-        <div class="item-box-info-container" id="store-movie-info">
-            <!-- 아이템 컨텐츠는 AJAX 요청으로 추가됩니다. -->
-        </div>
-    </div>
-    <div class="store-item-box" id="gift-container">
-        <div class="store-high-container">
-            <h3>기프트카드</h3>
-            <button class="go-to-store">더보기</button>
-        </div>
-        <div class="item-box-info-container" id="gift-info">
-            <!-- 아이템 컨텐츠는 AJAX 요청으로 추가됩니다. -->
-        </div>
-    </div>
-</div>
 
 <!-- ETC -->
 <div id="etc-container">

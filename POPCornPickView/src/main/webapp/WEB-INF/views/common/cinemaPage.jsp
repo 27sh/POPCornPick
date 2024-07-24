@@ -38,7 +38,7 @@
 			<div id="nav-container">
 				<ul>
 					<li>서울</li>
-					<li>경기-인천</li>
+					<li>경기/인천</li>
 					<li>충청/대전</li>
 					<li>경북/대구</li>
 					<li>경남/부산/울산</li>
@@ -50,7 +50,7 @@
 		</div>
 		<div>
 			<img src="/img/theater.png" alt="theater" style="padding: 20px 0;">
-		</div>
+		</div>	
 		<div id="cinema-info">
 			<div id="cinema-info-top">
 				<div id="cinema-info-title-container">
@@ -102,7 +102,7 @@
 						<div id="modal-select-div">
 							<select name="location" id="select-cinema-location">
 								<option value="서울">서울</option>
-								<option value="경기-인천">경기-인천</option>
+								<option value="경기/인천">경기/인천</option>
 								<option value="충청/대전">충청/대전</option>
 								<option value="경북/대구">경북/대구</option>
 								<option value="경남/부산/울산">경남/부산/울산</option>

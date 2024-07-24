@@ -154,7 +154,7 @@ $(document).ready(function() {
 
     var locationMap = {
         "서울": "서울",
-        "경기-인천": "경기-인천",
+        "경기/인천": "경기/인천",
         "충청/대전": "충청/대전",
         "경북/대구": "경북/대구",
         "경남/부산/울산": "경남/부산/울산",
@@ -164,7 +164,7 @@ $(document).ready(function() {
 
     var reverseLocationMap = {
         "서울": "서울",
-        "경기-인천": "경기-인천",
+        "경기/인천": "경기/인천",
         "충청/대전": "충청/대전",
         "경북/대구": "경북/대구",
         "경남/부산/울산": "경남/부산/울산",
@@ -206,149 +206,146 @@ $(document).ready(function() {
     }
 
 function loadCinemas(location) {
-    var mappedLocation = locationMap[location];
-    if (mappedLocation) {
-        console.log("Requesting data for location:", mappedLocation); // 콘솔 로그 추가
-        var token = localStorage.getItem('jwtToken');
-        console.log("Using token:", token); // JWT 토큰 로그 추가
+    var mappedLocation = location.substring(0, 2); // 앞의 두 글자만 사용
+    console.log("Requesting data for location:", mappedLocation); // 콘솔 로그 추가
+    var token = localStorage.getItem('jwtToken');
+    console.log("Using token:", token); // JWT 토큰 로그 추가
 
-        $.ajax({
-            url: 'http://localhost:9001/api/v1/memberCinema/cinemaLocation/' + mappedLocation,
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            },
-            success: function(data) {
-                console.log("Data received:", data); // 콘솔 로그 추가
-                $('#row-container').empty();
-                data.forEach(function(cinema, index) {
-                    var cinemaItem = '<div class="cinema-item" data-cinema-name="' + cinema.cinemaName + '" data-cinema-no="' + cinema.cinemaNo + '">' +
-                        '<div id="cine-item-title"> 팝콘픽 ' + cinema.cinemaName + '</div>' +
-                        '</div>';
-                    $('#row-container').append(cinemaItem);
+    $.ajax({
+        url: 'http://localhost:9001/api/v1/memberCinema/cinemaLocation/' + mappedLocation,
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(data) {
+            console.log("Data received:", data); // 콘솔 로그 추가
+            $('#row-container').empty();
+            data.forEach(function(cinema, index) {
+                var cinemaItem = '<div class="cinema-item" data-cinema-name="' + cinema.cinemaName + '" data-cinema-no="' + cinema.cinemaNo + '">' +
+                    '<div id="cine-item-title"> 팝콘픽 ' + cinema.cinemaName + '</div>' +
+                    '</div>';
+                $('#row-container').append(cinemaItem);
 
-                    if (index === 0) {
-                        $('#row-container .cinema-item:first #cine-item-title').addClass('selected');
-                        showCinemaInfo(cinema);
-                        loadRooms(cinema.cinemaNo);
-                        loadRoomCount(cinema.cinemaNo);
+                if (index === 0) {
+                    $('#row-container .cinema-item:first #cine-item-title').addClass('selected');
+                    showCinemaInfo(cinema);
+                    loadRooms(cinema.cinemaNo);
+                    loadRoomCount(cinema.cinemaNo);
+                }
+            });
+
+            $('.cinema-item').click(function() {
+                $('.cinema-item #cine-item-title').removeClass('selected');
+                $(this).find('#cine-item-title').addClass('selected');
+                var cinemaName = $(this).data('cinema-name');
+                var cinemaNo = $(this).data('cinema-no');
+                
+                console.log("Cinema selected:", cinemaNo); // 콘솔 로그 추가
+                var selectedCinemaNo = cinemaNo;
+                
+                var selectedCinema = data.find(c => c.cinemaName === cinemaName);
+                if (selectedCinema) {
+                    showCinemaInfo(selectedCinema);
+                    loadRooms(cinemaNo);
+                    loadRoomCount(cinemaNo);
+                }
+                $('#cinema-info-between').show();
+                
+                console.log("Loading schedule for cinema:", selectedCinemaNo); // 콘솔 로그 추가
+                $.ajax({
+                    url: "http://localhost:9001/api/v1/schedule/cinema/" + selectedCinemaNo,
+                    method: "GET",
+                    success: function (rooms) {
+                        console.log("Rooms data received:", rooms); // 콘솔 로그 추가
+                        var roomTab = $('.room_tab');
+                        roomTab.empty();
+
+                        rooms.sort((a, b) => a.roomType.roomTypeNo - b.roomType.roomTypeNo).forEach(function (room) {
+                            var li = $('<li>').text(room.roomType.roomName).addClass('room-item');
+                            li.data('roomNo', room.roomNo);
+                            roomTab.append(li);
+
+                            if (selectedRoomNo === 0) {
+                                selectedRoomNo = room.roomNo;
+                                li.addClass('selected2');
+                                updateSchedule();
+                            }
+                        });
+
+                        // 자동으로 첫번째 관람관 선택
+                        if ($('.room-item').length > 0) {
+                            $('.room-item').first().click();
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error loading rooms:", error); // 콘솔 에러 로그 추가
+                        console.error("Error details:", error.responseText); // 콘솔 에러 로그 추가
                     }
                 });
 
-                $('.cinema-item').click(function() {
-                    $('.cinema-item #cine-item-title').removeClass('selected');
-                    $(this).find('#cine-item-title').addClass('selected');
-                    var cinemaName = $(this).data('cinema-name');
-                    var cinemaNo = $(this).data('cinema-no');
-                    
-                    console.log("Cinema selected:", cinemaNo); // 콘솔 로그 추가
-                    var selectedCinemaNo = cinemaNo;
-                    
-                    var selectedCinema = data.find(c => c.cinemaName === cinemaName);
-                    if (selectedCinema) {
-                        showCinemaInfo(selectedCinema);
-                        loadRooms(cinemaNo);
-                        loadRoomCount(cinemaNo);
-                    }
-                    $('#cinema-info-between').show();
-                    
-                    console.log("Loading schedule for cinema:", selectedCinemaNo); // 콘솔 로그 추가
-                    $.ajax({
-                        url: "http://localhost:9001/api/v1/schedule/cinema/" + selectedCinemaNo,
-                        method: "GET",
-                        success: function (rooms) {
-                            console.log("Rooms data received:", rooms); // 콘솔 로그 추가
-                            var roomTab = $('.room_tab');
-                            roomTab.empty();
+            });
 
-                            rooms.sort((a, b) => a.roomType.roomTypeNo - b.roomType.roomTypeNo).forEach(function (room) {
-                                var li = $('<li>').text(room.roomType.roomName).addClass('room-item');
-                                li.data('roomNo', room.roomNo);
-                                roomTab.append(li);
-
-                                if (selectedRoomNo === 0) {
-                                    selectedRoomNo = room.roomNo;
-                                    li.addClass('selected2');
-                                    updateSchedule();
-                                }
-                            });
-
-                            // 자동으로 첫번째 관람관 선택
-                            if ($('.room-item').length > 0) {
-                                $('.room-item').first().click();
-                            }
-                        },
-                        error: function (error) {
-                            console.error("Error loading rooms:", error); // 콘솔 에러 로그 추가
-                            console.error("Error details:", error.responseText); // 콘솔 에러 로그 추가
-                        }
+            // inner-select-cinema 클릭 이벤트 추가
+            $('.inner-select-cinema').click(function() {
+                var cinemaName = $(this).data('cinema-name');
+                var cinemaLocation = $(this).data('cinema-location');
+                if (!cinemaName) {
+                    showModal();
+                } else {
+                    var locationText = reverseLocationMap[cinemaLocation];
+                    var locationLi = $('#nav-container ul li').filter(function() {
+                        return $(this).text() === locationText;
                     });
 
-                });
+                    if (locationLi.length) {
+                        locationLi.click();
+                        setTimeout(function() {
+                            var cinemaItem = $('.cinema-item').filter(function() {
+                                return $(this).data('cinema-name') === cinemaName;
+                            });
 
-                // inner-select-cinema 클릭 이벤트 추가
-                $('.inner-select-cinema').click(function() {
-                    var cinemaName = $(this).data('cinema-name');
-                    var cinemaLocation = $(this).data('cinema-location');
-                    if (!cinemaName) {
-                        showModal();
-                    } else {
-                        var locationText = reverseLocationMap[cinemaLocation];
-                        var locationLi = $('#nav-container ul li').filter(function() {
-                            return $(this).text() === locationText;
-                        });
-
-                        if (locationLi.length) {
-                            locationLi.click();
-                            setTimeout(function() {
-                                var cinemaItem = $('.cinema-item').filter(function() {
-                                    return $(this).data('cinema-name') === cinemaName;
-                                });
-
-                                if (cinemaItem.length) {
-                                    cinemaItem.click();
-                                }
-                            }, 1000); // 1초 지연 후 실행 (적절한 지연 시간을 설정하세요)
-                        }
+                            if (cinemaItem.length) {
+                                cinemaItem.click();
+                            }
+                        }, 1000); // 1초 지연 후 실행 (적절한 지연 시간을 설정하세요)
                     }
-                });
+                }
+            });
 
-                // modal-box-cinema 클릭 이벤트 추가
-                $('.modal-box-cinema-name').click(function() {
-                    var cinemaName = $(this).data('cinema-name');
-                    var cinemaLocation = $(this).data('cinema-location');
-                    if (!cinemaName) {
-                        showModal();
-                    } else {
-                        var locationText = reverseLocationMap[cinemaLocation];
-                        var locationLi = $('#nav-container ul li').filter(function() {
-                            return $(this).text() === locationText;
-                        });
+            // modal-box-cinema 클릭 이벤트 추가
+            $('.modal-box-cinema-name').click(function() {
+                var cinemaName = $(this).data('cinema-name');
+                var cinemaLocation = $(this).data('cinema-location');
+                if (!cinemaName) {
+                    showModal();
+                } else {
+                    var locationText = reverseLocationMap[cinemaLocation];
+                    var locationLi = $('#nav-container ul li').filter(function() {
+                        return $(this).text() === locationText;
+                    });
 
-                        if (locationLi.length) {
-                            locationLi.click();
-                            setTimeout(function() {
-                                var cinemaItem = $('.cinema-item').filter(function() {
-                                    return $(this).data('cinema-name') === cinemaName;
-                                });
+                    if (locationLi.length) {
+                        locationLi.click();
+                        setTimeout(function() {
+                            var cinemaItem = $('.cinema-item').filter(function() {
+                                return $(this).data('cinema-name') === cinemaName;
+                            });
 
-                                if (cinemaItem.length) {
-                                    cinemaItem.click();
-                                }
-                            }, 1000); // 1초 지연 후 실행 (적절한 지연 시간을 설정하세요)
-                        }
+                            if (cinemaItem.length) {
+                                cinemaItem.click();
+                            }
+                        }, 1000); // 1초 지연 후 실행 (적절한 지연 시간을 설정하세요)
                     }
-                });
-            },
-            error: function(error) {
-                console.error("Error loading cinemas:", error); // 콘솔 에러 로그 추가
-                console.error("Error details:", error.responseText); // 콘솔 에러 로그 추가
-            }
-        });
-    } else {
-        console.error("Invalid location:", location); // 콘솔 에러 로그 추가
-    }
+                }
+            });
+        },
+        error: function(error) {
+            console.error("Error loading cinemas:", error); // 콘솔 에러 로그 추가
+            console.error("Error details:", error.responseText); // 콘솔 에러 로그 추가
+        }
+    });
 }
+
 
     function showModal() {
         var modal = document.getElementById("myModal");
@@ -483,23 +480,27 @@ function loadCinemas(location) {
         }
     }
 
-    function loadCinemasForLocation(location) {
-        $.ajax({
-            url: 'http://localhost:9001/api/v1/memberCinema/cinemaLocation/' + location,
-            method: 'GET',
-            success: function(data) {
-                console.log("Cinemas for location loaded:", data); // 콘솔 로그 추가
-                $('#select-cinema-cinemaName').empty();
-                data.forEach(function(cinema) {
-                    $('#select-cinema-cinemaName').append('<option value="' + cinema.cinemaName + '">' + cinema.cinemaName + '</option>');
-                });
-            },
-            error: function(error) {
-                console.error("Error loading cinemas for location:", error); // 콘솔 에러 로그 추가
-                console.error("Error details:", error.responseText); // 콘솔 에러 로그 추가
-            }
-        });
-    }
+	function loadCinemasForLocation(location) {
+	    var mappedLocation = location.substring(0, 2); // 앞의 두 글자만 사용
+	    console.log("Requesting data for location:", mappedLocation); // 콘솔 로그 추가
+	    
+	    $.ajax({
+	        url: 'http://localhost:9001/api/v1/memberCinema/cinemaLocation/' + mappedLocation,
+	        method: 'GET',
+	        success: function(data) {
+	            console.log("Cinemas for location loaded:", data); // 콘솔 로그 추가
+	            $('#select-cinema-cinemaName').empty();
+	            data.forEach(function(cinema) {
+	                $('#select-cinema-cinemaName').append('<option value="' + cinema.cinemaName + '">' + cinema.cinemaName + '</option>');
+	            });
+	        },
+	        error: function(error) {
+	            console.error("Error loading cinemas for location:", error); // 콘솔 에러 로그 추가
+	            console.error("Error details:", error.responseText); // 콘솔 에러 로그 추가
+	        }
+	    });
+	}
+
 
     $('#select-cinema-location').change(function() {
         var selectedLocation = $(this).val();

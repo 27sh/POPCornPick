@@ -45,5 +45,5 @@ public interface CinemaRepository extends JpaRepository<Cinema, Long>{
 	@Query(value = "SELECT c FROM Cinema c WHERE c.cinemaName LIKE :searchContent")
 	public List<Cinema> getSearchCinemaList(@Param("searchContent") String searchContent);
 	
-	
+	List<Cinema> findByCinemaLocationStartingWith(String location);
 }

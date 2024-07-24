@@ -23,8 +23,6 @@ import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
-import com.example.POPCornPickApi.repository.UnknownMemberRepository;
-import com.example.POPCornPickApi.service.ExpCinemaService;
 import com.example.POPCornPickApi.service.MemberCinemaService;
 
 @RestController
@@ -48,8 +46,9 @@ public class MemberCinemaController {
     
     @GetMapping("/cinemaLocation/{location}")
     public List<Cinema> getCinemasByLocation(@PathVariable("location") String location) {
-        return cinemaRepository.findByCinemaLocation(location);
+        return cinemaRepository.findByCinemaLocationStartingWith(location);
     }
+
     
     @GetMapping("/cinemaRooms/{cinemaNo}")
     public List<Room> getRoomsByCinemaNo(@PathVariable("cinemaNo") Long cinemaNo) {

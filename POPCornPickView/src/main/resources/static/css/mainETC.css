@@ -102,7 +102,7 @@
         border: 1px solid lightgray;
         border-radius: 10px;
         padding: 20px;
-        margin: 0 30px;
+        margin: 50px 30px;
         white-space: nowrap;
         position: relative; /* 부모 요소에 상대 위치 설정 */
     }

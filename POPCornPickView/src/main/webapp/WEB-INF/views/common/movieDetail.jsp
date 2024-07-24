@@ -215,6 +215,11 @@ body {
   cursor: pointer; /* 클릭 커서로 변경 */
   transform: scale(1.05); /* 이미지 확대 (선택 사항) */
 }
+
+.poster{
+    background-repeat: no-repeat;
+    background-size: contain;
+}
 </style>
 </head>
 <body>
@@ -244,17 +249,19 @@ body {
 		const movieDetailDC = "${movieDC}"
 		console.log(movieDetailDC);
 		
+		
 		$.ajax({
 			url : "http://localhost:9001/api/v1/film/movieDetail/" + movieDetailDC,
 			method : "GET",
 			success: function(data){
-				
-				console.log(data);
-				
+				const posterUrl = fetchPoster(data[0].movie.movieNm);	
+				console.log(data.movie);
+				console.log("패치포스터괄호데이터쩜무비네임괄호 : " + fetchPoster(data.movieNm));
+				console.log("뽀스터 유알아이------" + posterUrl);
 			    let str = '';
 			    str += '<div class="container">';
 			    str += '    <div class="header">';
-			    str += '        <div class="movie-poster"></div>';
+			    str += '<div class="poster" style="background-image: url(' + posterUrl + '); width: 250px; height: 350px;"></div>';
 			    str += '        <div class="movie-info">';
 			    str += '            <h1>' + data[0].movie.movieNm + '</h1>';
 			    str += '            <span>감독: ' + data[0].movie.directors + '/배우: ' + data[0].movie.actors + '</span><br>';
@@ -279,8 +286,7 @@ body {
 			    str += '                <div class="graph age-graph"></div>';
 			    str += '            </div>';
 			    str += '            <div class="gender-group">';
-			    str += '                <h3>성별 관람비율</h3>';
-			    str += '                <div class="graph gender-graph"></div>';
+			    str += '                <h3>성별 관람비율</h3>'; 
 			    str += '            </div>';
 			    str += '        </div>';
 			    str += '    </div>';
@@ -299,7 +305,7 @@ body {
 			    str += '        <div class="slider">';
 			    str += '            <div class="slides">';
 			    str += '                <div class="slide">';
-			    str += '                    <img src="" alt="Still Cut 1">';
+			    str += '                    <img src="C:/Users/GG/Desktop/popcornpick/POPCornPickView/src/main/resources/static/escapestill/escape01.jpg" alt="Still Cut 1">';
 			    str += '                </div>';
 			    str += '                <div class="slide">';
 			    str += '                    <img src="" alt="Still Cut 2">';
@@ -359,6 +365,36 @@ body {
 		})
 		
 		
+		// TMDb API를 사용하여 영화 포스터를 가져오는 함수
+        function fetchPoster(movieNm) {
+            const apiKey = '4b5db8493a5df33fa9def848bcdda8b1';
+            const baseUrl = "https://api.themoviedb.org/3";
+            const searchUrl = baseUrl + '/search/movie?api_key=' + apiKey +'&query=' + encodeURIComponent(movieNm);
+
+            // XMLHttpRequest 객체 생성
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', searchUrl, false); // false는 동기적 요청을 나타냄
+            xhr.send();
+
+            // 요청이 완료되었을 때 처리
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    if (data.results && data.results.length > 0) {
+                        const posterPath = data.results[0].poster_path;
+                        return 'https://image.tmdb.org/t/p/w500'+ posterPath;
+                    } else {
+                        return 'https://via.placeholder.com/200x300'; // 포스터를 찾을 수 없을 때 기본 포스터 이미지
+                    }
+                } else {
+                    console.error('Error fetching poster:', xhr.status, xhr.statusText);
+                    return 'https://via.placeholder.com/200x300'; // 에러 발생 시 기본 포스터 이미지
+                }
+            }
+            return 'https://via.placeholder.com/200x300'; // 기본 포스터 이미지 (여기까지 올 수 있는 경우)
+        }
+
+		
 	});
 
 	function moveSlide(n) {
@@ -380,7 +416,7 @@ body {
 
 	}
 
-	// Ensure the function is attached to the buttons
+	
 	document.querySelector('.prev').addEventListener('click', () => moveSlide(-1));
 	document.querySelector('.next').addEventListener('click', () => moveSlide(1));
 

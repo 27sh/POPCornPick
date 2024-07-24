@@ -61,7 +61,7 @@ public class FilmController {
 		
 		MovieDetail mvd = new MovieDetail();
 		mvd.setMovieDC(movieDC);
-		List<Utube> utube = utuberepository.findByMovie(mvd);
+	List<Utube> utube = utuberepository.findByMovie(mvd);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(utube);
 	}

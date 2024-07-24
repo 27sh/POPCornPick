@@ -284,7 +284,7 @@ tr[name="qnaContentTr"] {
 								<option value="강원" >강원</option>
 								<option value="제주" >제주</option>
 							</select>
-							<select id="select-cinemaNo" name="qnaCinemaNo" onchange="loadCinemaNo(event)">
+							<select id="select-cinemaNo" name="qnaCinemaNo" onchange="consoleCheck(event)">
 								<option selected>영화관 선택</option>
 							</select>
 							</div>
@@ -334,6 +334,7 @@ tr[name="qnaContentTr"] {
 			const formData = new FormData(frm);
 			
 			let username = getUsername();
+			console.log(username);
 // 			const fileInput = document.querySelector("input[name='file']");
 // 			const file = fileInput.files[0];
 // 			formData.append("qnaFile", file);
@@ -438,18 +439,18 @@ tr[name="qnaContentTr"] {
 						defaultOption.selected = true;
 						defaultOption.textContent = "영화관 선택";
 						selectCinemaNo.appendChild(defaultOption);
-						selectCinemaNo.onchange = function(event){
-							console.log("value : " + event.target.value);
-						}
+// 						selectCinemaNo.onchange = function(event){
+// 							console.log("value : " + event.target.value);
+// 						}
 						
 						cinemaList.forEach(cinema => {
 // 							selectCinemaNo.append(`<option value="${cinema}">${cinema}</option>`); // jquery
 // 							selectCinemaNo.innerHTML += `<option value="${cinema}">${cinema}</option>`; // 기본 JS 문법
 							let option = document.createElement("option");
-							option.value = cinema;
-							option.textContent = cinema;
+							option.value = cinema.cinemaName;
+							option.textContent = cinema.cinemaName;
 							selectCinemaNo.appendChild(option);
-							
+							console.log("option value : " + option.value);
 							console.log(cinema);
 						});
 // 						for(let i = 0; i < cinemaList.length; i++){
@@ -475,7 +476,8 @@ tr[name="qnaContentTr"] {
 			
 			xhttp.onload = function(){
 				const cinemaNo = this.responseText;
-				document.querySelector("")
+				console.log("cinemaNo : " + cinemaNo);
+				document.querySelector("#select-cinemaNo").value = cinemaNo;
 			}
 			
 			xhttp.open("GET", "http://localhost:9001/api/v1/memInquiry/cinemaNo?cinemaName=" + cinemaName);
@@ -484,7 +486,7 @@ tr[name="qnaContentTr"] {
 		}
 		
 		function consoleCheck(event){
-			console.log(event.target);
+			console.log(event.target.value);
 		}
 		
 		function tokenCheck(){
@@ -518,7 +520,7 @@ tr[name="qnaContentTr"] {
 		function able() {
 			const selectBox = document.querySelector("#select-box");
 			selectBox.innerHTML = 
-				`<select id="select-big-location" onchange="loadCinemaNo(event)">
+				`<select id="select-big-location" onchange="loadCinemaList(event)" name="qnaCinemaLocation">
 					<option selected>지역 선택</option>
 		            <option value="My 영화관">My 영화관</option>
     	    	    <option value="서울">서울</option>
@@ -530,7 +532,7 @@ tr[name="qnaContentTr"] {
     		        <option value="강원">강원</option>
 	        	    <option value="제주">제주</option>
 		        </select>
-				<select id="select-cinemaNo" name="qnaCategory">
+				<select id="select-cinemaNo" name="qnaCinemaNo" onchange="consoleCheck(event)">
 					<option selected>영화관 선택</option>
 				</select>`;
 				

@@ -1694,8 +1694,6 @@ main {
 					$(".simple_info_content_movie").text("");
 				}
 				
-				$("#section_schedule_date").children(":first").addClass("selected");
-				
 			});
 			
 		});

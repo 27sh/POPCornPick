@@ -331,7 +331,7 @@ section{
 							   $("#pay_result_allinfo_container").html(str);
 					
 							   const qrcode = new QRCode(document.querySelector("#qrcode_container"), {
-									text : seatSelected + "" + movieTitle,
+									text : seatSelected,
 									width: 200,
 									height: 200,
 									colorDark: "#000000", // QR 코드의 어두운 부분 색상
@@ -412,7 +412,6 @@ section{
 					$(this).next(".simple_info_content").addClass(
 							"none-active");
 				});
-		
 		$("#simple_info_title_pay").on(
 				"mouseenter",
 				function() {

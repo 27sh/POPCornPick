@@ -12,7 +12,7 @@ public interface MovieDetailRepository extends JpaRepository<MovieDetail, String
 
 	public MovieDetail findByMovieDC(String movieDC);
 	
-	
+	public List<MovieDetail> findByMovieNmContaining(String movieNm);
 
 	
 	

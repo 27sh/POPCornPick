@@ -3,7 +3,7 @@
 #cinemaList {
     width: 100%;
     padding: 30px;
-
+	margin-bottom: 30px;
 }
 
 select {
@@ -33,13 +33,25 @@ select:focus {
 }
 
 .calendar-title {
-    padding: 10px;
-    font-size: 20px;
-    font-weight: 700;
+	margin-bottom: 10px;
+	padding: 7px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center; 
 }
 
-.calendar-title>a:hover{
-	border-bottom: 1px solid #333;	
+.calendar-title a{
+	color: #2C3E50;
+}
+
+.calendar-title:hover{	
+	background-color: #816bff;
+	opacity: 0.5;
+	transition-duration: 0.5s;
+}
+
+.calendar-title:hover a{
+		color: #fff;
 }
 
 .source-calendar,
@@ -59,4 +71,9 @@ select:focus {
     flex: 0 0 700px;
     height: 100%;
     float: left;
+}
+
+
+.calendar_wrap{
+	border-top: 1px solid #816bff;
 }

@@ -46,4 +46,6 @@ public interface CinemaRepository extends JpaRepository<Cinema, Long>{
 	public List<Cinema> getSearchCinemaList(@Param("searchContent") String searchContent);
 	
 	List<Cinema> findByCinemaLocationStartingWith(String location);
+	
+	List<Cinema> findByCinemaNoIn(List<Long> cinemaNos);
 }

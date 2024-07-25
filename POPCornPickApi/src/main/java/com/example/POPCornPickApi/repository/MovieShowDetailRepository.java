@@ -19,4 +19,6 @@ public interface MovieShowDetailRepository extends JpaRepository<MovieShowDetail
 	
 	public List<MovieShowDetail> findByMovie_MovieDC(Long movieDC);
 	public List<MovieShowDetail> findByMovie_MovieDCAndRoom_RoomNo(Long movieDC, Long roomNo);
+	
+	List<MovieShowDetail> findByRoomRoomNoIn(List<Long> roomNos);
 }

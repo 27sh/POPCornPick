@@ -22,4 +22,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long>{
 			+ "where m.title = :title")
     public List<Integer> getReviewScoresByMovieTitle(@Param("title") String title);	
 
+	List<Review> findByTicketingTicketingNoIn(List<Long> ticketingNos);
 }

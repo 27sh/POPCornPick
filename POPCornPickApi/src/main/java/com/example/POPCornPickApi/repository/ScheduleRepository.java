@@ -16,4 +16,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>{
 	public List<Schedule> findByMovieShowDetail_DetailNoOrderByStartAsc(Long detailNo);
 	
 	public Schedule findByScheduleNo(Long scheduleNo);
+	
+	List<Schedule> findByMovieShowDetailDetailNoIn(List<Long> detailNos);
 }

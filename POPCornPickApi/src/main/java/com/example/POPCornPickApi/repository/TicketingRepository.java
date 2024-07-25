@@ -29,4 +29,6 @@ public interface TicketingRepository extends JpaRepository<Ticketing, Long>{
 		     + "JOIN s.movieShowDetail msd "
 		     + "WHERE msd.detailNo = :detailNo")
 	public Long getTicketingCountByDetailNo(@Param("detailNo") Long detailNo);
+	
+	List<Ticketing> findByReservatedSeatReservatedSeatNoIn(List<Long> reservatedSeatNos);
 }

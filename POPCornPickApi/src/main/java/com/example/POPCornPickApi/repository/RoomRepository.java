@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.POPCornPickApi.entity.Room;
+import com.example.POPCornPickApi.entity.RoomType;
 
 public interface RoomRepository extends JpaRepository<Room, Long>{
 
@@ -32,5 +33,6 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 
 	@Query("SELECT SUM(r.roomType.roomTotalRow * r.roomType.roomTotalColumn) FROM Room r WHERE r.cinema.cinemaNo = :cinemaNo")
 	int sumSeatCountByCinemaNo(@Param("cinemaNo") Long cinemaNo);
-
+	
+	List<Room> findByRoomTypeRoomTypeNoIn(List<Long> roomTypeNos);
 }

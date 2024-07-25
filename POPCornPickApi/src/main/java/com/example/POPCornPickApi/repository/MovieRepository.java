@@ -16,4 +16,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long>{
 	
 	@Query("select m.movieDC from Movie m where m.title = :title")
 	public Long findMovieDCByTitle(@Param("title") String title);
+	
+	List<Movie> findByMovieDCIn(List<Long> movieDCs);
 }

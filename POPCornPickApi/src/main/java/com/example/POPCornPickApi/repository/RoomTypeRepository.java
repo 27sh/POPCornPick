@@ -14,4 +14,5 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Long>{
 	@Query(value = "select small_type from room_type where room_type_no = :roomTypeNo", nativeQuery = true)
 	public String getBigType(@Param("roomTypeNo") Long roomTypeNo);
 	
+	List<RoomType> findBySmallType(String smallType);
 }

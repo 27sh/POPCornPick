@@ -58,6 +58,10 @@ public class ScheduleController {
 	@GetMapping("/cinema")
 	public ResponseEntity<List<Cinema>> cinemaList(){
 		List<Cinema> list = cinemaRepository.findAll();
+//		System.out.println("영화관 전체 목록");
+//		System.out.println(list);
+//		System.out.println("============================");
+//		System.out.println();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
@@ -65,6 +69,11 @@ public class ScheduleController {
 	@GetMapping("/cinema/{cinemaNo}")
 	public ResponseEntity<List<Room>> roomList(@PathVariable("cinemaNo") Long cinemaNo){
 		List<Room> list = roomRepository.findByCinema_CinemaNo(cinemaNo);
+//		System.out.println("영화관");
+//		System.out.println(list);
+//		System.out.println("============================");
+//		System.out.println();
+//		
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
@@ -73,6 +82,11 @@ public class ScheduleController {
 	@GetMapping("/{roomNo}")
 	public ResponseEntity<List<Schedule>> scheduleList(@PathVariable("roomNo") Long roomNo){
 		List<Schedule> list = scheduleRepository.findByRoom_RoomNo(roomNo);
+//		System.out.println("영화관 별 상영시간표");
+//		System.out.println(list);
+//		System.out.println("============================");
+//		System.out.println();
+		
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 

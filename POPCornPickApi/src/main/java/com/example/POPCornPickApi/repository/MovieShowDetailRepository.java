@@ -18,4 +18,5 @@ public interface MovieShowDetailRepository extends JpaRepository<MovieShowDetail
 	public Long findDetailNoByMovieDCAndRoomNo(@Param("movieDC") Long movieDC, @Param("roomNo") Long roomNo);
 	
 	public List<MovieShowDetail> findByMovie_MovieDC(Long movieDC);
+	public List<MovieShowDetail> findByMovie_MovieDCAndRoom_RoomNo(Long movieDC, Long roomNo);
 }

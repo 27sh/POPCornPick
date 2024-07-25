@@ -78,12 +78,7 @@ var selectedMovieDC = 0;
         $(document).ready(function () {        	
             var calendarEl = document.getElementById('calendar');
             var roomNo = ${roomNo};       
-            localStorage.setItem('roomNo', roomNo);
-            
-            var cinemaNo = ${cinemaNo}
-            
-            console.log("cinemaNo " + cinemaNo);
-            console.log("roomNo " + roomNo);
+            localStorage.setItem('roomNo', roomNo);          
    		
             function toKST(date) {
                 return new Date(date).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });

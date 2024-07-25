@@ -11,7 +11,9 @@
 body {
 	font-family: Arial, sans-serif;
 }
-
+a{
+	color: white;
+}
 .container {
 	display: flex;
 	flex-wrap: wrap;
@@ -164,8 +166,8 @@ body {
                     +       '<div>영화 제목: ' + movieList[i].movieNm + '</div>'
                     +       '<div class="sales">예매율: ' + movieList[i].salesAcc + '</div>'
                     +       '<div class="rating">평점: 9.3</div>'
-                    +       '<div>개봉일: ' + movieList[i].openDt + '</div>'
-                    +       '<button class="btn">예매하기</button>'
+                    +       '<div>개봉일: ' + movieList[i].openDt + '</div><br>'
+                    +       '<button class="btn"><a href="/reservation/main">예매하기</a></button>'
                     +   '</div>'
                     + '</div>';
                 console.log(posterUrl);

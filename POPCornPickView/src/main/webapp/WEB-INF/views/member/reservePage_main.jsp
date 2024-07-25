@@ -594,10 +594,11 @@ h4 {
 	width: fit-content;
 }
 #map{
-	width: 400px;
-	height: 300px;
+	width: 355px;
+	height: 250px;
 	position: relative;
-	top: 900px;
+	top: 616.5px;
+	left: 80px;
 }
 main {
 	width: 1280px;
@@ -1316,7 +1317,6 @@ main {
 									method: "GET",
 									dataType : "json",
 									success : function(response){
-										console.log(response);
 										let cnt = 0;
 										const length = response.length;
 										
@@ -1490,13 +1490,13 @@ main {
 												    }
 												    
 													if(scheduleList[0].movieShowDetail.dubbing === false && scheduleList[0].movieShowDetail.subtitle === false){
-														 if(scheduleList[0].room.roomType.smallType.length > 1){
+														 if(scheduleList[0].room.roomType.smallType !== null){
 														        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
 														    } else {
 														        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + '</li>';
 														    }
 													}else {
-														 if(scheduleList[0].room.roomType.smallType.length > 1){
+														 if(scheduleList[0].room.roomType.smallType !== null){
 														        str += '<li>' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
 														    } else {
 														        str += '<li>' + scheduleList[0].room.roomType.roomName + '</li>';

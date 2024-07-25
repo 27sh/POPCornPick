@@ -8,7 +8,7 @@
 	crossorigin="anonymous"></script>
  <link rel="stylesheet" as="style" crossorigin
             href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
- <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
@@ -101,8 +101,7 @@ section{
 	background: #ddd;
 	margin: auto 0;
 	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);	
+	top: 100px;
 }
 #pay_result_header h4:first-child{
 	margin-bottom: 20px;
@@ -111,6 +110,8 @@ section{
 	display: flex;
 	justify-content: center;
 	gap: 20px;
+	position: relative;
+	top: 230px;
 }
 #buttons_container button:first-child{
 	background: rgb(248, 47, 98);
@@ -174,8 +175,13 @@ section{
 }
 #qrcode_container {
 	width: fit-content;
-	margin: 0 auto;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+#qrcode_box{
 	margin-bottom: 30px;
+	position: relative;
 }
 </style>
 </head>
@@ -249,7 +255,9 @@ section{
 						
 						<div id="pay_result_allinfo_container">
 						</div>
-						<div id="qrcode_container"></div>
+						<div id="qrcode_box">
+							<canvas id="qrcode_container"></canvas>
+						</div>
 						
 						<div id="buttons_container">
 							<button>결제내역</button>
@@ -330,15 +338,31 @@ section{
 					
 							   $("#pay_result_allinfo_container").html(str);
 					
-							   const qrcode = new QRCode(document.querySelector("#qrcode_container"), {
-									text : seatSelected,
-									width: 200,
-									height: 200,
-									colorDark: "#000000", // QR 코드의 어두운 부분 색상
-						            colorLight: "#ffffff", // QR 코드의 밝은 부분 색상
-						            correctLevel: QRCode.CorrectLevel.L, // 오류 수정 수준
-						            version: 40,
-								});
+							   let text = cinemaName + "\n";
+							   text += movieTitle + "\n";
+							   text += date + "\n";
+							   text += time + "\n";
+							   text += seatSelected + "\n";
+							   
+						        // QR 코드 생성 함수
+						        function generateQRCode(text) {
+						            // QR 코드를 캔버스에 생성
+						            QRCode.toCanvas(document.getElementById('qrcode_container'), text, {
+						                errorCorrectionLevel: 'H', // 높은 오류 수정 수준
+						                version: 10, // 최대 버전
+						                width: 200,
+						                height: 200,
+						            }, function (error) {
+						                if (error) {
+						                    console.error(error);
+						                } else {
+						                    console.log('QR 코드 생성 완료!');
+						                }
+						            });
+						        }
+
+						        // QR 코드 생성
+						        generateQRCode(text);
 							   
 				},
 				error : function(xhr, status, error) { 

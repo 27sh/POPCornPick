@@ -98,6 +98,15 @@ public class MemberInquiryController {
 				String newName = UUID.randomUUID().toString() + "--" + originName;// + extension;
 				File file = new File("C:/upload/" + newName);
 				qna.setQnaFile(newName);
+				List<String> imageExtensions = new ArrayList<>();
+				imageExtensions.add("jpg");
+				imageExtensions.add("jpeg");
+				imageExtensions.add("png");
+				imageExtensions.add("gif");
+				
+				if(!imageExtensions.contains(extension)) {
+					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패: 이미지 파일만 첨부가 가능합니다.");
+				}
 				
 				try {
 					
@@ -174,7 +183,7 @@ public class MemberInquiryController {
 //		List<Qna> qnaList = new ArrayList<>();
 		List<Qna> qnaList = qnaRepository.findByMember(member);
 		
-		System.out.println("qnaList 확인용 : " + qnaList);
+//		System.out.println("qnaList 확인용 : " + qnaList);
 		return qnaList;
 	}
 	
@@ -186,6 +195,12 @@ public class MemberInquiryController {
 		return null;
 	}
 	
-	
+	@GetMapping("/qnaDetail")
+	public Qna qnaDetail(HttpServletRequest request, @RequestParam("qnaNo") Long qnaNo) {
+		
+		Qna qna = qnaRepository.findByQnaNo(qnaNo);
+		System.out.println(qna);
+		return qna;
+	}
 	
 }

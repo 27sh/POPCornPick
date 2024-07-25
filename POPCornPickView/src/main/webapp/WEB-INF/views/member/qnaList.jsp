@@ -60,13 +60,18 @@ h1 {
 	margin: 20px 0;
 }
 
-.tr-group {
-	border-bottom: 1px solid;
-	margin-bottom: 10px;
+.tr-group { 
+	border-bottom: 1px solid black; 
+	height: 50px; 
+} 
+
+.page-numbers {
+	margin: 0 5px;
+	cursor: pointer;
 }
 
-tr {
-	margin-bottom: 30px;
+.active {
+	font-weight: bold;
 }
 
 </style>
@@ -83,7 +88,7 @@ tr {
 		<div id="table-location">
 			
 		</div>
-		<table id="table">
+		<table id="table" border="1">
 			<thead>
 				<tr class="tr-group">
 					<th>번호</th>
@@ -109,13 +114,22 @@ tr {
 <%-- 				</c:forEach> --%>
 			</tbody>
 		</table>
-		
+		<div id="pagination">
+			<button id="prevBtn" disabled onclick="prev()"><</button>
+			<span id="page-numbers"> 1 2 3 4 </span>
+			<button id="nextBtn" onclick="next()">></button>
+		</div>
 	</main>
 	<footer>
 		
 	</footer>
 	<script>
 		let qnaList;
+		
+		// 페이지네이션 로직 구현
+		let currentPage = 1; // 현재 페이지 [기본값(초기값) 1]
+		const itemsPerPage = 10; // 페이지당 보여줄 데이터 개수[10개]
+		let totalItems; // 총 데이터 개수 
 		
 		function loadQnaList(){
 			const token = localStorage.getItem("jwtToken");
@@ -126,29 +140,36 @@ tr {
 // 				document.querySelector("#table").style.display = "none";
 				console.log(qnaList);
 // 				let table = '<table id="table"><tr><th scope="col">번호</th><th scope="col">대분류</th><th scope="col">소분류</th><th scope="col">제목</th><th scope="col">첨부파일</th><th scope="col">작성일</th><th scope="col"></th>답변상태</tr></table>'
-				const tbody = document.querySelector("#tbody");
-				tbody.innerHTML = "";
-				for(let i = 0; i < qnaList.length; i++){
-					let row = '<tr class="tr-group">';
-					row += '<td>' + (i + 1) + '</td>';
-					row += '<td>' + qnaList[i].qnaBigCategory + '</td>';
-					row += '<td>' + qnaList[i].qnaSmallCategory + '</td>';
-					row += '<td><a href="/member/qnaDetail?qnaNo=' +qnaList[i].qnaNo + '">' + qnaList[i].qnaTitle + '</a></td>';
-					row += '<td>' + qnaList[i].qnaFile.split("--")[1] + '</td>';
-					// Moment.js 객체 생성 (시간대 정보 유지)
-					let regDate = moment.utc(qnaList[i].regdate).local();
-					// 원하는 형식으로 문자열 변환
-					let formattedDate = regDate.format("YYYY-MM-DD HH:mm:ss");
-					row += '<td>' + formattedDate + '</td>';
-					if(qnaList[i].qnaAnswer === null){
-						row += '<td>' + '답변대기' + '</td>';
-					}else {
-						row += '<td>' + '답변완료' + '</td>';
-					}
-					row += '</tr>';
+				totalItems = qnaList.length;
+				// 현재 페이지에 해당하는 데이터만 화면에 표시
+				
+				displayCurrentPage();
+				
+				paging();
+				
+// 				const tbody = document.querySelector("#tbody");
+// 				tbody.innerHTML = "";
+// 				for(let i = 0; i < qnaList.length; i++){
+// 					let row = '<tr class="tr-group" >';
+// 					row += '<td>' + (i + 1) + '</td>';
+// 					row += '<td>' + qnaList[i].qnaBigCategory + '</td>';
+// 					row += '<td>' + qnaList[i].qnaSmallCategory + '</td>';
+// 					row += '<td><a href="/member/qnaDetail?qnaNo=' +qnaList[i].qnaNo + '">' + qnaList[i].qnaTitle + '</a></td>';
+// 					row += '<td>' + qnaList[i].qnaFile.split("--")[1] + '</td>';
+// 					// Moment.js 객체 생성 (시간대 정보 유지)
+// 					let regDate = moment.utc(qnaList[i].regdate).local();
+// 					// 원하는 형식으로 문자열 변환
+// 					let formattedDate = regDate.format("YYYY-MM-DD HH:mm:ss");
+// 					row += '<td>' + formattedDate + '</td>';
+// 					if(qnaList[i].qnaAnswer === null){
+// 						row += '<td>' + '답변대기' + '</td>';
+// 					}else {
+// 						row += '<td>' + '답변완료' + '</td>';
+// 					}
+// 					row += '</tr>';
 					
-					tbody.innerHTML += row;
-				}
+// 					tbody.innerHTML += row;
+// 				}
 									
 			}
 			
@@ -156,7 +177,108 @@ tr {
 			xhttp.setRequestHeader("Authorization", "Bearer " + token);
 			xhttp.send();
 		}
-		loadQnaList();
+		
+		function displayCurrentPage(){
+			const startIdx = (currentPage - 1) * itemsPerPage;
+			const endIdx = Math.min(currentPage * itemsPerPage, totalItems);  // 마지막 인덱스 조정
+			const slicedData = qnaList.slice(startIdx, endIdx);  // 현재 페이지 데이터 추출
+			
+			displayQnaList(slicedData, startIdx); // 추출한 데이터만 화면에 표시하는 함수 호출
+		}
+		
+		function displayQnaList(slicedData, startIdx){
+			const tbody = document.querySelector("#tbody");
+			tbody.innerHTML = "";
+			for(let i = 0; i < slicedData.length; i++){
+				let row = '<tr class="tr-group" >';
+				row += '<td>' + (i + startIdx + 1) + '</td>';
+				row += '<td>' + slicedData[i].qnaBigCategory + '</td>';
+				row += '<td>' + slicedData[i].qnaSmallCategory + '</td>';
+				row += '<td><a href="/member/qnaDetail?qnaNo=' +slicedData[i].qnaNo + '">' + slicedData[i].qnaTitle + '</a></td>';
+				row += '<td>' + slicedData[i].qnaFile.split("--")[1] + '</td>';
+				// Moment.js 객체 생성 (시간대 정보 유지)
+				let regDate = moment.utc(qnaList[i].regdate).local();
+				// 원하는 형식으로 문자열 변환
+				let formattedDate = regDate.format("YYYY-MM-DD HH:mm:ss");
+				row += '<td>' + formattedDate + '</td>';
+				if(slicedData[i].qnaAnswer === null){
+					row += '<td>' + '답변대기' + '</td>';
+				}else {
+					row += '<td>' + '답변완료' + '</td>';
+				}
+				// 위에 if else문 밑에 한줄로 처리 가능
+				// row += '<td>' + (data[i].qnaAnswer === null ? '답변대기' : '답변완료') + '</td>';
+				row += '</tr>';
+				
+				tbody.innerHTML += row;
+			}
+			
+		}
+		
+		const prevBtn = document.querySelector("#prevBtn");
+		const nextBtn = document.querySelector("#nextBtn");
+		
+		function updatePaginationButtons() {
+			prevBtn.disabled = currentPage === 1;
+			nextBtn.disabled = currentPage === Math.ceil(totalItems / itemsPerPage);
+			paging();
+		}
+		
+		function prev(){
+			if(currentPage > 1){
+				currentPage--;
+				displayCurrentPage();
+				updatePaginationButtons();
+			}
+// 			prevBtn.disabled = currentPage === 1; // 버튼 활성화/비활성화 설정
+// 			nextBtn.abled = currentPage < Math.ceil(totalItems / itemsPerPage);
+		}
+		
+		function next(){
+			if(currentPage < Math.ceil(totalItems / itemsPerPage)){
+				currentPage++;
+				displayCurrentPage();
+				updatePaginationButtons();
+				console.log(currentPage + ", " + Math.ceil(totalItems / itemsPerPage));
+			}
+// 			nextBtn.disabled = currentPage === Math.ceil(totalItems / itemsPerPage);
+// 			//prevBtn.abled = currentPage != 1;
+		}
+		
+		function paging(){ // createPaginationButton
+			const pageNumbers = document.querySelector("#page-numbers")
+			pageNumbers.innerHTML = '';
+			
+			const totalPages = Math.ceil(totalItems / itemsPerPage);
+			
+			for(let i = 1; i <= totalPages; i++){
+				const pageNumber = document.createElement('span');
+				pageNumber.textContent = i;
+				pageNumber.classList.add('page-numbers');
+				
+				if(i === currentPage){
+					pageNumber.classList.add('active');
+				}
+				
+				pageNumber.addEventListener('click', () =>{
+					currentPage = i;
+					displayCurrentPage();
+					updatePaginationButtons();
+				});
+				
+				pageNumbers.appendChild(pageNumber);
+			}
+		}
+		
+		document.addEventListener('DOMContentLoaded', () => {
+			loadQnaList();
+		});
+		
+// 		$(document).ready(function(){
+// 			loadQnaList();
+			// 고도화 할 것 : 페이지네이션 <, > 버튼 클릭시 1~5 숫자가 6~10 으로 넘어가게만들기. 10개씩 한 페이지네이션에  페이지네이션 5묶음 끊어서 보이게하기.
+// 		});
+		
 	</script>
 </body>
 </html>

@@ -47,7 +47,7 @@ body {
 	flex-grow: 1;
 }
 
-.watch-button, .like-button {
+.write_review, .watch-button, .like-button {
 	margin: 5px;
 	padding: 10px 20px;
 	border: none;
@@ -55,7 +55,7 @@ body {
 	cursor: pointer;
 }
 
-.watch-button {
+.write_review, .watch-button {
 	background-color: #ff5733;
 	color: #fff;
 }
@@ -102,26 +102,31 @@ body {
 	width: 98%;
 }
 
-.slider {
-	position: relative;
-	overflow: hidden;
-	width: 100%;
-	text-align: center;
-}
-
 .s {
 	display: flex;
 	transition: transform 0.5s ease-in-out;
 }
 
+.slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
 .slide {
-	min-width: 100%;
-	box-sizing: border-box;
+  min-width: 100%;
+  box-sizing: border-box;
 }
 
 .slide img {
-	width: 100%;
-	border-radius: 8px;
+  width: 90%;
+  border-radius: 8px;
 }
 
 .prev, .next {
@@ -157,6 +162,9 @@ body {
 	display: inline-block;
 	margin-left: 10px;
 }
+#reservation {
+	color: white;
+}
 
 .format {
 	display: inline-block;
@@ -181,12 +189,25 @@ body {
 	transition: opacity 0.3s ease;
 }
 
+.modal-content1 {
+    background-color: black;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+    max-width: 90%; 
+    border-radius: 8px;
+}
+
+
 .modal-content {
-	background-color: #000;
+	background-color: #fff;
 	margin: 15% auto;
 	padding: 20px;
 	border: 1px solid #888;
 	width: 80%;
+	max-width: 500px;
+	border-radius: 8px;
 }
 
 .close {
@@ -206,6 +227,7 @@ body {
 	display: block; /* 모달이 화면에 표시됨 */
 	opacity: 1;
 }
+
 .video-thumbnail img {
   width: 85%; /* 기존 스타일 유지 */
   transition: transform 0.3s ease; /* 이미지에 부드러운 확대 효과 추가 (선택 사항) */
@@ -220,205 +242,239 @@ body {
     background-repeat: no-repeat;
     background-size: contain;
 }
+
+
+
 </style>
 </head>
 <body>
 	<header>
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 		<%@ include file="../layout/header.jsp"%>
 	</header>
 	<main>
 		<div id="targetElement"></div>
-
+		<!-- 기존 예고편 모달 -->
 		<div id="myModal" class="modal">
-			<div class="modal-content">
+			<div class="modal-content1">
 				<span class="close">&times;</span>
 				<iframe id="modal-video" width="100%" height="1000px" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-black; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 			</div>
 		</div>
+
+		<!-- 새로 추가한 평점 작성 모달 -->
+		<div id="ratingModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<h2>평점 작성</h2>
+				<form id="ratingForm">
+					<label for="rating">평점:</label>
+					<select id="rating" name="rating">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+					<br>
+					<label for="review">리뷰:</label>
+					<textarea id="review" name="review" rows="4" cols="50"></textarea>
+					<br>
+					<button type="submit">제출</button>
+				</form>
+			</div>
+		</div>
 	</main>
-	<footer> </footer>
+	<footer>
+	</footer>
 
 	<script>
-	  //모달관련 변수
-	   var modal = document.getElementById("myModal");
-        var span = document.getElementsByClassName("close")[0];
-        var modalVideo = document.getElementById("modal-video");
-	
-	$(document).ready(function(){
-		
-		const movieDetailDC = "${movieDC}"
-		console.log(movieDetailDC);
-		
-		
-		$.ajax({
-			url : "http://localhost:9001/api/v1/film/movieDetail/" + movieDetailDC,
-			method : "GET",
-			success: function(data){
-				const posterUrl = fetchPoster(data.utube[0].movie.movieNm);	
-				var basePath = 'C:\\Users\\GG\\Desktop\\popcornpick\\POPCornPickView\\src\\main\\resources\\static\\stillcut\\';
-				console.log(data);
-				console.log(data.utube[0].movie.movieNm);
-				console.log(data.stillcut); 
-			    let str = '';
-			    str += '<div class="container">';
-			    str += '    <div class="header">';
-			    str += '<div class="poster" style="background-image: url(' + posterUrl + '); width: 250px; height: 350px;"></div>';
-			    str += '        <div class="movie-info">';
-			    str += '            <h1>' + data.utube[0].movie.movieNm + '</h1>';
-			    str += '            <span>감독: ' + data.utube[0].movie.directors + '/배우: ' + data.utube[0].movie.actors + '</span><br>';
-			    str += '            <span>장르: ' + data.utube[0].movie.genres + '/기본정보: ' + data.utube[0].movie.nations +',' + data.utube[0].movie.showTm + '</span><br>';
-			    str += '            <span>개봉: ' + data.utube[0].movie.openDt + '</span><br><br>';
-			    str += '            <button class="watch-button">예매하기</button>';
-			    str += '            <div class="formats">';
-			    str += '                <span class="format">IMAX</span>';
-			    str += '                <span class="format">4DX</span>';
-			    str += '            </div>';
-			    str += '        </div>';
-			    str += '    </div>';
-			    str += '    <div class="description">';
-			    str += '        <h2>영화 설명</h2>';
-			    str += '        <p style="white-space: pre-line;">' + data.utube[0].movie.description + '</p>';
-			    str += '    </div>';
-			    str += '    <div class="stats">';
-			    str += '        <h2>관객 통계</h2>';
-			    str += '        <div class="stats-graphs">';
-			    str += '            <div class="age-group">';
-			    str += '                <h3>연령별 관람비율</h3>';
-			    str += '                <div class="graph age-graph"></div>';
-			    str += '            </div>';
-			    str += '            <div class="gender-group">';
-			    str += '                <h3>성별 관람비율</h3>'; 
-			    str += '            </div>';
-			    str += '        </div>';
-			    str += '    </div>';
-			    str += '    <div class="reviews">';
-			    str += '        <h2>트레일러</h2>';
-			    str += '        <div class="review-list">';
-			       			for(let i = 0; i < data.utube.length; i++){
-	      		str += '       <div id="utuve'+ i +'" class="video-thumbnail" data-vid="' + data.utube[i].vid + '">';
-	        	str += '          <img src="https://img.youtube.com/vi/' + data.utube[i].vid + '/0.jpg" alt="트레일러 썸네일" style="width: 85%;">';
-	        	str += '       </div>';
-			   				 }
-			    str += '        </div>';
-			    str += '    </div>';
-			    str += '    <div class="still-cuts">';
-			    str += '        <h2>스틸컷</h2>';
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			    str += '        <div class="slider">';
-			    str += '            <div class="slides">';
-			    					for(let i=0; i < data.stillcut.length; i++){
-			    str += '                <div class="slide">';
-			    str += '                    <img src="/stillcut/' + data.stillcut[i].stillimg +'" alt="나와랏!!!">';
-			    str += '                </div>';
-			    					}
-			    str += '            </div>';
-			    str += '            <button class="prev" onclick="moveSlide(-1)">&#10094;</button>';
-			    str += '            <button class="next" onclick="moveSlide(1)">&#10095;</button>';
-			    str += '        </div>';
-			    str += '    </div>';
-			    str += '    <div class="rating">';
-			    str += '        <h2>평점</h2>';
-			    str += '        <div class="rating-score">';
-			    str += '            <span>8.8 / 10</span> <span>★ ★ ★ ★ ★</span>';
-			    str += '        </div>';
-			    str += '        <div class="rating-breakdown">';
-			    str += '            <div>5점: 100</div>';
-			    str += '            <div>4점: 50</div>';
-			    str += '            <div>3점: 20</div>';
-			    str += '            <div>2점: 10</div>';
-			    str += '            <div>1점: 5</div>';
-			    str += '        </div>';
-			    str += '        <button class="watch-button">평점작성</button>';
-			    str += '    </div>';
-			    str += '</div>';
-		    
-			    $('#targetElement').html(str); 
-			    
-			    //예고편 modal로 출력하는부분
-			    $(document).on('click', '.video-thumbnail', function(){
-					 var videoId = $(this).data('vid');
-  			         modalVideo.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&modestbranding=0&rel=0&loop=1&playlist=" + videoId + "";
-			         modal.style.display = "block";
-			    });
-			    
-			    span.onclick = function() {
-			        modal.style.display = "none";
-			        modalVideo.src = '';
-			    }
-			    window.onclick = function(event) {
-			        if (event.target == modal) {
-			            modal.style.display = "none";
-			            modalVideo.src = '';
-			        }
-			    }
-			    
-			    
-			},
-			 error: function(error) {
-                 console.log("에러 : ", error);
-                 console.log("에러상세 : ", error.responseText);
-             }
-			
-			
-		})
-		
-		
-		// TMDb API를 사용하여 영화 포스터를 가져오는 함수
-        function fetchPoster(movieNm) {
-            const apiKey = '4b5db8493a5df33fa9def848bcdda8b1';
-            const baseUrl = "https://api.themoviedb.org/3";
-            const searchUrl = baseUrl + '/search/movie?api_key=' + apiKey +'&query=' + encodeURIComponent(movieNm);
+  // 모달관련 변수
+  var modal = document.getElementById("myModal");
+  var span = document.getElementsByClassName("close")[0];
+  var modalVideo = document.getElementById("modal-video");
 
-            // XMLHttpRequest 객체 생성
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', searchUrl, false); // false는 동기적 요청을 나타냄
-            xhr.send();
+  // 평점 작성 모달 관련 변수
+  var ratingModal = document.getElementById("ratingModal");
+  var ratingSpan = document.getElementsByClassName("close")[1];
 
-            // 요청이 완료되었을 때 처리
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    const data = JSON.parse(xhr.responseText);
-                    if (data.results && data.results.length > 0) {
-                        const posterPath = data.results[0].poster_path;
-                        return 'https://image.tmdb.org/t/p/w500'+ posterPath;
-                    } else {
-                        return 'https://via.placeholder.com/200x300'; // 포스터를 찾을 수 없을 때 기본 포스터 이미지
-                    }
-                } else {
-                    console.error('Error fetching poster:', xhr.status, xhr.statusText);
-                    return 'https://via.placeholder.com/200x300'; // 에러 발생 시 기본 포스터 이미지
-                }
-            }
-            return 'https://via.placeholder.com/200x300'; // 기본 포스터 이미지 (여기까지 올 수 있는 경우)
+  $(document).ready(function () {
+    const movieDetailDC = "${movieDC}";
+    console.log(movieDetailDC);
+
+    $.ajax({
+      url: "http://localhost:9001/api/v1/film/movieDetail/" + movieDetailDC,
+      method: "GET",
+      success: function (data) {
+        const posterUrl = fetchPoster(data.utube[0].movie.movieNm);
+        var basePath = 'C:\\Users\\GG\\Desktop\\popcornpick\\POPCornPickView\\src\\main\\resources\\static\\stillcut\\';
+        console.log(data);
+        console.log(data.utube[0].movie.movieNm);
+        console.log(data.stillcut);
+        let str = '';
+        str += '<div class="container">';
+        str += '    <div class="header">';
+        str += '<div class="poster" style="background-image: url(' + posterUrl + '); width: 250px; height: 350px;"></div>';
+        str += '        <div class="movie-info">';
+        str += '            <h1>' + data.utube[0].movie.movieNm + '</h1>';
+        str += '            <span>감독: ' + data.utube[0].movie.directors + '/배우: ' + data.utube[0].movie.actors + '</span><br>';
+        str += '            <span>장르: ' + data.utube[0].movie.genres + '/기본정보: ' + data.utube[0].movie.nations + ', ' + data.utube[0].movie.showTm + '분</span><br>';
+        str += '            <span>개봉: ' + data.utube[0].movie.openDt + '</span><br><br>';
+        str += '            <button class="watch-button"><a id="reservation" href="/reservation/main">예매하기</a></button>';
+        str += '            <div class="formats">';
+        str += '                <span class="format">IMAX</span>';
+        str += '                <span class="format">4DX</span>';
+        str += '            </div>';
+        str += '        </div>';
+        str += '    </div>';
+        str += '    <div class="description">';
+        str += '        <h2>영화 설명</h2>';
+        str += '        <p style="white-space: pre-line;">' + data.utube[0].movie.description + '</p>';
+        str += '    </div>';
+        str += '    <div class="stats">';
+        str += '        <h2>관객 통계</h2>';
+        str += '        <div class="stats-graphs">';
+        str += '            <div class="age-group">';
+        str += '                <h3>연령별 관람비율</h3>';
+        str += '                <div class="graph age-graph"></div>';
+        str += '            </div>';
+        str += '            <div class="gender-group">';
+        str += '                <h3>성별 관람비율</h3>';
+        str += '            </div>';
+        str += '        </div>';
+        str += '    </div>';
+        str += '    <div class="reviews">';
+        str += '        <h2>트레일러</h2>';
+        str += '        <div class="review-list">';
+        				for (let i = 0; i < data.utube.length; i++) {
+        str += '       <div id="utuve' + i + '" class="video-thumbnail" data-vid="' + data.utube[i].vid + '">';
+        str += '          <img src="https://img.youtube.com/vi/' + data.utube[i].vid + '/0.jpg" alt="트레일러 썸네일" style="width: 85%;">';
+        str += '       </div>';
+        				}
+        str += '        </div>';
+        str += '    </div>';
+        str += '    <div class="still-cuts">';
+        str += '        <h2>스틸컷</h2>';
+        str += '        <div class="slider">';
+        str += '            <div class="slides">';
+        				for (let i = 0; i < data.stillcut.length; i++) {
+        str += '               <div class="slide">';
+        str += '                   <img src="/stillcut/' + data.stillcut[i].stillimg + '" alt="Slide' + i + '">';
+        str += '               </div>';
+        				}
+        str += '            </div>';
+        str += '            <button class="prev" onclick="moveSlides(-1)">&#10094;</button>';
+        str += '            <button class="next" onclick="moveSlides(1)">&#10095;</button>';
+        str += '        </div>';
+        str += '    </div>';
+        str += '    <div class="rating">';
+        str += '        <h2>평점</h2>';
+        str += '        <div class="rating-score">';
+        str += '            <span>8.8 / 10</span> <span>★ ★ ★ ★ ★</span>';
+        str += '        </div>';
+        str += '        <div class="rating-breakdown">';
+        str += '            <div>5점: 100</div>';
+        str += '            <div>4점: 50</div>';
+        str += '            <div>3점: 20</div>';
+        str += '            <div>2점: 10</div>';
+        str += '            <div>1점: 5</div>';
+        str += '        </div>';
+        str += '        <button class="write_review">평점작성</button>';
+        str += '    </div>';
+        str += '</div>';
+
+        $('#targetElement').html(str);
+
+        // 예고편 modal로 출력하는 부분
+        $(document).on('click', '.video-thumbnail', function () {
+          var videoId = $(this).data('vid');
+          modalVideo.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&modestbranding=0&rel=0&loop=1&playlist=" + videoId + "&controls=0";
+          modal.style.display = "block";
+        });
+
+        span.onclick = function () {
+          modal.style.display = "none";
+          modalVideo.src = '';
+        };
+//         window.onclick = function (event) {
+//           if (event.target == modal) {
+//             modal.style.display = "none";
+//             modalVideo.src = '';
+//           }
+//         };
+
+        // 평점 작성 modal로 출력하는 부분
+        $(document).on('click', '.write_review', function () {
+          ratingModal.style.display = "block";
+        });
+		//평점modal에서 modal바깥부분 클릭시 꺼지는 
+        ratingSpan.onclick = function () {
+          ratingModal.style.display = "none";
+        };
+        window.onclick = function (event) {
+        	if (event.target == modal) {
+                modal.style.display = "none";
+                modalVideo.src = '';
+           }if (event.target == ratingModal) {
+            ratingModal.style.display = "none";
+          	}
+        };
+
+      },
+      error: function (error) {
+        console.log("에러 : ", error);
+        console.log("에러상세 : ", error.responseText);
+      }
+    });
+
+    // TMDb API를 사용하여 영화 포스터를 가져오는 함수
+    function fetchPoster(movieNm) {
+      const apiKey = '4b5db8493a5df33fa9def848bcdda8b1';
+      const baseUrl = "https://api.themoviedb.org/3";
+      const searchUrl = baseUrl + '/search/movie?api_key=' + apiKey + '&query=' + encodeURIComponent(movieNm);
+
+      // XMLHttpRequest 객체 생성
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', searchUrl, false); // false는 동기적 요청을 나타냄
+      xhr.send();
+
+      // 요청이 완료되었을 때 처리
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.responseText);
+          if (data.results && data.results.length > 0) {
+            const posterPath = data.results[0].poster_path;
+            return 'https://image.tmdb.org/t/p/w500' + posterPath;
+          } else {
+            return 'https://via.placeholder.com/200x300'; // 포스터를 찾을 수 없을 때 기본 포스터 이미지
+          }
+        } else {
+          console.error('Error fetching poster:', xhr.status, xhr.statusText);
+          return 'https://via.placeholder.com/200x300'; // 에러 발생 시 기본 포스터 이미지
         }
+      }
+      return 'https://via.placeholder.com/200x300'; // 기본 포스터 이미지 (여기까지 올 수 있는 경우)
+    }
 
-		
-	});
+  });
+	//스틸컷 슬라이드 
+  let slideIndex = 0;
 
-	function moveSlide(n) {
-		let currentSlide = 0;
-	    const slides = document.querySelectorAll('.slide');
-	    const totalSlides = slides.length;
+  function moveSlides(n) {
+    let slides = document.getElementsByClassName("slide");
+    slideIndex += n;
 
-	    currentSlide += n;
+    if (slideIndex >= slides.length) {
+      slideIndex = 0;
+    } else if (slideIndex < 0) {
+      slideIndex = slides.length - 1;
+    }
 
-	    if (currentSlide >= totalSlides) {
-	        currentSlide = 0;
-	    } else if (currentSlide < 0) {
-	        currentSlide = totalSlides - 1;
-	    }
-
-	    const slideWidth = slides[0].clientWidth;
-	    const translateValue = -currentSlide * slideWidth + 'px'; 
-	    document.querySelector('.slides').style.transform = 'translateX(' + translateValue + ')';
-
-	}
-
-	
-	document.querySelector('.prev').addEventListener('click', () => moveSlide(-1));
-	document.querySelector('.next').addEventListener('click', () => moveSlide(1));
-
-	</script>
+    let translateValue = -slideIndex * 100; // 현재 슬라이드 위치 계산
+    document.getElementsByClassName("slides")[0].style.transform = "translateX(" + translateValue + "%)";
+  }
+  
+</script>
 
 </body>
 </html>

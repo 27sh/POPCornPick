@@ -64,7 +64,7 @@ public class FilmController {
 //	
 	@GetMapping("/movieDetail/{movieDC}")
 	public ResponseEntity<MovieDetailDto> showutube(@PathVariable("movieDC") String movieDC){
-		//리스트 유투브 변수랑 리스트 스틸컷변수있는 dto를 만들어서 리스트 유투브를 셋하고 리스트 스틸컷을 가져와서
+		
 		
 		MovieDetailDto mdd = new MovieDetailDto();
 				
@@ -72,10 +72,10 @@ public class FilmController {
 		mvd.setMovieDC(movieDC);
 		List<Utube> utube = utuberepository.findByMovie(mvd);
 		mdd.setUtube(utube);
-		System.out.println("스틸컷을 보여라" + utube);
+		
 		List<StillCut> sc = stillcutrepository.findByMovie(mvd);
 		mdd.setStillcut(sc);
-		System.out.println("스틸컷을 보여라" + sc);
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mdd);
 	}
 //	

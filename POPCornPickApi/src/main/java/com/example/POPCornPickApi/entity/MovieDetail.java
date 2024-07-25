@@ -51,6 +51,10 @@ public class MovieDetail {
 	@Column(nullable = true, length = 2000)
 	private String description;
  
+	@Column(nullable = true)
+	private String viewAge;
 	
+	@Column(nullable = true)
+	private String imgUrl;
 	
 }

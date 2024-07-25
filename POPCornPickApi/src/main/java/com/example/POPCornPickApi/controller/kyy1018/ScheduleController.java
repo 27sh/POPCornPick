@@ -136,7 +136,7 @@ public class ScheduleController {
 				if (movieOpt.isPresent()) {
 					Movie movie = movieOpt.get();
 					// 영화 DC로 MovieShowDetail 목록 조회
-					List<MovieShowDetail> detailNos = movieShowDetailRepository.findByMovie_MovieDC(movie.getMovieDC());
+					List<MovieShowDetail> detailNos = movieShowDetailRepository.findByMovie_MovieDCAndRoom_RoomNo(movie.getMovieDC(), roomNo);
 					for(int i=0; i<detailNos.size(); i++) {
 						if(scheduleDto.getTitle().equals(detailNos.get(i).getMovie().getTitle())) {
 							scheduleDto.setDetailNo(String.valueOf(detailNos.get(i).getDetailNo()));

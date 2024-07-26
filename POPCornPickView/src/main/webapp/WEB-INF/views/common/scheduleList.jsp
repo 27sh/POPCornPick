@@ -406,7 +406,7 @@
         
         $(document).on('click', '.sche_box', function () {
             var movieTitle = $(this).data('movieTitle');
-            var scheStart = $(this).find('.sche_start').text();
+            var scheStart = $(this).find('.sche_start').text();	
             
             console.log(scheStart);
 

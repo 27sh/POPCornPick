@@ -15,6 +15,8 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 
 	List<Room> findByCinema_CinemaNo(Long cinemaNo);
 
+	List<Room> findByCinema_CinemaNoAndRoomType_RoomTypeNo(Long cinemaNo, Long roomTypeNo);
+
 	@Query(value = "select COUNT(room_no) from room WHERE room_type_no = :roomTypeNo", nativeQuery = true)
 	public int getCountByRoomTypeNo(@Param("roomTypeNo") Long roomTypeNo);
 	public List<Room> findByRoomType_RoomTypeNoOrderByCinema_CinemaNameAsc(Long roomTypeNo);

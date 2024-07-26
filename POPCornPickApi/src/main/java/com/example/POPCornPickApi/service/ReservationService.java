@@ -1,5 +1,7 @@
 package com.example.POPCornPickApi.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +32,7 @@ import com.example.POPCornPickApi.entity.MovieShowDetail;
 import com.example.POPCornPickApi.entity.Point;
 import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
+import com.example.POPCornPickApi.entity.RoomType;
 import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.entity.Ticketing;
 import com.example.POPCornPickApi.repository.CardRepository;
@@ -43,6 +46,7 @@ import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
 import com.example.POPCornPickApi.repository.PointRepository;
 import com.example.POPCornPickApi.repository.ReservatedSeatRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
+import com.example.POPCornPickApi.repository.RoomTypeRepository;
 import com.example.POPCornPickApi.repository.ScheduleRepository;
 import com.example.POPCornPickApi.repository.SeatRepository;
 import com.example.POPCornPickApi.repository.TicketingRepository;
@@ -63,14 +67,14 @@ public class ReservationService {
 	private PointRepository pointRepository;
 	private CardRepository cardRepository;
 	private MemberRepository memberRepository;
-	
+	private RoomTypeRepository roomTypeRepository;
 	
 	public ReservationService(CinemaRepository cinemaRepository, ExpCinemaRepository expCinemaRepository,
 			RoomRepository roomRepository, MovieRepository movieRepository,
 			MovieShowDetailRepository movieShowDetailRepository, TicketingRepository ticketingRepository,
 			ScheduleRepository scheduleRepository, SeatRepository seatRepository, ReservatedSeatRepository reservatedSeatRepository,
 			GiftCardRepository giftCardRepository, CouponRepository couponRepository, PointRepository pointRepository, 
-			CardRepository cardRepository, MemberRepository memberRepository
+			CardRepository cardRepository, MemberRepository memberRepository, RoomTypeRepository roomTypeRepository
 			) {
 		this.cinemaRepository = cinemaRepository;
 		this.expCinemaRepository = expCinemaRepository;
@@ -86,6 +90,7 @@ public class ReservationService {
 		this.pointRepository = pointRepository;
 		this.cardRepository = cardRepository;
 		this.memberRepository = memberRepository;
+		this.roomTypeRepository = roomTypeRepository;
 	}
 
 	public List<Cinema> getCinemaByLocaiton(String cinemaLocation) {
@@ -368,10 +373,127 @@ public class ReservationService {
 			resultScheduleListList.add(resultScheduleList);
 		});
 
+		return resultScheduleListList;
+	}
+	
+	public List<List<ScheduleDto_JYC>> getSpecialScheduleList(String cinemaName, String title, String date, String smallTypeBefore) {
+
+		String smallType = smallTypeBefore.replace("(", " ").split(" ")[0];
+		
+		List<RoomType> roomType = roomTypeRepository.findRoomTypeNoBySmallType(smallType);
+		
+		// 필요한 데이트 형식으로 만들어준다.
+		String resultDate = getDate(date);
+
+		// 영화관 기본키를 가지고 온다
+		Long cinemaNo = cinemaRepository.findByCinemaName(cinemaName);
+
+		
+		// 영화관 기본키를 가지고 해당 영화관의 특별 상영관을 가지고 온다.
+		List<Room> roomList = roomRepository.findByCinema_CinemaNoAndRoomType_RoomTypeNo(cinemaNo, roomType.get(0).getRoomTypeNo());
+
+		// 영화 제목으로 영화 코드를 가지고 온다.
+		Long movieDC = movieRepository.findMovieDCByTitle(title);
+
+		List<Long> detailNoList = new ArrayList<>();
+
+		// movieShowDetial 테이블에서 상영관과 영화가 일치하는 아이의 detailNo를 가지고 온다.
+		roomList.forEach(room -> {
+			detailNoList.add(movieShowDetailRepository.findDetailNoByMovieDCAndRoomNo(movieDC, room.getRoomNo()));
+		});
+
+		List<List<Schedule>> scheduleListList = new ArrayList<>();
+
+		// 디테일 넘버로 상영시간 테이블에서 가지고 오는데 순서는 상영시작 시간 오름차순이다.
+		detailNoList.forEach(detailNo -> {
+			List<Schedule> scheduleList = scheduleRepository.findByMovieShowDetail_DetailNoOrderByStartAsc(detailNo);
+			scheduleListList.add(scheduleList);
+		});
+
+		List<List<ScheduleDto_JYC>> resultScheduleListList = new ArrayList<>();
+
+		scheduleListList.forEach(scheduleList -> {
+			List<ScheduleDto_JYC> resultScheduleList = new ArrayList<>();
+			scheduleList.forEach(schedule -> {
+				if (date.split(" ")[4].length() == 1) {
+					// 예약한 날짜가 오늘이 아닐 경우
+					if (schedule.getStart().toString().split("-")[0].equals(resultDate.split("-")[0])
+							&& schedule.getStart().toString().split("-")[1].equals(resultDate.split("-")[1])
+							&& schedule.getStart().toString().split("-")[2].split(" ")[0]
+									.equals(resultDate.split("-")[2].split(" ")[0])) {
+						ScheduleDto_JYC scheduleDto = new ScheduleDto_JYC();
+						scheduleDto.setScheduleNo(schedule.getScheduleNo());
+						scheduleDto.setMovieShowDetail(schedule.getMovieShowDetail());
+						scheduleDto.setEnd(schedule.getEnd());
+						scheduleDto.setStart(schedule.getStart());
+						scheduleDto.setRoom(schedule.getRoom());
+						int totalSeats = schedule.getRoom().getRoomType().getRoomTotalColumn() * schedule.getRoom().getRoomType().getRoomTotalRow();
+						int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
+						int leftSeats = totalSeats - bookedSeats;
+						
+						scheduleDto.setTotalSeat(totalSeats);
+						scheduleDto.setBookedSeat(bookedSeats);
+						scheduleDto.setLeftSeat(leftSeats);
+						resultScheduleList.add(scheduleDto);
+					}
+
+				} else {
+					// 예약한 날짜가 오늘일 경우
+					int scheduleHours = Integer.parseInt(schedule.getStart().toString().split(" ")[1].split(":")[0]);
+					int scheduleMinutes = Integer.parseInt(schedule.getStart().toString().split(" ")[1].split(":")[1]);
+					int myHours = Integer.parseInt(resultDate.split(" ")[1].split(":")[0]);
+					int myMinutes = Integer.parseInt(resultDate.split(" ")[1].split(":")[1]);
+
+					if (schedule.getStart().toString().split("-")[0].equals(resultDate.split("-")[0])
+							&& schedule.getStart().toString().split("-")[1].equals(resultDate.split("-")[1])
+							&& schedule.getStart().toString().split("-")[2].split(" ")[0]
+									.equals(resultDate.split("-")[2].split(" ")[0])) {
+
+						if (scheduleHours > myHours) {
+							ScheduleDto_JYC scheduleDto = new ScheduleDto_JYC();
+							scheduleDto.setScheduleNo(schedule.getScheduleNo());
+							scheduleDto.setMovieShowDetail(schedule.getMovieShowDetail());
+							scheduleDto.setEnd(schedule.getEnd());
+							scheduleDto.setStart(schedule.getStart());
+							scheduleDto.setRoom(schedule.getRoom());
+							int totalSeats = schedule.getRoom().getRoomType().getRoomTotalColumn() * schedule.getRoom().getRoomType().getRoomTotalRow();
+							int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
+							int leftSeats = totalSeats - bookedSeats;
+							
+							scheduleDto.setTotalSeat(totalSeats);
+							scheduleDto.setBookedSeat(bookedSeats);
+							scheduleDto.setLeftSeat(leftSeats);
+							resultScheduleList.add(scheduleDto);
+						} else if (scheduleHours == myHours) {
+							if (scheduleMinutes - 20 > myMinutes) {
+								ScheduleDto_JYC scheduleDto = new ScheduleDto_JYC();
+								scheduleDto.setScheduleNo(schedule.getScheduleNo());
+								scheduleDto.setMovieShowDetail(schedule.getMovieShowDetail());
+								scheduleDto.setEnd(schedule.getEnd());
+								scheduleDto.setStart(schedule.getStart());
+								scheduleDto.setRoom(schedule.getRoom());
+								int totalSeats = schedule.getRoom().getRoomType().getRoomTotalColumn() * schedule.getRoom().getRoomType().getRoomTotalRow();
+								int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
+								int leftSeats = totalSeats - bookedSeats;
+								
+								scheduleDto.setTotalSeat(totalSeats);
+								scheduleDto.setBookedSeat(bookedSeats);
+								scheduleDto.setLeftSeat(leftSeats);
+								resultScheduleList.add(scheduleDto);
+							}
+						}
+					}
+				}
+
+			});
+			resultScheduleListList.add(resultScheduleList);
+		});
+
 		System.out.println(resultScheduleListList);
 
 		return resultScheduleListList;
 	}
+	
 
 	public String getDate(String date) {
 		if (date.split(" ")[4].length() == 1) {
@@ -518,6 +640,27 @@ public class ReservationService {
 		}
 		
 		return "예매가 성공적으로 처리되었습니다.";
+	}
+	
+	public List<ScheduleDto_JYC> getScheduleListFromScheduleList(Long cinemaNo, String date, Long roomNo, String movieTitle, String scheduleStart){
+		
+		String datetimeStr = date + " " + scheduleStart;
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		try {
+			Date datetime = formatter.parse(datetimeStr);
+
+			List<Schedule> scheduleList = scheduleRepository.findByRoom_RoomNoAndMovieShowDetail_Movie_TitleAndStart(roomNo, movieTitle, datetime);
+			
+			System.out.println("ScheduleList : " + scheduleList);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return null;
 	}
 	
 }

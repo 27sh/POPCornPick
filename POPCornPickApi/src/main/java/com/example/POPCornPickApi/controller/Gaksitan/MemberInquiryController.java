@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -211,5 +213,32 @@ public class MemberInquiryController {
 		System.out.println(qna);
 		return qna;
 	}
+	
+	@PutMapping("/editInquiry")
+	public String editInquiry(@RequestParam("qnaNo") Long qnaNo) {
+		String str = "";
+		if(qnaNo != null) {
+			
+		}
+		
+		
+		return "";
+	}
+	
+	@DeleteMapping("/deleteInquiry")
+	public String deleteInquiry(@RequestParam("qnaNo") Long qnaNo) {
+		String str = "";
+		if(qnaNo != null) {
+			qnaRepository.deleteById(qnaNo);
+			str = "성공적으로 삭제 되었습니다.";
+		}else {
+			str = "삭제에 실패했습니다. 인증이 유효한지 확인해주세요.";
+		}
+		
+		return str;
+	}
+	
+	
+	
 	
 }

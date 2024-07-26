@@ -4,30 +4,36 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>문의내역 상세보기 페이지</title>
 <link rel="stylesheet" as="style" crossorigin
             href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
 <style>
 
 * {
-	box-sizing: border-box;
+/* 	box-sizing: border-box; */
 }
 
 main {
 	width: 1200px;
 	margin: 80px auto;
-	min-height: 700px;
+/* 	min-height: 700px; */
 	border:1px solid #eee;
 }
 
-.myInfo {
+#sidebar-container {
+	width: 200px;
+	background-color: #f4f4f4;
+	padding: 10px;
+}
+
+/*.myInfo {
 	width: 100%;
 	height: 400px;
 	border: 2px solid red;
 	box-sizing: border-box;
 	margin-bottom: 30px;
-}
+}*/
 
 .flex-box {
 	display: flex;
@@ -35,14 +41,18 @@ main {
 }
 
 .sidebar {
-	width: 300px;
+	width: 230px;
 	height: 795px;
 	box-sizing: border-box;
-	border: 2px solid blue;
 	margin-right: 20px;
 }
 
-h2, p{
+/* h2, p{ */
+/* 	margin: 15px 0; */
+/* } */
+
+.h2, 
+.p {
 	margin: 15px 0;
 }
 
@@ -63,6 +73,7 @@ h2, p{
 	font-size: 20px;
 	font-weight: bold;
 	height: 30px;
+	margin: 15px 0;
 }
 
 .qnaAnswer {
@@ -117,7 +128,7 @@ h2, p{
 </head>
 <body>
 	<header>
-		<%@ include file="../layout/header.jsp"%>
+		<%@ include file="../member/mainInfo.jsp"%>
 	</header>
 	<main>
 		<div class="myInfo">
@@ -125,11 +136,11 @@ h2, p{
 		</div>
 		<div class="flex-box">
 			<div class="sidebar">
-				
+				<%@ include file="../member/sideMenu.jsp"%>
 			</div>
-			<div class="">
-				<h2>나의 문의내역</h2>
-				<p>1:1 문의</p>
+			<div class="qnaDetailContent">
+				<h2 class="h2">나의 문의내역</h2>
+				<p class="p">1:1 문의</p>
 				<div class="qnaContent">
 					<div class="title">
 						[<span id="qnaSmallCategory">건의</span>] Title ${qnaNo }
@@ -174,6 +185,7 @@ h2, p{
 				qnaDetail.innerHTML += '<p class="file"> 첨부 파일</p>';
 				qnaDetail.innerHTML += '<div class="fileImage"><img src="" id="qnaFileImg" alt="이미지 첨부파일 미리보기"></div>';
 				qnaDetail.innerHTML += '<div class="fileName">' + qnaFileName + '</div>';
+				qnaDetail.innerHTML += '<div class="buttons"><input type="button" value="수정" onclick="editQnaForm()"> <input type="button" value="삭제" onclick="deleteQna()"></div>'
 				
 				const AnswerColor = document.querySelector(".qnaAnswer");
 				
@@ -185,7 +197,7 @@ h2, p{
 					AnswerColor.classList.remove('no');
 				}
 				
-				console.log(", qnaFileName : " + qnaFileName);
+				console.log("qnaFileName : " + qnaFileName + ", qna.qnaFile : " + qna.qnaFile);
 				
 				// 파일 미리보기 처리
 				const filePreview = document.querySelector("#qnaFileImg");
@@ -213,14 +225,40 @@ h2, p{
 
 		// 이미지 URL 생성 함수 (예시)
 		function createImageUrl(originFileName) {
-			return `/upload/originFileName`; // 실제 서버 환경에 맞게 수정
+			return '/static/upload/' + originFileName; // 실제 서버 환경에 맞게 수정
 		}
 		
 		document.addEventListener("DOMContentLoaded", () => {
 			loadQnaDetail();
 		});
 		
+		function editQnaForm(){
+			window.location.href = "/member/editQnaForm";
+// 			const xhttp = new XMLHttpRequest();
+			
+// 			xhttp.onload = function(){
+				
+// 			}
+			
+// 			xhttp.open("PUT", "http://localhost:9001/api/v1/memInquiry/editInquiry?qnaNo=${qnaNo}");
+// 			xhttp.setRequestHeader("Authorization", "Bearer " + token);
+// 			xhttp.send();
+		}
 		
+		function deleteQna(){
+			const token = localStorage.getItem("jwtToken");
+			const xhttp = new XMLHttpRequest();
+			console.log(${qnaNo});
+			xhttp.onload = function(){
+				alert(this.responseText);
+				window.location.href = "/member/qnaList";
+			}
+			
+			xhttp.open("DELETE", "http://localhost:9001/api/v1/memInquiry/deleteInquiry?qnaNo=${qnaNo}"); 
+			xhttp.setRequestHeader("Authorization", "Bearer " + token);
+			xhttp.send();
+			
+		}
 		
 	</script>
 </body>

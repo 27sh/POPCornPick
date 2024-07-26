@@ -191,6 +191,11 @@
 }
 .sche_start{font-weight: 700;}
 
+.sche_seats{
+    font-size: 12px;
+    height: 14px;	
+}
+
 .time_hover{
     display: none;
     position: relative;

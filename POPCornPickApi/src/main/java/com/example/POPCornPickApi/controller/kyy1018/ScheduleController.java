@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.POPCornPickApi.dto.MovieDto;
 import com.example.POPCornPickApi.dto.MovieShowDetailDto;
 import com.example.POPCornPickApi.dto.ScheduleDto;
+import com.example.POPCornPickApi.dto.ScheduleDto_JYC;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.MovieShowDetail;
@@ -29,6 +30,7 @@ import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
 import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
+import com.example.POPCornPickApi.repository.ReservatedSeatRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.ScheduleRepository;
 
@@ -52,6 +54,9 @@ public class ScheduleController {
 	@Autowired
 	MovieShowDetailRepository movieShowDetailRepository;
 
+	@Autowired
+	ReservatedSeatRepository reservatedSeatRepository;
+	
 	//////schedulePage
 
 	//영화관 목록
@@ -82,6 +87,21 @@ public class ScheduleController {
 	@GetMapping("/{roomNo}")
 	public ResponseEntity<List<Schedule>> scheduleList(@PathVariable("roomNo") Long roomNo){
 		List<Schedule> list = scheduleRepository.findByRoom_RoomNo(roomNo);
+//
+//		ScheduleDto_JYC scheduleDto = new ScheduleDto_JYC();
+//		
+//		int totalSeats = schedule.getRoom().getRoomType().getRoomTotalColumn() * schedule.getRoom().getRoomType().getRoomTotalRow();
+//		int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
+//		int leftSeats = totalSeats - bookedSeats;
+//		
+//		scheduleDto.setTotalSeat(totalSeats);
+//		scheduleDto.setBookedSeat(bookedSeats);
+//		scheduleDto.setLeftSeat(leftSeats);
+//		
+//		System.out.println("totalSeats" + totalSeats);
+//		System.out.println("bookedSeats" + bookedSeats); 
+//		System.out.println("leftSeats" + leftSeats); 
+//		
 //		System.out.println("영화관 별 상영시간표");
 //		System.out.println(list);
 //		System.out.println("============================");

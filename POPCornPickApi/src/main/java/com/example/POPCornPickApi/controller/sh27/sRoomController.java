@@ -65,7 +65,7 @@ public class sRoomController {
         List<Long> cinemaNos = rooms.stream().map(room -> room.getCinema().getCinemaNo()).collect(Collectors.toList());
         
         List<Cinema> cinemas = cinemaRepository.findByCinemaNoIn(cinemaNos);
-        return cinemas.stream().map(cinema -> "<td>" + cinema.getCinemaName() + "</td>").collect(Collectors.joining());
+        return cinemas.stream().map(Cinema::getCinemaName).collect(Collectors.joining(","));
     }
     
     @GetMapping("/findMoviesByRoomType")
@@ -102,8 +102,8 @@ public class sRoomController {
                     return "<div class='movie-item'>" +
                             "<div class='poster'>포스터</div>" +
                             "<div class='movie-info'>" +
-                            "<p>" + movie.getTitle() + "</p>" +
-                            "<p>평점 " + String.format("%.1f", averageScore) + "</p>" +
+                            "<p class='movie-info-title'>" + movie.getTitle() + "</p>" +
+                            "<p class='movie-info-reivew'>평점 " + String.format("%.1f", averageScore) + "</p>" +
                             "<button>예매하기</button>" +
                             "</div>" +
                             "</div>";

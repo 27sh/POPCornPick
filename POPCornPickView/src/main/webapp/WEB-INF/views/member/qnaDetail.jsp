@@ -108,6 +108,10 @@ h2, p{
 	margin: 15px 20px;
 }
 
+.fileImage {
+	margin: 15px 20px;
+	height: 150px;
+}
 
 </style>
 </head>
@@ -156,7 +160,7 @@ h2, p{
 				const qnaDetail = document.querySelector(".qnaContent");
 				const qnaSC = document.querySelector("#qnaSmallCategory");
 				let Answer;
-				const qnaFileName = qna.qnaFile.split("--")[1];
+				const qnaFileName = qna.qnaFile ? qna.qnaFile.split("--")[1] : '';
 				
 				if(qna.qnaAnswer == null){
 					Answer = "미답변";
@@ -168,17 +172,10 @@ h2, p{
 				qnaDetail.innerHTML += '<div class="title"><p class="smallCategoryAndTitle">[' + qna.qnaSmallCategory + '] ' + qna.qnaTitle + ' <span class="regdate">' +  qna.regdate.split("T")[0] + '</span><span class="qnaAnswer">' + Answer + '</span></p></div>';
 				qnaDetail.innerHTML += '<div class="context">' + qna.qnaContent + '</div>';
 				qnaDetail.innerHTML += '<p class="file"> 첨부 파일</p>';
-				qnaDetail.innerHTMl += '<img src="" id="qnaFileImg" alt="이미지 첨부파일 미리보기">';
+				qnaDetail.innerHTML += '<div class="fileImage"><img src="" id="qnaFileImg" alt="이미지 첨부파일 미리보기"></div>';
 				qnaDetail.innerHTML += '<div class="fileName">' + qnaFileName + '</div>';
 				
 				const AnswerColor = document.querySelector(".qnaAnswer");
-				const filePreview = document.querySelector("#qnaFileImg");
-				
-				// 파일 미리보기 처리
-				if (qnaFileName && isImage(qnaFileName)) {
-					const imageUrl = createImageUrl(qnaFileName); // 이미지 URL 생성 함수 호출
-					filePreview.src = imageUrl;
-				} 
 				
 				if(Answer == "미답변"){
 					AnswerColor.classList.add('no');
@@ -186,6 +183,18 @@ h2, p{
 				}else {
 					AnswerColor.classList.add('ok');
 					AnswerColor.classList.remove('no');
+				}
+				
+				console.log(", qnaFileName : " + qnaFileName);
+				
+				// 파일 미리보기 처리
+				const filePreview = document.querySelector("#qnaFileImg");
+				if (qnaFileName && isImage(qnaFileName)) {
+					const imageUrl = createImageUrl(qna.qnaFile); // 이미지 URL 생성 함수 호출
+					filePreview.src = imageUrl;
+					console.log("filePreview.src : " + filePreview.src);
+				} else {
+					console.log("이미지url 확인 : " + createImageUrl(qna.qnaFile));
 				}
 				
 			}
@@ -203,8 +212,8 @@ h2, p{
 		}
 
 		// 이미지 URL 생성 함수 (예시)
-		function createImageUrl(fileName) {
-			return `/C:/upload/${fileName}`; // 실제 서버 환경에 맞게 수정
+		function createImageUrl(originFileName) {
+			return `/upload/originFileName`; // 실제 서버 환경에 맞게 수정
 		}
 		
 		document.addEventListener("DOMContentLoaded", () => {

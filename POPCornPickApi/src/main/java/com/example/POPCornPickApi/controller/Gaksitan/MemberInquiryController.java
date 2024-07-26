@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,6 +50,9 @@ public class MemberInquiryController {
 	
 	@Autowired
 	private ExpCinemaRepository expCinemaRepository;
+	
+	@Value("${upload.path}")
+	private String uploadPath;
 	
 //	@PostMapping("/writeInquiry") // dto MultipratFile 필드 변수 선언 @ModelAttribute
 //	public ResponseEntity<?> writeInquiry(@RequestParam("qnaFile") MultipartFile file, Qna qna, @RequestParam("username") String username) {
@@ -94,23 +98,28 @@ public class MemberInquiryController {
 			
 			if(qnaDto.getQnaFile() != null && !qnaDto.getQnaFile().isEmpty()) {
 				String originName = qnaDto.getQnaFile().getOriginalFilename();
+				System.out.println(originName);
 				String extension = originName.substring(originName.lastIndexOf('.'));
+				System.out.println(extension);
 				String newName = UUID.randomUUID().toString() + "--" + originName;// + extension;
 				File file = new File("C:/upload/" + newName);
+				String uploadDir = "classpath:static/upload";
+				File file2 = new File(uploadPath, newName);
 				qna.setQnaFile(newName);
 				List<String> imageExtensions = new ArrayList<>();
-				imageExtensions.add("jpg");
-				imageExtensions.add("jpeg");
-				imageExtensions.add("png");
-				imageExtensions.add("gif");
+				imageExtensions.add(".jpg");
+				imageExtensions.add(".jpeg");
+				imageExtensions.add(".png");
+				imageExtensions.add(".gif");
 				
-				if(!imageExtensions.contains(extension)) {
-					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패: 이미지 파일만 첨부가 가능합니다.");
+				if(imageExtensions.contains(extension) == false) {
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("파일 업로드 실패: 이미지 파일만 첨부가 가능합니다.");
 				}
 				
 				try {
 					
-			        qnaDto.getQnaFile().transferTo(file);
+			        //qnaDto.getQnaFile().transferTo(file);
+			        qnaDto.getQnaFile().transferTo(file2);
 			        System.out.println("파일 업로드 성공....");
 			           
 			        //썸네일 생성

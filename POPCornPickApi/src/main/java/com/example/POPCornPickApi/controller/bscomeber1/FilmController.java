@@ -9,14 +9,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.dto.MovieDetailDto;
 import com.example.POPCornPickApi.entity.MovieDetail;
+import com.example.POPCornPickApi.entity.Review;
 import com.example.POPCornPickApi.entity.StillCut;
 import com.example.POPCornPickApi.entity.Utube;
 import com.example.POPCornPickApi.repository.MovieDetailRepository;
+import com.example.POPCornPickApi.repository.ReviewRepository;
 import com.example.POPCornPickApi.repository.StillCutRepository;
 import com.example.POPCornPickApi.repository.UtubeRepository;
 import com.example.POPCornPickApi.service.MovieDetailService;
@@ -37,6 +40,9 @@ public class FilmController {
 	
 	@Autowired
 	private StillCutRepository stillcutrepository;
+	
+	@Autowired
+	private ReviewRepository reviewrepository;
 
 	@PostMapping("/saveMovieList")
 	public String postmovieList() {
@@ -78,5 +84,12 @@ public class FilmController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(mdd);
 	}
+	@PostMapping("/ScoreInput")
+	public ResponseEntity<Review> scoreForm(@RequestBody Review review) {
+	
+		System.out.println("리뷰"+review);
+		return ResponseEntity.ok(reviewrepository.save(review));
+	}
+	
 //	
 }

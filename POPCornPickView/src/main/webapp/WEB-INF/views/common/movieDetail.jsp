@@ -205,10 +205,19 @@ body {
 	margin: 15% auto;
 	padding: 20px;
 	border: 1px solid #888;
-	width: 80%;
-	max-width: 500px;
+	width: 50%;
+	height: 50%;
 	border-radius: 8px;
+	box-sizing: border-box; 
 }
+
+.modal-content textarea {
+    width: 100%;
+    height: 70%; 
+    box-sizing: border-box; 
+    resize: none; 
+}	
+
 
 .close {
 	color: #aaa;
@@ -242,8 +251,13 @@ body {
     background-repeat: no-repeat;
     background-size: contain;
 }
-
-
+.scores{
+	width: 80px;
+	
+}
+input[type="radio"]{
+	display: none;
+}
 
 </style>
 </head>
@@ -268,22 +282,21 @@ body {
 				<span class="close">&times;</span>
 				<h2>평점 작성</h2>
 				<form id="ratingForm">
-					<label for="rating">평점:</label>
-					<select id="rating" name="rating">
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-					</select>
+					<span for="rating">평점:</span>
+					<input type="radio" id="star1" name="score_radio" value="1"><label for="star1"><img id="starimg1" src="/img/blank_score.png" class="scores" onclick="ch_star(event,1)"></label></radio>
+					<input type="radio" id="star2" name="score_radio" value="2"><label for="star2"><img id="starimg2" src="/img/blank_score.png" class="scores" onclick="ch_star(event,2)" ></label></radio>
+					<input type="radio" id="star3" name="score_radio" value="3"><label for="star3"><img id="starimg3" src="/img/blank_score.png" class="scores" onclick="ch_star(event,3)" ></label></radio>
+					<input type="radio" id="star4" name="score_radio" value="4"><label for="star4"><img id="starimg4" src="/img/blank_score.png" class="scores" onclick="ch_star(event,4)" ></label></radio>
+					<input type="radio" id="star5" name="score_radio" value="5"><label for="star5"><img id="starimg5" src="/img/blank_score.png" class="scores" onclick="ch_star(event,5)" ></label></radio>
 					<br>
-					<label for="review">리뷰:</label>
-					<textarea id="review" name="review" rows="4" cols="50"></textarea>
+					<span for="review">리뷰:</span>
+					<textarea id="review_text" name="review" rows="4" cols="50"></textarea>
 					<br>
-					<button type="submit">제출</button>
+					<button type="button" onclick="inputScore(event)">평점등록</button>
 				</form>
 			</div>
 		</div>
+	
 	</main>
 	<footer>
 	</footer>
@@ -295,11 +308,25 @@ body {
   var modalVideo = document.getElementById("modal-video");
 
   // 평점 작성 모달 관련 변수
-  var ratingModal = document.getElementById("ratingModal");
+  //var ratingModal = getElementById("ratingModal");
   var ratingSpan = document.getElementsByClassName("close")[1];
 
+  
+  function ch_star(e,num){
+		for(let i=1; i<6; i++){ 
+			document.getElementById("starimg"+i).src="/img/blank_score.png";
+		}
+	  	for(let i=1; i<=num; i++){
+			  document.getElementById("starimg"+i).src="/img/full_score.png";
+		  }
+		
+//	 	//	$(this).children("img").attr("src", "/img/full_score.png");
+//	  	//	$(this).siblings().children("img").attr("src", "/img/blank_score.png");
+	 	}
+  
   $(document).ready(function () {
-    const movieDetailDC = "${movieDC}";
+	  
+	const movieDetailDC = "${movieDC}";
     console.log(movieDetailDC);
 
     $.ajax({
@@ -396,12 +423,6 @@ body {
           modal.style.display = "none";
           modalVideo.src = '';
         };
-//         window.onclick = function (event) {
-//           if (event.target == modal) {
-//             modal.style.display = "none";
-//             modalVideo.src = '';
-//           }
-//         };
 
         // 평점 작성 modal로 출력하는 부분
         $(document).on('click', '.write_review', function () {
@@ -425,30 +446,32 @@ body {
         console.log("에러 : ", error);
         console.log("에러상세 : ", error.responseText);
       }
+      
     });
 
+    
     // TMDb API를 사용하여 영화 포스터를 가져오는 함수
     function fetchPoster(movieNm) {
-      const apiKey = '4b5db8493a5df33fa9def848bcdda8b1';
-      const baseUrl = "https://api.themoviedb.org/3";
-      const searchUrl = baseUrl + '/search/movie?api_key=' + apiKey + '&query=' + encodeURIComponent(movieNm);
+    const apiKey = '4b5db8493a5df33fa9def848bcdda8b1';
+    const baseUrl = "https://api.themoviedb.org/3";
+    const searchUrl = baseUrl + '/search/movie?api_key=' + apiKey + '&query=' + encodeURIComponent(movieNm);
 
-      // XMLHttpRequest 객체 생성
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', searchUrl, false); // false는 동기적 요청을 나타냄
-      xhr.send();
+    // XMLHttpRequest 객체 생성
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', searchUrl, false); // false는 동기적 요청을 나타냄
+    xhr.send();
 
-      // 요청이 완료되었을 때 처리
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          const data = JSON.parse(xhr.responseText);
-          if (data.results && data.results.length > 0) {
+    // 요청이 완료되었을 때 처리
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+    if (xhr.status === 200) {
+    	const data = JSON.parse(xhr.responseText);
+    	if (data.results && data.results.length > 0) {
             const posterPath = data.results[0].poster_path;
             return 'https://image.tmdb.org/t/p/w500' + posterPath;
-          } else {
+          }else {
             return 'https://via.placeholder.com/200x300'; // 포스터를 찾을 수 없을 때 기본 포스터 이미지
           }
-        } else {
+          }else {
           console.error('Error fetching poster:', xhr.status, xhr.statusText);
           return 'https://via.placeholder.com/200x300'; // 에러 발생 시 기본 포스터 이미지
         }
@@ -466,13 +489,54 @@ body {
 
     if (slideIndex >= slides.length) {
       slideIndex = 0;
-    } else if (slideIndex < 0) {
+    }else if (slideIndex < 0) {
       slideIndex = slides.length - 1;
     }
 
     let translateValue = -slideIndex * 100; // 현재 슬라이드 위치 계산
     document.getElementsByClassName("slides")[0].style.transform = "translateX(" + translateValue + "%)";
   }
+  
+	function inputScore(event){
+		const selectedRating = document.querySelector('input[name="score_radio"]:checked').value;
+		const sltRating = parseInt(selectedRating);
+		const textreview = $("#review_text").val();
+		console.log(typeof sltRating);
+		
+		$.ajax({
+			url:"http://localhost:9001/api/v1/film/ScoreInput",
+			method:"POST",
+			contentType: "application/json",
+			processData: false,
+			data: JSON.stringify({
+				reviewScore : sltRating,
+				reviewContent : textreview,
+				spoiler : false
+				
+			}),
+			success:function(inputScore){
+				alert("평점이 등록되었습니다");
+				
+				console.log("평점등록중");
+// 				window.location.href="/film/noapi";
+			},
+			error:function(error){
+				console.log(error);
+				console.log("에러상세" + error.responseText);
+			}
+			
+			
+		})
+	}
+  
+  
+  
+	
+	
+
+
+  
+  
   
 </script>
 

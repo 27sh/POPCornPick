@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.jwt.JWTUtil;
@@ -135,7 +136,7 @@ public class ReservationController {
 	}
 	
 	@GetMapping("/schedule/list/{cinemaName}/{movieTitle}/{date}")
-	public ResponseEntity<List<List<ScheduleDto_JYC>>>root(@PathVariable("cinemaName") String cinemaName, 
+	public ResponseEntity<List<List<ScheduleDto_JYC>>>getScheduleList(@PathVariable("cinemaName") String cinemaName, 
 			@PathVariable("movieTitle") String movieTitle, @PathVariable("date") String date) {
 
 		List<List<ScheduleDto_JYC>> scheduleListList = reservationService.getScheduleList(cinemaName, movieTitle, date);
@@ -150,6 +151,24 @@ public class ReservationController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(null);
 	}
+	
+	@GetMapping("/schedule/list/{cinemaName}/{movieTitle}/{date}/{smallType}")
+	public ResponseEntity<List<List<ScheduleDto_JYC>>>getSpecialScheduleList(@PathVariable("cinemaName") String cinemaName, 
+			@PathVariable("movieTitle") String movieTitle, @PathVariable("date") String date, @PathVariable("smallType") String smallType) {
+		
+		List<List<ScheduleDto_JYC>> scheduleListList = reservationService.getSpecialScheduleList(cinemaName, movieTitle, date, smallType);
+
+		if(scheduleListList != null) {
+			System.out.println("success");
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(scheduleListList);
+		}
+
+		System.out.println("fail");
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(null);
+	}
+	
 	
 	@GetMapping("/seat/left/{roomNo}")
 	public ResponseEntity<String> getSeatNoLeft(@PathVariable("roomNo") Long roomNo) {
@@ -258,5 +277,15 @@ public class ReservationController {
 	
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(result);
+	}
+	
+	@GetMapping("/from/schedule/list/{cinemaNo}/{date}/{roomNo}/{movieTitle}/{scheduleStart}")
+	public ResponseEntity<String> getScheduleListFromScheduleList(@PathVariable("cinemaNo") Long cinemaNo, @PathVariable("date") String date,
+			@PathVariable("roomNo") Long roomNo, @PathVariable("movieTitle") String movieTitle, @PathVariable("scheduleStart") String scheduleStart){
+		
+		reservationService.getScheduleListFromScheduleList(cinemaNo, date, roomNo, movieTitle, scheduleStart);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(null);
 	}
 }

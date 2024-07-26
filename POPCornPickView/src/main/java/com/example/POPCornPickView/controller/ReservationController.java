@@ -5,13 +5,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/reservation")
 public class ReservationController {
 
-	@RequestMapping("/main")
+	@GetMapping(value = "/main", params = "!selectedCinemaNo")
 	public String reservation() {
 		return "member/reservePage_main";
 	}
@@ -84,7 +85,7 @@ public class ReservationController {
 	public String givePayResultParameters(@PathVariable("selectedCardName") String selectedCardName, @PathVariable("scheduleNo") Long scheduleNo, @PathVariable("movieTitle") String movieTitle,
 			@PathVariable("cinemaName") String cinemaName, @PathVariable("date") String date, @PathVariable("time") String time, 
 			@PathVariable("typeCount") String typeCount, @PathVariable("seatSelected") String seatSelected, @PathVariable("beforeDiscount") String beforeDiscount, 
-			@PathVariable("discountTotal") String discountTotal, @PathVariable("payResult") String payResult,RedirectAttributes redirectAttributes) {
+			@PathVariable("discountTotal") String discountTotal, @PathVariable("payResult") String payResult, RedirectAttributes redirectAttributes) {
 		
 		redirectAttributes.addFlashAttribute("selectedCardName", selectedCardName);
 		redirectAttributes.addFlashAttribute("scheduleNo", scheduleNo);
@@ -131,4 +132,36 @@ public class ReservationController {
 		return "member/reservePage_payResult";
 	}
 	
+	@GetMapping(value = "/main", params="selectedCinemaNo")
+	public String sendParameterToMain(@RequestParam("selectedCinemaNo") Long selectedCinemaNo,
+			@RequestParam("selectedDate") String selectedDate, @RequestParam("selectedRoomNo") Long selectedRoomNo,
+			@RequestParam("movieTitle") String movieTitle, @RequestParam("scheStart") String scheStart, RedirectAttributes redirectAttributes) {
+		
+		redirectAttributes.addFlashAttribute("cinemaNo", selectedCinemaNo);
+		redirectAttributes.addFlashAttribute("date", selectedDate);
+		redirectAttributes.addFlashAttribute("roomNo", selectedRoomNo);
+		redirectAttributes.addFlashAttribute("movieTitle", movieTitle);
+		redirectAttributes.addFlashAttribute("scheduleStart", scheStart);
+		
+		
+		return "redirect:/reservation";
+	}
+	
+	@GetMapping("")
+	public String getAndSendParameterToMain(Model model) {
+		
+		Long cinemaNo = (Long) model.getAttribute("cinemaNo");
+		String date = (String) model.getAttribute("date");
+		Long roomNo = (Long) model.getAttribute("roomNo");
+		String movieTitle = (String) model.getAttribute("movieTitle");
+		String scheduleStart = (String) model.getAttribute("scheduleStart");
+		
+		model.addAttribute("cinemaNo", cinemaNo);
+		model.addAttribute("date", date);
+		model.addAttribute("roomNo", roomNo);
+		model.addAttribute("movieTitle", movieTitle);
+		model.addAttribute("scheduleStart", scheduleStart);
+		
+		return "member/reservePage_main";
+	}
 }

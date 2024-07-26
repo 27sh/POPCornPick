@@ -1,5 +1,6 @@
 package com.example.POPCornPickApi.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +19,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>{
 	public Schedule findByScheduleNo(Long scheduleNo);
 	
 	List<Schedule> findByMovieShowDetailDetailNoIn(List<Long> detailNos);
+	
+	public List<Schedule> findByRoom_RoomNoAndMovieShowDetail_Movie_TitleAndStart(Long roomNo, String title, Date start);
 }

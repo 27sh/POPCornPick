@@ -15,4 +15,6 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Long>{
 	public String getBigType(@Param("roomTypeNo") Long roomTypeNo);
 	
 	List<RoomType> findBySmallType(String smallType);
+
+	public List<RoomType> findRoomTypeNoBySmallType(String smallType);
 }

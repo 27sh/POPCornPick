@@ -70,6 +70,10 @@ main {
 	border: none;
 	background: #ddd;
 }
+#viewage_img{
+	position: relative;
+	top: 6px;
+}
 </style>
 </head>
 <body>
@@ -109,9 +113,19 @@ main {
 							  '<span style="font-weight: bold;">' + response.openDt + '</span><span>개봉</span> ' +
 							  '<span>|</span> ' +
 							  '<span style="font-weight: bold;">' + response.showTm + '</span><span>분</span> ' +
-							  '<span>|</span> ' +
-							  '<span>' + response.viewAge + '</span> ' +
-							  '<span>|</span> ' +
+							  '<span>|</span> ';
+					
+					if(response.viewAge === "전체관람가"){
+						str += '<span id="viewage_img"><img alr="전체 관람가 사진" src="/img/grade_all.png"></span> ';
+					}else if(response.viewAge === "12세관람가" || response.viewAge === "12세이상관람가"){
+						str += '<span id="viewage_img"><img alr="12세 이상 관람가 사진" src="/img/grade_12.png"></span> ';
+					}else if(response.viewAge === "15세이상관람가"){
+						str += '<span id="viewage_img"><img alr="15세 이상 관람가 사진" src="/img/grade_15.png"></span> ';
+					}else if(response.viewAge === "18세관람가" || response.viewAge === "청소년관람불가"){
+						str += '<span id="viewage_img"><img alr="청소년 관람불가 사진" src="/img/pc_grade_19.png"></span> ';
+					}	  
+					
+					str += '<span>|</span> ' +
 							  '<span style="font-weight:bold;">204.0</span><span>만명</span> ' +
 							  '</p> ' +
 							  '</div> ' +

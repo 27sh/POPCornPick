@@ -108,12 +108,6 @@ input[name=keyword]{
 				<li id="endmovie">상영종료작</li>
 			</ul>
 		</nav>
-		<select>
-			<option>----선택----</option>
-			<option>개봉일순</option>
-			<option>마감일순</option>
-			<option>관객순</option>
-		</select>
 		<div id="table_box">
 			<table>
 				<thead>

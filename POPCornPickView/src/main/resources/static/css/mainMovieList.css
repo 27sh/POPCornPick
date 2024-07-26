@@ -144,7 +144,7 @@ body {
 
 .movie-card .roomtype-img {
     position: absolute;
-    top: 250px;
+    top: 240px;
     right: 9px;
     z-index: 3;
 }
@@ -154,6 +154,7 @@ body {
     border-radius: 2px;
     width: 30px;
     height: 8px;
+    margin-bottom: 1px;
 }
 
 	.pagination {

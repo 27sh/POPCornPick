@@ -33,6 +33,10 @@ public class MemberController {
 		return "/member/qnaDetail";
 	}
 	
+	@GetMapping("/editQnaForm")
+	public String editQnaForm() {
+		return "/member/editQnaForm";
+	}
 	
 	
 }

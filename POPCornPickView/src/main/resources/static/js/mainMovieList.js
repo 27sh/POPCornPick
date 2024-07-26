@@ -41,6 +41,20 @@ function truncateTitle(title, maxBytes) {
     return truncated;
 }
 
+function filterAndRemoveDuplicates(array) {
+    const uniqueValues = new Set();
+    const filteredArray = [];
+
+    array.forEach(item => {
+        if (item !== '*' && !uniqueValues.has(item)) {
+            uniqueValues.add(item);
+            filteredArray.push(item);
+        }
+    });
+
+    return filteredArray;
+}
+
 function renderMovies() {
     const movieChart = document.getElementById('movie-chart');
     movieChart.innerHTML = ''; // 기존 내용을 초기화합니다.
@@ -53,6 +67,9 @@ function renderMovies() {
         paginatedMovies.forEach((details, index) => {
             // smallTypes가 배열인지 확인하고 변환
             let smallTypes = typeof details.smallTypes === 'string' ? JSON.parse(details.smallTypes) : details.smallTypes;
+
+            // smallTypes 배열을 필터링하고 중복 제거
+            smallTypes = filterAndRemoveDuplicates(smallTypes);
 
             // smallTypes 배열을 탐색하며 특정 문자열을 이미지 태그로 대체
             smallTypes = smallTypes.map(type => {
@@ -88,6 +105,7 @@ function renderMovies() {
             }
 
             const truncatedTitle = truncateTitle(details.title, 25);
+            const avgReviewScore = parseFloat(details.avgReviewScore).toFixed(1); // 평점을 소수점 한 자리까지만 표시
 
             const movieCard = document.createElement('div');
             movieCard.className = 'movie-card';
@@ -100,12 +118,12 @@ function renderMovies() {
                 + '<div class="movie-info">'
                 + '<div class="title">' + truncatedTitle + '</div>'
                 + (details.dday ? '<div class="dday">' + details.dday + '</div>' : '')
-                + '<div class="avgReviewScore">평점: ' + details.avgReviewScore + '</div>'
-                + '<div class="roomtype-img">' + smallTypes.join(", ") + '</div>'
+                + '<div class="avgReviewScore">평점: ' + avgReviewScore + '</div>'
+                + '<div class="roomtype-img">' + smallTypes.join("") + '</div>'
                 + '</div>'
                 + '<div class="buttons">'
                 + '<button class="btn details">상세보기</button>'
-                + '<button class="btn booking">예매하기</button>'
+                + '<button class="btn booking" onclick="window.location.href=\'/reservation/main\'">예매하기</button>'
                 + '</div>';
             movieChart.appendChild(movieCard);
         });

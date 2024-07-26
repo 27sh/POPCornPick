@@ -327,6 +327,9 @@
                         scheduleCon.append(movieInfo);
 
                         movieSchedules[title].schedules.forEach(function (scheduleItem) {
+                        	
+                        	
+                        	
                             var scheBox = $('<ul>').addClass('sche_box');
                             var scheStart = $('<li>').text(scheduleItem.time).addClass('sche_start');
                             var scheSeats = $('<li>').addClass('sche_seats')
@@ -341,6 +344,11 @@
                             scheBox.append(scheSeats);
                             scheBox.append(timeHover);
                             scheduleCon.append(scheBox);
+                            
+                            // Save the data in the scheBox element
+                            scheBox.data('movieTitle', title);
+
+                            
                         });
                     });
 
@@ -393,6 +401,24 @@
             $(this).find('.time_hover').show();
         }).on('mouseleave', '.sche_box', function () {
             $(this).find('.time_hover').hide();
+        });
+        
+        
+        $(document).on('click', '.sche_box', function () {
+            var movieTitle = $(this).data('movieTitle');
+            var scheStart = $(this).find('.sche_start').text();
+            
+            console.log(scheStart);
+
+            var params = $.param({
+                selectedCinemaNo: selectedCinemaNo,
+                selectedDate: selectedDate.toISOString().split('T')[0], // Formatting date as YYYY-MM-DD
+                selectedRoomNo: selectedRoomNo,
+                movieTitle: movieTitle,
+                scheStart: scheStart
+            });
+
+            location.href = "/reservation/main?" + params;
         });
     });
     

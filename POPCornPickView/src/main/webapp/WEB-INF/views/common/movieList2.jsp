@@ -122,7 +122,7 @@ a{
                 }
             });
         });
-
+	/*
         // TMDb API를 사용하여 영화 포스터를 가져오는 함수
         function fetchPoster(movieNm) {
             const apiKey = '4b5db8493a5df33fa9def848bcdda8b1';
@@ -151,17 +151,17 @@ a{
             }
             return 'https://via.placeholder.com/200x300'; // 기본 포스터 이미지 (여기까지 올 수 있는 경우)
         }
-
+	*/
         async function displayMovies(movieList) {
             const movieListContainer = document.getElementById('movie-list');
             let str = '';
 
             for (let i = 0; i < movieList.length; i++) {
-                const posterUrl = fetchPoster(movieList[i].movieNm); // 동기적으로 포스터 URL 가져오기
-				
+               // const posterUrl = fetchPoster(movieList[i].movieNm); // 동기적으로 포스터 URL 가져오기
+				console.log(movieList[0] );
                 str += '<div class="movie-card">'
                     +   '<div>No.' + (i + 1) + '</div>'
-                    +   '<div class="poster"><a href="/film/movieDetail/' + movieList[i].movieDC + '"><img style="width="200" height="300" src="' + posterUrl + '" alt="포스터"></a></div>'
+                    +   '<div class="poster"><a href="/film/movieDetail/' + movieList[i].movieDC + '"><img style="width="200" height="300" src="' + movieList[i].imgUrl + '" alt="포스터"></a></div>'
                     +   '<div class="movie-info">'
                     +       '<div>영화 제목: ' + movieList[i].movieNm + '</div>'
                     +       '<div class="sales">예매율: ' + movieList[i].salesAcc + '</div>'
@@ -170,7 +170,7 @@ a{
                     +       '<button class="btn"><a href="/reservation/main">예매하기</a></button>'
                     +   '</div>'
                     + '</div>';
-                console.log(posterUrl);
+                //console.log(posterUrl);
             }
 
             movieListContainer.innerHTML = str;

@@ -1,6 +1,5 @@
 package com.example.POPCornPickApi.controller.sh27;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,13 +22,14 @@ import com.example.POPCornPickApi.entity.ExpCinema;
 import com.example.POPCornPickApi.entity.GiftCard;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Point;
+import com.example.POPCornPickApi.entity.Review;
 import com.example.POPCornPickApi.repository.CouponRepository;
 import com.example.POPCornPickApi.repository.CouponTypeRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
 import com.example.POPCornPickApi.repository.GiftCardRepository;
 import com.example.POPCornPickApi.repository.MemberRepository;
 import com.example.POPCornPickApi.repository.PointRepository;
-import com.example.POPCornPickApi.service.PointService;
+import com.example.POPCornPickApi.service.ReviewService;
 
 @RestController
 @RequestMapping("/api/v1/myPage")
@@ -53,7 +54,7 @@ public class MyPageController {
     private CouponTypeRepository couponTypeRepository;
 	
 	@Autowired
-    private PointService pointService;
+    private ReviewService reviewService;
 	
 	@GetMapping("/info")
     public Member getUserInfo(Authentication authentication) {
@@ -138,5 +139,15 @@ public class MyPageController {
 
         List<Point> points = pointRepository.findByUsername(username);
         return ResponseEntity.ok(points);
+    }
+	
+	@GetMapping("/myReviews")
+    public ResponseEntity<List<Review>> getMyReviews() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        List<Review> reviews = reviewService.getReviewsByUsername(username);
+
+        return ResponseEntity.ok(reviews);
     }
 }

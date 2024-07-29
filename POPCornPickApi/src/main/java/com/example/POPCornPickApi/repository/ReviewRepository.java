@@ -23,4 +23,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long>{
     public List<Integer> getReviewScoresByMovieTitle(@Param("title") String title);	
 
 	List<Review> findByTicketingTicketingNoIn(List<Long> ticketingNos);
+	
+	List<Review> findByTicketing_Member_Username(String username);
 }

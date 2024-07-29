@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.entity.Review;
 import com.example.POPCornPickApi.repository.ReviewRepository;
 
 @Service
@@ -19,5 +20,9 @@ public class ReviewService {
         }
         double sum = scores.stream().mapToInt(Integer::intValue).sum();
         return sum / scores.size();
+    }
+	
+	public List<Review> getReviewsByUsername(String username) {
+        return reviewRepository.findByTicketing_Member_Username(username);
     }
 }

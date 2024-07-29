@@ -502,7 +502,7 @@ input[type="radio"]{
 		const sltRating = parseInt(selectedRating);
 		const textreview = $("#review_text").val();
 		console.log(typeof sltRating);
-		
+		const jwttoken = localStorage.getItem("jwtToken");
 		$.ajax({
 			url:"http://localhost:9001/api/v1/film/ScoreInput",
 			method:"POST",

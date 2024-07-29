@@ -14,17 +14,18 @@
 main {
 	width: 1200px;
 	margin: 80px auto;
-	min-height: 700px;
+/* 	min-height: 700px; */
 	border:1px solid #eee;
 	text-align: center;
 }
 
-.member-info {
-	width: 100%;
-	height: 300px;
-	border: 1px solid blue;
-	box-sizing: border-box;
-}
+/* .member-info { */
+/* 	width: 100%; */
+/* 	height: 300px; */
+/* 	border: 1px solid blue; */
+/* 	box-sizing: border-box; */
+/* 	margin-bottom: 20px; */
+/* } */
 
 table tr:first-child th:first-child {
 	width: 80px;
@@ -74,50 +75,69 @@ h1 {
 	font-weight: bold;
 }
 
+.flex-box {
+	display: flex;
+	box-sizing: border-box;
+}
+
+.sidebar {
+	width: 230px;
+	height: 795px;
+	box-sizing: border-box;
+	margin-right: 20px;
+}
+
+#pagination {
+	margin-top: 20px;
+}
 </style>
 </head>
 <body>
 	<header>
-		<%@ include file="../layout/header.jsp"%>
+		<%@ include file="../member/mainInfo.jsp"%>
 	</header>
 	<main>
 		<div class="member-info">
 			
 		</div>
-		<h1>1:1 문의내역 목록</h1>
-		<div id="table-location">
-			
-		</div>
-		<table id="table" border="1">
-			<thead>
-				<tr class="tr-group">
-					<th>번호</th>
-					<th>대분류</th>
-					<th>소분류</th>
-					<th>제목</th>
-					<th>첨부파일</th>
-					<th>작성일</th>
-					<th>답변상태</th>
-				</tr>
-			</thead>
-			<tbody id="tbody">
-<%-- 				<c:forEach var="qna" items="${qnaList }" varStatus="status"> --%>
-<!-- 					<tr class="tr-group"> -->
-<%-- 						<td>${status.count }</td> --%>
-<%-- 						<td>${qna.qnaBigCategory }</td> --%>
-<%-- 						<td>${qna.qnaSmallCategory }</td> --%>
-<%-- 						<td>${qna.qnaTitle }</td> --%>
-<%-- 						<td>${qna.qnaFile }</td> --%>
-<%-- 						<td>${qna.regdate }</td> --%>
-<%-- 						<td>${qna.qnaAnswer }</td> --%>
-<!-- 					</tr> -->
-<%-- 				</c:forEach> --%>
-			</tbody>
-		</table>
+		<div class="flex-box">
+			<div class="sidebar">
+				<%@ include file="../member/sideMenu.jsp"%>
+			</div>
+			<div id="table-location">
+				<h1>1:1 문의내역 목록</h1>
+				<table id="table" border="1">
+					<thead>
+						<tr class="tr-group">
+							<th>번호</th>
+							<th>대분류</th>
+							<th>소분류</th>
+							<th>제목</th>
+							<th>첨부파일</th>
+							<th>작성일</th>
+							<th>답변상태</th>
+						</tr>
+					</thead>
+					<tbody id="tbody">
+		<%-- 				<c:forEach var="qna" items="${qnaList }" varStatus="status"> --%>
+		<!-- 					<tr class="tr-group"> -->
+		<%-- 						<td>${status.count }</td> --%>
+		<%-- 						<td>${qna.qnaBigCategory }</td> --%>
+		<%-- 						<td>${qna.qnaSmallCategory }</td> --%>
+		<%-- 						<td>${qna.qnaTitle }</td> --%>
+		<%-- 						<td>${qna.qnaFile }</td> --%>
+		<%-- 						<td>${qna.regdate }</td> --%>
+		<%-- 						<td>${qna.qnaAnswer }</td> --%>
+		<!-- 					</tr> -->
+		<%-- 				</c:forEach> --%>
+					</tbody>
+				</table>
 		<div id="pagination">
 			<button id="prevBtn" disabled onclick="prev()"><</button>
 			<span id="page-numbers"> 1 2 3 4 </span>
 			<button id="nextBtn" onclick="next()">></button>
+		</div>
+			</div>
 		</div>
 	</main>
 	<footer>

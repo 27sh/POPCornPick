@@ -501,10 +501,9 @@ input[type="radio"]{
 		const selectedRating = document.querySelector('input[name="score_radio"]:checked').value;
 		const sltRating = parseInt(selectedRating);
 		const textreview = $("#review_text").val();
-		console.log(typeof sltRating);
+		//console.log(typeof sltRating);
 		const jwttoken = localStorage.getItem("jwtToken");
 		const movieDC = "${movieDC}";
-		
 		
 		console.log("무비코드"+movieDC);
 		console.log(jwttoken);
@@ -518,7 +517,8 @@ input[type="radio"]{
 			data: JSON.stringify({
 				reviewScore : sltRating,
 				reviewContent : textreview,
-				spoiler : false
+				spoiler : false,
+				
 				
 			}),
 			
@@ -526,25 +526,18 @@ input[type="radio"]{
 				alert("평점이 등록되었습니다");
 				
 				console.log("평점등록중");
-// 				window.location.href="/film/noapi";
+ 				window.location.href="/film/noapi";
 			},
 			error:function(error){
+				alert("예매정보가 없습니다.");
 				console.log(error);
 				console.log("에러상세" + error.responseText);
+				document.getElementById("ratingModal").style.display = "none";
 			}
 			
 			
 		})
 	}
-  
-  
-  
-	
-	
-
-
-  
-  
   
 </script>
 

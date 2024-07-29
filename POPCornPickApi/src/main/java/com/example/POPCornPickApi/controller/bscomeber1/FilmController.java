@@ -17,13 +17,17 @@ import com.example.POPCornPickApi.dto.MovieDetailDto;
 import com.example.POPCornPickApi.entity.MovieDetail;
 import com.example.POPCornPickApi.entity.Review;
 import com.example.POPCornPickApi.entity.StillCut;
+import com.example.POPCornPickApi.entity.Ticketing;
 import com.example.POPCornPickApi.entity.Utube;
+import com.example.POPCornPickApi.jwt.JWTUtil;
 import com.example.POPCornPickApi.repository.MovieDetailRepository;
 import com.example.POPCornPickApi.repository.ReviewRepository;
 import com.example.POPCornPickApi.repository.StillCutRepository;
 import com.example.POPCornPickApi.repository.UtubeRepository;
 import com.example.POPCornPickApi.service.MovieDetailService;
 import com.example.POPCornPickApi.service.UtubeService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/film")
@@ -44,6 +48,11 @@ public class FilmController {
 	@Autowired
 	private ReviewRepository reviewrepository;
 
+	@Autowired
+	private JWTUtil jwtutil;
+	
+	
+	
 	@PostMapping("/saveMovieList")
 	public String postmovieList() {
 
@@ -85,11 +94,24 @@ public class FilmController {
 		return ResponseEntity.status(HttpStatus.OK).body(mdd);
 	}
 	@PostMapping("/ScoreInput")
-	public ResponseEntity<Review> scoreForm(@RequestBody Review review) {
-	
+	public ResponseEntity<Review> scoreForm(@RequestBody Review review, HttpServletRequest request) {
+		
+		String jwtToken = request.getHeader("Authorization").split(" ")[1];
+		String uesrname = jwtutil.getUsername(jwtToken);
+		
+		
+		Ticketing tik = new Ticketing();
+		
+		if(tik.isViewTF()) { //실관람 여기에 저장
+			
+		}else {//관람하지 않았기때문에 여기는 저장되면안댐
+			
+		}
+
+		
 		System.out.println("리뷰"+review);
 		return ResponseEntity.ok(reviewrepository.save(review));
 	}
 	
-//	
+	
 }

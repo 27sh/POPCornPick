@@ -14,6 +14,7 @@ public interface MovieDetailRepository extends JpaRepository<MovieDetail, String
 	
 	public List<MovieDetail> findByMovieNmContaining(String movieNm);
 
+	public String findMovieNmByMovieDC(String movieDC); 
 	
 	
 }

@@ -11,9 +11,7 @@
 body {
 	font-family: Arial, sans-serif;
 }
-a{
-	color: white;
-}
+
 .container {
 	display: flex;
 	flex-wrap: wrap;
@@ -53,6 +51,9 @@ a{
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
+}
+.rever{
+	color: white;
 }
 </style>
 </head>
@@ -167,7 +168,7 @@ a{
                     +       '<div class="sales">예매율: ' + movieList[i].salesAcc + '</div>'
                     +       '<div class="rating">평점: 9.3</div>'
                     +       '<div>개봉일: ' + movieList[i].openDt + '</div><br>'
-                    +       '<button class="btn"><a href="/reservation/main">예매하기</a></button>'
+                    +       '<button class="btn"><a class="rever" href="/reservation/main">예매하기</a></button>'
                     +   '</div>'
                     + '</div>';
                 //console.log(posterUrl);

@@ -10,7 +10,7 @@ import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.RoomType;
 
 public interface RoomRepository extends JpaRepository<Room, Long>{
-
+	
 	List<Room> findByRoomNo(Long roomNo);
 
 	List<Room> findByCinema_CinemaNo(Long cinemaNo);

@@ -20,4 +20,6 @@ public interface ReservatedSeatRepository extends JpaRepository<ReservatedSeat, 
 	public Optional<ReservatedSeat> findBySchedule_ScheduleNoAndSeatRowAndSeatColumn(Long scheduleNo, int seatRow, int seatColumn);
 	
 	List<ReservatedSeat> findByScheduleScheduleNoIn(List<Long> scheduleNos);
+	
+	public ReservatedSeat findByReservatedSeatNo(Long reservatedSeatNo);
 }

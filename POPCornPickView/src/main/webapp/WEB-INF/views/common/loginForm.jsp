@@ -314,7 +314,7 @@ span {
 		                    //alert('Login successful! Token stored in local storage.');
 		                    window.location.href = "/";
 		                } else {
-		                    alert('로그인 실패 아이디나 비밀번호가 다릅니다.')
+		                    alert('로그인 실패 아이디나 비밀번호가 일치하지 않습니다.')
 		                	//alert('Login failed. Please check your credentials.');
 		                }
 		            }

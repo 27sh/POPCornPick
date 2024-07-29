@@ -38,5 +38,15 @@ public class MemberController {
 		return "/member/editQnaForm";
 	}
 	
+	@GetMapping("/editMyInfo")
+	public String editMyInfo() {
+		return "/member/editMyInfo";
+	}
+	
+	@GetMapping("/reservationList")
+	public String reservationList() {
+		return "/member/reservationList";
+	}
+	
 	
 }

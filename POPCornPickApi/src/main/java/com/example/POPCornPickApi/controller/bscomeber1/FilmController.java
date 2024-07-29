@@ -25,6 +25,7 @@ import com.example.POPCornPickApi.repository.ReviewRepository;
 import com.example.POPCornPickApi.repository.StillCutRepository;
 import com.example.POPCornPickApi.repository.UtubeRepository;
 import com.example.POPCornPickApi.service.MovieDetailService;
+import com.example.POPCornPickApi.service.TicketingService;
 import com.example.POPCornPickApi.service.UtubeService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,7 +52,8 @@ public class FilmController {
 	@Autowired
 	private JWTUtil jwtutil;
 	
-	
+	@Autowired
+	private TicketingService tkser;
 	
 	@PostMapping("/saveMovieList")
 	public String postmovieList() {
@@ -93,24 +95,27 @@ public class FilmController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(mdd);
 	}
-	@PostMapping("/ScoreInput")
-	public ResponseEntity<Review> scoreForm(@RequestBody Review review, HttpServletRequest request) {
+	@PostMapping("/ScoreInput/{movieDC}")
+	public ResponseEntity<String> scoreForm(@RequestBody Review review, HttpServletRequest request, @PathVariable("movieDC") String movieDC) {
 		
 		String jwtToken = request.getHeader("Authorization").split(" ")[1];
+		
+		System.out.println("제이더블류티토큰" + jwtToken);
+		
 		String uesrname = jwtutil.getUsername(jwtToken);
+	
+		List<Ticketing> ticketing = tkser.getticketno(uesrname,movieDC);
 		
-		
-		Ticketing tik = new Ticketing();
-		
-		if(tik.isViewTF()) { //실관람 여기에 저장
+		if(ticketing == null) {
 			
-		}else {//관람하지 않았기때문에 여기는 저장되면안댐
-			
-		}
+			return ResponseEntity.status(HttpStatus.OK).body("영화를 관람하지 않았습니다.");
+		}else {
+			reviewrepository.save(review);
+			return ResponseEntity.status(HttpStatus.OK).body("평점을 등록하였습니다.");
+		}	
 
+	
 		
-		System.out.println("리뷰"+review);
-		return ResponseEntity.ok(reviewrepository.save(review));
 	}
 	
 	

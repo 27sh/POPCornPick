@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Ticketing;
 
 public interface TicketingRepository extends JpaRepository<Ticketing, Long>{
@@ -31,4 +32,9 @@ public interface TicketingRepository extends JpaRepository<Ticketing, Long>{
 	public Long getTicketingCountByDetailNo(@Param("detailNo") Long detailNo);
 	
 	List<Ticketing> findByReservatedSeatReservatedSeatNoIn(List<Long> reservatedSeatNos);
+	
+	public List<Ticketing> findByMember_UsernameAndViewTFAndReservatedSeat_Schedule_MovieShowDetail_Movie_MovieDC(String username, boolean viewTF, Long movieDC);
+
+	public List<Long> findByMember(Member username);
+	
 }

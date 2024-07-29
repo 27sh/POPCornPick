@@ -503,17 +503,25 @@ input[type="radio"]{
 		const textreview = $("#review_text").val();
 		console.log(typeof sltRating);
 		const jwttoken = localStorage.getItem("jwtToken");
+		const movieDC = "${movieDC}";
+		
+		
+		console.log("무비코드"+movieDC);
+		console.log(jwttoken);
 		$.ajax({
-			url:"http://localhost:9001/api/v1/film/ScoreInput",
+			url:"http://localhost:9001/api/v1/film/ScoreInput/"+ movieDC,
 			method:"POST",
 			contentType: "application/json",
-			processData: false,
+			headers: {
+				'Authorization' : 'Bearer ' + jwttoken 
+			},
 			data: JSON.stringify({
 				reviewScore : sltRating,
 				reviewContent : textreview,
 				spoiler : false
 				
 			}),
+			
 			success:function(inputScore){
 				alert("평점이 등록되었습니다");
 				

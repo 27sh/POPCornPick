@@ -280,10 +280,15 @@ public class ReservationController {
 	}
 	
 	@GetMapping("/from/schedule/list/{cinemaNo}/{date}/{roomNo}/{movieTitle}/{scheduleStart}")
-	public ResponseEntity<String> getScheduleListFromScheduleList(@PathVariable("cinemaNo") Long cinemaNo, @PathVariable("date") String date,
+	public ResponseEntity<List<ScheduleDto_JYC>> getScheduleListFromScheduleList(@PathVariable("cinemaNo") Long cinemaNo, @PathVariable("date") String date,
 			@PathVariable("roomNo") Long roomNo, @PathVariable("movieTitle") String movieTitle, @PathVariable("scheduleStart") String scheduleStart){
 		
-		reservationService.getScheduleListFromScheduleList(cinemaNo, date, roomNo, movieTitle, scheduleStart);
+		List<ScheduleDto_JYC> scheduleDtoList = reservationService.getScheduleListFromScheduleList(cinemaNo, date, roomNo, movieTitle, scheduleStart);
+		
+		if(scheduleDtoList != null) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(scheduleDtoList);
+		}
 		
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(null);

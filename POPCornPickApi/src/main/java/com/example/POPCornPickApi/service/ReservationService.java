@@ -648,19 +648,33 @@ public class ReservationService {
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
+		List<ScheduleDto_JYC> scheduleDtoList = new ArrayList<>();
 		try {
 			Date datetime = formatter.parse(datetimeStr);
 
 			List<Schedule> scheduleList = scheduleRepository.findByRoom_RoomNoAndMovieShowDetail_Movie_TitleAndStart(roomNo, movieTitle, datetime);
-			
-			System.out.println("ScheduleList : " + scheduleList);
-			
+			scheduleList.forEach(schedule -> {
+				ScheduleDto_JYC scheduleDto = new ScheduleDto_JYC();
+				scheduleDto.setScheduleNo(schedule.getScheduleNo());
+				scheduleDto.setMovieShowDetail(schedule.getMovieShowDetail());
+				scheduleDto.setEnd(schedule.getEnd());
+				scheduleDto.setStart(schedule.getStart());
+				scheduleDto.setRoom(schedule.getRoom());
+				int totalSeats = schedule.getRoom().getRoomType().getRoomTotalColumn() * schedule.getRoom().getRoomType().getRoomTotalRow();
+				int bookedSeats = reservatedSeatRepository.getCountByScheduleNo(schedule.getScheduleNo());
+				int leftSeats = totalSeats - bookedSeats;
+				
+				scheduleDto.setTotalSeat(totalSeats);
+				scheduleDto.setBookedSeat(bookedSeats);
+				scheduleDto.setLeftSeat(leftSeats);
+				scheduleDtoList.add(scheduleDto);
+			});
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		
-		return null;
+		return scheduleDtoList;
 	}
 	
 }

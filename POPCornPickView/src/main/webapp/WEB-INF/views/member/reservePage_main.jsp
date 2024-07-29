@@ -11,8 +11,10 @@
 <title>관람관 등록</title>
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8588dea51d4c264393abb318dbcd327f&libraries=services"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8588dea51d4c264393abb318dbcd327f"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8588dea51d4c264393abb318dbcd327f&libraries=services"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8588dea51d4c264393abb318dbcd327f"></script>
 <style type="text/css">
 body {
 	box-sizing: border-box;
@@ -68,6 +70,7 @@ body {
 	flex-direction: column;
 	justify-content: center;
 }
+
 .simple_info_title {
 	text-align: center;
 	width: 80px;
@@ -78,13 +81,15 @@ body {
 	flex-direction: column;
 	justify-content: center;
 }
-.simple_info_title p{
+
+.simple_info_title p {
 	width: fit-content;
 	margin: 0 auto;
 	font-size: 14px;
 	font-weight: bold;
 	color: black;
 }
+
 #simple_info_title_reservation p {
 	width: fit-content;
 	margin: 0 auto;
@@ -523,11 +528,12 @@ h4 {
 
 .room_detail_info {
 	border: 1px solid #edebeb;
-	background: #edebeb;
+	background: white;
 	position: relative;
 	width: 110px;
 	height: 48px;
 	cursor: pointer;
+	background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(248, 248, 248, 1) 100%);
 }
 
 .room_detail_info span:first-child {
@@ -593,13 +599,15 @@ h4 {
 .nofilm p {
 	width: fit-content;
 }
-#map{
+
+#map {
 	width: 355px;
 	height: 250px;
 	position: relative;
 	top: 616.5px;
 	left: 80px;
 }
+
 main {
 	width: 1280px;
 	margin: 80px auto;
@@ -716,10 +724,10 @@ main {
 					<div id="section_schedule_box">
 						<div id="movie_room">
 							<div id="section_schedule_box_information" class="nofilm">
-							  <img alt="필름 사진" src="/img/film.png">
-							  <p>조회 가능한 상영시간이 없습니다.</p>
-						 	 <p>조건을 변경해주세요.</p>
-				 			</div>
+								<img alt="필름 사진" src="/img/film.png">
+								<p>조회 가능한 상영시간이 없습니다.</p>
+								<p>조건을 변경해주세요.</p>
+							</div>
 						</div>
 					</div>
 				</section>
@@ -733,27 +741,7 @@ main {
 	<footer> </footer>
 	<script type="text/javascript">
 	
-	const cinemaNo = "${cinemaNo}";
-	const date = "${date}";
-	const roomNo = "${roomNo}";
-	const movieTitle = "${movieTitle}";
-	const scheduleStart = "${scheduleStart}";
 	
-	if(cinemaNo.length !== 0 && date.length !== 0 && roomNo !== 0 &&
-		movieTitle.length !== 0 && scheduleStart.length !== 0
-			){
-		$.ajax({
-			url : "http://localhost:9001/api/v1/reservation/from/schedule/list/" + cinemaNo + "/" + date + "/" + roomNo + "/" + movieTitle + "/" + scheduleStart,
-			method : "GET",
-			dataType : "json",
-			success : function(response){
-				console.log("success");
-			},
-			error : function(xhr, status, error){
-				console.log(error);
-			}
-		});
-	}
 	
 	
 	
@@ -784,7 +772,6 @@ main {
 			    },
 				success: function(response){
 					let str = '';	
-					console.log(response);
 					Object.entries(response).forEach(([key, value]) => {
 						str += '<li class="' + key + '">' + value + '</li>';
 					});
@@ -1234,55 +1221,115 @@ main {
 			let str = '';
 			let cnt = 0;
 			const days = getNext8Days();
+			const dateParameter = "${date}".split("-");
+			const dateParameterYear	= parseInt(dateParameter[0]);		
+			const dateParameterMonth = parseInt(dateParameter[1]);		
+			const dateParameterDate	= parseInt(dateParameter[2]);		
 			
 			days.forEach(day => {
-				str += '<li class="section_schedule_date_slide">';
-				if(cnt === 0 || day.getDate() === 1){
-					str += '<strong>' + (day.getMonth() + 1) + '월</strong>';	
+				const dayYear = parseInt(day.getUTCFullYear());
+				const dayMonth = parseInt(day.getUTCMonth() + 1);
+				const dayDate = parseInt(day.getUTCDate());
+				
+				if(dateParameterYear === dayYear && dateParameterMonth === dayMonth && dateParameterDate === dayDate){
+					str += '<li class="section_schedule_date_slide selected">';
+					if(cnt === 0 || day.getDate() === 1){
+						str += '<strong>' + (day.getMonth() + 1) + '월</strong>';	
+					}else {
+						str += '<strong class="hide_strong">' + (day.getMonth() + 1) + '월</strong> '; 
+					}
+					str += '<a> <label for="date_' + cnt + '"> <input type="radio"' + 
+						   'id="date_' + cnt + '" name="date_radio" class="date_radio"> ';
+					if(day.getDay() === 0){
+						str +=	'<strong style="color:red">' + day.getDate() + '</strong>';  
+					}else if(day.getDay() === 6){
+						str +=	'<strong style="color:blue">' + day.getDate() + '</strong>';  
+					}else {
+						str +=	'<strong>' + day.getDate() + '</strong>';  
+					}					   
+					//0:일, 1:월, 2:화, 3:수, 4:목, 5:금, 6:토
+					let dayName = '';
+					if(cnt === 0){
+						dayName = '오늘';					
+					}else if(day.getDay() === 0){
+						dayName = '일';
+					}else if(day.getDay() === 1){
+						dayName = '월';
+					}else if(day.getDay() === 2){
+						dayName = '화';
+					}else if(day.getDay() === 3){
+						dayName = '수';
+					}else if(day.getDay() === 4){
+						dayName = '목';
+					}else if(day.getDay() === 5){
+						dayName = '금';
+					}else if(day.getDay() === 6){
+						dayName = '토';
+					}
+					
+					if(day.getDay() === 0){
+						str += '<em style="color:red">' + dayName + '</em></label> ' +
+						   '</a></li>';
+					}else if(day.getDay() === 6){
+						str += '<em style="color:blue">' + dayName + '</em></label> ' +
+						   '</a></li>';
+					}else {
+						str += '<em>' + dayName + '</em></label> ' +
+						   '</a></li>';
+					}	
+					
+					cnt++;
 				}else {
-					str += '<strong class="hide_strong">' + (day.getMonth() + 1) + '월</strong> '; 
-				}
-				str += '<a> <label for="date_' + cnt + '"> <input type="radio"' + 
-					   'id="date_' + cnt + '" name="date_radio" class="date_radio"> ';
-				if(day.getDay() === 0){
-					str +=	'<strong style="color:red">' + day.getDate() + '</strong>';  
-				}else if(day.getDay() === 6){
-					str +=	'<strong style="color:blue">' + day.getDate() + '</strong>';  
-				}else {
-					str +=	'<strong>' + day.getDate() + '</strong>';  
-				}					   
-				//0:일, 1:월, 2:화, 3:수, 4:목, 5:금, 6:토
-				let dayName = '';
-				if(cnt === 0){
-					dayName = '오늘';					
-				}else if(day.getDay() === 0){
-					dayName = '일';
-				}else if(day.getDay() === 1){
-					dayName = '월';
-				}else if(day.getDay() === 2){
-					dayName = '화';
-				}else if(day.getDay() === 3){
-					dayName = '수';
-				}else if(day.getDay() === 4){
-					dayName = '목';
-				}else if(day.getDay() === 5){
-					dayName = '금';
-				}else if(day.getDay() === 6){
-					dayName = '토';
+					str += '<li class="section_schedule_date_slide">';
+					if(cnt === 0 || day.getDate() === 1){
+						str += '<strong>' + (day.getMonth() + 1) + '월</strong>';	
+					}else {
+						str += '<strong class="hide_strong">' + (day.getMonth() + 1) + '월</strong> '; 
+					}
+					str += '<a> <label for="date_' + cnt + '"> <input type="radio"' + 
+						   'id="date_' + cnt + '" name="date_radio" class="date_radio"> ';
+					if(day.getDay() === 0){
+						str +=	'<strong style="color:red">' + day.getDate() + '</strong>';  
+					}else if(day.getDay() === 6){
+						str +=	'<strong style="color:blue">' + day.getDate() + '</strong>';  
+					}else {
+						str +=	'<strong>' + day.getDate() + '</strong>';  
+					}					   
+					//0:일, 1:월, 2:화, 3:수, 4:목, 5:금, 6:토
+					let dayName = '';
+					if(cnt === 0){
+						dayName = '오늘';					
+					}else if(day.getDay() === 0){
+						dayName = '일';
+					}else if(day.getDay() === 1){
+						dayName = '월';
+					}else if(day.getDay() === 2){
+						dayName = '화';
+					}else if(day.getDay() === 3){
+						dayName = '수';
+					}else if(day.getDay() === 4){
+						dayName = '목';
+					}else if(day.getDay() === 5){
+						dayName = '금';
+					}else if(day.getDay() === 6){
+						dayName = '토';
+					}
+					
+					if(day.getDay() === 0){
+						str += '<em style="color:red">' + dayName + '</em></label> ' +
+						   '</a></li>';
+					}else if(day.getDay() === 6){
+						str += '<em style="color:blue">' + dayName + '</em></label> ' +
+						   '</a></li>';
+					}else {
+						str += '<em>' + dayName + '</em></label> ' +
+						   '</a></li>';
+					}	
+					
+					cnt++;
 				}
 				
-				if(day.getDay() === 0){
-					str += '<em style="color:red">' + dayName + '</em></label> ' +
-					   '</a></li>';
-				}else if(day.getDay() === 6){
-					str += '<em style="color:blue">' + dayName + '</em></label> ' +
-					   '</a></li>';
-				}else {
-					str += '<em>' + dayName + '</em></label> ' +
-					   '</a></li>';
-				}	
 				
-				cnt++;
 			});
 			
 			$("#section_schedule_date").html(str);
@@ -1292,7 +1339,7 @@ main {
 			// 날짜 선택했을 때
 			$("#section_schedule_date").children("li").children("a").on("click", "label", function(event){
 				if(event.target.tagName === "LABEL" || event.target.tagName === "STRONG" || event.target.tagName === "EM" ){
-					$(this).parent().parent().addClass("selected");
+					$(this).parent().parent().addClass("selected");	
 					$(this).parent().parent().siblings().removeClass("selected");
 					
 					const year = new Date().getFullYear();
@@ -1306,8 +1353,6 @@ main {
 					const date = $(this).children("strong").text();
 					const day = $(this).children("em").text();
 					const result = year + "-" + month + "-" + date + " ( " + day +  " )";
-					
-					
 					
 					$(".section_schedule_title").text("날짜 - " + result);
 					$(".simple_info_content_date").text(result);
@@ -1396,7 +1441,6 @@ main {
 													    }
 													    
 														if(scheduleList[0].movieShowDetail.dubbing === false && scheduleList[0].movieShowDetail.subtitle === false){
-															console.log("smallType : " + scheduleList[0].room.roomType.smallType); 
 															if(scheduleList[0].room.roomType.smallType !== null){
 															        str += '<li class="nodubbingnosubtitle">' + scheduleList[0].room.roomType.roomName + ' (' + scheduleList[0].room.roomType.smallType + ')</li>';
 															    } else {
@@ -1459,6 +1503,7 @@ main {
 									
 									
 								}else {
+									console.log(result + " " + hours + ":" + minutes + ":" + seconds);
 									$.ajax({
 										url : "http://localhost:9001/api/v1/reservation/schedule/list/" + cinemaName.substring(6, cinemaName.length) + "/" + movieName.substring(5, movieName.length) + "/" + (result + " " + hours + ":" + minutes + ":" + seconds),
 										method: "GET",
@@ -1827,6 +1872,9 @@ main {
 				
 				
 				
+				
+				
+				
 			});
 			
 			// 지점명 클릭 했을때
@@ -1967,6 +2015,416 @@ main {
 				
 			});
 			
+			
+			const cinemaNo = "${cinemaNo}";
+			const date = "${date}";
+			const roomNo = "${roomNo}";
+			const movieTitle = "${movieTitle}";
+			const scheduleStart = "${scheduleStart}";
+			
+			if(cinemaNo.length !== 0 && date.length !== 0 && roomNo !== 0 &&
+				movieTitle.length !== 0 && scheduleStart.length !== 0
+					){
+				
+				
+				$.ajax({
+					url : "http://localhost:9001/api/v1/reservation/from/schedule/list/" + cinemaNo + "/" + date + "/" + roomNo + "/" + movieTitle + "/" + scheduleStart,
+					method : "GET",
+					dataType : "json",
+					success : function(response){
+						
+						const movieDC = response[0].movieShowDetail.movie.movieDC;
+						
+						let str = '<div class="movie_info"> ';
+						for(let i = 0; i < response.length; i++){
+								
+							if(response.length > 0){
+								if(response[0].movieShowDetail.movie.viewAge === "전체 관람가"){
+								    str += '<img alt="전체" src="/img/grade_all.png" class="grade">';
+								}else if(response[0].movieShowDetail.movie.viewAge === "12세 이상 관람가"){
+								    str += '<img alt="12세 관람가" src="/img/grade_12.png" class="grade">';
+								}else if(response[0].movieShowDetail.movie.viewAge === "15세 이상 관람가"){
+								    str += '<img alt="15세 관람가" src="/img/grade_15.png" class="grade">';
+									}else if(response[0].movieShowDetail.movie.viewAge === "청소년 관람불가") {
+								    str += '<img alt="청소년 관람불가" src="/img/pc_grade_19.png" class="grade">';
+								}
+								str += '<span>' + response[0].movieShowDetail.movie.title + '</span> ';
+								str += '</div>';  // 여기서 <div> 태그를 닫습니다
+								str += '<div class="room_schedule">';
+								break;
+							}
+						}
+							
+						response.forEach(schedule => {
+						    // 여기서 상영관 정보를 입력해야한다.
+							    str += '<ul class="room_info">'; 
+							    str += '<li>2D</li>';
+						    	
+							    if(schedule.movieShowDetail.dubbing === true){
+							    	str += '<li>더빙</li>';								    	
+							    }else if(schedule.movieShowDetail.subtitle === true){
+							    	str += '<li>자막</li>';
+							    }
+							    
+								if(schedule.movieShowDetail.dubbing === false && schedule.movieShowDetail.subtitle === false){
+									 if(schedule.room.roomType.smallType !== null){
+									        str += '<li class="nodubbingnosubtitle">' + schedule.room.roomType.roomName + ' (' + schedule.room.roomType.smallType + ')</li>';
+									    } else {
+									        str += '<li class="nodubbingnosubtitle">' + schedule.room.roomType.roomName + '</li>';
+									    }
+								}else {
+									 if(schedule.room.roomType.smallType !== null){
+									        str += '<li>' + schedule.room.roomType.roomName + ' (' + schedule.room.roomType.smallType + ')</li>';
+									    } else {
+									        str += '<li>' + schedule.room.roomType.roomName + '</li>';
+									    }
+								}
+							    str += '</ul>';  // <ul> 태그를 닫습니다
+							    
+							    str += '<div class="room_detail_infos">';
+						        const worldTime = schedule.start;
+							    const koreanTime = new Date(worldTime).toString();
+							    const time = koreanTime.split(" ")[4].split(":")[0] + ":" + koreanTime.split(" ")[4].split(":")[1];
+							    const roomName = schedule.room.roomType.roomName;
+							    const totalSeats = schedule.room.roomType.roomTotalColumn * schedule.room.roomType.roomTotalRow;
+							    // 여기서 상영시간표 정보를 입력해야한다.
+								str += '<a class="room_detail_info" onclick="moveToSeatPage(event)" id="scheduleNo_' + schedule.scheduleNo + '">' +										            	   '<span class="time_image">';
+							    if(parseInt(time.split(":")[0]) >= 8 && parseInt(time.split(":")[0]) <= 10){
+									str += '<img alt="조조 사진" src="/img/time_sun.png"></span>';
+							    }else if(parseInt(time.split(":")[0] >= 00 && parseInt(time.split(":")[0]) <= 02)) {
+							    	str += '<img alt="심야 사진" src="/img/time_moon.png"></span>';
+							    }else {
+							    	str += '<img alt="심야 사진" src="/img/time_moon.png" style="visibility:hidden"></span>';
+							    }
+								            
+							    let resultLeftSeat = '';
+							    if(schedule.leftSeat < 10){
+							    	resultLeftSeat = '0' + schedule.leftSeat;
+							    }else {
+							    	resultLeftSeat = schedule.leftSeat;
+							    }
+							            
+							    str += '<strong>' + time + '</strong>' +		
+							    		 '<span class="seats_left">' + resultLeftSeat + '</span>' +
+										'<span class="seats_total">/' + schedule.totalSeat + '</span>' +
+										'<span class="room_number">' + roomName + '</span>' +
+							    		'</a>';
+								    str += '</div>';  // <div class="room_detail_infos"> 태그를 닫습니다
+							});
+						str += '</div>';  // <div class="room_schedule"> 태그를 닫습니다
+						$("#movie_room").html(str);
+						
+						let location = '';
+						
+						if(response[0].room.cinema.cinemaLocation === "서울"){
+							$(".seoul").addClass("selected");
+							location = 'seoul';
+						}else if(response[0].room.cinema.cinemaLocation === "경기/인천"){
+							$(".gyeonggi_incheon").addClass("selected");
+							location = 'gyeonggi_incheon';
+						}else if(response[0].room.cinema.cinemaLocation === "충청/대전"){
+							$(".chungcheong_daejeon").addClass("selected");
+							location = 'chungcheong_daejeon';
+						}else if(response[0].room.cinema.cinemaLocation === "전라/광주"){
+							$(".jeonla_gwangju").addClass("selected");
+							location = 'jeonla_gwangju';
+						}else if(response[0].room.cinema.cinemaLocation === "경기/인천"){
+							$(".gyeongbuk_daegu").addClass("selected");
+							location = 'gyeongbuk_daegu';
+						}else if(response[0].room.cinema.cinemaLocation === "경기/인천"){
+							$(".gyeongnam_busan_ulsan").addClass("selected");
+							location = 'gyeongnam_busan_ulsan';
+						}else if(response[0].room.cinema.cinemaLocation === "강원"){
+							$(".gangwon").addClass("selected");
+							location = 'gangwon';
+						}else  if(response[0].room.cinema.cinemaLocation === "제주"){
+							$(".jeju").addClass("selected");
+							location = 'jeju';
+						}
+						
+						$.ajax({
+							url : "http://localhost:9001/api/v1/reservation/cinema/location/list/" + location,
+							method : "GET",
+							dataType: "json",
+							success : function(response){
+								let str = '';
+								let cnt = 0;
+								response.forEach(cinema => {
+									if(cinema.cinemaNo == cinemaNo){
+										$(".section_cinema_title").text("영화관 - " + cinema.cinemaName);
+										$(".simple_info_content_specific").text(cinema.cinemaName);
+										str += '<li id="cinemaNo_' + cinema.cinemaNo + '" class="selected">' + cinema.cinemaName + '</li>';
+										
+										// 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
+										var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+										var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+										    mapOption = {
+										        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+										        level: 3 // 지도의 확대 레벨
+										    };  
+
+										// 지도를 생성합니다    
+										var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+										// 장소 검색 객체를 생성합니다
+										var ps = new kakao.maps.services.Places(); 
+
+										// 키워드로 장소를 검색합니다
+										ps.keywordSearch('cgv' + cinema.cinemaName, placesSearchCB); 
+										
+										function placesSearchCB (data, status, pagination) {
+										    if (status === kakao.maps.services.Status.OK) {
+
+										        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+										        // LatLngBounds 객체에 좌표를 추가합니다
+										        var bounds = new kakao.maps.LatLngBounds();
+
+										        for (var i=0; i<data.length; i++) {
+										            displayMarker(data[i]);    
+										            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+										        }       
+
+										        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+										        map.setBounds(bounds);
+										    } 
+										}
+										
+										// 지도에 마커를 표시하는 함수입니다
+										function displayMarker(place) {
+										    
+										    // 마커를 생성하고 지도에 표시합니다
+										    var marker = new kakao.maps.Marker({
+										        map: map,
+										        position: new kakao.maps.LatLng(place.y, place.x) 
+										    });
+
+										    // 마커에 클릭이벤트를 등록합니다
+										    kakao.maps.event.addListener(marker, 'click', function() {
+										        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+										        infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+										        infowindow.open(map, marker);
+										    });
+										    
+										}
+										
+									}else {
+										str += '<li id="cinemaNo_' + cinema.cinemaNo + '">' + cinema.cinemaName + '</li>';
+									}
+								});
+								$("#section_cinema_list_specific").html(str);
+								
+							},
+							error : function(xhr, status, error){
+								console.log(error);
+							}
+						});
+						
+						$.ajax({
+							url: "http://localhost:9001/api/v1/reservation/movie/list",
+							method: "GET",
+							dataType: "json",
+							success: function(response) {
+								let str = '';
+								
+								response.forEach(movie => {
+								
+									let title = '';
+									if(movie.title.length > 25){
+										title = movie.title.substring(0, 25) + "...";
+									}else {
+										title = movie.title;
+									}
+									
+									if(movieDC === movie.movieDC){
+										$(".section_movie_title").text("영화 - " + title);
+										$(".simple_info_content_movie").text(title);
+										if(movie.viewAge === "전체 관람가"){
+											str += '<li class="selected" id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
+										}else if(movie.viewAge === "12세 이상 관람가"){
+											str += '<li class="selected" id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
+										}else if(movie.viewAge === "15세 이상 관람가"){
+											str += '<li class="selected" id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
+										}else if(movie.viewAge === "청소년 관람불가") {
+											str += '<li class="selected" id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
+										}
+									}else {
+										if(movie.viewAge === "전체 관람가"){
+											str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_all.png" class="grade"><span>' + title + '</span></li>';
+										}else if(movie.viewAge === "12세 이상 관람가"){
+											str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_12.png" class="grade"><span>' + title + '</span></li>';
+										}else if(movie.viewAge === "15세 이상 관람가"){
+											str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/grade_15.png" class="grade"><span>' + title + '</span></li>';
+										}else if(movie.viewAge === "청소년 관람불가") {
+											str += '<li id="movieDC_' + movie.movieDC + '"><img alt="' + movie.viewAge + '" src="/img/pc_grade_19.png" class="grade"><span>' + title + '</span></li>';
+										}
+									}
+								});
+								
+								$("#section_movie_list_info").html(str);
+							},
+							error : function(xhr, status, error){
+								console.log(error);
+							}
+						});
+						
+						
+						const datetime = new Date(response[0].start);						
+						const selectedMonth = parseInt(datetime.getUTCMonth() + 1);
+						const selectedDate = parseInt(datetime.getUTCDate());
+						const selectedYear = datetime.getUTCFullYear();
+						const selectedDay = datetime.getUTCDay();
+						
+						const today = new Date();
+						const todayYear = today.getUTCFullYear();
+						const todayMonth = today.getUTCMonth() + 1;
+						const todayDate = today.getUTCDate();
+						
+						let dayStr = '';
+						if(todayYear === selectedYear && todayMonth === selectedMonth && todayDate === selectedDate) {
+							dayStr = "오늘";
+						}else if(selectedDay === 0){
+							dayStr = '일';
+						}else if(selectedDay === 1){
+							dayStr = '월';
+						}else if(selectedDay === 2){
+							dayStr = '화';
+						}else if(selectedDay === 3){
+							dayStr = '수';
+						}else if(selectedDay === 4){
+							dayStr = '목';
+						}else if(selectedDay === 5){
+							dayStr = '금';
+						}else if(selectedDay === 6){
+							dayStr = '토';
+						}
+						
+						const dateResult = selectedYear + "-" + selectedMonth + "-" + selectedDate + " ( " + dayStr + " )";
+						
+						$(".section_schedule_title").text("날짜 - " + dateResult);
+						$(".simple_info_content_date").text(dateResult);						
+						
+						
+						
+						
+// 						let liStr = '';
+// 						let cnt = 0;
+// 						const days = getNext8Days();
+						
+// 						days.forEach(day => {
+// 							console.log("day " + day);
+// 							const eachYear = parseInt(day.getUTCFullYear());
+// 							const eachMonth = parseInt(day.getUTCMonth() + 1);
+// 							const eachDate = parseInt(day.getUTCDate());
+
+// 							if(eachYear === selectedYear && eachMonth === selectedMonth && eachDate === selectedDate){
+// 								liStr += '<li class="section_schedule_date_slide selected">';
+// 								if(cnt === 0 || day.getDate() === 1){
+// 									liStr += '<strong>' + (day.getMonth() + 1) + '월</strong>';	
+// 								}else {
+// 									liStr += '<strong class="hide_strong">' + (day.getMonth() + 1) + '월</strong> '; 
+// 								}
+// 									liStr += '<a> <label for="date_' + cnt + '"> <input type="radio"' + 
+// 									   'id="date_' + cnt + '" name="date_radio" class="date_radio"> ';
+// 								if(day.getDay() === 0){
+// 									liStr +=	'<strong style="color:red">' + day.getDate() + '</strong>';  
+// 								}else if(day.getDay() === 6){
+// 									liStr +=	'<strong style="color:blue">' + day.getDate() + '</strong>';  
+// 								}else {
+// 									liStr +=	'<strong>' + day.getDate() + '</strong>';  
+// 								}					   
+// 								//0:일, 1:월, 2:화, 3:수, 4:목, 5:금, 6:토
+// 								let dayName = '';
+// 								if(cnt === 0){
+// 									dayName = '오늘';					
+// 								}else if(day.getDay() === 0){
+// 									dayName = '일';
+// 								}else if(day.getDay() === 1){
+// 									dayName = '월';
+// 								}else if(day.getDay() === 2){
+// 									dayName = '화';
+// 								}else if(day.getDay() === 3){
+// 									dayName = '수';
+// 								}else if(day.getDay() === 4){
+// 									dayName = '목';
+// 								}else if(day.getDay() === 5){
+// 									dayName = '금';
+// 								}else if(day.getDay() === 6){
+// 									dayName = '토';
+// 								}
+								
+// 								if(day.getDay() === 0){
+// 									liStr += '<em style="color:red">' + dayName + '</em></label> ' +
+// 									   '</a></li>';
+// 								}else if(day.getDay() === 6){
+// 									liStr += '<em style="color:blue">' + dayName + '</em></label> ' +
+// 									   '</a></li>';
+// 								}else {
+// 									liStr += '<em>' + dayName + '</em></label> ' +
+// 									   '</a></li>';
+// 								}	
+								
+// 								cnt++;
+// 							}else {
+// 								liStr += '<li class="section_schedule_date_slide">';
+// 								if(cnt === 0 || day.getDate() === 1){
+// 									liStr += '<strong>' + (day.getMonth() + 1) + '월</strong>';	
+// 								}else {
+// 									liStr += '<strong class="hide_strong">' + (day.getMonth() + 1) + '월</strong> '; 
+// 								}
+// 									liStr += '<a> <label for="date_' + cnt + '"> <input type="radio"' + 
+// 									   'id="date_' + cnt + '" name="date_radio" class="date_radio"> ';
+// 								if(day.getDay() === 0){
+// 									liStr +=	'<strong style="color:red">' + day.getDate() + '</strong>';  
+// 								}else if(day.getDay() === 6){
+// 									liStr +=	'<strong style="color:blue">' + day.getDate() + '</strong>';  
+// 								}else {
+// 									liStr +=	'<strong>' + day.getDate() + '</strong>';  
+// 								}					   
+// 								//0:일, 1:월, 2:화, 3:수, 4:목, 5:금, 6:토
+// 								let dayName = '';
+// 								if(cnt === 0){
+// 									dayName = '오늘';					
+// 								}else if(day.getDay() === 0){
+// 									dayName = '일';
+// 								}else if(day.getDay() === 1){
+// 									dayName = '월';
+// 								}else if(day.getDay() === 2){
+// 									dayName = '화';
+// 								}else if(day.getDay() === 3){
+// 									dayName = '수';
+// 								}else if(day.getDay() === 4){
+// 									dayName = '목';
+// 								}else if(day.getDay() === 5){
+// 									dayName = '금';
+// 								}else if(day.getDay() === 6){
+// 									dayName = '토';
+// 								}
+								
+// 								if(day.getDay() === 0){
+// 									liStr += '<em style="color:red">' + dayName + '</em></label> ' +
+// 									   '</a></li>';
+// 								}else if(day.getDay() === 6){
+// 									liStr += '<em style="color:blue">' + dayName + '</em></label> ' +
+// 									   '</a></li>';
+// 								}else {
+// 									liStr += '<em>' + dayName + '</em></label> ' +
+// 									   '</a></li>';
+// 								}	
+								
+// 								cnt++;
+// 							}
+// 						});
+						
+// 						$("#section_schedule_date").html(liStr);
+						
+						
+					},
+					error : function(xhr, status, error){
+						console.log(error);
+					}
+				});
+			}
 		});
 		
 		function moveToSeatPage(event){
@@ -1991,10 +2449,6 @@ main {
 			const specific = $(".simple_info_content_specific").text();
 			const date = $(".simple_info_content_date").text();
 			const time = $(".simple_info_content_time").text();
-			
-			console.log("movie : " + movie);
-			console.log("specific : " + specific);
-			console.log("date : " + date);
 			
 			if(confirm("이 영화 정보로 예약하시겠습니까?")){
 				location.href="http://localhost:8080/reservation/seat/" + scheduleNo.substring(11, scheduleNo.length) + "/" + movie + "/" + specific + "/" + date;

@@ -14,7 +14,7 @@
             관람권/할인쿠폰 관리
         </div>
     </a>    
-    <a href="/mem/pointList">
+    <a href="/myPage/pointList">
         <div class="side-box" id="box3">
             포인트
         </div>

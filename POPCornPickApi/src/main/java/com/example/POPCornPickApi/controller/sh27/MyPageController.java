@@ -1,10 +1,14 @@
 package com.example.POPCornPickApi.controller.sh27;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +21,14 @@ import com.example.POPCornPickApi.entity.CouponType;
 import com.example.POPCornPickApi.entity.ExpCinema;
 import com.example.POPCornPickApi.entity.GiftCard;
 import com.example.POPCornPickApi.entity.Member;
+import com.example.POPCornPickApi.entity.Point;
 import com.example.POPCornPickApi.repository.CouponRepository;
 import com.example.POPCornPickApi.repository.CouponTypeRepository;
 import com.example.POPCornPickApi.repository.ExpCinemaRepository;
 import com.example.POPCornPickApi.repository.GiftCardRepository;
 import com.example.POPCornPickApi.repository.MemberRepository;
 import com.example.POPCornPickApi.repository.PointRepository;
+import com.example.POPCornPickApi.service.PointService;
 
 @RestController
 @RequestMapping("/api/v1/myPage")
@@ -45,6 +51,9 @@ public class MyPageController {
 	
 	@Autowired
     private CouponTypeRepository couponTypeRepository;
+	
+	@Autowired
+    private PointService pointService;
 	
 	@GetMapping("/info")
     public Member getUserInfo(Authentication authentication) {
@@ -120,5 +129,14 @@ public class MyPageController {
         couponRepository.save(coupon);
 
         return "쿠폰이 성공적으로 등록되었습니다.";
+    }
+	
+	@GetMapping("/points")
+	public ResponseEntity<List<Point>> getPoints(@AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        System.out.println("Received request to fetch points for user: " + username);
+
+        List<Point> points = pointRepository.findByUsername(username);
+        return ResponseEntity.ok(points);
     }
 }

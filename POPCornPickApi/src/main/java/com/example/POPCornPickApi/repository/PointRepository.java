@@ -1,5 +1,6 @@
 package com.example.POPCornPickApi.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,6 +24,8 @@ public interface PointRepository extends JpaRepository<Point, Long>{
 	@Query("SELECT SUM(p.acheive) - SUM(p.pointUse) FROM Point p WHERE p.member.username = :username")
     Integer findTotalPointsByUsername(@Param("username") String username);
 	
+	@Query("SELECT p FROM Point p WHERE p.member.username = :username")
+    List<Point> findByUsername(@Param("username") String username);
 }
 
 

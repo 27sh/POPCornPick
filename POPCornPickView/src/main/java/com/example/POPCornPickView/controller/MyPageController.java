@@ -36,4 +36,10 @@ public class MyPageController {
 		
 		return "member/registCouponForm";
 	}
+	
+	@RequestMapping("/pointList")
+	public String pointList() {
+		
+		return "member/pointList";
+	}
 }

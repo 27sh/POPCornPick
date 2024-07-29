@@ -280,7 +280,7 @@
                         <li><a href="/film/movieList">영화</a>
                             <ul class="sme">
                                 <li><a href="/film/movieList">무비차트</a></li>
-                                <li><a href="movieList">무비차트2</a></li>
+                                <li><a href="/film/noapi">무비차트2</a></li>
                             </ul>
                         </li>
                         <li><a href="/memberCinema/cinemaPage">극장</a>

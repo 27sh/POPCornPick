@@ -105,12 +105,21 @@ public class FilmController {
 		String uesrname = jwtutil.getUsername(jwtToken);
 	
 		List<Ticketing> ticketing = tkser.getticketno(uesrname,movieDC);
+			
+		Review score = new Review();
+		System.out.println(review.getReviewScore());
+		System.out.println("얘가 문젠거같은데" + ticketing.get(0));
 		
 		if(ticketing == null) {
 			
 			return ResponseEntity.status(HttpStatus.OK).body("영화를 관람하지 않았습니다.");
 		}else {
-			reviewrepository.save(review);
+			
+			score.setReviewContent(review.getReviewContent());
+			score.setReviewScore(review.getReviewScore());
+			score.setTicketing(ticketing.get(0));
+			
+			reviewrepository.save(score);
 			return ResponseEntity.status(HttpStatus.OK).body("평점을 등록하였습니다.");
 		}	
 

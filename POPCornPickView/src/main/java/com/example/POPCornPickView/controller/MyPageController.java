@@ -42,4 +42,10 @@ public class MyPageController {
 		
 		return "member/pointList";
 	}
+	
+	@RequestMapping("/reviewList")
+	public String reviewList() {
+		
+		return "member/reviewList";
+	}
 }

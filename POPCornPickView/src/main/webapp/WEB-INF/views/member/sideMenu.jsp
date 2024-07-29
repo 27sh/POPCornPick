@@ -39,7 +39,7 @@
             내가 본 영화
         </div>
     </a>
-    <a href="/mem/reviewList">
+    <a href="/myPage/reviewList">
         <div class="side-box" id="box9">
             내가 쓴 평점
         </div>

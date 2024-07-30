@@ -6,6 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.dto.DailySalesDto;
+import com.example.POPCornPickApi.dto.FmSaleDto;
+import com.example.POPCornPickApi.dto.MonthlySalesDto;
+import com.example.POPCornPickApi.dto.MovieSaleDto;
+import com.example.POPCornPickApi.dto.YearSalesDto;
 import com.example.POPCornPickApi.entity.MovieDetail;
 import com.example.POPCornPickApi.entity.Ticketing;
 import com.example.POPCornPickApi.repository.MovieDetailRepository;
@@ -40,6 +45,43 @@ public class TicketingService {
 		System.out.println("리스트가 나오는지--- " + findmvdc);
 		return findmvdc;
 		
+	}
+	
+	public List<DailySalesDto> getDailySalesData(int year){
+		
+		List<DailySalesDto> amountList = ticketingRepository.getDailySales(year);
+		
+		return amountList;
+	}
+	
+	public List<MonthlySalesDto> getMonthlySalesData(int year){
+		
+		List<MonthlySalesDto> amountList = ticketingRepository.getMonthlySales(year);
+		
+		return amountList;
+	}
+
+	public List<YearSalesDto> getYearSalesData(){
+		
+		List<YearSalesDto> amountList = ticketingRepository.getYearSales();
+		
+		return amountList;
+	}
+	
+	public List<MovieSaleDto> getMoviesSalesData(){
+		
+		List<MovieSaleDto> amountList = ticketingRepository.getMoviesSales();
+		
+		System.out.println("amountList : " + amountList);
+		
+		return amountList;
+	}
+	
+	public List<FmSaleDto> getFmSalesData(){
+		
+		List<FmSaleDto> amountList = ticketingRepository.getFmSales();
+	
+		return amountList;
 	}
 	
 	

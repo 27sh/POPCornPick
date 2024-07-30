@@ -14,20 +14,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.POPCornPickApi.dto.CancelListDto;
 import com.example.POPCornPickApi.dto.ReservationListDto;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Movie;
+import com.example.POPCornPickApi.entity.PromotionInfo;
 import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
+import com.example.POPCornPickApi.entity.Schedule;
 import com.example.POPCornPickApi.entity.Ticketing;
 import com.example.POPCornPickApi.entity.UnknownMember;
 import com.example.POPCornPickApi.jwt.JWTUtil;
-import com.example.POPCornPickApi.repository.CancerListRepository;
+import com.example.POPCornPickApi.repository.CancelListRepository;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.MemberRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
 import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
+import com.example.POPCornPickApi.repository.PromotionInfoRepository;
 import com.example.POPCornPickApi.repository.ReservatedSeatRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
 import com.example.POPCornPickApi.repository.ScheduleRepository;
@@ -52,7 +56,7 @@ public class MembersController {
 	private TicketingRepository ticketingRepository;
 	
 	@Autowired
-	private CancerListRepository cancerListRepository;
+	private CancelListRepository cancelListRepository;
 	
 	@Autowired
 	private ReservatedSeatRepository reservatedSeatRepository;
@@ -72,6 +76,9 @@ public class MembersController {
 	@Autowired
 	private CinemaRepository cinemaRepository;
 	
+	@Autowired
+	private PromotionInfoRepository promotionInfoRepository;
+	
 	@GetMapping("/memberInfo")
 	public Member memberInfo(HttpServletRequest request) {
 		
@@ -82,6 +89,7 @@ public class MembersController {
 		return member;
 	}
 	
+	// 회원정보 수정
 	@PutMapping("/editMyInfo")
 	public ResponseEntity<?> editMyInfo(@RequestBody Member member) {
 		System.out.println(member);
@@ -100,6 +108,7 @@ public class MembersController {
 		
 	}
 	
+	// 회원탈퇴
 	@DeleteMapping("/delete")
 	public void delete(HttpServletRequest request) {
 		
@@ -111,6 +120,7 @@ public class MembersController {
 		return ;
 	}
 	
+	// 예매내역 불러오기
 	@GetMapping("/reservation")
 	public List<ReservationListDto> reservation(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
@@ -140,9 +150,12 @@ public class MembersController {
 				Cinema cinema = cinemaRepository.getCinemaFindByCinemaNo(cinemaNo);
 				Movie movie = movieRepository.findByMovieDC(movieDC);
 				
+				PromotionInfo promotion = promotionInfoRepository.findByMovie(movie);
+				
 				ReservationListDto reservationListDto = new ReservationListDto(
 						ticketingList.get(i).getTicketingNo(), 
 						ticketingList.get(i).getRegdate(), 
+						promotion.getPromotionPoster(), 
 						movie.getTitle(), 
 						cinema.getCinemaName(), 
 						movie.getShowTm(), 
@@ -179,9 +192,12 @@ public class MembersController {
 				Cinema cinema = cinemaRepository.getCinemaFindByCinemaNo(cinemaNo);
 				Movie movie = movieRepository.findByMovieDC(movieDC);
 				
+				PromotionInfo promotion = promotionInfoRepository.findByMovie(movie);
+				
 				ReservationListDto reservationListDto = new ReservationListDto(
 						ticketingList.get(i).getTicketingNo(), 
 						ticketingList.get(i).getRegdate(), 
+						promotion.getPromotionPoster(), 
 						movie.getTitle(), 
 						cinema.getCinemaName(), 
 						movie.getShowTm(), 
@@ -199,6 +215,74 @@ public class MembersController {
 		
 	}
 	
+	@GetMapping("/cancelReservation")
+	public List<CancelListDto> cancelReservation(HttpServletRequest request){
+		String token = request.getHeader("Authorization");
+		List<CancelListDto> cancelList = new ArrayList<>();
+		
+		if(jwtUtil.getPassword2(token) == null) { // 회원
+			String username = jwtUtil.getUsername(token);
+			Member member = new Member();
+			member.setUsername(username);
+			List<Ticketing> ticketingList = ticketingRepository.findByMember(member);
+			List<Ticketing> cancelTicketingList = new ArrayList<>();
+			
+			for(int i = 0; i < ticketingList.size(); i++) {
+				if(cancelListRepository.existsByTicketing(ticketingList.get(i))) {
+					cancelTicketingList.add(ticketingList.get(i));
+					Long reservatedSeatNo = cancelTicketingList.get(i).getReservatedSeat().getReservatedSeatNo();
+					Long scheduleNo = reservatedSeatRepository.findByReservatedSeatNo(reservatedSeatNo).getSchedule().getScheduleNo();
+					
+					Long detailNo = scheduleRepository.findByScheduleNo(scheduleNo).getMovieShowDetail().getDetailNo();
+					Long movieDC = movieShowDetailRepository.findByDetailNo(detailNo).getMovie().getMovieDC();
+					Long roomNo = movieShowDetailRepository.findByDetailNo(detailNo).getRoom().getRoomNo();
+					Long cinemaNo = roomRepository.findByRoomNo(roomNo).get(0).getCinema().getCinemaNo();
+					
+					Cinema cinema = cinemaRepository.getCinemaFindByCinemaNo(cinemaNo);
+					Schedule schedule = scheduleRepository.findByScheduleNo(scheduleNo);
+					Movie movie = movieRepository.findByMovieDC(movieDC);
+					
+					
+					CancelListDto cancelListDto = new CancelListDto(movie.getTitle(), cinema.getCinemaName(), schedule.getStart(), cancelTicketingList.get(i).getRegdate(), cancelTicketingList.get(i).getPayTotalAmount());
+					
+					cancelList.add(cancelListDto);
+				}
+			}
+			
+			
+		}else { // 비회원
+			String tel = jwtUtil.getTel(token);
+			UnknownMember unknownMember = new UnknownMember();
+			unknownMember.setTelephone(tel);
+			List<Ticketing> ticketingList = ticketingRepository.findByUnknownMember(unknownMember);
+			List<Ticketing> cancelTicketingList = new ArrayList<>();
+			
+			for(int i = 0; i < ticketingList.size(); i++) {
+				if(cancelListRepository.existsByTicketing(ticketingList.get(i))) {
+					cancelTicketingList.add(ticketingList.get(i));
+					Long reservatedSeatNo = cancelTicketingList.get(i).getReservatedSeat().getReservatedSeatNo();
+					Long scheduleNo = reservatedSeatRepository.findByReservatedSeatNo(reservatedSeatNo).getSchedule().getScheduleNo();
+					
+					Long detailNo = scheduleRepository.findByScheduleNo(scheduleNo).getMovieShowDetail().getDetailNo();
+					Long movieDC = movieShowDetailRepository.findByDetailNo(detailNo).getMovie().getMovieDC();
+					Long roomNo = movieShowDetailRepository.findByDetailNo(detailNo).getRoom().getRoomNo();
+					Long cinemaNo = roomRepository.findByRoomNo(roomNo).get(0).getCinema().getCinemaNo();
+					
+					Cinema cinema = cinemaRepository.getCinemaFindByCinemaNo(cinemaNo);
+					Schedule schedule = scheduleRepository.findByScheduleNo(scheduleNo);
+					Movie movie = movieRepository.findByMovieDC(movieDC);
+					
+					
+					CancelListDto cancelListDto = new CancelListDto(movie.getTitle(), cinema.getCinemaName(), schedule.getStart(), cancelTicketingList.get(i).getRegdate(), cancelTicketingList.get(i).getPayTotalAmount());
+					
+					cancelList.add(cancelListDto);
+				}
+			}
+		}
+		System.out.println(cancelList);
+		
+		return cancelList;
+	}
 	
 	
 	

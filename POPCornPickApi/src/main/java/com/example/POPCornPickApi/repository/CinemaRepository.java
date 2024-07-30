@@ -39,7 +39,7 @@ public interface CinemaRepository extends JpaRepository<Cinema, Long>{
 //	@Query(value = "select count(*), cinema_location from cinema c group by cinema_location", nativeQuery = true)
 //	public List<C>
 	
-	@Query(value = "SELECT * FROM Cinema WHERE cinemaNo = :cinemaNo", nativeQuery = true)
+	@Query(value = "SELECT * FROM Cinema WHERE cinema_No = :cinemaNo", nativeQuery = true)
 	public Cinema getCinemaFindByCinemaNo(@Param("cinemaNo") Long cinemaNo);
 	
 	@Query(value = "SELECT c FROM Cinema c WHERE c.cinemaName LIKE :searchContent")

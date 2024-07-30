@@ -25,6 +25,7 @@ import com.example.POPCornPickApi.repository.ReviewRepository;
 import com.example.POPCornPickApi.repository.StillCutRepository;
 import com.example.POPCornPickApi.repository.UtubeRepository;
 import com.example.POPCornPickApi.service.MovieDetailService;
+import com.example.POPCornPickApi.service.ReviewService;
 import com.example.POPCornPickApi.service.TicketingService;
 import com.example.POPCornPickApi.service.UtubeService;
 
@@ -49,6 +50,9 @@ public class FilmController {
 	@Autowired
 	private ReviewRepository reviewrepository;
 
+	@Autowired
+	private ReviewService reviewService;
+	
 	@Autowired
 	private JWTUtil jwtutil;
 	
@@ -122,10 +126,34 @@ public class FilmController {
 			reviewrepository.save(score);
 			return ResponseEntity.status(HttpStatus.OK).body("평점을 등록하였습니다.");
 		}	
-
-	
-		
 	}
+
+	@GetMapping("/score/{movieDC}")
+	public String scorelist(@PathVariable("movieDC") String movieDC, HttpServletRequest request) {
+		
+		String jwtToken = request.getHeader("Authorization").split(" ")[1];
+		String username = jwtutil.getUsername(jwtToken);
+		
+		List<Ticketing> ticketing = reviewService.getgender(username, movieDC); 
+		
+		MovieDetail md = new MovieDetail();
+		
+		
+		
+		
+		//reviewService.getAverageReviewScore();
+		//reviewService.getTitalCount();
+		
+		
+		
+		
+		
+		return null;
+	}
+	
+	
+	
+	
 	
 	
 }

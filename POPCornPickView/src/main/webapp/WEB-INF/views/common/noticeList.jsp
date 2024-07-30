@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Notice List</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<%@ include file="../layout/adminHeader.jsp"%>
+<%@ include file="../layout/header.jsp"%>
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
@@ -161,12 +161,10 @@ a:hover {
 <body>
            
 <main>	
-		<div class="sidebar-container">
-			<%@ include file="../layout/serviceSideBar.jsp"%>
-		</div>
+
 
 	<div class="container">
-			<h1>공지사항 목록</h1>
+			<h1>공지/뉴스</h1>
 		<div class="tab-menu">
 			<div id="" onclick="a(event)" class="tab-menu-item" data-value="공지사항">공지사항</div>
 			<div id="" onclick="" class="tab-menu-item" data-value="이벤트">이벤트</div>
@@ -180,7 +178,7 @@ a:hover {
 		<form class="search-form" onsubmit="searchNotice(event)">
 			<label for="search">검색</label> <input type="text" id="search"
 				placeholder="제목을 검색해주세요">
-			<button type="button" id="searchButton">검색</button>
+			<button type="submit">검색</button>
 		</form>
 		<table class="notice-table">
 			<thead>
@@ -205,15 +203,14 @@ a:hover {
 <script>
 $(document).ready(function() {
     var currentPage = 1;
-    var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
-
+    
     loadPage(currentPage);
 
-    $("#searchButton").click(function(event) {
+    $("#searchForm").submit(function(event) {
         event.preventDefault();
         var searchQuery = $("#search").val();
         $.ajax({
-            url: "http://localhost:9001/api/v1/admin/search",
+            url: "/api/v1/admin/search",
             method: "GET",
             data: { title: searchQuery },
             success: function(data) {
@@ -247,7 +244,7 @@ $(document).ready(function() {
 });
 
 function loadPage(page) {
-    var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
+    var itemsPerPage = 3; // 한 페이지에 5개의 데이터 출력
     $.ajax({
         url: "http://localhost:9001/api/v1/admin/announcementList",
         method: "GET",
@@ -270,7 +267,7 @@ function loadPage(page) {
                 var row = '<tr>' +
                     '<td>' + counter + '</td>' +
                     '<td>' + not.noticeCategory + '</td>' +
-                    "<td><a href='/admin/noticeDetail/" + not.noticeNo + "'>" + not.noticeTitle + "</a></td>" +
+                    "<td>" + not.noticeTitle + "</a></td>" +
                     '<td>' + formattedDate + '</td>' +
                     '</tr>';
 

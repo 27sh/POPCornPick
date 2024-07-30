@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Notice List</title>
+<title>faq List</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<%@ include file="../layout/adminHeader.jsp"%>
+<%@ include file="../layout/header.jsp"%>
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
@@ -161,26 +161,15 @@ a:hover {
 <body>
            
 <main>	
-		<div class="sidebar-container">
-			<%@ include file="../layout/serviceSideBar.jsp"%>
-		</div>
+
 
 	<div class="container">
-			<h1>공지사항 목록</h1>
-		<div class="tab-menu">
-			<div id="" onclick="a(event)" class="tab-menu-item" data-value="공지사항">공지사항</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="이벤트">이벤트</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="FAQ">FAQ</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="문의">문의</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="신고">신고</div>
-			<div>사이드바를 만들었으니 여기에 카테고리를 넣으면 될것같다.</div>
-		</div>
-		
+			<h1>자주찾는질문</h1>
+				
 		<br>
-		<form class="search-form" onsubmit="searchNotice(event)">
-			<label for="search">검색</label> <input type="text" id="search"
-				placeholder="제목을 검색해주세요">
-			<button type="button" id="searchButton">검색</button>
+		<form class="search-form" onsubmit="searchfaq(event)">
+			<label for="search">검색</label> <input type="text" id="search"	placeholder="제목을 검색해주세요">
+			<button type="button" id="searchfaq">검색</button>
 		</form>
 		<table class="notice-table">
 			<thead>
@@ -205,15 +194,15 @@ a:hover {
 <script>
 $(document).ready(function() {
     var currentPage = 1;
-    var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
-
+    
     loadPage(currentPage);
 
-    $("#searchButton").click(function(event) {
+    $("#searchfaq").click(function(event) {
         event.preventDefault();
         var searchQuery = $("#search").val();
+        console.log(searchQuery);
         $.ajax({
-            url: "http://localhost:9001/api/v1/admin/search",
+            url: "http://localhost:9001/api/v1/search",
             method: "GET",
             data: { title: searchQuery },
             success: function(data) {
@@ -221,8 +210,8 @@ $(document).ready(function() {
                 tableBody.empty();
 
                 var counter = 1;
-                data.forEach(function(not) {
-                    var date = new Date(not.regdate);
+                data.forEach(function(faq) {
+                    var date = new Date(faq.regdate);
                     var year = date.getFullYear();
                     var month = (date.getMonth() + 1).toString().padStart(2, '0');
                     var day = date.getDate().toString().padStart(2, '0');
@@ -230,8 +219,8 @@ $(document).ready(function() {
 
                     var row = '<tr>' +
                         '<td>' + counter + '</td>' +
-                        '<td>' + not.noticeCategory + '</td>' +
-                        "<td><a href='/admin/noticeDetail/" + not.noticeNo + "'>" + not.noticeTitle + "</a></td>" +
+                        '<td>' + faq.faqCategory + '</td>' +
+                        "<td><a href='/admin/noticeDetail/" + faq.noticeNo + "'>" + faq.faqTitle + "</a></td>" +
                         '<td>' + formattedDate + '</td>' +
                         '</tr>';
 
@@ -249,7 +238,7 @@ $(document).ready(function() {
 function loadPage(page) {
     var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
     $.ajax({
-        url: "http://localhost:9001/api/v1/admin/announcementList",
+        url: "http://localhost:9001/api/v1/faqpagenation",
         method: "GET",
         data: {
             page: page - 1,
@@ -269,8 +258,8 @@ function loadPage(page) {
 
                 var row = '<tr>' +
                     '<td>' + counter + '</td>' +
-                    '<td>' + not.noticeCategory + '</td>' +
-                    "<td><a href='/admin/noticeDetail/" + not.noticeNo + "'>" + not.noticeTitle + "</a></td>" +
+                    '<td>' + not.faqCategory + '</td>' +
+                    "<td>" + not.faqTitle + "</a></td>" +
                     '<td>' + formattedDate + '</td>' +
                     '</tr>';
 

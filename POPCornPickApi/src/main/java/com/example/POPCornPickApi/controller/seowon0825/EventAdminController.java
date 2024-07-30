@@ -33,7 +33,7 @@ public class EventAdminController {
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadDir;
 	
-	private final Path uploadDir2 = Paths.get("/Users/baeseowon/dev2/upload/");
+	private final Path uploadDir2 = Paths.get("C:/upload");
 	
 	@Autowired
 	private EventService eventService;

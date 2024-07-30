@@ -2,6 +2,7 @@ package com.example.POPCornPickApi.controller.seowon0825;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.POPCornPickApi.entity.Coupon;
+import com.example.POPCornPickApi.entity.CouponType;
 import com.example.POPCornPickApi.entity.Event;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Participation;
 import com.example.POPCornPickApi.entity.Point;
 import com.example.POPCornPickApi.jwt.JWTUtil;
+import com.example.POPCornPickApi.service.CouponService;
 import com.example.POPCornPickApi.service.EventService;
 import com.example.POPCornPickApi.service.ParticipationService;
 import com.example.POPCornPickApi.service.PointService;
@@ -34,7 +38,7 @@ public class EventController {
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadDir;
 	
-	private final Path uploadDir2 = Paths.get("/Users/baeseowon/dev2/upload/");
+	private final Path uploadDir2 = Paths.get("C:/upload");
 	
 	@Autowired
 	private EventService eventService;
@@ -44,6 +48,8 @@ public class EventController {
 	private ParticipationService participationService;
 	@Autowired
 	private PointService pointService;
+	@Autowired
+	private CouponService couponService;
 	
 	@PostMapping("/member/form")
 	public ResponseEntity<String> mbtiEventForm(@RequestBody Map<String, Object> event,
@@ -68,12 +74,11 @@ public class EventController {
 			event1.setEventNo(eventNo);
 			System.out.println(event1);
 			
-			
 			Participation participation = new Participation();
 			participation.setEvent(event1);
 			participation.setMember(member);
 			participation.setContentsResult(eventContents);
-			participation.setParticipationResult("당첨");
+			participation.setParticipationResult("참여형 이벤트(500P)");
 			System.out.println(participation);
 			
 			Point point = new Point();
@@ -130,6 +135,116 @@ public class EventController {
 		
 	}
 	
+	@PostMapping("/roulette")
+	public ResponseEntity<String> rouletteEvent(
+			@RequestParam("eventNo") Long eventNo,
+			@RequestParam("participationResult") String participationResult,
+			@RequestHeader("Authorization") String authorizationHeader){
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(eventNo);
+		System.out.println(participationResult);
+		
+		String token = authorizationHeader.replace("Bearer", "").trim();
+		System.out.println(token);
+		String username = jwtUtil.getUsername(token);
+		System.out.println(username);
+		
+		Member member = new Member();
+		member.setUsername(username);
+		
+		Event event = new Event();
+		event.setEventNo(eventNo);
+		
+		Date endDate = Date.valueOf("2024-08-31");
+		//쿠폰 타입 등록
+		CouponType result = couponService.checkCouponType("룰렛 이벤트 1000원 할인쿠폰");
+		CouponType result2 = couponService.checkCouponType("룰렛 이벤트 5000원 할인쿠폰");
+		//쿠폰 타입 최초 등록
+		if(result == null && result2 == null) {
+			CouponType couponType = new CouponType();
+			couponType.setCouponName("룰렛 이벤트 1000원 할인쿠폰");
+			couponType.setDiscount(1000);
+			couponType.setEndDate(endDate);
+			CouponType couponType2 = new CouponType();
+			couponType2.setCouponName("룰렛 이벤트 5000원 할인쿠폰");
+			couponType2.setDiscount(5000);
+			couponType2.setEndDate(endDate);
+			boolean couponResult = couponService.registCoupon(couponType);
+			boolean couponResult2 = couponService.registCoupon(couponType2);
+		} 
+		
+		Participation participation = new Participation();
+		participation.setEvent(event);
+		participation.setMember(member);
+		participation.setParticipationResult(participationResult);
+		System.out.println(participation);
+		//로그인한 사용자가 해당 이벤트 참여했는지 확인
+		int check = participationService.memberParticipationCheck(username, eventNo);
+		if(check < 0) {
+			participationService.memberEventForm(participation);
+			Point point = new Point();
+			Coupon coupon = new Coupon();
+			
+			if(participationResult == "10 포인트") {
+				point.setPointType("룰렛 이벤트");
+				point.setMember(member);
+				point.setAcheive(10);
+				return ResponseEntity.ok("10포인트가 적립되었습니다. 참여 감사합니다^^");
+			} else if(participationResult == "500 포인트") {
+				point.setPointType("룰렛 이벤트");
+				point.setMember(member);
+				point.setAcheive(500);
+				return ResponseEntity.ok("500포인트가 적립되었습니다. 참여 감사합니다^^");
+			} else if(participationResult == "할인쿠폰 1000원") {
+				coupon.setCouponNo(result);
+				coupon.setMember(member);
+				return ResponseEntity.ok("할인쿠폰 1000원이 발급되었습니다. 참여 감사합니다^^");
+			} else if(participationResult == "할인쿠폰 5000원") {
+				coupon.setCouponNo(result2);
+				coupon.setMember(member);
+				return ResponseEntity.ok("할인쿠폰 5000원이 발급되었습니다. 참여 감사합니다^^");
+			} else {
+				return ResponseEntity.badRequest().body("다시 시도해주세요");
+			}
+			
+		} else {
+			return ResponseEntity.badRequest().body("해당 이벤트는 한번만 참여 가능합니다.");
+		}
+	}
+	
+	@PostMapping("/ticketEvent")
+	public ResponseEntity<String> ticketEventForm(@RequestBody Map<String, Object> event,
+			@RequestHeader("token") String token){
+		System.out.println("ticketController.........");
+		String username = jwtUtil.getUsername(token);
+		Long eventNo = Long.valueOf(event.get("eventNo").toString());
+		System.out.println(username + eventNo);
+		String eventContent = String.valueOf(event.get("participationState"));
+		System.out.println(eventContent);
+		
+		Member member = new Member();
+		member.setUsername(username);
+		int check = participationService.memberParticipationCheck(username, eventNo);
+		if(check < 1) {
+			Event event1 = new Event();
+			event1.setEventNo(eventNo);
+			
+			Participation participation = new Participation();
+			participation.setMember(member);
+			participation.setEvent(event1);
+			participation.setParticipationState(eventContent);
+			
+			boolean result = participationService.memberEventForm(participation);
+			if(result) {
+				return ResponseEntity.ok("참여 감사합니다^^");
+			} else {
+				return ResponseEntity.badRequest().body("다시 시도해주세요.");
+			}
+			
+		} else {
+			return ResponseEntity.badRequest().body("이미 참려한 이력이 있습니다.");
+		} 
+	}
 	@GetMapping
 	public List<Event> getAllEventList() {
 		List<Event> list = eventService.getAllEventList();

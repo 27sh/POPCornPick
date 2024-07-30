@@ -128,17 +128,7 @@ textarea{
 				<input type="text" name="eventTitle" id="eventTitle"><br>
 				<label for="eventContent"><b>내용<span>*</span></b></label>
 				<textarea name="eventContent" id="eventContent">
-				<div class="">
-					<li>
-						<ul>진행일정 : 7/22~8/1</ul>
-						<ul>당첨 발표 : 8/3</ul>
-						<ul>참여 방법 : 하단에 참여하기 버튼을 클릭 후 티켓 인증 사진 업로드!!</ul>
-						<ul>증정 경품 : 10,000포인트</ul>
-					</li>
-					</div>';
-					<input type="file" name="ticket">	
-				</div>
-			
+				
 				</textarea><br>
 				<label for="eventFile"><b>파일등록<span>*</span></b></label>
 				<input type="file" name="eventFile" id="eventFile"><br>

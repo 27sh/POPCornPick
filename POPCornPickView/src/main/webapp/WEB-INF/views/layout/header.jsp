@@ -303,6 +303,13 @@
                                 <li><a href="/event/commonList?eventState=0">종료된 이벤트</a></li>
                             </ul>
                         </li>
+                        
+                        <li><a href="">고객센터</a>
+                            <ul class="sme">
+                                <li><a href="/common/faqList">자주찾는질문</a></li>
+                                <li><a href="/common/noticeList">공지/뉴스</a></li>
+                            </ul>
+                        </li>
                     </ul>
 
                     <div id="search_content">

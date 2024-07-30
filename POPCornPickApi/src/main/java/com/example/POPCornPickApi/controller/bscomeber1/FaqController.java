@@ -1,6 +1,10 @@
 package com.example.POPCornPickApi.controller.bscomeber1;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.entity.Faq;
@@ -17,14 +22,14 @@ import com.example.POPCornPickApi.service.FaqService;
 
 //@CrossOrigin("*")
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1")
 public class FaqController {
 
 	@Autowired
 	private FaqService faqservice;
 	
 	
-	@PostMapping("/Frequently")
+	@PostMapping("/admin/Frequently")
 	public ResponseEntity<String> FaqWrite(@RequestBody Faq writeFaq) {
 		
 		
@@ -33,7 +38,7 @@ public class FaqController {
 	}
 	
 	
-	@GetMapping("/Frequently/{faqNo}")
+	@GetMapping("/admin/Frequently/{faqNo}")
 	public ResponseEntity<Faq> getFaqDetial(@PathVariable("faqNo") Long faqNo) {
 		
 		Faq faq = faqservice.getfaqDetail(faqNo);
@@ -41,7 +46,7 @@ public class FaqController {
 		return ResponseEntity.status(HttpStatus.OK).body(faq);
 	}
 	
-	@PutMapping("/FrequentlyModify")
+	@PutMapping("/admin/FrequentlyModify")
 	public ResponseEntity<Faq> modifyfaq(@RequestBody Faq modifyFaq) {
 		//Long qnaNo = modifyFaq.getFaqNo(); 로그인기능 완료이후 얘로 바꿔줘야함 
 		Long faqNo = 1L;
@@ -63,5 +68,23 @@ public class FaqController {
 		
 		
 	}
+	
+	@GetMapping("/cs/news")
+	public List<Faq> faqList() {
 		
+		return faqservice.getAllFaq();
+	}
+	@GetMapping("/faqpagenation")
+	public Page<Faq> getfaqList(Pageable pageable){
+		
+		return faqservice.getFaq(pageable);
+	}
+	//검색기능
+	@GetMapping("/search")
+	public List<Faq> searchFaq(@RequestParam("title") String title){
+		return faqservice.searchFaqTitle(title);
+	}
+	
+	
+	
 }

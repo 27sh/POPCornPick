@@ -153,7 +153,9 @@ body {
 	font-size: 24px;
 	text-align: center;
 }
-
+.ratingcon{
+	display: table;
+}
 .rating-breakdown div {
 	margin: 5px 0;
 }
@@ -394,18 +396,18 @@ input[type="radio"]{
         str += '            <button class="next" onclick="moveSlides(1)">&#10095;</button>';
         str += '        </div>';
         str += '    </div>';
-        str += '    <div class="rating">';
-        str += '        <h2>평점</h2>';
+        str += '    <div class="rating" id="rating">';
+        str += '		<div class="ratingcon">	';
+        str += '        <h2>실관람객 평점</h2>';
         str += '        <div class="rating-score">';
-        str += '            <span>8.8 / 10</span> <span>★ ★ ★ ★ ★</span>';
+        str += '            <span>(여기 통계가 들어가야함) / 10</span>';
         str += '        </div>';
         str += '        <div class="rating-breakdown">';
-        str += '            <div>5점: 100</div>';
-        str += '            <div>4점: 50</div>';
-        str += '            <div>3점: 20</div>';
-        str += '            <div>2점: 10</div>';
-        str += '            <div>1점: 5</div>';
+        str += '			<div>###명 참여(몇명이 봤는지)</div>';
+        str += '			<br><hr><br>';
+        str += '		<div>남자</div><div>여자</div>		';
         str += '        </div>';
+        str += '		</div>';
         str += '        <button class="write_review">평점작성</button>';
         str += '    </div>';
         str += '</div>';
@@ -449,6 +451,38 @@ input[type="radio"]{
       
     });
 
+    $.ajax({
+    	url: "http://localhost:9001/api/v1/film/score",
+    	method: "GET",
+    	success:function(score){
+    		str += '	<div class="ratingcon">	';
+            str += '      	<h2>실관람객 평점</h2>';
+            str += '       	 <div class="rating-score">';
+            str += '        	<span>(여기 통계가 들어가야함) / 5</span>';
+            str += '     	 </div>';
+            str += '      <div class="rating-breakdown">';
+            str += '		<div>###명 참여(몇명이 봤는지)</div>';
+            str += '			<br><hr><br>';
+            str += '		<div>남자</div><div>여자</div>		';
+            str += '      </div>';
+            str += '	</div>';
+            
+            $('#rating').html(str);
+            
+    	},
+    	error(error){
+    		console.log("에러 : ", error);
+    		console.log("에러상세 : ", error.responseText);
+    	}
+    	
+    	
+    })
+    
+    
+    
+    
+    
+    
     
     // TMDb API를 사용하여 영화 포스터를 가져오는 함수
     function fetchPoster(movieNm) {

@@ -1,9 +1,14 @@
 package com.example.POPCornPickApi.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.POPCornPickApi.entity.Faq;
+import com.example.POPCornPickApi.entity.Qna;
 import com.example.POPCornPickApi.repository.FaqRepository;
 
 @Service
@@ -36,5 +41,20 @@ public class FaqService {
 		return faqrepository.save(faq);
 	}
 
+	
+	public List<Faq> getAllFaq(){
+		
+		return faqrepository.findAll();
+	}
+	
+	public Page<Faq> getFaq(Pageable pageable){
+		
+		return faqrepository.findAll(pageable);
+	}
+	
+	public List<Faq> searchFaqTitle(String title){
+		return faqrepository.findByFaqTitleContaining(title);
+	}
+			
 	
 }

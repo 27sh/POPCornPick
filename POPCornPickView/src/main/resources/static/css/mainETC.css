@@ -148,6 +148,7 @@
         border: 0;
         border-top: 1px solid lightgray;
         margin: 20px 0; /* 상하 마진 */
+        width: 950px;
     }
     #main-cs-high h4, #etc-cs-info {
         display: inline-block;

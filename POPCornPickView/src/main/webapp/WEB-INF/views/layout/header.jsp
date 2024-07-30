@@ -444,7 +444,8 @@
             '/joinForm',
 			'/loginForm',
 			'/reservation/faqList',
-			'/common/scheduleList'
+			'/common/scheduleList',
+			'/search/result'
         ];
 
 //         // 현재 경로가 비회원 접근 가능 경로에 포함되는지 확인
@@ -490,6 +491,11 @@
 	            window.location.href = '/loginForm';
         	}
         }
+        
+        $('#search_btn').click(function() {
+            var keyword = $('input[placeholder="검색어를 입력하세요."]').val();
+            window.location.href = '/search/result?keyword=' + encodeURIComponent(keyword);
+        });
     });
     
     

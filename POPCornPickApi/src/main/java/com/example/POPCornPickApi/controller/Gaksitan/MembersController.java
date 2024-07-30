@@ -2,6 +2,7 @@ package com.example.POPCornPickApi.controller.Gaksitan;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,14 +13,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.dto.CancelListDto;
 import com.example.POPCornPickApi.dto.ReservationListDto;
+import com.example.POPCornPickApi.entity.CancelList;
 import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Movie;
-import com.example.POPCornPickApi.entity.PromotionInfo;
+import com.example.POPCornPickApi.entity.MovieDetail;
 import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.Schedule;
@@ -29,6 +32,7 @@ import com.example.POPCornPickApi.jwt.JWTUtil;
 import com.example.POPCornPickApi.repository.CancelListRepository;
 import com.example.POPCornPickApi.repository.CinemaRepository;
 import com.example.POPCornPickApi.repository.MemberRepository;
+import com.example.POPCornPickApi.repository.MovieDetailRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
 import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
 import com.example.POPCornPickApi.repository.PromotionInfoRepository;
@@ -78,6 +82,9 @@ public class MembersController {
 	
 	@Autowired
 	private PromotionInfoRepository promotionInfoRepository;
+	
+	@Autowired
+	private MovieDetailRepository movieDetailRepository;
 	
 	@GetMapping("/memberInfo")
 	public Member memberInfo(HttpServletRequest request) {
@@ -136,10 +143,8 @@ public class MembersController {
 				// 조회
 				Long reservatedSeatNo = ticketingList.get(i).getReservatedSeat().getReservatedSeatNo();
 				ReservatedSeat reservatedSeat = reservatedSeatRepository.findByReservatedSeatNo(reservatedSeatNo);
-				
 				Long scheduleNo = reservatedSeatRepository.findByReservatedSeatNo(reservatedSeatNo).getSchedule().getScheduleNo();
 				Long detailNo = scheduleRepository.findByScheduleNo(scheduleNo).getMovieShowDetail().getDetailNo();
-				
 				Long movieDC = movieShowDetailRepository.findByDetailNo(detailNo).getMovie().getMovieDC();
 				Long roomNo = movieShowDetailRepository.findByDetailNo(detailNo).getRoom().getRoomNo();
 				
@@ -149,20 +154,22 @@ public class MembersController {
 				// 사용
 				Cinema cinema = cinemaRepository.getCinemaFindByCinemaNo(cinemaNo);
 				Movie movie = movieRepository.findByMovieDC(movieDC);
+				Schedule schedule = scheduleRepository.findByScheduleNo(scheduleNo);
 				
-				PromotionInfo promotion = promotionInfoRepository.findByMovie(movie);
+				MovieDetail movieDetail = movieDetailRepository.findByMovieNm(movie.getTitle());
 				
 				ReservationListDto reservationListDto = new ReservationListDto(
 						ticketingList.get(i).getTicketingNo(), 
 						ticketingList.get(i).getRegdate(), 
-						promotion.getPromotionPoster(), 
+						movieDetail.getImgUrl(), 
 						movie.getTitle(), 
 						cinema.getCinemaName(), 
-						movie.getShowTm(), 
+						schedule.getStart(), 
 						reservatedSeat.getSeatRow(),
 						reservatedSeat.getSeatColumn(),
 						ticketingList.get(i).getPayTotalAmount()
 						);
+				System.out.println(reservationListDto);
 				
 				reservationList.add(reservationListDto);
 			}
@@ -191,16 +198,17 @@ public class MembersController {
 				// 사용
 				Cinema cinema = cinemaRepository.getCinemaFindByCinemaNo(cinemaNo);
 				Movie movie = movieRepository.findByMovieDC(movieDC);
+				Schedule schedule = scheduleRepository.findByScheduleNo(scheduleNo);
 				
-				PromotionInfo promotion = promotionInfoRepository.findByMovie(movie);
+				MovieDetail movieDetail = movieDetailRepository.findByMovieNm(movie.getTitle());
 				
 				ReservationListDto reservationListDto = new ReservationListDto(
 						ticketingList.get(i).getTicketingNo(), 
 						ticketingList.get(i).getRegdate(), 
-						promotion.getPromotionPoster(), 
+						movieDetail.getImgUrl(), 
 						movie.getTitle(), 
 						cinema.getCinemaName(), 
-						movie.getShowTm(), 
+						schedule.getStart(), 
 						reservatedSeat.getSeatRow(),
 						reservatedSeat.getSeatColumn(),
 						ticketingList.get(i).getPayTotalAmount()
@@ -224,12 +232,18 @@ public class MembersController {
 			String username = jwtUtil.getUsername(token);
 			Member member = new Member();
 			member.setUsername(username);
-			List<Ticketing> ticketingList = ticketingRepository.findByMember(member);
+			List<CancelList> listCancel = cancelListRepository.findByMember(member);
 			List<Ticketing> cancelTicketingList = new ArrayList<>();
 			
-			for(int i = 0; i < ticketingList.size(); i++) {
-				if(cancelListRepository.existsByTicketing(ticketingList.get(i))) {
-					cancelTicketingList.add(ticketingList.get(i));
+			for(int i = 0; i < listCancel.size(); i++) {
+				if(cancelListRepository.existsById(listCancel.get(i).getCancerListNo())) {
+					Optional<CancelList> list_cancel = cancelListRepository.findById(listCancel.get(i).getCancerListNo());
+					CancelList cancel = list_cancel.get();
+					cancel.getTicketing().getTicketingNo();
+					Optional<Ticketing> ticket = ticketingRepository.findById(cancel.getTicketing().getTicketingNo());
+					Ticketing ticketing = ticket.get();
+					cancelTicketingList.add(ticketing);
+					
 					Long reservatedSeatNo = cancelTicketingList.get(i).getReservatedSeat().getReservatedSeatNo();
 					Long scheduleNo = reservatedSeatRepository.findByReservatedSeatNo(reservatedSeatNo).getSchedule().getScheduleNo();
 					
@@ -254,12 +268,18 @@ public class MembersController {
 			String tel = jwtUtil.getTel(token);
 			UnknownMember unknownMember = new UnknownMember();
 			unknownMember.setTelephone(tel);
-			List<Ticketing> ticketingList = ticketingRepository.findByUnknownMember(unknownMember);
+			List<CancelList> listCancel = cancelListRepository.findByUnknownMember(unknownMember);
 			List<Ticketing> cancelTicketingList = new ArrayList<>();
 			
-			for(int i = 0; i < ticketingList.size(); i++) {
-				if(cancelListRepository.existsByTicketing(ticketingList.get(i))) {
-					cancelTicketingList.add(ticketingList.get(i));
+			for(int i = 0; i < listCancel.size(); i++) {
+				if(cancelListRepository.existsById(listCancel.get(i).getCancerListNo())) {
+					Optional<CancelList> list_cancel = cancelListRepository.findById(listCancel.get(i).getCancerListNo());
+					CancelList cancel = list_cancel.get();
+					cancel.getTicketing().getTicketingNo();
+					Optional<Ticketing> ticket = ticketingRepository.findById(cancel.getTicketing().getTicketingNo());
+					Ticketing ticketing = ticket.get();
+					cancelTicketingList.add(ticketing);
+					
 					Long reservatedSeatNo = cancelTicketingList.get(i).getReservatedSeat().getReservatedSeatNo();
 					Long scheduleNo = reservatedSeatRepository.findByReservatedSeatNo(reservatedSeatNo).getSchedule().getScheduleNo();
 					
@@ -279,9 +299,30 @@ public class MembersController {
 				}
 			}
 		}
-		System.out.println(cancelList);
+		System.out.println("cancelList : " + cancelList);
 		
 		return cancelList;
+	}
+	
+	@DeleteMapping("/cancelReservation")
+	public String deleteCancelReservation(@RequestParam("ticketingNo") Long ticketingNo) {
+		String str = "";
+		if(ticketingNo != null) {
+			Optional<Ticketing> optionalTicketing = ticketingRepository.findById(ticketingNo);
+			Ticketing ticketing = optionalTicketing.get();
+			CancelList cancelList = new CancelList();
+			cancelList.setTicketing(ticketing);
+			cancelListRepository.save(cancelList);
+			ReservatedSeat reservatedSeat = reservatedSeatRepository.findByReservatedSeatNo(ticketing.getReservatedSeat().getReservatedSeatNo());
+			reservatedSeatRepository.delete(reservatedSeat);
+			ticketingRepository.delete(ticketing);
+			str = "예매취소가 완료되었습니다.";
+			
+		}else {
+			str = "예매취소에 실패했습니다. (ticketingNo is Null)";
+		}
+		
+		return str; 
 	}
 	
 	

@@ -15,10 +15,6 @@ main {
 	min-height: 700px;
 }
 
-body {
-	font-family: Arial, sans-serif;
-}
-
 .special-theater {
 	text-align: center;
 }

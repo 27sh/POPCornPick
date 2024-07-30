@@ -11,4 +11,6 @@ public interface ExpectationRepository extends JpaRepository<Expectation, Long>{
 	List<Expectation> findByExpNo(Expectation expNo);
 	
 	boolean existsByExpNo(Expectation expNo);
+	
+	public List<Expectation> findByMember_Username(String username);
 }

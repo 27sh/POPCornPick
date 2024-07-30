@@ -83,6 +83,7 @@ public interface TicketingRepository extends JpaRepository<Ticketing, Long>{
 	
 	public List<Ticketing>findByReservatedSeat_Schedule_MovieShowDetail_Movie_Title(String title);
 	
+	public List<Ticketing> findByMember_UsernameAndViewTF(String username, boolean viewTF);
 	
 	 
 }

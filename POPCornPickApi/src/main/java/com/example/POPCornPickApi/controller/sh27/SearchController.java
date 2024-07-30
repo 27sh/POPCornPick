@@ -18,7 +18,7 @@ public class SearchController {
 	@Autowired
     private MovieDetailRepository movieDetailRepository;
 
-	@GetMapping
+	@GetMapping("/result")
     public List<MovieDetail> searchMovies(@RequestParam(name = "keyword") String keyword) {
         return movieDetailRepository.findByMovieNmContaining(keyword);
     }

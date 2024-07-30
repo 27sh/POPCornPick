@@ -114,7 +114,7 @@
         %>
                 <div class="search-message"><span class="search-keyword"><%= keyword %></span>(으)로 검색한 결과입니다.</div>
         <%
-                String apiUrl = "http://localhost:9001/api/v1/search?keyword=" + URLEncoder.encode(keyword, "UTF-8");
+                String apiUrl = "http://localhost:9001/api/v1/search/result?keyword=" + URLEncoder.encode(keyword, "UTF-8");
                 HttpURLConnection connection = null;
                 BufferedReader reader = null;
                 try {

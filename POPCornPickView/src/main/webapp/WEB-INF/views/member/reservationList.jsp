@@ -58,13 +58,13 @@ main {
 
 .reservationInfo {
 	display: flex;
-	margin: 30px 0;
+	margin: 10px 0;
 }
 
 .ticketingNo {
 	width: 200px;
 	text-align: center;
-	line-height: 100px;
+/*  	line-height: 100px;  */
 }
 
 .moviePoster {
@@ -72,7 +72,8 @@ main {
 }
 
 .ticketingNo h3 {
-	
+	width: 200px;
+	margin: 80px 0 30px 0;
 }
 
 .ticketingInfo {
@@ -83,10 +84,10 @@ main {
 	margin: 20px 0;
 	border-top: 1px solid;
 	padding-top: 20px;
-	width: 700px;
+	width: 478px;
 	height: 30px;
 	position: relative;
-	left: 200px;
+	left: 20px;
 }
 
 #cancelTicket {
@@ -97,6 +98,37 @@ main {
 	width: 80px;
 	height: 25px;
 }
+
+.movieName {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 10px 0 10px 15px;
+}
+
+.previewInfo {
+	margin: 10px 0 10px 15px;
+}
+
+th, td {
+	padding: 7px;
+}
+
+.previewInfo th {
+	font-weight: normal;
+}
+
+td {
+	font-weight: bold;
+}
+
+#cancelTicket {
+	background-color: #DCDCDC;
+}
+
+#cancelTicket:hover {
+	background-color: #C8C8C8;
+}
+
 
 </style>
 </head>
@@ -171,94 +203,170 @@ main {
 	<script>
 		
 		document.addEventListener("DOMContentLoaded", () => {
-			const token = localStorage.getItem("jwtToken");
-			const xhttp = new XMLHttpRequest();
-			
-			xhttp.onload = function(){
-				console.log(this.responseText);
-				if(this.responseText != null){
-					const reservationList = JSON.parse(this.responseText);
-					const reservationContainer = document.querySelector('.reservationList');
-					
-					reservationList.forEach(reservation => {
-						const reservationDiv = document.createElement('div');
-						reservationDiv.classList.add('reservationList');
-						
-						reservationDiv.innerHTML += `<div class="ticketingNo">
-		                        <h3>예매번호 <span id="reservationNo">${reservation.ticketingNo}</span></h3>
-		                        <p class="reservationDate">${reservation.regdate}</p>
-		                    </div>
-		                    <div class="reservationInfo">
-		                        <img alt="예매한 영화 포스터" src="${reservation.promotionPoster}" id="moviePoster">
-		                        <div class="movieInfo">
-		                            <div class="movieName">${reservation.movieNm}</div>
-		                            <table border="1" class="previewInfo">
-		                                <tr>
-		                                    <th>관람극장</th>
-		                                    <td>${reservation.cinemaName}</td>
-		                                </tr>
-		                                <tr>
-		                                    <th>관람일시</th>
-		                                    <td>${reservation.start}</td>
-		                                </tr>
-		                                <tr>
-		                                    <th>관람좌석</th>
-		                                    <td>${reservation.seatRow} + " " + ${reservation.seatColumn}</td>
-		                                </tr>
-		                            </table>
-			                        <h3>총 결제금액  <span class="span1">${reservation.payTotalAmount}원</span> <input id="cancelTicket" type="button" value="예매취소" onclick="cancelTicketing()"></h3>
-		                        </div>
-		                    </div>
-		                `;
-
+		    const token = localStorage.getItem("jwtToken");
+		    const xhttp = new XMLHttpRequest();
+		    
+		    xhttp.onload = function() {
+		        if(this.responseText != null) {
+		            const reservationList = JSON.parse(this.responseText);
+		            const reservationContainer = document.querySelector('.myInfo');
+		            console.log(reservationList);
+		            
+		            reservationList.forEach(reservation => {
+		                const reservationDiv = document.createElement('div');
+		                reservationDiv.classList.add('ticketingInfo');
+		                
+		                const formattedRegdate = formatDate(reservation.regdate);
+		                const formattedStart = formatDate(reservation.start);
+		                
+		                reservationDiv.innerHTML = 
+		                    '<div class="reservationList">' +
+		                        '<div class="ticketingNo">' +
+		                            '<h3>예매번호 <span class="reservationNo">' + reservation.ticketingNo + '</span></h3>' +
+		                            '<p class="reservationDate">(' + formattedRegdate + ')</p>' +
+		                        '</div>' +
+		                        '<div class="reservationInfo">' +
+		                            '<img alt="예매한 영화 포스터" src="' + reservation.promotionPoster + '" class="moviePoster">' +
+		                            '<div class="movieInfo">' +
+		                                '<div class="movieName">' + reservation.movieNm + '</div>' +
+		                                '<table class="previewInfo">' +
+		                                    '<tr>' +
+		                                        '<th>관람극장</th>' +
+		                                        '<td>' + reservation.cinemaName + '</td>' + 
+		                                    '</tr>' +
+		                                    '<tr>' +
+		                                        '<th>관람일시</th>' +
+		                                        '<td>' + formattedStart + '</td>' +
+		                                    '</tr>' +
+		                                    '<tr>' +
+		                                        '<th>관람좌석</th>' +
+		                                        '<td>' + reservation.seatRow + ' ' + reservation.seatColumn + '</td>' +
+		                                    '</tr>' +
+		                                '</table>' +
+		                                '<h3 class="h3">총 결제금액  <span class="span1">' + reservation.payTotalAmount + '원</span> <input id="cancelTicket" type="button" value="예매취소" onclick="cancelTicketing(' + reservation.ticketingNo + ')"></h3>' +
+		                            '</div>' +
+		                        '</div>' +
+		                    '</div>' 
+		                ;
+		                
 		                reservationContainer.appendChild(reservationDiv);
-					});
-					
-					
-				}
-				
-			}
-			
-			xhttp.open("GET", "http://localhost:9001/api/v1/mem/reservation");
-			xhttp.setRequestHeader("Authorization", token);
-			xhttp.send();
+		            });
+		        }
+		    }
+		    
+		    xhttp.open("GET", "http://localhost:9001/api/v1/mem/reservation");
+		    xhttp.setRequestHeader("Authorization", token);
+		    xhttp.send();
+		    
+		    reservationcancelList();
 		});
+	
+		function cancelTicketing(ticketingNo) {
+		    if (confirm("진짜 예매를 취소하시겠습니까?")) {
+		        const token = localStorage.getItem("jwtToken");
+		        const xhttp = new XMLHttpRequest();
+		        
+		        xhttp.onload = function() {
+		            alert(this.responseText);
+		            if(this.responseText == "예매취소가 완료되었습니다."){
+		            	window.loation.href = "/member/reservationList";
+		            }else {
+		            	
+		            }
+		        }
+		        
+		        xhttp.open("DELETE", "http://localhost:9001/api/v1/mem/cancelReservation?ticketingNo=" + ticketingNo);
+		        xhttp.setRequestHeader("Authorization", token);
+		        xhttp.send();
+		    }
+		}
+
 		
-		function reservationcancelList(){
-			const xhttp = new XMLHttpRequest();
-			
-			xhttp.onload = function(){
-				
-			}
-			
-			xhttp.open("GET", "http://localhost:9001/api/v1/mem/cancelReservation");
-			xhttp.setRequestHeader("Authorization", token);
-			xhttp.send()
-			
-			
+		function reservationcancelList() {
+		    const token = localStorage.getItem("jwtToken");
+		    const xhttp = new XMLHttpRequest();
+		    
+		    xhttp.onload = function() {
+		        console.log("reservationcancelList 체크용 : " + this.responseText);
+		        if (this.responseText != null) {
+		            const cancelList = JSON.parse(this.responseText);
+		            const myInfo = document.querySelector('.myInfo');
+		            
+		            // 기존 테이블을 제거합니다.
+		            const existingTable = document.getElementById('cancelListTable');
+		            if (existingTable) {
+		                existingTable.remove();
+		            }
+		            
+		            // 테이블 생성
+		            var table = document.createElement('table');
+		            table.id = 'cancelListTable';
+		            table.border = '1';
+
+		            // 테이블 헤더 생성
+		            var thead = document.createElement('thead');
+		            var headerRow = document.createElement('tr');
+		            var headers = ['관람 영화/매점', '관람 극장', '관람 일시', '취소일', '결제취소 금액'];
+
+		            headers.forEach(function(header) {
+		                var th = document.createElement('th');
+		                th.textContent = header;
+		                headerRow.appendChild(th);
+		            });
+
+		            thead.appendChild(headerRow);
+		            table.appendChild(thead);
+
+		            // 테이블 바디 생성
+		            var tbody = document.createElement('tbody');
+		            tbody.id = 'tbody';
+
+		            cancelList.forEach(function(cancel) {
+		                var tr = document.createElement('tr');
+
+		                var movieTd = document.createElement('td');
+		                movieTd.textContent = cancel.movieTitle;
+
+		                var theaterTd = document.createElement('td');
+		                theaterTd.textContent = cancel.theater;
+
+		                var reservationDateTd = document.createElement('td');
+		                reservationDateTd.textContent = formatDate(cancel.reservationDate);
+
+		                var cancelDateTd = document.createElement('td');
+		                cancelDateTd.textContent = formatDate(cancel.cancelDate);
+
+		                var refundAmountTd = document.createElement('td');
+		                refundAmountTd.textContent = cancel.refundAmount + '원';
+
+		                tr.appendChild(movieTd);
+		                tr.appendChild(theaterTd);
+		                tr.appendChild(reservationDateTd);
+		                tr.appendChild(cancelDateTd);
+		                tr.appendChild(refundAmountTd);
+
+		                tbody.appendChild(tr);
+		            });
+
+		            table.appendChild(tbody);
+		            myInfo.appendChild(table);
+		        }
+		    }
+		    
+		    xhttp.open("GET", "http://localhost:9001/api/v1/mem/cancelReservation");
+		    xhttp.setRequestHeader("Authorization", token);
+		    xhttp.send();
 		}
 		
-// 		reservationList.forEach(reservation =>{
-// 			const tr = document.createElement('tr');
-// 			const movieTd = document.createElement('td');
-// 			const theaterTd = document.createElement('td');
-// 			const reservationDateTd = document.createElement('td');
-// 			const cancelDateTd = document.createElement('td');
-// 			const refundAmountTd = document.createElement('td');
-			
-// 			movieTd.textContent = reservation.movieTitle;
-// 			theaterTd.textContent = reservation.theater;
-// 			reservationDateTd.textContent = reservation.reservationDate;
-// 			cancelDateTd.textContent = reservation.cancelDate;
-// 			refundAmountTd.textContent = reservation.refundAmount;
-			
-// 			tr.appendChild(movieTd);
-// 			tr.appendChild(theaterTd);
-// 			tr.appendChild(reservationDateTd);
-// 			tr.appendChild(cancelDateTd);
-// 			tr.appendChild(refundAmountTd);
-			
-// 			tbody.appendChild(tr);
+		function formatDate(dateString) {
+		    var date = new Date(dateString);
+		    var year = date.getFullYear();
+		    var month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+		    var day = date.getDate().toString().padStart(2, '0');
+		    var hours = date.getHours().toString().padStart(2, '0');
+		    var minutes = date.getMinutes().toString().padStart(2, '0');
+		    return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes;
+		}
 		
 	</script>
 </body>

@@ -18,7 +18,7 @@ public class ReservationListDto {
 	private String promotionPoster;
 	private String movieNm;
 	private String cinemaName;
-	private String start;
+	private Date start;
 	private int seatRow;
 	private int seatColumn;
 	private int payTotalAmount;

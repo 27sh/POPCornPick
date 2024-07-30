@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.dto.AverageDTO;
 import com.example.POPCornPickApi.entity.MovieDetail;
 import com.example.POPCornPickApi.entity.Review;
 import com.example.POPCornPickApi.entity.Ticketing;
@@ -59,4 +60,19 @@ public class ReviewService {
 		System.out.println(findmvdc);
 		return findmvdc;
 	}
+	public AverageDTO makescore(String movieDC) {
+		
+		MovieDetail moviedetail = mdr.findMovieNmByMovieDC(movieDC);
+		
+		Double avgscore = reviewRepository.findAverageScore(moviedetail.getMovieNm());
+		
+		Long avgcount = reviewRepository.findTotalCount(moviedetail.getMovieNm());
+		AverageDTO avgdto = new AverageDTO();
+		
+		avgdto.setAcgscore(avgscore);
+		avgdto.setAvgcount(avgcount);
+		
+		return avgdto;
+	}
+	
 }

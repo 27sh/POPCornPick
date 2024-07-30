@@ -202,7 +202,7 @@ $(document).ready(function() {
         var searchQuery = $("#search").val();
         console.log(searchQuery);
         $.ajax({
-            url: "http://localhost:9001/api/v1/search",
+            url: "http://localhost:9001/api/v1/faq/search",
             method: "GET",
             data: { title: searchQuery },
             success: function(data) {

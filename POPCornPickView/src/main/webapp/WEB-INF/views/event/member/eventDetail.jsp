@@ -298,18 +298,18 @@ canvas {
 		<div id="background">
 		<!-- modal -->
 		<div id="eventModal" class="modal">
-		<div class="modal-box" id="modalBox">
-			<div class="top-box">
-				<span class="close"><a href="" onclick="closeModal()">&times;</a></span>
-			</div>
-			<div class="modal-content">
-				<div class="modal-title"></div>
-				<div id="mbtiResult"></div>
-				<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo">분위기를 고조시키는 우호적인 사람</span>이군요?!</span></div>
-				<div>※ 500포인트가 지급되었어요</div>
-				<button type="button" id="myEvent" onclick="">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>
-			</div>
-		</div>
+<!-- 		<div class="modal-box" id="modalBox"> -->
+<!-- 			<div class="top-box"> -->
+<!-- 				<span class="close"><a href="" onclick="closeMbtiModal()">&times;</a></span> -->
+<!-- 			</div> -->
+<!-- 			<div class="modal-content"> -->
+<!-- 				<div class="modal-title"></div> -->
+<!-- 				<div id="mbtiResult"></div> -->
+<!-- 				<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo">분위기를 고조시키는 우호적인 사람</span>이군요?!</span></div> -->
+<!-- 				<div>※ 500포인트가 지급되었어요</div> -->
+<!-- 				<button type="button" id="myEvent" onclick="">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 		</div>
 		
 	</div>
@@ -343,6 +343,9 @@ canvas {
 			} else if(eventNo == 15){
 				const buttonStr1 = '<input type="button" id="spinRoulette" value="룰렛 돌리기" onclick="rotate()">';
 				document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
+			} else if(eventNo == 17){
+				const buttonStr1 = '<input type="button" id="submitEvent" value="참여하기" onclick="submitTicketEvent(event)">';
+				document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
 			}
 		} else if(eventState == 0){
 			document.getElementById('eventState').innerText = "종료된 이벤트";
@@ -350,7 +353,7 @@ canvas {
 			const buttonStr2 = '<button type="button" id="backButton" onclick="backButton0()">이전</button>';
 			document.getElementById("buttonBox").innerHTML = buttonStr2;
 		}
-		//이벤트 번호가 6번일 때 이벤트 내용 코드
+		//mbti이벤트
 		if(eventNo == 6){
 			let eventNo6 = '';
 			eventNo6 += '<div id="eventContent"></div>';
@@ -371,7 +374,7 @@ canvas {
 			eventNo6 += '</div></div></div>';
 			document.getElementById("eventTotalContent").innerHTML = eventNo6;
 		}
-		
+		//룰렛이벤트
 		if(eventNo == 15){
 			const eventTotalContent = document.getElementById("eventTotalContent");
 			let eventNo15 = '';
@@ -381,6 +384,15 @@ canvas {
 			eventTotalContent.innerHTML = eventNo15;
 			roulette();
 		};
+		
+		if(eventNo == 17){
+// 			const eventTotalContent = document.getElementById("eventTotalContent");
+// 			let eventNo17 = '';
+// 			eventNo17 += '<div class=""><li><ul>진행일정 : 7/22~7/31</ul><ul>당첨 발표 : 8/1</ul><ul>참여 방법 : 하단에 참여하기 버튼을 클릭 후 티켓 인증 사진 업로드!!</ul><ul>증정 경품 : 10,000포인트</ul></li></div>';
+// 			eventNo17 += '<input type="file" name="ticket">';
+// 			eventTotalContent.innerHTML = eventNo17;
+			
+		}
 		
 		
 		$.ajax({
@@ -397,6 +409,8 @@ canvas {
 					//DB에 데이터 넣을 시 알맞게 수정
 					if(eventNo == 6){
 						document.getElementById("eventContent").innerHTML = data.eventContent;
+					} else if(eventNo == 17){
+						document.getElementById("eventTotalContent").innerHTML= data.eventContent;
 					}
 				} else {
 					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
@@ -470,7 +484,7 @@ canvas {
 				document.getElementById("mbtiResult").innerText = mbtiResult;
 				document.getElementById("mbtiInfo").innerText = this.responseText;
 				//alert(this.responseText);
-				openModal();
+				openMbtiModal();
 				
 			} else {
 				alert(this.responseText);
@@ -485,6 +499,12 @@ canvas {
 		xhttp.send(sendData);
 	}
 	
+	function submitTicketEvent(event){
+		const ticketImg = getElementById("ticketImg");
+		console.log(ticketImg);
+		
+	}
+	
 	function backButton0(){
 		window.location.href="/event/commonList?eventState=0";
 	}
@@ -497,7 +517,7 @@ canvas {
 		window.location.href="/";
 	}
 	
-	function openModal(){
+	function openMbtiModal(){
 		const modal = document.getElementById("eventModal");
 		modal.style.display = "block";
 		
@@ -507,7 +527,7 @@ canvas {
 		background.style.display = "flex";
 	}
 	
-	function closeModal(){
+	function closeMbtiModal(){
 		const modal = document.getElementById("eventModal");
 		modal.style.display = "none";
 	}

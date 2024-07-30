@@ -122,7 +122,7 @@ function renderMovies() {
                 + '<div class="roomtype-img">' + smallTypes.join("") + '</div>'
                 + '</div>'
                 + '<div class="buttons">'
-                + '<button class="btn details">상세보기</button>'
+                + '<button class="btn details" onclick="goToMovieDetail(\'' + details.title + '\')">상세보기</button>'
                 + '<button class="btn booking" onclick="window.location.href=\'/reservation/main\'">예매하기</button>'
                 + '</div>';
             movieChart.appendChild(movieCard);
@@ -155,6 +155,24 @@ function renderMovies() {
         nextButton.classList.remove('hidden');
     }
 }
+
+function goToMovieDetail(title) {
+    $.ajax({
+        url: 'http://localhost:9001/api/v1/main/movies/details/title/' + encodeURIComponent(title),
+        method: 'GET',
+        success: function(response) {
+            if (response && response.movieDC) {
+                window.location.href = '/film/movieDetail/' + response.movieDC;
+            } else {
+                console.error('MovieDC not found for title:', title);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
 
 function prevPage() {
     if (currentPage > 1) {

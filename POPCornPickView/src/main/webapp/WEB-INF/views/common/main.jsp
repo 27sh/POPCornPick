@@ -370,17 +370,8 @@
             <div id="etc-button">
                 <button id="etc-FAQ">FAQ</button>
                 <button id="etc-one-to-one">1:1 문의</button>
-                <button id="etc-inquiry">대관/단체 문의</button>
             </div>
         </div>
-    </div>
-    <div id="vertical-divider"></div> <!-- 세로 줄 -->
-    <div id="etc-left-container">
-        <h4>앱 다운로드</h4>
-        <p>팝콘픽 앱에서 더 편리하게 이용하세요</p>
-        <div id="etc-QR-code"></div>
-        <p>QR코드를 스캔하고</p>
-        <p>앱설치 페이지로 바로 이동하세요</p>
     </div>
 </div>
 

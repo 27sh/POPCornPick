@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.entity.Event;
+import com.example.POPCornPickApi.entity.MovieDetail;
 import com.example.POPCornPickApi.entity.Notice;
 import com.example.POPCornPickApi.entity.Product;
+import com.example.POPCornPickApi.repository.MovieDetailRepository;
 import com.example.POPCornPickApi.repository.NoticeRepository;
 import com.example.POPCornPickApi.repository.ProductRepository;
 import com.example.POPCornPickApi.service.EventService;
@@ -47,6 +50,9 @@ public class MainController {
     
     @Autowired
     private NoticeRepository noticeRepository;
+    
+    @Autowired
+    private MovieDetailRepository movieDetailRepository;
 
     @GetMapping("/movies")
     public List<String> getAllMovies() {
@@ -118,5 +124,15 @@ public class MainController {
     @GetMapping("/latest")
     public Notice getLatestNotice() {
         return noticeRepository.findFirstByOrderByRegdateDesc();
+    }
+    
+    @GetMapping("/movies/details/title/{title}")
+    public ResponseEntity<MovieDetail> getMovieDetailByTitle(@PathVariable("title") String title) {
+        MovieDetail movieDetail = movieDetailRepository.findByMovieNm(title);
+        if (movieDetail != null) {
+            return ResponseEntity.ok(movieDetail);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

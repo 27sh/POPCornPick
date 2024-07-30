@@ -35,7 +35,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long>{
 			+ "join rs.schedule s "
 			+ "join s.movieShowDetail msd "
 			+ "join msd.movie m "
-			+ "where m.title = :title")
+			+ "where m.title = :title "
+			+ "GROUP BY m.title")
 	Double findAverageScore(@Param("title") String title);
 	
 	//무비디테일 평점수

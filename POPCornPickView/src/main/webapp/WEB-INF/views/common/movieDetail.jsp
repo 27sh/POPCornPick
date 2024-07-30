@@ -31,6 +31,11 @@ body {
 	background-color: #fff;
 }
 
+#stats {
+	display: flex;
+	justify-content: space-evenly;
+}
+
 .header {
 	display: flex;
 	align-items: center;
@@ -76,10 +81,10 @@ body {
 
 .age-group, .gender-group {
 	width: 45%;
+	height: 100px;
 }
 
 .graph {
-	width: 100%;
 	height: 200px;
 	background-color: #e6e6e6;
 	border-radius: 8px;
@@ -108,25 +113,25 @@ body {
 }
 
 .slider {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  text-align: center;
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	text-align: center;
 }
 
 .slides {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
+	display: flex;
+	transition: transform 0.5s ease-in-out;
 }
 
 .slide {
-  min-width: 100%;
-  box-sizing: border-box;
+	min-width: 100%;
+	box-sizing: border-box;
 }
 
 .slide img {
-  width: 90%;
-  border-radius: 8px;
+	width: 90%;
+	border-radius: 8px;
 }
 
 .prev, .next {
@@ -153,9 +158,11 @@ body {
 	font-size: 24px;
 	text-align: center;
 }
-.ratingcon{
+
+.ratingcon {
 	display: table;
 }
+
 .rating-breakdown div {
 	margin: 5px 0;
 }
@@ -164,6 +171,7 @@ body {
 	display: inline-block;
 	margin-left: 10px;
 }
+
 #reservation {
 	color: white;
 }
@@ -192,15 +200,14 @@ body {
 }
 
 .modal-content1 {
-    background-color: black;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 100%;
-    max-width: 90%; 
-    border-radius: 8px;
+	background-color: black;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 100%;
+	max-width: 90%;
+	border-radius: 8px;
 }
-
 
 .modal-content {
 	background-color: #fff;
@@ -210,16 +217,15 @@ body {
 	width: 50%;
 	height: 50%;
 	border-radius: 8px;
-	box-sizing: border-box; 
+	box-sizing: border-box;
 }
 
 .modal-content textarea {
-    width: 100%;
-    height: 70%; 
-    box-sizing: border-box; 
-    resize: none; 
-}	
-
+	width: 100%;
+	height: 70%;
+	box-sizing: border-box;
+	resize: none;
+}
 
 .close {
 	color: #aaa;
@@ -240,68 +246,119 @@ body {
 }
 
 .video-thumbnail img {
-  width: 85%; /* 기존 스타일 유지 */
-  transition: transform 0.3s ease; /* 이미지에 부드러운 확대 효과 추가 (선택 사항) */
+	width: 85%; /* 기존 스타일 유지 */
+	transition: transform 0.3s ease; /* 이미지에 부드러운 확대 효과 추가 (선택 사항) */
 }
 
 .video-thumbnail:hover img {
-  cursor: pointer; /* 클릭 커서로 변경 */
-  transform: scale(1.05); /* 이미지 확대 (선택 사항) */
+	cursor: pointer; /* 클릭 커서로 변경 */
+	transform: scale(1.05); /* 이미지 확대 (선택 사항) */
 }
 
-.poster{
-    background-repeat: no-repeat;
-    background-size: contain;
+.poster {
+	background-repeat: no-repeat;
+	background-size: contain;
 }
-.scores{
+
+.scores {
 	width: 80px;
-	
 }
-input[type="radio"]{
+
+input[type="radio"] {
 	display: none;
 }
-
+#avgstar span img{
+	width: 30px;
+	
+}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 	<header>
-	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 		<%@ include file="../layout/header.jsp"%>
 	</header>
 	<main>
 		<div id="targetElement"></div>
-		<!-- 기존 예고편 모달 -->
-		<div id="myModal" class="modal">
-			<div class="modal-content1">
-				<span class="close">&times;</span>
-				<iframe id="modal-video" width="100%" height="1000px" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-black; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		<div class="container"id="통계">
+			<div class="stats">
+				<h2>관객 통계</h2>
+				<div class="stats graphs" id="stats">
+					<div class="gender group">
+						<h3>성별 관람비율</h3>
+						<div class="graph age graph">
+							<canvas id="agechar"></canvas>
+						</div>
+					</div>
+					<div class="age group">
+						<div class="rating" id="rating">
+							<div class="ratingcon">
+								<h2>실관람객 평점</h2>
+								<div class="rating score">
+									<span><span id="avgscore"></span> / 5 점</span>
+								</div>
+								<div id="avgstar">
+																	
+								</div>
+								<div class="rating breakdown">
+									<div><span id="avgamount"></span>명 참여</div>
+									<br>
+								</div>
+							</div>
+							<button class="write_review">평점작성</button>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
 
-		<!-- 새로 추가한 평점 작성 모달 -->
-		<div id="ratingModal" class="modal">
-			<div class="modal-content">
-				<span class="close">&times;</span>
-				<h2>평점 작성</h2>
-				<form id="ratingForm">
-					<span for="rating">평점:</span>
-					<input type="radio" id="star1" name="score_radio" value="1"><label for="star1"><img id="starimg1" src="/img/blank_score.png" class="scores" onclick="ch_star(event,1)"></label></radio>
-					<input type="radio" id="star2" name="score_radio" value="2"><label for="star2"><img id="starimg2" src="/img/blank_score.png" class="scores" onclick="ch_star(event,2)" ></label></radio>
-					<input type="radio" id="star3" name="score_radio" value="3"><label for="star3"><img id="starimg3" src="/img/blank_score.png" class="scores" onclick="ch_star(event,3)" ></label></radio>
-					<input type="radio" id="star4" name="score_radio" value="4"><label for="star4"><img id="starimg4" src="/img/blank_score.png" class="scores" onclick="ch_star(event,4)" ></label></radio>
-					<input type="radio" id="star5" name="score_radio" value="5"><label for="star5"><img id="starimg5" src="/img/blank_score.png" class="scores" onclick="ch_star(event,5)" ></label></radio>
-					<br>
-					<span for="review">리뷰:</span>
-					<textarea id="review_text" name="review" rows="4" cols="50"></textarea>
-					<br>
-					<button type="button" onclick="inputScore(event)">평점등록</button>
-				</form>
+			<!-- 기존 예고편 모달 -->
+			<div id="myModal" class="modal">
+				<div class="modal-content1">
+					<span class="close">&times;</span>
+					<iframe id="modal-video" width="100%" height="1000px" src=""
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-black; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen></iframe>
+				</div>
 			</div>
-		</div>
-	
+
+			<!-- 새로 추가한 평점 작성 모달 -->
+			<div id="ratingModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<h2>평점 작성</h2>
+					<form id="ratingForm">
+						<span for="rating">평점:</span> <input type="radio" id="star1"
+							name="score_radio" value="1"><label for="star1"><img
+							id="starimg1" src="/img/blank_score.png" class="scores"
+							onclick="ch_star(event,1)"></label>
+						</radio>
+						<input type="radio" id="star2" name="score_radio" value="2"><label
+							for="star2"><img id="starimg2" src="/img/blank_score.png"
+							class="scores" onclick="ch_star(event,2)"></label>
+						</radio>
+						<input type="radio" id="star3" name="score_radio" value="3"><label
+							for="star3"><img id="starimg3" src="/img/blank_score.png"
+							class="scores" onclick="ch_star(event,3)"></label>
+						</radio>
+						<input type="radio" id="star4" name="score_radio" value="4"><label
+							for="star4"><img id="starimg4" src="/img/blank_score.png"
+							class="scores" onclick="ch_star(event,4)"></label>
+						</radio>
+						<input type="radio" id="star5" name="score_radio" value="5"><label
+							for="star5"><img id="starimg5" src="/img/blank_score.png"
+							class="scores" onclick="ch_star(event,5)"></label>
+						</radio>
+						<br> <span for="review">리뷰:</span>
+						<textarea id="review_text" name="review" rows="4" cols="50"></textarea>
+						<br>
+						<button type="button" onclick="inputScore(event)">평점등록</button>
+					</form>
+				</div>
+			</div>
 	</main>
-	<footer>
-	</footer>
+	<footer> </footer>
 
 	<script>
   // 모달관련 변수
@@ -360,18 +417,6 @@ input[type="radio"]{
         str += '        <h2>영화 설명</h2>';
         str += '        <p style="white-space: pre-line;">' + data.utube[0].movie.description + '</p>';
         str += '    </div>';
-        str += '    <div class="stats">';
-        str += '        <h2>관객 통계</h2>';
-        str += '        <div class="stats-graphs">';
-        str += '            <div class="age-group">';
-        str += '                <h3>연령별 관람비율</h3>';
-        str += '                <div class="graph age-graph"></div>';
-        str += '            </div>';
-        str += '            <div class="gender-group">';
-        str += '                <h3>성별 관람비율</h3>';
-        str += '            </div>';
-        str += '        </div>';
-        str += '    </div>';
         str += '    <div class="reviews">';
         str += '        <h2>트레일러</h2>';
         str += '        <div class="review-list">';
@@ -396,19 +441,6 @@ input[type="radio"]{
         str += '            <button class="next" onclick="moveSlides(1)">&#10095;</button>';
         str += '        </div>';
         str += '    </div>';
-        str += '    <div class="rating" id="rating">';
-        str += '		<div class="ratingcon">	';
-        str += '        <h2>실관람객 평점</h2>';
-        str += '        <div class="rating-score">';
-        str += '            <span>(여기 통계가 들어가야함) / 10</span>';
-        str += '        </div>';
-        str += '        <div class="rating-breakdown">';
-        str += '			<div>###명 참여(몇명이 봤는지)</div>';
-        str += '			<br><hr><br>';
-        str += '		<div>남자</div><div>여자</div>		';
-        str += '        </div>';
-        str += '		</div>';
-        str += '        <button class="write_review">평점작성</button>';
         str += '    </div>';
         str += '</div>';
 
@@ -452,23 +484,56 @@ input[type="radio"]{
     });
 
     $.ajax({
-    	url: "http://localhost:9001/api/v1/film/score",
+    	url: "http://localhost:9001/api/v1/film/score/"+ movieDetailDC,
     	method: "GET",
+    	dataType: "json",
     	success:function(score){
-    		str += '	<div class="ratingcon">	';
-            str += '      	<h2>실관람객 평점</h2>';
-            str += '       	 <div class="rating-score">';
-            str += '        	<span>(여기 통계가 들어가야함) / 5</span>';
-            str += '     	 </div>';
-            str += '      <div class="rating-breakdown">';
-            str += '		<div>###명 참여(몇명이 봤는지)</div>';
-            str += '			<br><hr><br>';
-            str += '		<div>남자</div><div>여자</div>		';
-            str += '      </div>';
-            str += '	</div>';
-            
-            $('#rating').html(str);
-            
+    		console.log(score);
+    		const avgscore = score.acgscore;
+    		const acgcount = score.avgcount;
+    		
+    		$("#avgscore").text(avgscore.toFixed(1));
+    		let str = '';
+    		if(avgscore <= 0.5){
+	    		str += '<span><img src="/img/blank_score.png"></span>';
+	    		str += '<span><img src="/img/blank_score.png"></span>';
+	    		str += '<span><img src="/img/blank_score.png"></span>';
+	    		str += '<span><img src="/img/blank_score.png"></span>';
+	    		str += '<span><img src="/img/blank_score.png"></span>';
+    		}else if(avgscore > 0.5 && avgscore <= 1.5){
+    			str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+    		}else if(avgscore > 1.5 && avgscore <= 2.5){
+    			str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+    		}else if(avgscore > 2.5 && avgscore <= 3.5){
+    			str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+    		}else if(avgscore > 3.5 && avgscore <= 4.5){
+    			str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/blank_score.png"></span>';
+    		}else if(avgscore > 4.5 && avgscore <= 5){
+    			str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+        		str += '<span><img src="/img/full_score.png"></span>';
+    		}
+    		$("#avgstar").html(str);
+    		
+    		$("#avgamount").text(acgcount);
     	},
     	error(error){
     		console.log("에러 : ", error);
@@ -502,7 +567,7 @@ input[type="radio"]{
     	if (data.results && data.results.length > 0) {
             const posterPath = data.results[0].poster_path;
             return 'https://image.tmdb.org/t/p/w500' + posterPath;
-          }else {
+          }else {	
             return 'https://via.placeholder.com/200x300'; // 포스터를 찾을 수 없을 때 기본 포스터 이미지
           }
           }else {
@@ -512,8 +577,66 @@ input[type="radio"]{
       }
       return 'https://via.placeholder.com/200x300'; // 기본 포스터 이미지 (여기까지 올 수 있는 경우)
     }
+	
+	
+	console.log(movieDetailDC +"janfakjewnflkajenfalkjenflknejflakwejnflakwejnflakwejnf");
+	$.ajax({
+		url: "http://localhost:9001/api/v1/film/ticketchart/" + movieDetailDC,
+		method: "GET",
+		dataType:"json",
+		success: function(fmlist){
+			
+			console.log(fmlist);
+			
+			let genderarr = new Array();
+			let amount = new Array();
+			
+// 			fmlist.forEach(fm => {
+// 				genderarr.push(fm.gender);
+// 				amount.push(fm.totalAmount);
+// 			});
+						
+			for(let i=0; i <fmlist.length; i++){
+				genderarr.push(fmlist[i].gender);
+				amount.push(fmlist[i].totalAmount);		
+			}
+						
+			//차트
+			const ctx = document.getElementById('agechar').getContext('2d');
+			const salesChart = new Chart(ctx, {
+			    type: 'pie', // 차트 유형을 'pie'로 설정
+			    data: {
+			        labels: genderarr, // 데이터 레이블
+			        datasets: [
+			            {
+			                label: '성별비율',
+			                data: amount, // 데이터 배열
+			                backgroundColor: ['#b4d6fa', 'blue'], // 각 조각의 배경 색상
+			            }
+			        ]
+			    },
+			    options: {
+			        maintainAspectRatio: false, // 비율 유지 여부
+			        responsive: true // 반응형 차트
+			    }
+			});
+		},
+		error(error){
+			console.log("에러" + error);
+			console.log("상세" + error.responseText);	
+			
+		}
+		
+	})
 
-  });
+
+
+
+
+  
+
+
+  }); //ready 끝
 	//스틸컷 슬라이드 
   let slideIndex = 0;
 
@@ -573,6 +696,10 @@ input[type="radio"]{
 		})
 	}
   
+	
+	
+	
+	
 </script>
 
 </body>

@@ -80,7 +80,7 @@ public class FaqController {
 		return faqservice.getFaq(pageable);
 	}
 	//검색기능
-	@GetMapping("/search")
+	@GetMapping("/faq/search")
 	public List<Faq> searchFaq(@RequestParam("title") String title){
 		return faqservice.searchFaqTitle(title);
 	}

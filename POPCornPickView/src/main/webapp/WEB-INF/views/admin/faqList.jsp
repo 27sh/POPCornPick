@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>faq List</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<%@ include file="../layout/header.jsp"%>
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
@@ -24,14 +23,12 @@ main #container {
 }
 
 body {
-	font-family: Arial, sans-serif;
 	margin: 0;
 	padding: 0;
 }
 
 .container {
 	width: 80%;
-	margin: 50px auto;
 	padding: 20px;
 	background-color: white;
 	border-radius: 5px;
@@ -162,16 +159,15 @@ a:hover {
 }
 
 .sidebar-container {
-	margin-top: 150px;
+
 }
 </style>
 </head>
+<%@ include file="../layout/adminHeader.jsp" %>
 <body>
-		<%@ include file="../../layout/adminHeader.jsp"%>
 	<main>
-
 		<div class="sidebar-container">
-			<%@ include file="../../layout/serviceSideBar.jsp"%>
+			<%@ include file="../layout/serviceSideBar.jsp"%>
 		</div>
 		<div class="container">
 			<h1>자주찾는질문</h1>

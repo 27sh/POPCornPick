@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +10,19 @@
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
+main {
+	width: 1200px;
+	margin: 80px auto;
+	display: flex;
+	justify-content: space-between;
+}
+
+main #container {
+	width: 900px;
+	min-height: 700px;
+	box-sizing: border-box;
+}
+
 body {
 	font-family: 'Pretendard Variable', Arial, sans-serif;
 	margin: 0;
@@ -18,12 +31,12 @@ body {
 
 .container {
 	width: 80%;
-	margin: 0 auto;
-	padding-top: 50px;
+	padding: 20px;
 }
 
 h1 {
-	text-align: left;
+	font-size: 24px;
+	margin-bottom: 20px;
 }
 
 table {
@@ -78,7 +91,7 @@ th {
 }
 
 .btn {
-	background-color: #800080; /* 보라색 */
+	background-color: #816bff; /* 보라색 */
 	color: white;
 	border: none;
 	padding: 10px 20px;
@@ -89,74 +102,78 @@ th {
 .btn button:hover {
 	background-color: #4b0082; /* 진한 보라색 */
 }
-#qnaanswer{
+
+#qnaanswer {
 	width: 560px;
 	height: 220px;
 }
 </style>
 </head>
 <body>
-
-	<div class="container">
-		<div class="header-text"><h1>FAQ</h1></div>
-		<table>
-			<tr>
-				<td>카테고리</td>
-				<td>
-					<select name="category">
-					  <option value="카테고리는" selected="selected">카테고리는</option>
-					  <option value="정해야하는데">정해야합니다</option>
-					  <option value="무엇이 좋을까">뭘로하지</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>제목</td>
-				<td><input type="text" id="title"></td>
-			</tr>
-			<tr>
-				<td>내용</td>
-				<td> <input  type="text" id="content"></td>
-			</tr>
-		</table>
-		<div class="button-container">
-			<button class="btn" onclick="faqWrite(event)">등록</button>
+	<main>
+		<div class="sidebar-container">
+			<%@ include file="../layout/serviceSideBar.jsp"%>
 		</div>
-	</div>
+		<div class="container">
+			<div class="header-text">
+				<h1>FAQ</h1>
+			</div>
+			<table>
+				<tr>
+					<td>카테고리</td>
+					<td><select name="category">
+							<option value="카테고리는" selected="selected">카테고리는</option>
+							<option value="정해야하는데">정해야합니다</option>
+							<option value="무엇이 좋을까">뭘로하지</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td>제목</td>
+					<td><input type="text" id="title"></td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td><input type="text" id="content"></td>
+				</tr>
+			</table>
+			<div class="button-container">
+				<button class="btn" onclick="faqWrite(event)">등록</button>
+			</div>
+		</div>
+	</main>
 
-<script>
-	
-	function faqWrite(event){
-		
-		var category = $("select[name='category']").val();
-	    var title = $("#title").val();
-	    var content = $("#content").val();
-		
-		console.log(category);
-		console.log(title);
-		console.log(content);
-		
-		$.ajax({
-			url : "http://localhost:9001/api/v1/admin/Frequently",
-			method : "POST",
-			contentType : "application/json",
-			data : JSON.stringify({
-				faqCategory : category,
-				faqTitle : title,
-				faqContent : content
-			}),
-			success : function(response){
-				alert("FAQ등록 완료");
-				window.location.href="";
-			},
-			error : function(xhr, status, error){
-				console.log(error);
-			}
-		})
-		
-	}
-	
-</script>
+
+	<script>
+		function faqWrite(event) {
+
+			var category = $("select[name='category']").val();
+			var title = $("#title").val();
+			var content = $("#content").val();
+
+			console.log(category);
+			console.log(title);
+			console.log(content);
+
+			$.ajax({
+				url : "http://localhost:9001/api/v1/admin/Frequently",
+				method : "POST",
+				contentType : "application/json",
+				data : JSON.stringify({
+					faqCategory : category,
+					faqTitle : title,
+					faqContent : content
+				}),
+				success : function(response) {
+					alert("FAQ등록 완료");
+					window.location.href = "";
+				},
+				error : function(xhr, status, error) {
+					console.log(error);
+				}
+			})
+
+		}
+	</script>
 
 
 

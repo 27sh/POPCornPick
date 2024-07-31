@@ -87,8 +87,8 @@ ul {
 		</div>
 		<div class="sidebar-box sidebar-box1">
 			<h3>공지사항</h3>
-			<p><a href="" class="resumeManage">공지사항 작성</a></p>
-			<p><a href="">공지사항 목록</a></p>
+			<p><a href="/admin/noticeForm" class="resumeManage">공지사항 작성</a></p>
+			<p><a href="/admin/noticeList">공지사항 목록</a></p>
 		</div>
 		<div class="sidebar-box sidebar-box2">
 			<h3>이벤트</h3>
@@ -99,12 +99,12 @@ ul {
 		<div class="sidebar-box sidebar-box3">
 			<h3>Q&A</h3>
 			<p><a href="">Q&A 작성</a></p>
-			<p><a href="">Q&A 목록</a></p>
+			<p><a href="/admin/qnaList">Q&A 목록</a></p>
 		</div>
 		<div class="sidebar-box sidebar-box4">
 			<h3>자주찾는 질문</h3>
-			<p><a href="">자주찾는 질문 등록</a></p>
-			<p><a href="">자주찾는 질문 목록</a></p>
+			<p><a href="/admin/faqForm">자주찾는 질문 등록</a></p>
+			<p><a href="/admin/faqList">자주찾는 질문 목록</a></p>
 		</div>
 	</div>
 </body>

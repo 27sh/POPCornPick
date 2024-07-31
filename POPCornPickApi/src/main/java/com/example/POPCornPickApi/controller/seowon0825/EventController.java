@@ -180,26 +180,26 @@ public class EventController {
 		System.out.println(participation);
 		//로그인한 사용자가 해당 이벤트 참여했는지 확인
 		int check = participationService.memberParticipationCheck(username, eventNo);
-		if(check < 0) {
+		if(check < 1) {
 			participationService.memberEventForm(participation);
 			Point point = new Point();
 			Coupon coupon = new Coupon();
 			
-			if(participationResult == "10 포인트") {
+			if(participationResult.equals("10 포인트")) {
 				point.setPointType("룰렛 이벤트");
 				point.setMember(member);
 				point.setAcheive(10);
 				return ResponseEntity.ok("10포인트가 적립되었습니다. 참여 감사합니다^^");
-			} else if(participationResult == "500 포인트") {
+			} else if(participationResult.equals("500 포인트")) {
 				point.setPointType("룰렛 이벤트");
 				point.setMember(member);
 				point.setAcheive(500);
 				return ResponseEntity.ok("500포인트가 적립되었습니다. 참여 감사합니다^^");
-			} else if(participationResult == "할인쿠폰 1000원") {
+			} else if(participationResult.equals("할인쿠폰 1000원")) {
 				coupon.setCouponNo(result);
 				coupon.setMember(member);
 				return ResponseEntity.ok("할인쿠폰 1000원이 발급되었습니다. 참여 감사합니다^^");
-			} else if(participationResult == "할인쿠폰 5000원") {
+			} else if(participationResult.equals("할인쿠폰 5000원")) {
 				coupon.setCouponNo(result2);
 				coupon.setMember(member);
 				return ResponseEntity.ok("할인쿠폰 5000원이 발급되었습니다. 참여 감사합니다^^");

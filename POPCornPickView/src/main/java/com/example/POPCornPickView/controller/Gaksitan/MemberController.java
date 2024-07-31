@@ -34,7 +34,8 @@ public class MemberController {
 	}
 	
 	@GetMapping("/editQnaForm")
-	public String editQnaForm() {
+	public String editQnaForm(@RequestParam("qnaNo") Long qnaNo, Model model) {
+		model.addAttribute("qnaNo", qnaNo);
 		return "/member/editQnaForm";
 	}
 	

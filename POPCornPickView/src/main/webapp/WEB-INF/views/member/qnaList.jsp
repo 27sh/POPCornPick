@@ -71,7 +71,7 @@ h1 {
 	cursor: pointer;
 }
 
-.active {
+.activer {
 	font-weight: bold;
 }
 
@@ -215,7 +215,11 @@ h1 {
 				row += '<td>' + slicedData[i].qnaBigCategory + '</td>';
 				row += '<td>' + slicedData[i].qnaSmallCategory + '</td>';
 				row += '<td><a href="/member/qnaDetail?qnaNo=' +slicedData[i].qnaNo + '">' + slicedData[i].qnaTitle + '</a></td>';
+				if(slicedData[i].qnaFile != null){
 				row += '<td>' + slicedData[i].qnaFile.split("--")[1] + '</td>';
+				}else {
+				row += '<td>첨부 파일 없음</td>';
+				}
 				// Moment.js 객체 생성 (시간대 정보 유지)
 				let regDate = moment.utc(qnaList[i].regdate).local();
 				// 원하는 형식으로 문자열 변환
@@ -277,7 +281,7 @@ h1 {
 				pageNumber.classList.add('page-numbers');
 				
 				if(i === currentPage){
-					pageNumber.classList.add('active');
+					pageNumber.classList.add('activer');
 				}
 				
 				pageNumber.addEventListener('click', () =>{

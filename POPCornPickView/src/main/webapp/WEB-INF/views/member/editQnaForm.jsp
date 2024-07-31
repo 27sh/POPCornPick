@@ -314,7 +314,7 @@ tr[name="qnaContentTr"] {
 					
 				</table>
 					<div class="btn-box">
-						<button class="btn" id="cancer-btn" type="button" onclick="cancer()">취소 </button> <button class="btn" id="write-btn" type="button" onclick="qnaWrite()">확인</button>
+						<button class="btn" id="cancer-btn" type="button" onclick="cancer()">취소 </button> <button class="btn" id="write-btn" type="button" onclick="qnaEdit()">확인</button>
 					</div>
 			</form>
 		</div>
@@ -323,7 +323,92 @@ tr[name="qnaContentTr"] {
 	
 	</footer>
 	<script>
-	
+		
+		document.addEventListener("DOMContentLoaded", () =>{
+			loadContent();
+		})
+		
+		function loadContent(){
+			const qnaNo = ${qnaNo};
+			const token = localStorage.getItem("jwtToken");
+			const xhttp = new XMLHttpRequest();
+			
+			xhttp.onload = function(){
+				if(this.responseText != null){
+					const qna = JSON.parse(this.responseText)
+					
+					let bigCategory = qna.qnaBigCategory;
+					let smallCategory = qna.qnaSmallCategory;
+					let location = qna.qnaCinemaLocation;
+					let cinemaName = qna.qnaCinemaName;
+					let type = qna.qnaType;
+					let titleValue = qna.qnaTitle;
+					let contentValue = qna.qnaContent;
+					let fileValue = qna.qnaFile;
+					
+					let selectBigCategory = document.querySelector("#big-classification");
+					let selectSmallCategory = document.querySelector("#small-classification");
+					let selectLocation = document.querySelector("#select-big-location");
+					let radios = document.querySelectorAll("input[name='qnaType']");
+					let title = document.querySelector("input[name='qnaTitle']");
+					let content = document.querySelector("textarea[name='qnaContent']")
+					
+					title.value = titleValue;
+					content.value = contentValue;
+					
+					for(let i = 0; i < selectBigCategory.options.length ; i++){
+						let option = selectBigCategory.options[i];
+						if(option.value === bigCategory){
+							option.selected = true;
+							break;
+						}
+					}
+					
+					for(let i = 0; i < selectSmallCategory.options.length ; i++){
+						let option = selectSmallCategory.options[i];
+						if(option.value === smallCategory){
+							option.selected = true;
+							break;
+						}
+					}
+					
+					for(let i = 0; i < radios.length ; i++){
+						if(radios[i].value === type ){
+							radios[i].checked = true;
+							break;
+						}
+					}
+					
+					for(let i = 0; i < selectLocation.options.length ; i++){
+						let option = selectLocation.options[i];
+						if(option.value === location){
+							option.selected = true;
+							break;
+						}
+					}
+					
+					let selectCinemaName = document.querySelector("#select-cinemaNo");
+					
+					for(let i = 0; i < selectCinemaName.options.length ; i++){
+						let option = selectCinemaName.options[i];
+						if(option.value === cinemaName){
+							option.selected = true;
+							break;
+						}
+					}
+					
+					
+					
+				}
+				
+				
+			}
+			
+			xhttp.open("GET", "http://localhost:9001/api/v1/memInquiry/editInquiry?qnaNo=" + qnaNo);
+			xhttp.setRequestHeader("Authorization", "Bearer " + token);
+			xhttp.send();
+		}
+		
 		function pressEnter(event){
 			if(event.keyCode === 13){ // 엔터키 코드 (13) 사용
 				event.preventDefault(); // 엔터키 기본 동작 방지 (줄바꿈 방지)
@@ -336,7 +421,7 @@ tr[name="qnaContentTr"] {
 			}
 		}
 		
-		function qnaWrite(){
+		function qnaEdit(){
 			tokenCheck();
 			const token = localStorage.getItem("jwtToken");
 			const form = document.querySelector("#frm");
@@ -363,21 +448,21 @@ tr[name="qnaContentTr"] {
 			xhttp.onload = function(){
 				if(xhttp.responseText != null){
 					if(xhttp.status === 200){
-						alert("문의가 성공적으로 등록됬습니다.");
+						alert("문의가 성공적으로 수정됬습니다.");
 						window.location.href = "/member/qnaList";
 					}else {
-						alert(this.responseText + ", 문의 등록 실패");
+						alert(this.responseText + ", 문의 수정 실패");
 					}
 				}
 			}
 			
-			xhttp.open("POST", "http://localhost:9001/api/v1/memInquiry/writeInquiry");
+			xhttp.open("PUT", "http://localhost:9001/api/v1/memInquiry/editInquiry?qnaNo=" + ${qnaNo});
 			xhttp.setRequestHeader("Authorization", "Bearer " + token);
 			//xhttp.setRequestHeader("Content-type", "multipart/form-data"); FormData 객체가 표준화된 방식으로 데이터를 준비해서 자동으로 이 설정이 됨.
 			xhttp.send(formData);
 		}
 		
-// 		function qnaWrite(){
+// 		function qnaEdit(){
 // 			tokenCheck();
 // 			const token = localStorage.getItem("jwtToken");
 			
@@ -513,7 +598,7 @@ tr[name="qnaContentTr"] {
 		
 		
 		function cancer(){
-			window.location.href = "/";
+			window.location.href = "/member/qnaDetail?qnaNo=" + ${qnaNo};
 		}
 		
 // 		function able(){

@@ -109,10 +109,10 @@
             <a href="/"><img src="/img/logoWhite.png" alt=""></a>
         </div>
         <ul id="mme">
-            <li><a href="/">홈</a></li>
+            <li><a href="/admin/dashboard">홈</a></li>
             <li><a href="/memManage/memState">회원</a></li>
             <li class="mme1"><a href="/admin/cinemaList">극장</a></li>
-            <li class="mme2"><a href="/admin/movieList">영화</a></li>
+            <li class="mme2"><a href="/admin/movie/list">영화</a></li>
             <li><a href="/admin/reportList">신고</a></li>
             <li class="mme3"><a href="#">고객서비스</a></li>
             <li id="logout_btn">
@@ -125,7 +125,7 @@
                 <li><a href="/cinema/roomList">관람관</a></li>
             </ul>
             <ul class="sme sme2">
-                <li><a href="/admin/movieList">영화정보</a></li>
+                <li><a href="/admin/movie/list">영화정보</a></li>
                 <li><a href="/admin/schedulePage">상영시간표</a></li>
             </ul>
             <ul class="sme sme3">

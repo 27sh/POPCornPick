@@ -14,17 +14,16 @@
 	crossorigin="anonymous"></script>
 <style>
 main {
-	width: 1200px;
+	width: 900px;
 	margin: 80px auto;
 	display:flex;
 	justify-content:space-between;
 }
 
 main #container {
-	padding: 20px;
-	width:900px;
 	box-sizing:border-box;
 	background: #f0f0f0;
+	padding: 20px;
 	padding-bottom: 40px;
 }
 
@@ -89,9 +88,6 @@ h2{
 <%@ include file="../layout/adminHeader.jsp"%>
 <body>
 	<main>
-		<div class="sidebar-container">
-			<%@ include file="../layout/serviceSideBar.jsp"%>
-		</div>
 		<div id="container">
 			<h1>관리자 대시보드</h1>
 			<div id="money_dashboard">
@@ -328,9 +324,9 @@ h2{
     				fmArray.push(sales.gender);
     				amountArray.push(sales.totalAmount);
     				if(sales.gender === "남자"){
-    					backgroundColorArray.push("blue");
+    					backgroundColorArray.push("#87b1f5");
     				}else {
-    					backgroundColorArray.push("red");
+    					backgroundColorArray.push("#f78d83");
     				}
     			});
     			

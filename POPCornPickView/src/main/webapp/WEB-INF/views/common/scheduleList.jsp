@@ -424,7 +424,7 @@
                 scheStart: scheStart
             });
 
-            location.href = "/reservation/main?" + params;
+//             location.href = "/reservation/main?" + params;
         });
     });
     

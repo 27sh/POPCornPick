@@ -181,7 +181,7 @@ function faqedit(event) {
 				}),
 			success : function(faqModify){
 				alert("자주찾는질문 수정했습니다.")
-				//window.location.href=""; 추후에 자주찾는질문 리스트 페이지로
+				window.location.href="/admin/faqList"; 
 			},
 			error : function(xhr, status, error){
 				console.log(error);

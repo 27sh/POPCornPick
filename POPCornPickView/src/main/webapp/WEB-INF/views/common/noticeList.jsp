@@ -165,15 +165,7 @@ a:hover {
 
 	<div class="container">
 			<h1>공지/뉴스</h1>
-		<div class="tab-menu">
-			<div id="" onclick="a(event)" class="tab-menu-item" data-value="공지사항">공지사항</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="이벤트">이벤트</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="FAQ">FAQ</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="문의">문의</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="신고">신고</div>
-			<div>사이드바를 만들었으니 여기에 카테고리를 넣으면 될것같다.</div>
-		</div>
-		
+		<hr>
 		<br>
 		<form class="search-form" onsubmit="searchNotice(event)">
 			<label for="search">검색</label> <input type="text" id="search"

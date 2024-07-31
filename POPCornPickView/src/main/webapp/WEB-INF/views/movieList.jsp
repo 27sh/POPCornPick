@@ -55,17 +55,7 @@ body {
 </style>
 </head>
 <body>
-	<div>
-		<input type="checkbox" id="current-movies" checked> 현재 상영작 보기
-		<input type="checkbox" id="upcoming-movies"> 상영 예정작 보기
-	</div>
-	<div>
-		<select id="sort-option">
-			<option value="sales">예매율순</option>
-			<option value="rating">평점순</option>
-			<option value="popularity">관람객순</option>
-		</select>
-	</div>
+	
 	<div class="container" id="movie-list">
 		<!-- 영화 카드가 여기에 삽입됩니다 -->
 	</div>

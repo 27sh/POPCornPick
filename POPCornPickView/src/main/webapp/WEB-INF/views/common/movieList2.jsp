@@ -58,17 +58,7 @@ body {
 </style>
 </head>
 <body>
-	<div>
-		<input type="checkbox" id="current-movies" checked> 현재 상영작 보기
-		<input type="checkbox" id="upcoming-movies"> 상영 예정작 보기
-	</div>
-	<div>
-		<select id="sort-option">
-			<option value="sales">예매율순</option>
-			<option value="rating">평점순</option>
-			<option value="popularity">관람객순</option>
-		</select>
-	</div>
+	
 	<div class="container" id="movie-list">
 		<!-- 영화 카드가 여기에 삽입됩니다 -->
 	</div>
@@ -110,11 +100,12 @@ body {
    $(document).ready(function(){
             const movieListContainer = document.getElementById('movie-list');
 
+
             $.ajax({
                 url: "http://localhost:9001/api/v1/film/MovieList",
                 method: "GET",
                 success: function(movieList) {
-                    console.log(movieList);
+                  console.log(movieList);
                 	displayMovies(movieList);
                 },
                 error: function(error) {
@@ -122,6 +113,25 @@ body {
                     console.log("에러상세 : ", error.responseText);
                 }
             });
+
+            $.ajax({
+                url:"http://localhost:9001/api/v1/film/score/"+ movieDetailDC,
+                method: "GET",
+                dataType: "json",
+                success:function(rating){
+                    const avgscore = score.acgscore;
+                    console.log(avgscore);
+                    console.log("레이팅"+rating)
+                },
+                error: function(error){
+                    console.log("에러"+ error);
+                    console.log("에러상세 : ", error.responseText);
+                }
+
+            });
+
+
+
         });
 	/*
         // TMDb API를 사용하여 영화 포스터를 가져오는 함수
@@ -159,14 +169,14 @@ body {
 
             for (let i = 0; i < movieList.length; i++) {
                // const posterUrl = fetchPoster(movieList[i].movieNm); // 동기적으로 포스터 URL 가져오기
-				console.log(movieList[0] );
+				//console.log(movieList[0] );
                 str += '<div class="movie-card">'
                     +   '<div>No.' + (i + 1) + '</div>'
                     +   '<div class="poster"><a href="/film/movieDetail/' + movieList[i].movieDC + '"><img style="width="200" height="300" src="' + movieList[i].imgUrl + '" alt="포스터"></a></div>'
                     +   '<div class="movie-info">'
                     +       '<div>영화 제목: ' + movieList[i].movieNm + '</div>'
-                    +       '<div class="sales">예매율: ' + movieList[i].salesAcc + '</div>'
-                    +       '<div class="rating">평점: 9.3</div>'
+                    
+                    +       '<div class="rating">평점: <span id="ratingmovie"></span></div>'
                     +       '<div>개봉일: ' + movieList[i].openDt + '</div><br>'
                     +       '<button class="btn"><a class="rever" href="/reservation/main">예매하기</a></button>'
                     +   '</div>'
@@ -176,6 +186,10 @@ body {
 
             movieListContainer.innerHTML = str;
         }
+
+
+
+
 
     </script>
 

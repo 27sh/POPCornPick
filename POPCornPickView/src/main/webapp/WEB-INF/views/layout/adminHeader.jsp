@@ -131,7 +131,7 @@
                 <li><a href="/admin/noticeList">공지사항</a></li>
                 <li><a href="/event/allList">이벤트</a></li>
                 <li><a href="/admin/qnaList">Q&A</a></li>
-                <li><a href="faqList">자주찾는 질문</a></li>
+                <li><a href="/admin/faqList">자주찾는 질문</a></li>
             </ul>
         </div>
 

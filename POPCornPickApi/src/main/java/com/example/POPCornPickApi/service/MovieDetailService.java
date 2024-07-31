@@ -9,8 +9,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.dto.MovieDetailWithTotalViewDto;
 import com.example.POPCornPickApi.entity.MovieDetail;
+import com.example.POPCornPickApi.entity.Ticketing;
 import com.example.POPCornPickApi.repository.MovieDetailRepository;
+import com.example.POPCornPickApi.repository.TicketingRepository;
 
 @Service
 public class MovieDetailService {
@@ -18,6 +21,8 @@ public class MovieDetailService {
 	@Autowired
 	private MovieDetailRepository movieDetailRepository;
 	
+	@Autowired
+	private TicketingRepository ticketingRepository;
 		
 	public MovieDetail getMovieDetail(String movieDC) {
 		return movieDetailRepository.findByMovieDC(movieDC);
@@ -28,7 +33,7 @@ public class MovieDetailService {
         return movieDetailRepository.findAll();
     }
 
-	public List<MovieDetail> getMovieListOn(){
+	public List<MovieDetailWithTotalViewDto> getMovieListOn(){
 		
 		Date today = new Date();
 		
@@ -36,7 +41,7 @@ public class MovieDetailService {
 		
 		System.out.println(today);
 
-		List<MovieDetail> resultMovieDetailList = new ArrayList<>();
+		List<MovieDetailWithTotalViewDto> resultMovieDetailList = new ArrayList<>();
 		
 		movieDetailList.forEach(movieDetail -> {
 			String openDtStr = movieDetail.getOpenDt();
@@ -48,7 +53,27 @@ public class MovieDetailService {
 				
 				
 				if(openDt.before(today)) {
-					resultMovieDetailList.add(movieDetail);
+					
+					List<Ticketing> ticketingList = ticketingRepository.findByReservatedSeat_Schedule_MovieShowDetail_Movie_Title(movieDetail.getMovieNm());
+					MovieDetailWithTotalViewDto newMovieDetailDto = new MovieDetailWithTotalViewDto();
+					
+					newMovieDetailDto.setMovieDC(movieDetail.getMovieDC());
+					newMovieDetailDto.setMovieNm(movieDetail.getMovieNm());
+					newMovieDetailDto.setMovieNmEn(movieDetail.getMovieNmEn());
+					newMovieDetailDto.setPrdtYear(movieDetail.getPrdtYear());
+					newMovieDetailDto.setShowTm(movieDetail.getShowTm());
+					newMovieDetailDto.setOpenDt(movieDetail.getOpenDt());
+					newMovieDetailDto.setNations(movieDetail.getNations());
+					newMovieDetailDto.setGenres(movieDetail.getGenres());
+					newMovieDetailDto.setDirectors(movieDetail.getDirectors());
+					newMovieDetailDto.setActors(movieDetail.getActors());
+					newMovieDetailDto.setShowTypes(movieDetail.getShowTypes());
+					newMovieDetailDto.setDescription(movieDetail.getDescription());
+					newMovieDetailDto.setViewAge(movieDetail.getViewAge());
+					newMovieDetailDto.setImgUrl(movieDetail.getImgUrl());
+					newMovieDetailDto.setTotalView(Long.valueOf(ticketingList.size()));
+					
+					resultMovieDetailList.add(newMovieDetailDto);
 				}
 				
 			 } catch (ParseException e) {
@@ -60,7 +85,7 @@ public class MovieDetailService {
 		return resultMovieDetailList;
 	}
 	
-	public List<MovieDetail> getMovieListAboutto(){
+	public List<MovieDetailWithTotalViewDto> getMovieListAboutto(){
 		
 		Date today = new Date();
 		
@@ -68,7 +93,7 @@ public class MovieDetailService {
 		
 		System.out.println(today);
 
-		List<MovieDetail> resultMovieDetailList = new ArrayList<>();
+		List<MovieDetailWithTotalViewDto> resultMovieDetailList = new ArrayList<>();
 		
 		movieDetailList.forEach(movieDetail -> {
 			String openDtStr = movieDetail.getOpenDt();
@@ -80,7 +105,27 @@ public class MovieDetailService {
 				
 				
 				if(openDt.after(today)) {
-					resultMovieDetailList.add(movieDetail);
+					
+					List<Ticketing> ticketingList = ticketingRepository.findByReservatedSeat_Schedule_MovieShowDetail_Movie_Title(movieDetail.getMovieNm());
+					MovieDetailWithTotalViewDto newMovieDetailDto = new MovieDetailWithTotalViewDto();
+					
+					newMovieDetailDto.setMovieDC(movieDetail.getMovieDC());
+					newMovieDetailDto.setMovieNm(movieDetail.getMovieNm());
+					newMovieDetailDto.setMovieNmEn(movieDetail.getMovieNmEn());
+					newMovieDetailDto.setPrdtYear(movieDetail.getPrdtYear());
+					newMovieDetailDto.setShowTm(movieDetail.getShowTm());
+					newMovieDetailDto.setOpenDt(movieDetail.getOpenDt());
+					newMovieDetailDto.setNations(movieDetail.getNations());
+					newMovieDetailDto.setGenres(movieDetail.getGenres());
+					newMovieDetailDto.setDirectors(movieDetail.getDirectors());
+					newMovieDetailDto.setActors(movieDetail.getActors());
+					newMovieDetailDto.setShowTypes(movieDetail.getShowTypes());
+					newMovieDetailDto.setDescription(movieDetail.getDescription());
+					newMovieDetailDto.setViewAge(movieDetail.getViewAge());
+					newMovieDetailDto.setImgUrl(movieDetail.getImgUrl());
+					newMovieDetailDto.setTotalView(Long.valueOf(ticketingList.size()));
+					
+					resultMovieDetailList.add(newMovieDetailDto);
 				}
 				
 			 } catch (ParseException e) {

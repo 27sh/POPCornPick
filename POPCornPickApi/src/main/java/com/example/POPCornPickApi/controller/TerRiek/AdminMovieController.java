@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.POPCornPickApi.dto.MovieDetailWithTotalViewDto;
 import com.example.POPCornPickApi.entity.MovieDetail;
 import com.example.POPCornPickApi.repository.MovieDetailRepository;
 import com.example.POPCornPickApi.service.MovieDetailService;
@@ -30,9 +31,9 @@ public class AdminMovieController {
 	}
 	
 	@GetMapping("/on")
-	public ResponseEntity<List<MovieDetail>> getMovieOn(){
+	public ResponseEntity<List<MovieDetailWithTotalViewDto>> getMovieOn(){
 		
-		List<MovieDetail> movieDetailList = movieDetailService.getMovieListOn();
+		List<MovieDetailWithTotalViewDto> movieDetailList = movieDetailService.getMovieListOn();
 		
 		if(movieDetailList != null) {
 			return ResponseEntity.status(HttpStatus.OK)
@@ -44,9 +45,9 @@ public class AdminMovieController {
 	}
 	
 	@GetMapping("/aboutto")
-	public ResponseEntity<List<MovieDetail>> getMovieAboutto(){
+	public ResponseEntity<List<MovieDetailWithTotalViewDto>> getMovieAboutto(){
 		
-		List<MovieDetail> movieDetailList = movieDetailService.getMovieListAboutto();
+		List<MovieDetailWithTotalViewDto> movieDetailList = movieDetailService.getMovieListAboutto();
 		
 		if(movieDetailList != null) {
 			return ResponseEntity.status(HttpStatus.OK)

@@ -83,7 +83,6 @@ main {
 			
 		</div>
 		<div id="button_box">
-			<button>상영종료</button>
 			<button id="return_button">뒤로가기</button>
 		</div>
 	</main>

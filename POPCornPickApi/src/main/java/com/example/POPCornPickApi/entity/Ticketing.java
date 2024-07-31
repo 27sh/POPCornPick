@@ -1,5 +1,7 @@
 package com.example.POPCornPickApi.entity;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,4 +41,5 @@ public class Ticketing extends BaseEntity {
 	
 	@Column(nullable = false)
 	private boolean viewTF;
+	
 }

@@ -134,7 +134,7 @@ h1 {
 				</table>
 		<div id="pagination">
 			<button id="prevBtn" disabled onclick="prev()"><</button>
-			<span id="page-numbers"> 1 2 3 4 </span>
+			<span id="page-numbers"> 1 </span>
 			<button id="nextBtn" onclick="next()">></button>
 		</div>
 			</div>

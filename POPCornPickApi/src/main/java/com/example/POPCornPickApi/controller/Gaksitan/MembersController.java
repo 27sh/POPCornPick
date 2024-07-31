@@ -23,6 +23,7 @@ import com.example.POPCornPickApi.entity.Cinema;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.MovieDetail;
+import com.example.POPCornPickApi.entity.MovieShowDetail;
 import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.Schedule;
@@ -233,34 +234,16 @@ public class MembersController {
 			Member member = new Member();
 			member.setUsername(username);
 			List<CancelList> listCancel = cancelListRepository.findByMember(member);
-			List<Ticketing> cancelTicketingList = new ArrayList<>();
-			
-			for(int i = 0; i < listCancel.size(); i++) {
-				if(cancelListRepository.existsById(listCancel.get(i).getCancerListNo())) {
-					Optional<CancelList> list_cancel = cancelListRepository.findById(listCancel.get(i).getCancerListNo());
-					CancelList cancel = list_cancel.get();
-					cancel.getTicketing().getTicketingNo();
-					Optional<Ticketing> ticket = ticketingRepository.findById(cancel.getTicketing().getTicketingNo());
-					Ticketing ticketing = ticket.get();
-					cancelTicketingList.add(ticketing);
-					
-					Long reservatedSeatNo = cancelTicketingList.get(i).getReservatedSeat().getReservatedSeatNo();
-					Long scheduleNo = reservatedSeatRepository.findByReservatedSeatNo(reservatedSeatNo).getSchedule().getScheduleNo();
-					
-					Long detailNo = scheduleRepository.findByScheduleNo(scheduleNo).getMovieShowDetail().getDetailNo();
-					Long movieDC = movieShowDetailRepository.findByDetailNo(detailNo).getMovie().getMovieDC();
-					Long roomNo = movieShowDetailRepository.findByDetailNo(detailNo).getRoom().getRoomNo();
-					Long cinemaNo = roomRepository.findByRoomNo(roomNo).get(0).getCinema().getCinemaNo();
-					
-					Cinema cinema = cinemaRepository.getCinemaFindByCinemaNo(cinemaNo);
-					Schedule schedule = scheduleRepository.findByScheduleNo(scheduleNo);
-					Movie movie = movieRepository.findByMovieDC(movieDC);
-					
-					
-					CancelListDto cancelListDto = new CancelListDto(movie.getTitle(), cinema.getCinemaName(), schedule.getStart(), cancelTicketingList.get(i).getRegdate(), cancelTicketingList.get(i).getPayTotalAmount());
-					
-					cancelList.add(cancelListDto);
-				}
+			System.out.println("List<CancelList> 타입의 listCancel 값 체크 : " + listCancel);
+			for(int i = 0; i < listCancel.size() ; i++) {
+				Schedule schedule = scheduleRepository.findByScheduleNo(listCancel.get(i).getScheduleNo());
+				System.out.println("schedule 값 체크 : " + schedule);
+				MovieShowDetail movieShowDetail = movieShowDetailRepository.findByDetailNo(schedule.getMovieShowDetail().getDetailNo());
+				List<Room> roomList = roomRepository.findByRoomNo(movieShowDetail.getRoom().getRoomNo());
+				List<Cinema> cinemaList = cinemaRepository.findByCinemaNo(roomList.get(0).getCinema().getCinemaNo());
+				Movie movie = movieRepository.findByMovieDC(movieShowDetail.getMovie().getMovieDC());
+				CancelListDto cancelListDto = new CancelListDto(movie.getTitle(), cinemaList.get(0).getCinemaName(), schedule.getStart(), listCancel.get(i).getRegdate(), listCancel.get(i).getPayTotalAmount());
+				cancelList.add(cancelListDto);
 			}
 			
 			
@@ -269,34 +252,15 @@ public class MembersController {
 			UnknownMember unknownMember = new UnknownMember();
 			unknownMember.setTelephone(tel);
 			List<CancelList> listCancel = cancelListRepository.findByUnknownMember(unknownMember);
-			List<Ticketing> cancelTicketingList = new ArrayList<>();
 			
-			for(int i = 0; i < listCancel.size(); i++) {
-				if(cancelListRepository.existsById(listCancel.get(i).getCancerListNo())) {
-					Optional<CancelList> list_cancel = cancelListRepository.findById(listCancel.get(i).getCancerListNo());
-					CancelList cancel = list_cancel.get();
-					cancel.getTicketing().getTicketingNo();
-					Optional<Ticketing> ticket = ticketingRepository.findById(cancel.getTicketing().getTicketingNo());
-					Ticketing ticketing = ticket.get();
-					cancelTicketingList.add(ticketing);
-					
-					Long reservatedSeatNo = cancelTicketingList.get(i).getReservatedSeat().getReservatedSeatNo();
-					Long scheduleNo = reservatedSeatRepository.findByReservatedSeatNo(reservatedSeatNo).getSchedule().getScheduleNo();
-					
-					Long detailNo = scheduleRepository.findByScheduleNo(scheduleNo).getMovieShowDetail().getDetailNo();
-					Long movieDC = movieShowDetailRepository.findByDetailNo(detailNo).getMovie().getMovieDC();
-					Long roomNo = movieShowDetailRepository.findByDetailNo(detailNo).getRoom().getRoomNo();
-					Long cinemaNo = roomRepository.findByRoomNo(roomNo).get(0).getCinema().getCinemaNo();
-					
-					Cinema cinema = cinemaRepository.getCinemaFindByCinemaNo(cinemaNo);
-					Schedule schedule = scheduleRepository.findByScheduleNo(scheduleNo);
-					Movie movie = movieRepository.findByMovieDC(movieDC);
-					
-					
-					CancelListDto cancelListDto = new CancelListDto(movie.getTitle(), cinema.getCinemaName(), schedule.getStart(), cancelTicketingList.get(i).getRegdate(), cancelTicketingList.get(i).getPayTotalAmount());
-					
-					cancelList.add(cancelListDto);
-				}
+			for(int i = 0; i < listCancel.size() ; i++) {
+				Schedule schedule = scheduleRepository.findByScheduleNo(listCancel.get(i).getScheduleNo());
+				MovieShowDetail movieShowDetail = movieShowDetailRepository.findByDetailNo(schedule.getMovieShowDetail().getDetailNo());
+				List<Room> roomList = roomRepository.findByRoomNo(movieShowDetail.getRoom().getRoomNo());
+				List<Cinema> cinemaList = cinemaRepository.findByCinemaNo(roomList.get(0).getCinema().getCinemaNo());
+				Movie movie = movieRepository.findByMovieDC(movieShowDetail.getMovie().getMovieDC());
+				CancelListDto cancelListDto = new CancelListDto(movie.getTitle(), cinemaList.get(0).getCinemaName(), schedule.getStart(), listCancel.get(i).getRegdate(), listCancel.get(i).getPayTotalAmount());
+				cancelList.add(cancelListDto);
 			}
 		}
 		System.out.println("cancelList : " + cancelList);
@@ -305,17 +269,49 @@ public class MembersController {
 	}
 	
 	@DeleteMapping("/cancelReservation")
-	public String deleteCancelReservation(@RequestParam("ticketingNo") Long ticketingNo) {
+	public String deleteCancelReservation(@RequestParam("ticketingNo") Long ticketingNo, HttpServletRequest request) {
 		String str = "";
+		String token = request.getHeader("Authorization");
 		if(ticketingNo != null) {
-			Optional<Ticketing> optionalTicketing = ticketingRepository.findById(ticketingNo);
-			Ticketing ticketing = optionalTicketing.get();
-			CancelList cancelList = new CancelList();
-			cancelList.setTicketing(ticketing);
-			cancelListRepository.save(cancelList);
-			ReservatedSeat reservatedSeat = reservatedSeatRepository.findByReservatedSeatNo(ticketing.getReservatedSeat().getReservatedSeatNo());
-			reservatedSeatRepository.delete(reservatedSeat);
-			ticketingRepository.delete(ticketing);
+			if(jwtUtil.getPassword2(token) == null) {
+				String username = jwtUtil.getUsername(token);
+				Optional<Ticketing> optionalTicketing = ticketingRepository.findById(ticketingNo);
+				Ticketing ticketing = optionalTicketing.get();
+				CancelList cancelList = new CancelList();
+//			cancelList.setTicketing(ticketing.getTicketingNo());
+				cancelList.setTicketing(ticketingNo);
+				Member member = new Member();
+				member.setUsername(username);
+				cancelList.setMember(member);
+				
+				cancelList.setPayTotalAmount(ticketing.getPayTotalAmount());
+				cancelList.setReservatedSeatNo(ticketing.getReservatedSeat().getReservatedSeatNo());
+				ReservatedSeat reservatedSeat = reservatedSeatRepository.findByReservatedSeatNo(ticketing.getReservatedSeat().getReservatedSeatNo());
+				cancelList.setScheduleNo(reservatedSeat.getSchedule().getScheduleNo());
+				
+				cancelListRepository.save(cancelList);
+				ticketingRepository.delete(ticketing);
+				reservatedSeatRepository.delete(reservatedSeat);
+			}else {
+				String telephone = jwtUtil.getTel(token);
+				Optional<Ticketing> optionalTicketing = ticketingRepository.findById(ticketingNo);
+				Ticketing ticketing = optionalTicketing.get();
+				CancelList cancelList = new CancelList();
+//			cancelList.setTicketing(ticketing.getTicketingNo());
+				cancelList.setTicketing(ticketingNo);
+				UnknownMember unknownMember = new UnknownMember();
+				unknownMember.setTelephone(telephone);
+				cancelList.setUnknownMember(unknownMember);
+				
+				cancelList.setPayTotalAmount(ticketing.getPayTotalAmount());
+				cancelList.setReservatedSeatNo(ticketing.getReservatedSeat().getReservatedSeatNo());
+				ReservatedSeat reservatedSeat = reservatedSeatRepository.findByReservatedSeatNo(ticketing.getReservatedSeat().getReservatedSeatNo());
+				cancelList.setScheduleNo(reservatedSeat.getSchedule().getScheduleNo());
+				
+				cancelListRepository.save(cancelList);
+				ticketingRepository.delete(ticketing);
+				reservatedSeatRepository.delete(reservatedSeat);
+			}
 			str = "예매취소가 완료되었습니다.";
 			
 		}else {

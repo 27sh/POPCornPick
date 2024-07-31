@@ -4,7 +4,7 @@
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 </head>
 <div id="side-container">
-    <a href="/mem/reservationList">
+    <a href="/member/reservationList">
         <div class="side-box" id="box1">
             나의 예매내역
         </div>    
@@ -19,12 +19,12 @@
             포인트
         </div>
     </a>
-    <a href="/mem/eventList">
+    <a href="/member/eventList">
         <div class="side-box" id="box4">
             이벤트 참여내역
         </div>
     </a>
-    <a href="/mem/myInfo">
+    <a href="/member/myInfo">
         <div class="side-box" id="box6">
             프로필 관리
         </div>
@@ -39,7 +39,7 @@
             내가 쓴 평점
         </div>
     </a>
-    <a href="/mem/qnaList">
+    <a href="/member/qnaList">
         <div class="side-box" id="box10">
             나의 문의 내역
         </div>

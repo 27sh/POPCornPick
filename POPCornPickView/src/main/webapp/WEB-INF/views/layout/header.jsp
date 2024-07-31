@@ -260,7 +260,7 @@
                     	<li><p id="username">username</p><input type="hidden" name="role" id="role" value=""></li>
                         <li><a href="" onclick="logout()" class="logout_btn">로그아웃</a></li>
                         <li><a href="/member/reservationList">My Page</a></li>
-                        <li><a href="/member/lentForm">대관문의</a></li>
+                        <li><a href="/member/qnaForm">대관문의</a></li>
                         <li><a href="faqList">고객센터</a></li>
                     </ul>
                 </div>

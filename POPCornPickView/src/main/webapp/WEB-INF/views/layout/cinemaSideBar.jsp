@@ -73,9 +73,8 @@ ul {
 
 
 #sidebar .sidebar-box5{
-	height: 60px;
+	height: 80px;
 	padding-top:30px;
-	border-bottom: 0;
 	font-size: 20px;
 }
 

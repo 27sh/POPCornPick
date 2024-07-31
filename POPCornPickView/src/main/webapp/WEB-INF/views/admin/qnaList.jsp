@@ -10,6 +10,19 @@
 <link rel="stylesheet" as="style" crossorigin
 	href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
+main {
+	width: 1200px;
+	margin: 80px auto;
+	display: flex;
+	justify-content: space-between;
+}
+
+main #container {
+	width: 900px;
+	min-height: 700px;
+	box-sizing: border-box;
+}
+
 body {
 	font-family: 'Pretendard Variable', Arial, sans-serif;
 	margin: 0;
@@ -18,22 +31,23 @@ body {
 
 .container {
 	width: 80%;
-	margin: 0 auto;
-	padding-top: 50px;
+	padding: 20px;
 }
 
 h1 {
-	text-align: left;
+	font-size: 24px;
+	margin-bottom: 20px;
 }
 
 table {
 	width: 100%;
 	border-collapse: collapse;
-	
+	text-align-last: center;	
 }
 
 thead tr {
 	border-top: 2px solid #ddd;
+	border: none;
 }
 
 tbody tr:last-child {
@@ -79,50 +93,91 @@ th {
 </style>
 </head>
 <body>
-	<div class="container">
-		<h1>Q&A</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>번호</th>
-					<th>카테고리</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>작성일자</th>
-					<th>답변상태</th>
-				</tr>
-			</thead>
-			<tbody id="tablebody">
+	<main>
+		<div class="sidebar-container">
+			<%@ include file="../layout/serviceSideBar.jsp"%>
+		</div>
+		<div class="container">
+			<h1>Q&A</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>카테고리</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일자</th>
+						<th>답변상태</th>
+					</tr>
+				</thead>
+				<tbody id="tablebody">
 
-			</tbody>
-		</table>
-	</div>
+				</tbody>
+			</table>
+		</div>
+	</main>
+
 
 	<script>
-		$(document).ready(function(){
-							$.ajax({
-									url : "http://localhost:9001/api/v1/admin/inquiry",
-									method : "GET",
-									success : function(data) {
-										var tableBody = $("#tablebody");
-										tableBody.empty();
-										data.forEach(function(qna) {
-											
-													var date = new Date(qna.regdate);
-													var year = date.getFullYear();
-													var month = (date.getMonth() + 1).toString().padStart(2,'0');
-													var day = date.getDate().toString().padStart(2,'0');
-													var formattedDate = year + '-' + month + '-' + day;
-													var answerClass = qna.qnaAnswer ? 'btn-completed' : 'btn-pending';
-													var answerStatus = (qna.qnaAnswer === null)? '답변대기<input type="button" class="btn"'+ answerClass +' onclick="answerToQna(event)" id="answer' + qna.qnaNo + '" value="답변하기">' : '답변완료'; // 답변 상태 처리
-													var row = '<tr>'+
-													'<td>' + qna.qnaNo + '</td>'+
-													'<td>' + qna.qnaBigCategory + '</td>' +
-													'<td>' + qna.qnaTitle + '</td>'	+
-													'<td>' + qna.member.username + '</td>' +
-													'<td>' + formattedDate + '</td>'+
-													'<td>' + answerStatus + ' </td>'
-											       	+ '</tr>';
+		$(document)
+				.ready(
+						function() {
+							$
+									.ajax({
+										url : "http://localhost:9001/api/v1/admin/inquiry",
+										method : "GET",
+										success : function(data) {
+											var tableBody = $("#tablebody");
+											tableBody.empty();
+											data
+													.forEach(function(qna) {
+
+														var date = new Date(
+																qna.regdate);
+														var year = date
+																.getFullYear();
+														var month = (date
+																.getMonth() + 1)
+																.toString()
+																.padStart(2,
+																		'0');
+														var day = date
+																.getDate()
+																.toString()
+																.padStart(2,
+																		'0');
+														var formattedDate = year
+																+ '-'
+																+ month
+																+ '-' + day;
+														var answerClass = qna.qnaAnswer ? 'btn-completed'
+																: 'btn-pending';
+														var answerStatus = (qna.qnaAnswer === null) ? '답변대기<input type="button" class="btn"'
+																+ answerClass
+																+ ' onclick="answerToQna(event)" id="answer'
+																+ qna.qnaNo
+																+ '" value="답변하기">'
+																: '답변완료'; // 답변 상태 처리
+														var row = '<tr>'
+																+ '<td>'
+																+ qna.qnaNo
+																+ '</td>'
+																+ '<td>'
+																+ qna.qnaBigCategory
+																+ '</td>'
+																+ '<td>'
+																+ qna.qnaTitle
+																+ '</td>'
+																+ '<td>'
+																+ qna.member.username
+																+ '</td>'
+																+ '<td>'
+																+ formattedDate
+																+ '</td>'
+																+ '<td>'
+																+ answerStatus
+																+ ' </td>'
+																+ '</tr>';
 														tableBody.append(row);
 													});
 										},
@@ -131,10 +186,10 @@ th {
 										}
 									});
 						});
-		
-		function answerToQna(event){
+
+		function answerToQna(event) {
 			const qnaNo = event.target.id.substring(6);
-			location.href="/admin/qnaEdit/" + qnaNo;
+			location.href = "/admin/qnaEdit/" + qnaNo;
 		}
 	</script>
 </body>

@@ -191,7 +191,7 @@ hr{
 						list += '<a href="/event/commonDetail?eventState=0&eventNo='+ data[i].eventNo +'">';
 						list += '<div class="eventItem">';
 						//list += '<div class="image-container>"'
-						list += '<img src="/img/'+ data[i].eventImgOriginName +'" alt="'+ data[i].eventTitle +'" id="endEventImg">';
+						list += '<img src="/upload/'+ data[i].eventImgNewName +'" alt="'+ data[i].eventTitle +'" id="endEventImg">';
 						//list += '<div class="overlay"> <div class="text">종료된 이벤트</div></div></div>';
 						list += '<div class="eventTitle">'+ data[i].eventTitle +'</div>';
 						list += '<div class="eventDate">'+ data[i].startEvent + ' ~ ' + data[i].endEvent +'</div>';

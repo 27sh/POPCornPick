@@ -189,19 +189,23 @@ public class EventController {
 				point.setPointType("룰렛 이벤트");
 				point.setMember(member);
 				point.setAcheive(10);
+				pointService.acheivePoint(point);
 				return ResponseEntity.ok("10포인트가 적립되었습니다. 참여 감사합니다^^");
 			} else if(participationResult.equals("500 포인트")) {
 				point.setPointType("룰렛 이벤트");
 				point.setMember(member);
 				point.setAcheive(500);
+				pointService.acheivePoint(point);
 				return ResponseEntity.ok("500포인트가 적립되었습니다. 참여 감사합니다^^");
 			} else if(participationResult.equals("할인쿠폰 1000원")) {
 				coupon.setCouponNo(result);
 				coupon.setMember(member);
+				couponService.eventCoupon(coupon);
 				return ResponseEntity.ok("할인쿠폰 1000원이 발급되었습니다. 참여 감사합니다^^");
 			} else if(participationResult.equals("할인쿠폰 5000원")) {
 				coupon.setCouponNo(result2);
 				coupon.setMember(member);
+				
 				return ResponseEntity.ok("할인쿠폰 5000원이 발급되었습니다. 참여 감사합니다^^");
 			} else {
 				return ResponseEntity.badRequest().body("다시 시도해주세요");

@@ -345,7 +345,7 @@ public class MembersController {
 			for(int i = 0; i < participationList.size() ; i++) {
 				Event event = new Event();
 				event.setEventNo(participationList.get(i).getEvent().getEventNo());
-				List<Event> eventList = eventRepository.findByEventNo(event);
+				List<Event> eventList = eventRepository.findByEventNo(event.getEventNo());
 				String eventTitle = eventList.get(0).getEventTitle();
 				Date startEvent = eventList.get(0).getStartEvent();
 				Date endEvent = eventList.get(0).getEndEvent();

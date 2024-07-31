@@ -15,5 +15,5 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
 	@Query("select count(p) from Participation p where p.event.eventNo = :eventNo and p.member.username = :username")
 	public int countByEventEventNoAndMemberUsername(@Param("eventNo")Long eventNo, @Param("username")String username);
 	
-	public List<Participation> findByMember(Member username);
+	public List<Participation> findByMember(Member memberUsername);
 }

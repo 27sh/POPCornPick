@@ -14,7 +14,7 @@ import jakarta.transaction.Transactional;
 
 public interface EventRepository extends JpaRepository<Event, Long>{
 	
-	List<Event> findByEventNo(Event eventNo);
+	List<Event> findByEventNo(Long eventNo);
 	
 	@Modifying
 	@Transactional

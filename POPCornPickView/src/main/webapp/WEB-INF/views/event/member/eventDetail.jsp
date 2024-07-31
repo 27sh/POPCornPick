@@ -348,24 +348,38 @@ canvas {
 		}
 		//mbti이벤트
 		if(eventNo == 3){
-			let eventNo6 = '';
-			eventNo6 += '<div id="eventContent"></div>';
-			eventNo6 += '<div id="eventSubmitButton"></div>';
-			eventNo6 += '<hr>';
-			eventNo6 += '<div id="buttonBox"></div>';
-			eventNo6 += '<div id="background">';
-			eventNo6 += '<div id="eventModal" class="modal">';
-			eventNo6 += '<div class="modal-box" id="modalBox">';
-			eventNo6 += '<div class="top-box">';
-			eventNo6 += '<span class="close"><a href="" onclick="closeModal()">&times;</a></span></div>';
-			eventNo6 += '<div class="modal-content">';
-			eventNo6 += '<div class="modal-title">당신의 mbti는</div>';
-			eventNo6 += '<div id="mbtiResult"></div>';
-			eventNo6 += '<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo"></span>이군요?!</span></div>';
-			eventNo6 += '<div>※ 500포인트가 지급되었어요</div>';
-			eventNo6 += '<button type="button" id="myEvent" onclick="myPage()">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>';
-			eventNo6 += '</div></div></div>';
-			document.getElementById("eventTotalContent").innerHTML = eventNo6;
+			let mbti = '';
+			mbti += '<div id="eventContent"></div>';
+			mbti += '<div id="eventSubmitButton"></div>';
+			mbti += '<div id="buttonBox"></div>';
+			mbti += '<div id="background">';
+			mbti += '<div id="eventModal" class="modal">';
+			mbti += '<div class="modal-box" id="modalBox">';
+			mbti += '<div class="top-box">';
+			mbti += '<span class="close"><a href="" onclick="closeModal()">&times;</a></span></div>';
+			mbti += '<div class="modal-content">';
+			mbti += '<div class="modal-title">당신의 mbti는</div>';
+			mbti += '<div id="mbtiResult"></div>';
+			mbti += '<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo"></span>이군요?!</span></div>';
+			mbti += '<div>※ 500포인트가 지급되었어요</div>';
+			mbti += '<button type="button" id="myEvent" onclick="myPage()">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>';
+			mbti += '</div></div></div>';
+			document.getElementById("eventTotalContent").innerHTML = mbti;
+		} else if(eventNo == 4){
+			let roulette = '';
+			roulette += '<div id="background">';
+			roulette += '<div id="eventModal" class="modal">';
+			roulette += '<div class="modal-box" id="modalBox">';
+			roulette += '<div class="top-box">';
+			roulette += '<span class="close"><a href="" onclick="closeModal()">&times;</a></span></div>';
+			roulette += '<div class="modal-content">';
+			roulette += '<div class="modal-title">당신의 mbti는</div>';
+			roulette += '<div id="mbtiResult"></div>';
+			roulette += '<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo"></span>이군요?!</span></div>';
+			roulette += '<div>※ 500포인트가 지급되었어요</div>';
+			roulette += '<button type="button" id="myEvent" onclick="myPage()">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>';
+			roulette += '</div></div></div>';
+			document.getElementById("eventTotalContent").innerHTML = roulette;
 		}
 		
 		
@@ -642,6 +656,16 @@ canvas {
 	}
 	
 	function openMbtiModal(){
+		const modal = document.getElementById("eventModal");
+		modal.style.display = "block";
+		
+		const background = document.getElementById("background");
+		document.body.classList.add('no-scroll');
+		document.body.style.backgroundColor = "rgba(0, 0, 0, 0.5) !important";
+		background.style.display = "flex";
+	}
+	
+	function openRouletteModal(){
 		const modal = document.getElementById("eventModal");
 		modal.style.display = "block";
 		

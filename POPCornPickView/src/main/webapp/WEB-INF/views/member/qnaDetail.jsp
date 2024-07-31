@@ -59,7 +59,7 @@ main {
 .qnaContent {
 	border: 1px solid;
 	width: 860px;
-	height: 700px;
+	height: 735px;
 	box-sizing: border-box;
 }
 
@@ -88,8 +88,9 @@ main {
 .context {
 	font-size: 16px;
 	margin: 0 20px;
+	padding: 10px 0 0 20px;
 	height: 300px;
-	border: 1px solid green;
+/* 	border: 1px solid green; */
 }
 
 .regdate {
@@ -122,6 +123,38 @@ main {
 .fileImage {
 	margin: 15px 20px;
 	height: 150px;
+}
+
+.buttons {
+	text-align: center;
+}
+
+.buttons input[type='button'] {
+	width: 120px;
+	height: 35px;
+	margin: 10px 30px;
+}
+
+#editBtn {
+	border: none;
+	border-radius: 7px;
+	background-color: #d9534f;
+	color: #ffffff;
+}
+
+#deleteBtn {
+	border: none;
+	border-radius: 7px;
+	background-color: #BDBDBD;
+	color: #ffffff;
+}
+
+#editBtn:hover {
+	background-color: #EB534F;
+}
+
+#deleteBtn:hover {
+	background-color: #A0A0A0;
 }
 
 </style>
@@ -180,12 +213,12 @@ main {
 				}
 				
 				qnaDetail.innerHTML = ''; 
-				qnaDetail.innerHTML += '<div class="title"><p class="smallCategoryAndTitle">[' + qna.qnaSmallCategory + '] ' + qna.qnaTitle + ' <span class="regdate">' +  qna.regdate.split("T")[0] + '</span><span class="qnaAnswer">' + Answer + '</span></p></div>';
+				qnaDetail.innerHTML += '<div class="title"><p class="smallCategoryAndTitle">[' + qna.qnaSmallCategory + ']     ' + qna.qnaTitle + ' <span class="regdate">' +  qna.regdate.split("T")[0] + '</span><span class="qnaAnswer">' + Answer + '</span></p></div>';
 				qnaDetail.innerHTML += '<div class="context">' + qna.qnaContent + '</div>';
 				qnaDetail.innerHTML += '<p class="file"> 첨부 파일</p>';
 				qnaDetail.innerHTML += '<div class="fileImage"><img src="" id="qnaFileImg" alt="이미지 첨부파일 미리보기"></div>';
 				qnaDetail.innerHTML += '<div class="fileName">' + qnaFileName + '</div>';
-				qnaDetail.innerHTML += '<div class="buttons"><input type="button" value="수정" onclick="editQnaForm()"> <input type="button" value="삭제" onclick="deleteQna()"></div>'
+				qnaDetail.innerHTML += '<div class="buttons"><input type="button" id="editBtn" value="수정" onclick="editQnaForm()"> <input type="button" id="deleteBtn" value="삭제" onclick="deleteQna()"></div>'
 				
 				const AnswerColor = document.querySelector(".qnaAnswer");
 				
@@ -233,7 +266,7 @@ main {
 		});
 		
 		function editQnaForm(){
-			window.location.href = "/member/editQnaForm";
+			window.location.href = "/member/editQnaForm?qnaNo=" + ${qnaNo};
 // 			const xhttp = new XMLHttpRequest();
 			
 // 			xhttp.onload = function(){

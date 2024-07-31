@@ -214,15 +214,95 @@ public class MemberInquiryController {
 		return qna;
 	}
 	
-	@PutMapping("/editInquiry")
-	public String editInquiry(@RequestParam("qnaNo") Long qnaNo) {
+	@GetMapping("/editInquiry")
+	public Qna editInquiry(@RequestParam("qnaNo") Long qnaNo) {
+		
 		String str = "";
 		if(qnaNo != null) {
+			Qna qna = qnaRepository.findByQnaNo(qnaNo);
+			return qna;
+		}else {
+			return null;
+		}
+		
+	}
+	
+	@PutMapping("/editInquiry")
+	public ResponseEntity<?> editInquiry(@ModelAttribute QnaDto qnaDto, HttpServletRequest request) {
+		try {
+			Qna qna = new Qna();
+			String qna_No = request.getParameter("qnaNo");
+			Long qnaNo = Long.parseLong(qna_No);
+			Member member = new Member();
+			String token = request.getHeader("Authorization").split(" ")[1];
+			String username = jwtUtil.getUsername(token);
+			member = memberRepository.findByUsername(username);
+			//member.setUsername(qnaDto.getUsername());
+			System.out.println("member : " + member);
 			
+			qna.setQnaNo(qnaNo);
+			qna.setMember(member);
+			qna.setQnaTitle(qnaDto.getQnaTitle());
+			qna.setQnaContent(qnaDto.getQnaContent());
+			qna.setQnaBigCategory(qnaDto.getQnaBigCategory());
+			qna.setQnaSmallCategory(qnaDto.getQnaSmallCategory());
+			qna.setQnaType(qnaDto.getQnaType());
+			qna.setQnaCinemaLocation(qnaDto.getQnaCinemaLocation());
+			qna.setQnaCinemaName(qnaDto.getQnaCinemaName());
+			
+			
+			if(qnaDto.getQnaFile() != null && !qnaDto.getQnaFile().isEmpty()) {
+				String originName = qnaDto.getQnaFile().getOriginalFilename();
+				System.out.println(originName);
+				String extension = originName.substring(originName.lastIndexOf('.'));
+				System.out.println(extension);
+				String newName = UUID.randomUUID().toString() + "--" + originName;// + extension;
+				File file = new File("C:/upload/" + newName);
+				String uploadDir = "classpath:static/upload";
+				File file2 = new File(uploadPath, newName);
+				qna.setQnaFile(newName);
+				List<String> imageExtensions = new ArrayList<>();
+				imageExtensions.add(".jpg");
+				imageExtensions.add(".jpeg");
+				imageExtensions.add(".png");
+				imageExtensions.add(".gif");
+				
+				if(imageExtensions.contains(extension) == false) {
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("파일 업로드 실패: 이미지 파일만 첨부가 가능합니다.");
+				}
+				
+				try {
+					
+			        //qnaDto.getQnaFile().transferTo(file);
+			        qnaDto.getQnaFile().transferTo(file2);
+			        System.out.println("파일 업로드 성공....");
+			           
+			        //썸네일 생성
+			        //String thumbnailSaveName = "s_" + newName;
+			        //board.setThumbnailName(thumbnailSaveName);
+			        
+			        //File thumbfile = new File(uploadPath + thumbnailSaveName);
+//			        File ufile = new File(uploadPath + newName);
+			        
+			        //Thumbnails.of(ufile).size(100,100).toFile(thumbfile);
+			        System.out.println("qnaDto : " + qnaDto);
+			            
+			            
+			    }catch(IOException | IllegalStateException  e){
+			    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패: " + e.getMessage());
+			    }
+				
+				
+			}
+			
+			qnaRepository.save(qna);
+			
+			return ResponseEntity.ok("파일 업로드 성공");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("문의 등록 실패: " + e.getMessage());
 		}
 		
 		
-		return "";
 	}
 	
 	@DeleteMapping("/deleteInquiry")

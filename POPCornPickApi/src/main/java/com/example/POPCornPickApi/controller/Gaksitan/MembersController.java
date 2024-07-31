@@ -1,6 +1,7 @@
 package com.example.POPCornPickApi.controller.Gaksitan;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,13 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.POPCornPickApi.dto.CancelListDto;
+import com.example.POPCornPickApi.dto.MemberParticipationDto;
 import com.example.POPCornPickApi.dto.ReservationListDto;
 import com.example.POPCornPickApi.entity.CancelList;
 import com.example.POPCornPickApi.entity.Cinema;
+import com.example.POPCornPickApi.entity.Event;
 import com.example.POPCornPickApi.entity.Member;
 import com.example.POPCornPickApi.entity.Movie;
 import com.example.POPCornPickApi.entity.MovieDetail;
 import com.example.POPCornPickApi.entity.MovieShowDetail;
+import com.example.POPCornPickApi.entity.Participation;
 import com.example.POPCornPickApi.entity.ReservatedSeat;
 import com.example.POPCornPickApi.entity.Room;
 import com.example.POPCornPickApi.entity.Schedule;
@@ -32,10 +36,12 @@ import com.example.POPCornPickApi.entity.UnknownMember;
 import com.example.POPCornPickApi.jwt.JWTUtil;
 import com.example.POPCornPickApi.repository.CancelListRepository;
 import com.example.POPCornPickApi.repository.CinemaRepository;
+import com.example.POPCornPickApi.repository.EventRepository;
 import com.example.POPCornPickApi.repository.MemberRepository;
 import com.example.POPCornPickApi.repository.MovieDetailRepository;
 import com.example.POPCornPickApi.repository.MovieRepository;
 import com.example.POPCornPickApi.repository.MovieShowDetailRepository;
+import com.example.POPCornPickApi.repository.ParticipationRepository;
 import com.example.POPCornPickApi.repository.PromotionInfoRepository;
 import com.example.POPCornPickApi.repository.ReservatedSeatRepository;
 import com.example.POPCornPickApi.repository.RoomRepository;
@@ -86,6 +92,12 @@ public class MembersController {
 	
 	@Autowired
 	private MovieDetailRepository movieDetailRepository;
+	
+	@Autowired
+	private ParticipationRepository participationRepository;
+	
+	@Autowired
+	private EventRepository eventRepository;
 	
 	@GetMapping("/memberInfo")
 	public Member memberInfo(HttpServletRequest request) {
@@ -319,6 +331,41 @@ public class MembersController {
 		}
 		
 		return str; 
+	}
+	
+	@GetMapping("/event")
+	public List<MemberParticipationDto> event(HttpServletRequest request) {
+		String token = request.getHeader("Authorization").split(" ")[1];
+		String username = jwtUtil.getUsername(token);
+		Member member = new Member();
+		member.setUsername(username);
+		List<MemberParticipationDto> applyEventList = new ArrayList<>();
+		if(participationRepository.findByMember(member) != null) {
+			List<Participation> participationList = participationRepository.findByMember(member);
+			for(int i = 0; i < participationList.size() ; i++) {
+				Event event = new Event();
+				event.setEventNo(participationList.get(i).getEvent().getEventNo());
+				List<Event> eventList = eventRepository.findByEventNo(event);
+				String eventTitle = eventList.get(0).getEventTitle();
+				Date startEvent = eventList.get(0).getStartEvent();
+				Date endEvent = eventList.get(0).getEndEvent();
+				
+				MemberParticipationDto participationDto = new MemberParticipationDto(
+						participationList.get(i).getParticNo(), 
+						participationList.get(i).getMember().getUsername(), 
+						event.getEventNo(), 
+						eventTitle, 
+						startEvent, 
+						endEvent, 
+						participationList.get(i).getParticipationResult());
+				applyEventList.add(participationDto);
+				System.out.println("partic 확인 : " + participationDto);
+			}
+			return applyEventList;
+		}else {
+			return null;
+		}
+		
 	}
 	
 	

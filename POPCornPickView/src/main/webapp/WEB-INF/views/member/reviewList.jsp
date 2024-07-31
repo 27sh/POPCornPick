@@ -65,6 +65,10 @@
     td {
     	height: 40px;
     }
+    
+    td:nth-child(2) {
+    	width: 480px;
+    }
 
 	#count-review {
 		font-weight: bold;

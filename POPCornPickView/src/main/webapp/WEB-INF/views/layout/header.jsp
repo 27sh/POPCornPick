@@ -251,8 +251,8 @@
                     <ul>
                         <li><a href="/loginForm">로그인</a></li>
                         <li><a href="/joinForm">회원가입</a></li>
-                        <li><a href="/member/lentForm">대관문의</a></li>
-                        <li><a href="faqList">고객센터</a></li>
+                        <li><a href="/member/qnaForm">문의하기</a></li>
+                        <li><a href="/common/faqList">고객센터</a></li>
                     </ul>
                 </div>
                 <div class="loginMenu" id="login" style="display: none;">
@@ -260,8 +260,8 @@
                     	<li><p id="username">username</p><input type="hidden" name="role" id="role" value=""></li>
                         <li><a href="" onclick="logout()" class="logout_btn">로그아웃</a></li>
                         <li><a href="/member/reservationList">My Page</a></li>
-                        <li><a href="/member/qnaForm">대관문의</a></li>
-                        <li><a href="faqList">고객센터</a></li>
+                        <li><a href="/member/qnaForm">문의하기</a></li>
+                        <li><a href="/common/faqList">고객센터</a></li>
                     </ul>
                 </div>
             </div>
@@ -303,7 +303,7 @@
                             </ul>
                         </li>
                         
-                        <li><a href="">고객센터</a>
+                        <li><a href="/common/faqList">고객센터</a>
                             <ul class="sme">
                                 <li><a href="/common/faqList">자주찾는질문</a></li>
                                 <li><a href="/common/noticeList">공지/뉴스</a></li>
@@ -337,7 +337,7 @@
                         <li><a href="/film/movieList">영화</a>
                             <ul class="sme">
                                 <li><a href="/film/movieList">무비차트</a></li>
-                                <li><a href="movieList">무비차트2</a></li>
+                                <li><a href="/film/noapi">무비차트2</a></li>
                             </ul>
                         </li>
                         <li><a href="/memberCinema/cinemaPage">극장</a>
@@ -352,11 +352,16 @@
                                 <li><a href="/common/scheduleList">상영스케쥴</a></li>
                             </ul>
                         </li>                       
-                        <li><a href="eventList">이벤트</a>
+                        <li><a href="/event/commonList?eventState=1">이벤트</a>
                             <ul class="sme">
-                                <li><a href="eventList">진행중인 이벤트</a></li>
-                                <li><a href="eventList">당첨자 발표</a></li>
-                                <li><a href="eventList">종료된 이벤트</a></li>
+                                <li><a href="/event/commonList?eventState=1">진행중인 이벤트</a></li>
+                                <li><a href="/event/commonList?eventState=0">종료된 이벤트</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/common/faqList">고객센터</a>
+                            <ul class="sme">
+                                <li><a href="/common/faqList">자주찾는질문</a></li>
+                                <li><a href="/common/noticeList">공지/뉴스</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -444,7 +449,13 @@
 			'/loginForm',
 			'/reservation/faqList',
 			'/common/scheduleList',
-			'/search/result'
+			'/search/result',
+			'/film/noapi',
+			'/event/commonList',
+			'/room/sRoomDetail',
+			'/reservation/main',
+			'/common/faqList',
+			'/common/noticeList'
         ];
 
 //         // 현재 경로가 비회원 접근 가능 경로에 포함되는지 확인

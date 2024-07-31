@@ -289,7 +289,7 @@ body {
     color: black; /* 활성화된 버튼의 글자 색상 검은색 */
 }
 
-#go-to-movieList {
+.go-to-movieList {
     font-size: 13px;
     font-weight: normal; /* 글씨를 얇게 설정 */
     background: none;

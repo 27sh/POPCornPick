@@ -12,9 +12,17 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/cinemaPageTop.js"></script>
 <style>
+#inquery-btn {
+	cursor: pointer;
+}
 </style>
 <script>
-
+$(document).ready(function() {
+	// inquery-btn 클릭 이벤트 추가
+    document.getElementById('inquery-btn').addEventListener('click', function() {
+        window.location.href = '/member/qnaForm';
+    });
+});
 </script>
 
 </head>

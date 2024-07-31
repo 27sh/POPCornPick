@@ -42,7 +42,8 @@ public interface TicketingRepository extends JpaRepository<Ticketing, Long>{
 	List<Ticketing> findByReservatedSeatReservatedSeatNoIn(List<Long> reservatedSeatNos);
 	
 	public List<Ticketing> findByMember_UsernameAndViewTFAndReservatedSeat_Schedule_MovieShowDetail_Movie_MovieDC(String username, boolean viewTF, Long movieDC);
-
+	
+		
 	public List<Ticketing> findByMember(Member username);
 	
 	public List<Ticketing> findByUnknownMember(UnknownMember unknownMember);
@@ -79,5 +80,10 @@ public interface TicketingRepository extends JpaRepository<Ticketing, Long>{
 			+ "JOIN t.member m "
 			+ "GROUP BY m.gender ")
 	public List<FmSaleDto> getFmSales();
+	
+	public List<Ticketing>findByReservatedSeat_Schedule_MovieShowDetail_Movie_Title(String title);
+	
+	public List<Ticketing> findByMember_UsernameAndViewTF(String username, boolean viewTF);
+	
 	 
 }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.POPCornPickApi.dto.AverageDTO;
+import com.example.POPCornPickApi.dto.FmSaleDto;
 import com.example.POPCornPickApi.dto.MovieDetailDto;
 import com.example.POPCornPickApi.entity.MovieDetail;
 import com.example.POPCornPickApi.entity.Review;
@@ -52,6 +54,9 @@ public class FilmController {
 
 	@Autowired
 	private ReviewService reviewService;
+	
+	@Autowired
+	private TicketingService ticketingService;
 	
 	@Autowired
 	private JWTUtil jwtutil;
@@ -128,29 +133,25 @@ public class FilmController {
 		}	
 	}
 
-	@GetMapping("/score/{movieDC}")
-	public String scorelist(@PathVariable("movieDC") String movieDC, HttpServletRequest request) {
-		
-		String jwtToken = request.getHeader("Authorization").split(" ")[1];
-		String username = jwtutil.getUsername(jwtToken);
-		
-		List<Ticketing> ticketing = reviewService.getgender(username, movieDC); 
-		
-		MovieDetail md = new MovieDetail();
-		
-		
-		
-		
-		//reviewService.getAverageReviewScore();
-		//reviewService.getTitalCount();
-		
-		
-		
-		
-		
-		return null;
+	@GetMapping("/ticketchart/{movieNm}")
+	public ResponseEntity<List<FmSaleDto>> scorelist(@PathVariable("movieNm") String movieNm) {
+		System.out.println(movieNm);
+		//
+		List<FmSaleDto> fmlist = ticketingService.makechart(movieNm);
+		System.out.println("남녀비율" + fmlist);
+		if(fmlist == null) {
+			return ResponseEntity.status(HttpStatus.OK).body(null); 
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(fmlist);
 	}
 	
+	@GetMapping("/score/{movieDC}")
+	public ResponseEntity<AverageDTO> getscore(@PathVariable("movieDC") String movieDC) {
+		
+		AverageDTO dto = reviewService.makescore(movieDC);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(dto);
+	}
 	
 	
 	

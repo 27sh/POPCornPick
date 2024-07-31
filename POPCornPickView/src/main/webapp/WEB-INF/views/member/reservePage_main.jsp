@@ -2022,6 +2022,8 @@ main {
 			const movieTitle = "${movieTitle}";
 			const scheduleStart = "${scheduleStart}";
 			
+			console.log("date : " + date);
+			
 			if(cinemaNo.length !== 0 && date.length !== 0 && roomNo !== 0 &&
 				movieTitle.length !== 0 && scheduleStart.length !== 0
 					){
@@ -2032,6 +2034,8 @@ main {
 					method : "GET",
 					dataType : "json",
 					success : function(response){
+						
+						console.log(response);
 						
 						const movieDC = response[0].movieShowDetail.movie.movieDC;
 						
@@ -2131,7 +2135,7 @@ main {
 						}else if(response[0].room.cinema.cinemaLocation === "경기/인천"){
 							$(".gyeongbuk_daegu").addClass("selected");
 							location = 'gyeongbuk_daegu';
-						}else if(response[0].room.cinema.cinemaLocation === "경기/인천"){
+						}else if(response[0].room.cinema.cinemaLocation === "경남/부산/울산"){
 							$(".gyeongnam_busan_ulsan").addClass("selected");
 							location = 'gyeongnam_busan_ulsan';
 						}else if(response[0].room.cinema.cinemaLocation === "강원"){
@@ -2149,6 +2153,9 @@ main {
 							success : function(response){
 								let str = '';
 								let cnt = 0;
+								
+								console.log("cinemaInformation : " + response);
+								
 								response.forEach(cinema => {
 									if(cinema.cinemaNo == cinemaNo){
 										$(".section_cinema_title").text("영화관 - " + cinema.cinemaName);

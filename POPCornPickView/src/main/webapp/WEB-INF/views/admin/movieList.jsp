@@ -105,7 +105,6 @@ input[name=keyword]{
 			<ul>
 				<li class="selected" id="onmovie">상영작</li>
 				<li id="abouttomovie">상영예정작</li>
-				<li id="endmovie">상영종료작</li>
 			</ul>
 		</nav>
 		<div id="table_box">
@@ -140,7 +139,13 @@ input[name=keyword]{
 					let str = "<tr>";
 					let cnt = 1;
 					
-					response.forEach(movie => {
+					const sortByTotalViewDesc = (movies) => {
+					    return movies.sort((a, b) => b.totalView - a.totalView);
+					};
+					
+					const sortedMovies = sortByTotalViewDesc(response);
+					
+					sortedMovies.forEach(movie => {
 						str += '<tr onclick="moveToMovieForm(event)" id="movieDC_' + movie.movieDC + '"><td>' + cnt + '</td> ';
 						if(movie.viewAge === "전체관람가"){
 							str += '<td><img alt="" src="/img/grade_all.png"></td> ';
@@ -153,7 +158,7 @@ input[name=keyword]{
 						}
 						
 						str += '<td style="font-weight:bold;">' + movie.movieNm + '</td> ' +
-							'<td>' + 0 + '</td> ' +
+							'<td>' + movie.totalView + '</td> ' +
 							'<td>' + movie.openDt + '</td>' +
 							'<td>2024.08.10</td></tr> ';
 							cnt++;
@@ -188,7 +193,14 @@ input[name=keyword]{
 							let str = "<tr>";
 							let cnt = 1;
 							
-							response.forEach(movie => {
+							const sortByTotalViewDesc = (movies) => {
+							    return movies.sort((a, b) => b.totalView - a.totalView);
+							};
+							
+							const sortedMovies = sortByTotalViewDesc(response);
+							
+							
+							sortedMovies.forEach(movie => {
 								str += '<tr onclick="moveToMovieForm(event)" id="movieDC_' + movie.movieDC + '"><td>' + cnt + '</td> ';
 								if(movie.viewAge === "전체관람가"){
 									str += '<td><img alt="" src="/img/grade_all.png"></td> ';
@@ -201,7 +213,7 @@ input[name=keyword]{
 								}
 								
 								str += '<td style="font-weight:bold;">' + movie.movieNm + '</td> ' +
-									'<td>' + 0 + '</td> ' +
+									'<td>' + movie.totalView + '</td> ' +
 									'<td>' + movie.openDt + '</td>' +
 									'<td>2024.08.10</td></tr> ';
 									cnt++;
@@ -229,7 +241,13 @@ input[name=keyword]{
 							let str = "<tr>";
 							let cnt = 1;
 							
-							response.forEach(movie => {
+							const sortByTotalViewDesc = (movies) => {
+							    return movies.sort((a, b) => b.totalView - a.totalView);
+							};
+							
+							const sortedMovies = sortByTotalViewDesc(response);
+							
+							sortedMovies.forEach(movie => {
 								str += '<tr onclick="moveToMovieForm(event)" id="movieDC_' + movie.movieDC + '"><td>' + cnt + '</td> ';
 								if(movie.viewAge === "전체관람가"){
 									str += '<td><img alt="" src="/img/grade_all.png"></td> ';
@@ -242,7 +260,7 @@ input[name=keyword]{
 								}
 								
 								str += '<td style="font-weight:bold;">' + movie.movieNm + '</td> ' +
-									'<td>' + 0 + '</td> ' +
+									'<td>' + movie.totalView + '</td> ' +
 									'<td>' + movie.openDt + '</td>' +
 									'<td>2024.08.10</td></tr> ';
 									cnt++;
@@ -290,7 +308,13 @@ input[name=keyword]{
 						let str = "<tr>";
 						let cnt = 1;
 						
-						response.forEach(movie => {
+						const sortByTotalViewDesc = (movies) => {
+						    return movies.sort((a, b) => b.totalView - a.totalView);
+						};
+						
+						const sortedMovies = sortByTotalViewDesc(response);
+						
+						sortedMovies.forEach(movie => {
 							str += '<tr onclick="moveToMovieForm(event)" id="movieDC_' + movie.movieDC + '"><td>' + cnt + '</td> ';
 							if(movie.viewAge === "전체관람가"){
 								str += '<td><img alt="" src="/img/grade_all.png"></td> ';
@@ -303,7 +327,7 @@ input[name=keyword]{
 							}
 							
 							str += '<td style="font-weight:bold;">' + movie.movieNm + '</td> ' +
-								'<td>' + 0 + '</td> ' +
+								'<td>' + movie.totalView + '</td> ' +
 								'<td>' + movie.openDt + '</td>' +
 								'<td>2024.08.10</td></tr> ';
 								cnt++;

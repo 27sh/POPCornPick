@@ -283,6 +283,8 @@ public class ReservationController {
 	public ResponseEntity<List<ScheduleDto_JYC>> getScheduleListFromScheduleList(@PathVariable("cinemaNo") Long cinemaNo, @PathVariable("date") String date,
 			@PathVariable("roomNo") Long roomNo, @PathVariable("movieTitle") String movieTitle, @PathVariable("scheduleStart") String scheduleStart){
 		
+		System.out.println("date : " + date);
+		
 		List<ScheduleDto_JYC> scheduleDtoList = reservationService.getScheduleListFromScheduleList(cinemaNo, date, roomNo, movieTitle, scheduleStart);
 		
 		if(scheduleDtoList != null) {

@@ -299,7 +299,6 @@
                         <li><a href="/event/commonList?eventState=1">이벤트</a>
                             <ul class="sme">
                                 <li><a href="/event/commonList?eventState=1">진행중인 이벤트</a></li>
-                                <li><a href="/event/commonList?eventState=2">당첨자 발표</a></li>
                                 <li><a href="/event/commonList?eventState=0">종료된 이벤트</a></li>
                             </ul>
                         </li>

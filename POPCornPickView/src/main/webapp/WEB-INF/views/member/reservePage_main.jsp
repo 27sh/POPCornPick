@@ -18,6 +18,7 @@
 <style type="text/css">
 body {
 	box-sizing: border-box;
+	height: 1120px;
 }
 
 #container {
@@ -38,13 +39,13 @@ body {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	z-index: 9999;
+	z-index: 98;
 }
 
 .simple_info {
 	display: flex;
 	flex-direction: row;
-	height: 100%;
+	height: 216.5px;
 	position: absolute;
 }
 

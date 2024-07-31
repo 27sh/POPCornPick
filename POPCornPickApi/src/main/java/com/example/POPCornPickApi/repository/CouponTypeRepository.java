@@ -9,4 +9,6 @@ import com.example.POPCornPickApi.entity.CouponType;
 public interface CouponTypeRepository extends JpaRepository<CouponType, Long>{
 	
 	Optional<CouponType> findByCouponNo(Long couponNo);
+	
+	CouponType findByCouponName(String couponName);
 }

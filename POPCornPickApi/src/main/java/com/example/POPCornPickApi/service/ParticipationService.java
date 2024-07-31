@@ -15,6 +15,7 @@ public class ParticipationService {
 	private ParticipationRepository participationRepository;
 	
 	public boolean memberEventForm(Participation participation) {
+		
 		try {
 			participationRepository.save(participation);
 			return true;
@@ -33,5 +34,6 @@ public class ParticipationService {
 		System.out.println(check);
 		return check;
 	}
+	
 	
 }

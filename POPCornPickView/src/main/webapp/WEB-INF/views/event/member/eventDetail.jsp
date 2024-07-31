@@ -17,8 +17,9 @@ main {
 }
 
 #eventTotalContent{
-/* 	background: #f7f8fc; */
 	height: 560px;
+	height: auto;
+	overflow: visible;
 }
 
 .event-header {
@@ -74,7 +75,7 @@ input[type="radio"]{
 	margin-top: 20px;
 }
 
-#submitEvent {
+#submitEvent, #spinRoulette{
 	padding: 15px 50px;
 	font-family: "Pretendard Variable", Pretendard;
 	font-size: 15px;
@@ -219,7 +220,6 @@ hr{
   	top: 0;  
   	left: 0;  
   	z-index: 999;  
-  	/* backdrop-filter: blur(5px); */
   	display: none;
   	align-items: center;
   	justify-content: center;
@@ -227,52 +227,45 @@ hr{
 
 ---- 룰렛 ----
 canvas {
-	margin-top: 100px;
+	width: 500px;
+	height: 500px;
 	transition: 2s;
 }
-
 .roulette-container {
-	width: 600px;
-	display: flex;
-	align-items: center;
-	margin-top: 100px;
-	flex-direction: column;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-/* 	height-min: 1000px; */
-/* 	overflow: hidden; */
- 	transform: translate(-50%, -50%);
+ 	position: relative; 
+	width: 500px;
+	height: 500px;
+	margin: 50px auto;
+	z-index: 1;
+}
+
+ .pointer{  
+ 	position: absolute;  
+ 	top: 0;  
+ 	left: 50%;  
+ 	width: 20px;  
+ 	height: 40px;  
+ 	background: red;  
+ 	transform: translateX(-50%) rotate(180deg);
  	
-}
+ 	clip-path: polygon(50% 0%, 0% 100%, 100% 100%);  
+ 	z-index: 3;
+ 	rotate: 
+ 	  
+ }  
 
-.roulette-container::before {
-	content: "";
-	position: absolute;
-	width: 10px;
-	height: 50px;
-	border-radius: 5px;
-	background: #000;
-	top: -20px;
-	left: 50%;
-	transform: translateX(-50%);
-	z-index: 22;
-}
-
-#spinRoulette{
-	padding: 15px 50px;
-	font-family: "Pretendard Variable", Pretendard;
-	font-size: 15px;
-	cursor: pointer;
-	margin: 0 10px;
-	background: #f82f62;
-	border: 1px solid #f82f62;
-	color:#fff;
+#rouletteCanvas{
+	width: 100%;
+	height: 100%;	
+ 	position: absolute;  
+ 	top: 0;
+ 	left: 0;
+ 	z-index: 2;
+ 	transform-origin: center;
 }
 
 
 </style>
-<script src="/js/rouletteEvent.js"></script>
 </head>
 
 
@@ -337,13 +330,13 @@ canvas {
 			document.getElementById("buttonBox").innerHTML = buttonStr2;
 			document.getElementById('eventState').innerText = "진행중인 이벤트";
 			document.querySelector('#eventState').style.color = '#2275a4';
-			if(eventNo == 6){
+			if(eventNo == 3){
 				const buttonStr1 = '<input type="button" id="submitEvent" value="참여하기" onclick="submitMbtiEvent(event)">';
 				document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
-			} else if(eventNo == 15){
-				const buttonStr1 = '<input type="button" id="spinRoulette" value="룰렛 돌리기" onclick="rotate()">';
+			} else if(eventNo == 4){
+				const buttonStr1 = '<input type="button" id="spinRoulette" value="룰렛 돌리기" onclick="spinButton('+eventNo+')">';
 				document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
-			} else if(eventNo == 17){
+			} else if(eventNo == 2){
 				const buttonStr1 = '<input type="button" id="submitEvent" value="참여하기" onclick="submitTicketEvent(event)">';
 				document.getElementById("eventSubmitButton").innerHTML = buttonStr1;
 			}
@@ -354,7 +347,7 @@ canvas {
 			document.getElementById("buttonBox").innerHTML = buttonStr2;
 		}
 		//mbti이벤트
-		if(eventNo == 6){
+		if(eventNo == 3){
 			let eventNo6 = '';
 			eventNo6 += '<div id="eventContent"></div>';
 			eventNo6 += '<div id="eventSubmitButton"></div>';
@@ -374,25 +367,6 @@ canvas {
 			eventNo6 += '</div></div></div>';
 			document.getElementById("eventTotalContent").innerHTML = eventNo6;
 		}
-		//룰렛이벤트
-		if(eventNo == 15){
-			const eventTotalContent = document.getElementById("eventTotalContent");
-			let eventNo15 = '';
-			eventNo15 += '<div class="roulette-container">';
-			eventNo15 += '<canvas id="roulette" width="500" height="500"></canvas>';
-			eventNo15 += '</div>';
-			eventTotalContent.innerHTML = eventNo15;
-			roulette();
-		};
-		
-		if(eventNo == 17){
-// 			const eventTotalContent = document.getElementById("eventTotalContent");
-// 			let eventNo17 = '';
-// 			eventNo17 += '<div class=""><li><ul>진행일정 : 7/22~7/31</ul><ul>당첨 발표 : 8/1</ul><ul>참여 방법 : 하단에 참여하기 버튼을 클릭 후 티켓 인증 사진 업로드!!</ul><ul>증정 경품 : 10,000포인트</ul></li></div>';
-// 			eventNo17 += '<input type="file" name="ticket">';
-// 			eventTotalContent.innerHTML = eventNo17;
-			
-		}
 		
 		
 		$.ajax({
@@ -407,10 +381,16 @@ canvas {
 					document.getElementById("eventTitle").innerText = data.eventTitle;
 					document.getElementById("eventPeriod").innerText = "기간: "+ data.startEvent + ' ~ ' + data.endEvent;
 					//DB에 데이터 넣을 시 알맞게 수정
-					if(eventNo == 6){
+					if(eventNo == 3){
 						document.getElementById("eventContent").innerHTML = data.eventContent;
-					} else if(eventNo == 17){
+					} else if(eventNo == 2){
 						document.getElementById("eventTotalContent").innerHTML= data.eventContent;
+					} else if(eventNo == 4){
+						let canvas = '<div class="roulette-container">';
+						canvas += '<div class="pointer"></div>';
+						canvas += '<canvas id="roulettecanvas" width="500" height="500"></canvas></div>';
+						document.getElementById("eventTotalContent").innerHTML = canvas;
+						drawRoulette();
 					}
 				} else {
 					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
@@ -423,6 +403,123 @@ canvas {
 			}
 		});
 	});
+	
+	const items = [
+		{name : "10 포인트", color : "#FF6384"},
+		{name : "500 포인트", color : "#36A2EB"},
+		{name : "할인쿠폰 1000원", color : "#FFCE56"},
+		{name : "할인쿠폰 5000원", color : "#4BC0C0"}
+	];
+	
+	const weightedItems = [
+		...Array(50).fill(0),
+		...Array(25).fill(1),
+		...Array(15).fill(2),
+		...Array(10).fill(3)
+		
+	];
+	
+	function drawRoulette(){
+		const canvas = document.getElementById("roulettecanvas");
+		
+		const ctx = canvas.getContext('2d');
+		
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		
+		const totalItems = items.length;
+		const arc = Math.PI * 2 / totalItems;
+		const startAngle = -Math.PI / 2;
+		
+		for(let i = 0 ; i < totalItems ; i++){
+			ctx.beginPath();
+			ctx.fillStyle = items[i].color;
+			ctx.moveTo(250, 250);
+			ctx.arc(250, 250, 200, startAngle + i * arc, startAngle + (i + 1) * arc);
+			ctx.lineTo(250, 250);
+			ctx.fill();
+			
+			ctx.save();
+			ctx.translate(250, 250);
+			ctx.rotate(startAngle + i * arc + arc / 2);
+			ctx.textAlign = "right";
+			ctx.fillStyle = "#fff";
+			ctx.font = "bold 16px Arial";
+			ctx.fillText(items[i].name, 180, 0);
+			ctx.restore();
+		}
+		console.log("룰렛 그리기 끝");
+	}
+	
+	function spinButton(eventNo){
+		console.log("spinButton함수 실행..");
+		const canvas = document.getElementById('roulettecanvas');
+// 		const items = ["할인쿠폰 5000원","10 포인트","할인쿠폰 1000원","500포인트"];
+		
+		const randomIndex = weightedItems[Math.floor(Math.random() * weightedItems.length)];
+		const seletedItem = items[randomIndex].name;
+		
+		console.log("randomIndex" + randomIndex, "seletedItem: " + seletedItem);
+		
+		const segmentAngle = 360 / items.length;
+		let targetAngle = '';
+		if(randomIndex == 0){
+			targetAngle = 315;
+		} else if(randomIndex == 1){
+			targetAngle = 225;
+		} else if(randomIndex == 2){
+			targetAngle = 135;
+		} else if(randomIndex == 3){
+			targetAngle = 45;
+		}
+		
+		const totalRotation = 360 * 4 + targetAngle;
+		
+		console.log("segmentAngle : " + segmentAngle + " targetAngle : " + targetAngle + " totalRotation : " + totalRotation);
+		canvas.style.transition = 'transform 5s cubic-bezier(0.25, 0.1, 0.25, 1)';
+		canvas.style.transform = 'rotate('+ totalRotation +'deg)';
+		
+		setTimeout(function(){
+			alert("당첨 : " + seletedItem);
+			sendResultToServer(seletedItem, eventNo);
+		}, 5000);
+	}
+	
+	function sendResultToServer(seletedItem, eventNo){
+		console.log(seletedItem);
+		console.log(eventNo);
+		const jwtToken = localStorage.getItem("jwtToken");
+		
+		if(!jwtToken){
+			alert("로그인을 해주세요.");
+			return ;
+		}
+		$.ajax({
+			url : "http://localhost:9001/api/v1/event/roulette",
+			type : "POST",
+			data : {
+				eventNo : eventNo,
+				participationResult : seletedItem
+			},
+			headers: {
+				"Authorization" : "Bearer " + jwtToken
+			},
+			success : function(data) {
+				console.log(data);
+				if(data != null){
+					alert(this.responseText);
+				} else {
+					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
+					//window.location.href="/cinema/list";
+				}
+			},
+			error : function(error) {
+				alert("불러오는데 실패했습니다. 다시 시도해주세요.", error);
+				//window.location.href="/cinema/list";
+			}
+		});
+		
+		
+	}
 	
 	function submitMbtiEvent(event){
 		const q1 = document.getElementsByName('q1');
@@ -500,9 +597,37 @@ canvas {
 	}
 	
 	function submitTicketEvent(event){
-		const ticketImg = getElementById("ticketImg");
+		const ticketImg = document.getElementById("ticketImg").value;
 		console.log(ticketImg);
+		const urlParams = new URLSearchParams(window.location.search);
+		let eventNo = urlParams.get('eventNo');
+		console.log("eventNo22 : ", eventNo);
 		
+		var formData = new FormData();
+		formData.append("file", ticketImg);
+		formData.append("eventNo", eventNo);
+		
+		console.log("formData : ", formData);
+		
+		$.ajax({
+			type : "POST",
+			enctype : 'multipart/form-data',
+			url : "http://localhost:9001/api/v1/event/ticketEvent",
+			data : formData,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			cache : false,
+			headers: {
+				"Authorization" : "Bearer " + jwtToken
+			},
+			success : function(data){
+				alert("참여되었습니다.^^");
+			},
+			error : function(e){
+				console.log("error : ",e );
+			}
+		});
 	}
 	
 	function backButton0(){

@@ -160,7 +160,7 @@ hr{
 						list += '<a href="/event/commonDetail?eventState=1&eventNo='+ data[i].eventNo +'">';
 						list += '<div class="eventItem">';
 						list += '<img src="/img/'+ data[i].eventImgOriginName +'" alt="'+ data[i].eventTitle +'">';
-						list += '<div class="eventTitle">'+ data[i].eventTitle +'</div>';
+						list += '<div class="eventTitle">'+ titleLength(data[i].eventTitle, 20) +'</div>';
 						list += '<div class="eventDate">'+ data[i].startEvent + ' ~ ' + data[i].endEvent +'</div>';
 						list += '</div></a>';
 					}
@@ -191,9 +191,9 @@ hr{
 						list += '<a href="/event/commonDetail?eventState=0&eventNo='+ data[i].eventNo +'">';
 						list += '<div class="eventItem">';
 						//list += '<div class="image-container>"'
-						list += '<img src="/upload/'+ data[i].eventImgNewName +'" alt="'+ data[i].eventTitle +'" id="endEventImg">';
+						list += '<img src="/img/'+ data[i].eventImgOriginName +'" alt="'+ data[i].eventTitle +'" id="endEventImg">';
 						//list += '<div class="overlay"> <div class="text">종료된 이벤트</div></div></div>';
-						list += '<div class="eventTitle">'+ data[i].eventTitle +'</div>';
+						list += '<div class="eventTitle">'+ titleLength(data[i].eventTitle, 20) +'</div>';
 						list += '<div class="eventDate">'+ data[i].startEvent + ' ~ ' + data[i].endEvent +'</div>';
 						list += '</div></a>';
 					}
@@ -212,7 +212,12 @@ hr{
 		document.querySelector('#smallTitle a:nth-child(3)').style.color = '#f82f62';
 	}
 	
-	
+	function titleLength(title, maxLength){
+		if(title.length > maxLength){
+			return title.substring(0, maxLength) + "...";
+		}
+		return title;
+	}
 	
 	</script>
 </body>

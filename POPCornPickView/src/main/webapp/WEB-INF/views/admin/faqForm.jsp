@@ -76,7 +76,7 @@ th {
 }
 
 .btn:hover {
-	background-color: #f4f4f4;
+	background-color: #4b0082;
 }
 
 .btn-completed {
@@ -97,10 +97,6 @@ th {
 	padding: 10px 20px;
 	cursor: pointer;
 	margin-left: 10px;
-}
-
-.btn button:hover {
-	background-color: #4b0082; /* 진한 보라색 */
 }
 
 #qnaanswer {

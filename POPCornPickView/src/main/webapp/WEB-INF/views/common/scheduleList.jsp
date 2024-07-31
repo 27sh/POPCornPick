@@ -408,11 +408,17 @@
             var movieTitle = $(this).data('movieTitle');
             var scheStart = $(this).find('.sche_start').text();	
             
-            console.log(scheStart);
+            // 날짜를 yyyy-mm-dd 형식으로 변환
+            var year = selectedDate.getFullYear();
+            var month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+            var day = ('0' + selectedDate.getDate()).slice(-2);
+            var formattedSelectedDate = year + '-' + month + '-' + day;
+            
+            console.log(formattedSelectedDate);
 
             var params = $.param({
                 selectedCinemaNo: selectedCinemaNo,
-                selectedDate: selectedDate.toISOString().split('T')[0], // Formatting date as YYYY-MM-DD
+                selectedDate: formattedSelectedDate,
                 selectedRoomNo: selectedRoomNo,
                 movieTitle: movieTitle,
                 scheStart: scheStart

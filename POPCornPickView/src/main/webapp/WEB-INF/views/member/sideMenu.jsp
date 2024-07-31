@@ -29,11 +29,6 @@
             프로필 관리
         </div>
     </a>
-    <a href="/mem/expectList">
-        <div class="side-box" id="box7">
-            기대되는 영화
-        </div>
-    </a>
     <a href="/mem/watchedList">
         <div class="side-box" id="box8">
             내가 본 영화

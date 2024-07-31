@@ -239,7 +239,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('go-to-movieList').addEventListener('click', function() {
-            window.location.href = '/film/movieList';
+            window.location.href = '/film/noapi';
         });
     });
 
@@ -256,6 +256,29 @@
                 console.log('Error:', error);
             }
         });
+        
+	     // 공지사항 더보기 버튼 클릭 이벤트 추가
+	        document.getElementById('more-notice').addEventListener('click', function() {
+	            window.location.href = '/common/noticeList';
+	        });
+	
+	        // FAQ 버튼 클릭 이벤트 추가
+	        document.getElementById('etc-FAQ').addEventListener('click', function() {
+	            window.location.href = '/common/faqList';
+	        });
+	
+	        // 1:1 문의 버튼 클릭 이벤트 추가
+	        document.getElementById('etc-one-to-one').addEventListener('click', function() {
+	            window.location.href = '/member/qnaForm';
+	        });
+	     	// 이벤트 전체보기 버튼 클릭 이벤트 추가
+	        document.getElementById('go-to-eventList').addEventListener('click', function() {
+	            window.location.href = '/event/commonList?eventState=1';
+	        });
+	     	// sRoom-img 클릭 이벤트 추가
+	        document.getElementById('sRoom-img').addEventListener('click', function() {
+	            window.location.href = '/room/sRoomDetail';
+	        });
     });
 
     // 최신 공지사항을 HTML에 출력하는 함수
@@ -298,7 +321,7 @@
         <button id="movie-chart-btn" class="active">무비차트</button>
         <div id="button-divider"></div>
         <button id="to-be-screened-btn">상영예정작</button>
-        <button id="go-to-movieList">전체보기 ></button>
+        <button id="go-to-movieList" class="go-to-movieList">전체보기 ></button>
         <div id="movie-chart-container">
             <div id="movie-chart">
                 <!-- 영화 목록이 여기에 추가됩니다. -->
@@ -314,7 +337,7 @@
     <div class="event"></div>
     <div id="event-high-container">
         <h1 id="event-h1">EVENT</h1>
-        <button id="go-to-movieList">전체보기 ></button>
+        <button id="go-to-eventList" class="go-to-movieList">전체보기 ></button>
     </div>
     
     <div id="event-row-container">
@@ -355,7 +378,7 @@
         <div id="main-notice">
             <h4>공지사항</h4>
             <p id="latest-notice">[행사/이벤트][팝콘픽]<선재 업고 튀어> 최종화 단...</p>
-            <button>더보기</button>
+            <button id="more-notice">더보기</button>
         </div>
         <hr> <!-- 가로 줄 -->
         <div id="main-cs">

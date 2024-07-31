@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
     var cinemas = [];
     var selectedCinemaNo = 0;
     var selectedDate = new Date();
@@ -274,7 +275,9 @@ function loadCinemas(location) {
                     loadRoomCount(cinema.cinemaNo);
                 }
                 
-                selectedCinemaNo = cinema.cinemaNo;
+//                selectedCinemaNo = cinema.cinemaNo;
+//                
+//                console.log("selectedCinemaNo "+ selectedCinemaNo);
                 
                 // 첫 번째 `.cinema-item` 클릭 이벤트 트리거
                 if ($('.cinema-item').length > 0) {
@@ -288,11 +291,9 @@ function loadCinemas(location) {
                 $(this).find('#cine-item-title').addClass('selected');
                 var cinemaName = $(this).data('cinema-name');
                 var cinemaNo = $(this).data('cinema-no');
-                
-                
-                
+   
                 console.log("Cinema selected:", cinemaNo); // 콘솔 로그 추가
-                var selectedCinemaNo = cinemaNo;
+                selectedCinemaNo = cinemaNo;
                 
                 var selectedCinema = data.find(c => c.cinemaName === cinemaName);
                 if (selectedCinema) {

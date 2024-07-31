@@ -13,19 +13,23 @@
 main {
 	width: 1200px;
 	margin: 80px auto;
-	display:flex;
-	justify-content:space-between;
+	display: flex;
+	justify-content: space-between;
+}
+
+main #container {
+	width: 900px;
+	min-height: 700px;
+	box-sizing: border-box;
 }
 
 body {
-	font-family: Arial, sans-serif;
 	margin: 0;
 	padding: 0;
 }
 
 .container {
 	width: 80%;
-	margin: 50px auto;
 	padding: 20px;
 	background-color: white;
 	border-radius: 5px;
@@ -154,7 +158,6 @@ a:hover {
     color: #816bff; /* Use a hash (#) for the color code */
 }
 .sidebar-container{
-	margin-top: 150px;
 }
 </style>
 </head>

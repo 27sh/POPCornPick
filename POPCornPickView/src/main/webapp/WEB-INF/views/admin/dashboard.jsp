@@ -143,8 +143,8 @@ h2{
     		                 {
     		                     label: '일별 매출',
     		                     data: amountArray, // Example daily sales data
-    		                     borderColor: 'rgba(255, 99, 132, 1)',
-    		                     backgroundColor: '#b4d6fa',
+    		                     borderColor: 'white',
+    		                     backgroundColor: '#ffe4b3',
     		                     fill: false
     		                 },
     		             ]
@@ -190,8 +190,8 @@ h2{
     		                 {
     		                     label: '월별 매출',
     		                     data: amountArray, // Example daily sales data
-    		                     borderColor: 'rgba(255, 99, 132, 1)',
-    		                     backgroundColor: '#b4d6fa',
+    		                     borderColor: 'white',
+    		                     backgroundColor: '#c3fcc2',
     		                     fill: false
     		                 },
     		             ]
@@ -237,8 +237,8 @@ h2{
     		                 {
     		                     label: '연도별 매출',
     		                     data: amountArray, // Example daily sales data
-    		                     borderColor: 'rgba(255, 99, 132, 1)',
-    		                     backgroundColor: '#b4d6fa',
+    		                     borderColor: 'white',
+    		                     backgroundColor: '#e3b3ff',
     		                     fill: false
     		                 },
     		             ]

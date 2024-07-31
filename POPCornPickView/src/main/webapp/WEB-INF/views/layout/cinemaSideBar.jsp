@@ -67,7 +67,7 @@ ul {
 }
 
 #sidebar .sidebar-box2{
-	height:200px;
+	height:150px;
 	padding-top:30px;
 }
 
@@ -94,7 +94,6 @@ ul {
 		<div class="sidebar-box sidebar-box2">
 			<h3>관람관</h3>
 			<p><a href="/room/registForm">관람관 등록</a></p>
-			<p><a href="/cinema/roomList">지점별 관람관 관리</a></p>
 		</div>
 	</div>
 </body>

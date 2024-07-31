@@ -3,6 +3,7 @@ package com.example.POPCornPickApi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.POPCornPickApi.entity.Coupon;
 import com.example.POPCornPickApi.entity.CouponType;
 import com.example.POPCornPickApi.repository.CouponRepository;
 import com.example.POPCornPickApi.repository.CouponTypeRepository;
@@ -33,6 +34,16 @@ public class CouponService {
 	public CouponType checkCouponType(String couponName) {
 		CouponType result = couponTypeRepository.findByCouponName(couponName);
 		return result;
+	}
+	
+	public boolean eventCoupon(Coupon coupon) {
+		try {
+			couponRepository.save(coupon);
+			return true;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	

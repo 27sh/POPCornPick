@@ -363,7 +363,7 @@ canvas {
 			eventNo6 += '<div id="mbtiResult"></div>';
 			eventNo6 += '<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo"></span>이군요?!</span></div>';
 			eventNo6 += '<div>※ 500포인트가 지급되었어요</div>';
-			eventNo6 += '<button type="button" id="myEvent" onclick="">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>';
+			eventNo6 += '<button type="button" id="myEvent" onclick="myPage()">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>';
 			eventNo6 += '</div></div></div>';
 			document.getElementById("eventTotalContent").innerHTML = eventNo6;
 		}
@@ -479,7 +479,6 @@ canvas {
 		canvas.style.transform = 'rotate('+ totalRotation +'deg)';
 		
 		setTimeout(function(){
-			alert("당첨 : " + seletedItem);
 			sendResultToServer(seletedItem, eventNo);
 		}, 5000);
 	}
@@ -504,17 +503,17 @@ canvas {
 				"Authorization" : "Bearer " + jwtToken
 			},
 			success : function(data) {
-				console.log(data);
 				if(data != null){
-					alert(this.responseText);
-				} else {
-					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
-					//window.location.href="/cinema/list";
+					alert(data);
 				}
 			},
-			error : function(error) {
-				alert("불러오는데 실패했습니다. 다시 시도해주세요.", error);
-				//window.location.href="/cinema/list";
+			error : function(jqXHR, textStatus, errorThrown) {
+				if(jqXHR.status === 400){
+					var errorMessage = jqXHR.responseText;
+					alert(errorMessage);
+				} else{
+					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
+				}
 			}
 		});
 		
@@ -657,6 +656,9 @@ canvas {
 		modal.style.display = "none";
 	}
 	
+	function myPage(){
+		window.location.href="/myPage/pointList";
+	}
 	</script>
 </body>
 </html>

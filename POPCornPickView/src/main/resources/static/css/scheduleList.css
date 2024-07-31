@@ -147,6 +147,8 @@
 
 .schedule_wrap{
 	width: 830px;
+    height: 600px;
+    overflow: auto;
 	margin: 0 auto;
 }
 .movie_info{

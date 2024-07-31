@@ -48,6 +48,7 @@ main {
 
 #cancelListTable {
 	width: 900px;
+	text-align: center;
 }
 
 .reservationList {
@@ -129,6 +130,31 @@ td {
 	background-color: #C8C8C8;
 }
 
+.active {
+	background-color: #FF0558 !important; /* 활성화된 링크 배경 색 변경 */
+	color: #fff; /* 활성화된 링크 텍스트 색 변경 */
+}
+
+.span2 {
+	display: none;
+}
+
+.cancelList h2 {
+	margin: 30px 0;
+}
+
+.th-style {
+	background-color: #BDBDBD;
+}
+
+#cancelListTable tr:first-child td:last-child{
+	color: red;
+}
+
+#cancelListTable th,
+#cancelListTable td {
+	padding: 15px 0;
+}
 
 </style>
 </head>
@@ -142,56 +168,27 @@ td {
 				<%@ include file="../member/sideMenu.jsp"%>
 			</div>
 			<div class="myInfo">
-				<h2>나의 예매 내역 <span id="ticketingCount"></span></h2>
-				<p id="p1">지난 <span id="red">1개월</span>까지의 예매내역을 확인하실수 있습니다.</p>
-				<p id="right">예매번호로만 티켓을 찾을 수 있으니 반드시 확인 부탁드립니다.</p>
-				<div class="ticketingInfo">
-					<div class="reservationList">
-						<div class="ticketingNo">
-							<h3>예매번호 <span id="reservationNo"></span></h3>
-							<p class="reservationDate">예매날짜</p>
-						</div>
-						<div class="reservationInfo">
-							<img alt="예매한 영화 포스터" src="" class="moviePoster">
-							<div class="movieInfo">
-								<div class="movieName">
-									영화 제목
-								</div>
-								<table border="1" class="previewInfo">
-									<tr>
-										<th>관람극장</th>
-										<td></td>
-									</tr>
-									<tr>
-										<th>관람일시</th>
-										<td></td>
-									</tr>
-									<tr>
-										<th>관람좌석</th>
-										<td></td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>
-					<h3 class="h3">총 결제금액  <span class="span1">11,000원</span> <input id="cancelTicket" type="button" value="예매취소" onclick="cancelTicketing()"></h3>
+				<div class="loadReservationList">
+					<h2>나의 예매 내역 <span id="ticketingCount"></span></h2>
+					<p id="p1">지난 <span id="red">1개월</span>까지의 예매내역을 확인하실수 있습니다.</p>
+					<p id="right">예매번호로만 티켓을 찾을 수 있으니 반드시 확인 부탁드립니다.</p>
 				</div>
 				<div class="cancelList">
 					<h2>나의 취소내역 <span class="span2">상영일 기준 지난 7일 동안의 취소내역입니다.</span></h2>
-					<table border="1" id="cancelListTable">
-						<thead>
-							<tr>
-								<th>관람 영화/매점</th>
-								<th>관람 극장</th>
-								<th>관람 일시</th>
-								<th>취소일</th>
-								<th>결제취소 금액</th>
-							</tr>
-						</thead>
-						<tbody id="tbody">
+<!-- 					<table border="1" id="cancelListTable"> -->
+<!-- 						<thead> -->
+<!-- 							<tr> -->
+<!-- 								<th>관람 영화/매점</th> -->
+<!-- 								<th>관람 극장</th> -->
+<!-- 								<th>관람 일시</th> -->
+<!-- 								<th>취소일</th> -->
+<!-- 								<th>결제취소 금액</th> -->
+<!-- 							</tr> -->
+<!-- 						</thead> -->
+<!-- 						<tbody id="tbody"> -->
 							
-						</tbody>
-					</table>
+<!-- 						</tbody> -->
+<!-- 					</table> -->
 				</div>
 			</div>
 		</div>
@@ -203,13 +200,21 @@ td {
 	<script>
 		
 		document.addEventListener("DOMContentLoaded", () => {
-		    const token = localStorage.getItem("jwtToken");
+		    
+			loadReservation();
+			reservationcancelList();
+		    
+		});
+		
+		function loadReservation(){
+			
+			const token = localStorage.getItem("jwtToken");
 		    const xhttp = new XMLHttpRequest();
 		    
 		    xhttp.onload = function() {
 		        if(this.responseText != null) {
 		            const reservationList = JSON.parse(this.responseText);
-		            const reservationContainer = document.querySelector('.myInfo');
+		            const reservationContainer = document.querySelector('.loadReservationList');
 		            console.log(reservationList);
 		            
 		            reservationList.forEach(reservation => {
@@ -257,10 +262,9 @@ td {
 		    xhttp.open("GET", "http://localhost:9001/api/v1/mem/reservation");
 		    xhttp.setRequestHeader("Authorization", token);
 		    xhttp.send();
-		    
-		    reservationcancelList();
-		});
-	
+			
+		}
+		
 		function cancelTicketing(ticketingNo) {
 		    if (confirm("진짜 예매를 취소하시겠습니까?")) {
 		        const token = localStorage.getItem("jwtToken");
@@ -269,7 +273,7 @@ td {
 		        xhttp.onload = function() {
 		            alert(this.responseText);
 		            if(this.responseText == "예매취소가 완료되었습니다."){
-		            	window.loation.href = "/member/reservationList";
+		            	window.location.href = "/member/reservationList";
 		            }else {
 		            	
 		            }
@@ -290,7 +294,7 @@ td {
 		        console.log("reservationcancelList 체크용 : " + this.responseText);
 		        if (this.responseText != null) {
 		            const cancelList = JSON.parse(this.responseText);
-		            const myInfo = document.querySelector('.myInfo');
+		            const reservationCancelList = document.querySelector('.cancelList');
 		            
 		            // 기존 테이블을 제거합니다.
 		            const existingTable = document.getElementById('cancelListTable');
@@ -301,16 +305,16 @@ td {
 		            // 테이블 생성
 		            var table = document.createElement('table');
 		            table.id = 'cancelListTable';
-		            table.border = '1';
-
+					
 		            // 테이블 헤더 생성
 		            var thead = document.createElement('thead');
 		            var headerRow = document.createElement('tr');
-		            var headers = ['관람 영화/매점', '관람 극장', '관람 일시', '취소일', '결제취소 금액'];
+		            var headers = ['관람 영화', '관람 극장', '관람 일시', '취소일', '결제취소 금액'];
 
 		            headers.forEach(function(header) {
 		                var th = document.createElement('th');
 		                th.textContent = header;
+		                th.classList.add('th-style');
 		                headerRow.appendChild(th);
 		            });
 
@@ -328,16 +332,16 @@ td {
 		                movieTd.textContent = cancel.movieTitle;
 
 		                var theaterTd = document.createElement('td');
-		                theaterTd.textContent = cancel.theater;
+		                theaterTd.textContent = cancel.cinemaName;
 
 		                var reservationDateTd = document.createElement('td');
-		                reservationDateTd.textContent = formatDate(cancel.reservationDate);
+		                reservationDateTd.textContent = formatDate(cancel.start);
 
 		                var cancelDateTd = document.createElement('td');
-		                cancelDateTd.textContent = formatDate(cancel.cancelDate);
+		                cancelDateTd.textContent = formatDate(cancel.regdate);
 
 		                var refundAmountTd = document.createElement('td');
-		                refundAmountTd.textContent = cancel.refundAmount + '원';
+		                refundAmountTd.textContent = cancel.payTotalAmount + '원';
 
 		                tr.appendChild(movieTd);
 		                tr.appendChild(theaterTd);
@@ -349,7 +353,7 @@ td {
 		            });
 
 		            table.appendChild(tbody);
-		            myInfo.appendChild(table);
+		            reservationCancelList.appendChild(table);
 		        }
 		    }
 		    

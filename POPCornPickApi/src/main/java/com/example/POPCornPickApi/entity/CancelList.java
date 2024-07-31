@@ -22,9 +22,7 @@ public class CancelList extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cancerListNo;
 	
-	@OneToOne
-	@JoinColumn(name = "ticketingNo", referencedColumnName = "ticketingNo", nullable = false)
-	private Ticketing ticketing;
+	private Long ticketing;
 	
 	@ManyToOne
 	@JoinColumn(name = "username", referencedColumnName = "username", nullable = true)
@@ -34,4 +32,9 @@ public class CancelList extends BaseEntity{
 	@JoinColumn(name = "telephone", referencedColumnName = "telephone", nullable = true)
 	private UnknownMember unknownMember;
 	
+	private int payTotalAmount;
+	
+	private Long reservatedSeatNo;
+	
+	private Long scheduleNo; 
 }

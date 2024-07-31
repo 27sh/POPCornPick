@@ -48,5 +48,11 @@ public class MemberController {
 		return "/member/reservationList";
 	}
 	
+	@GetMapping("/eventList")
+	public String eventList() {
+		return "/member/eventList";
+	}
+	
+	
 	
 }

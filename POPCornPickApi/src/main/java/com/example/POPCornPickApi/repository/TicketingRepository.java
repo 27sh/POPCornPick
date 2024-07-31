@@ -48,6 +48,8 @@ public interface TicketingRepository extends JpaRepository<Ticketing, Long>{
 	
 	public List<Ticketing> findByUnknownMember(UnknownMember unknownMember);
 	
+	public Ticketing findByTicketingNo(Long ticketingNo);
+	
 	@Query("SELECT new com.example.POPCornPickApi.dto.DailySalesDto(DATE(t.regdate), SUM(t.payTotalAmount)) " +
 	           "FROM Ticketing t " +
 	           "WHERE YEAR(t.regdate) = :year " +

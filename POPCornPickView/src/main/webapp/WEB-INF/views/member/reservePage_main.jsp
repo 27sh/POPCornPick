@@ -2036,6 +2036,7 @@ main {
 					success : function(response){
 						
 						console.log(response);
+						console.log(cinemaNo);
 						
 						const movieDC = response[0].movieShowDetail.movie.movieDC;
 						
@@ -2153,8 +2154,6 @@ main {
 							success : function(response){
 								let str = '';
 								let cnt = 0;
-								
-								console.log("cinemaInformation : " + response);
 								
 								response.forEach(cinema => {
 									if(cinema.cinemaNo == cinemaNo){

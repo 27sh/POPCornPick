@@ -64,12 +64,13 @@ main {
 	width: 920px;
 	border: 1px solid;
 	box-sizing: border-box;
+	margin-bottom: 10px;
 /* 	text-align: center; */
 }
 
 .apply-event {
-	border: 1px solid;
-	border-color: blue;
+/* 	border: 1px solid; */
+/* 	border-color: blue; */
 	margin: 40px 30px;
 	padding: 30px 30px;
 	box-sizing: border-box;
@@ -164,6 +165,7 @@ main {
 	<script>
 		document.addEventListener("DOMContentLoaded", () => {
 			a();
+			loadEventApplyHistory();
 		});
 		
 		function a(){
@@ -171,7 +173,6 @@ main {
 			document.querySelector('.apply-history').classList.add('active2');
             document.querySelector('.winner').classList.remove('active2');
             
-            loadEventApplyHistory();
 //             const memberFrm = document.querySelector("#member-frm");
 //             const nonMemberFrm = document.querySelector("#non-member-frm");
             
@@ -199,20 +200,20 @@ main {
 				console.log(this.responseText);
 				if(this.responseText != null){
 					const list = JSON.parse(this.responseText);
-					const applyList = document.querySelector("#event-apply-history");
+					const applyList = document.querySelector(".event-notice");
 					
 					list.forEach(participation =>{
-						applyList += '<div class="total-apply-history">';
-						applyList += '<div class="apply-event">';
-						applyList += '<div class="text-content">'; 
-						applyList += '<h2 class="event-title">' + participation.eventTitle + '</h2>';
-						applyList += '<p class="event-date">' + participation.startEvent + ' ~ ' + participation.endEvent +'</p>';
-						applyList += '</div>';
-						applyList += '<div class="winner-check">';
-						applyList += '<input type="button" value="당첨확인" class="check-btn" onclick="checkBtn(' + participation.participationResult + ')">';
-						applyList += '</div>';
-						applyList += '</div>';
-						applyList += '</div>';
+						applyList.innerHTML += '<div class="total-apply-history">' +
+							'<div class="apply-event">' +
+								'<div class="text-content">' + 
+									'<h2 class="event-title">' + participation.eventTitle + '</h2>' +
+									'<p class="event-date">' + participation.startEvent + ' ~ ' + participation.endEvent +'</p>' +
+								'</div>' +
+								'<div class="winner-check">' +
+									'<input type="button" value="당첨확인" class="check-btn" onclick="checkBtn(' + participation.participationResult + ')">' +
+								'</div>' +
+							'</div>' +
+						'</div>';
 					})
 					
 				}

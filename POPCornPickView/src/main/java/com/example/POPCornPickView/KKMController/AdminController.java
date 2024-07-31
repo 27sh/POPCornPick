@@ -35,6 +35,10 @@ public class AdminController {
 		return "admin/faqEdit";
 	}
 	
-	
+	@RequestMapping("/faqList")
+	public String faqList() {
+		
+		return "admin/faqList";
+	}
 	
 }

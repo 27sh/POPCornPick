@@ -20,7 +20,6 @@ main {
 	height: 560px;
 	height: auto;
 	overflow: visible;
-	margin-left: 400px;
 }
 
 .event-header {
@@ -248,11 +247,8 @@ canvas {
  	height: 40px;  
  	background: red;  
  	transform: translateX(-50%) rotate(180deg);
- 	
  	clip-path: polygon(50% 0%, 0% 100%, 100% 100%);  
  	z-index: 3;
- 	rotate: 
- 	  
  }  
 
 #rouletteCanvas{
@@ -263,6 +259,10 @@ canvas {
  	left: 0;
  	z-index: 2;
  	transform-origin: center;
+}
+
+#mbtiBox{
+margin-left: 400px;
 }
 
 
@@ -281,7 +281,7 @@ canvas {
 		<div id="eventPeriod" class="event-period"></div>
 		</div>
 		<div id="eventTotalContent">
-		
+			<div id="mbtiBox"></div>
 		</div>
 			
 		<div id="eventSubmitButton"></div>
@@ -292,18 +292,18 @@ canvas {
 		<div id="background">
 		<!-- modal -->
 		<div id="eventModal" class="modal">
-<!-- 		<div class="modal-box" id="modalBox"> -->
-<!-- 			<div class="top-box"> -->
-<!-- 				<span class="close"><a href="" onclick="closeMbtiModal()">&times;</a></span> -->
-<!-- 			</div> -->
-<!-- 			<div class="modal-content"> -->
-<!-- 				<div class="modal-title"></div> -->
-<!-- 				<div id="mbtiResult"></div> -->
-<!-- 				<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo">분위기를 고조시키는 우호적인 사람</span>이군요?!</span></div> -->
-<!-- 				<div>※ 500포인트가 지급되었어요</div> -->
-<!-- 				<button type="button" id="myEvent" onclick="">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
+		<div class="modal-box" id="modalBox"> 
+ 			<div class="top-box"> 
+ 				<span class="close"><a href="" onclick="closeMbtiModal()">&times;</a></span> 
+			</div>
+			<div class="modal-content"> 
+			<div class="modal-title"></div> 
+				<div id="mbtiResult"></div> 
+ 				<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo">분위기를 고조시키는 우호적인 사람</span>이군요?!</span></div> 
+ 				<div>※ 500포인트가 지급되었어요</div> 
+ 				<button type="button" id="myEvent" onclick="myPage()">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>
+ 			</div> 
+ 		</div> 
 		</div>
 		
 	</div>
@@ -344,27 +344,6 @@ canvas {
 			const buttonStr2 = '<button type="button" id="backButton" onclick="backButton0()">이전</button>';
 			document.getElementById("buttonBox").innerHTML = buttonStr2;
 		}
-		//mbti이벤트
-		if(eventNo == 2){
-			let mbti = '';
-			mbti += '<div id="eventContent"></div>';
-			mbti += '<div id="eventSubmitButton"></div>';
-			mbti += '<div id="buttonBox"></div>';
-			mbti += '<div id="background">';
-			mbti += '<div id="eventModal" class="modal">';
-			mbti += '<div class="modal-box" id="modalBox">';
-			mbti += '<div class="top-box">';
-			mbti += '<span class="close"><a href="" onclick="closeModal()">&times;</a></span></div>';
-			mbti += '<div class="modal-content">';
-			mbti += '<div class="modal-title">당신의 mbti는</div>';
-			mbti += '<div id="mbtiResult"></div>';
-			mbti += '<div id="mbtiInfo-box"><span>당신은 <span id="mbtiInfo"></span>이군요?!</span></div>';
-			mbti += '<div>※ 500포인트가 지급되었어요</div>';
-			mbti += '<button type="button" id="myEvent" onclick="myPage()">이벤트 참여 내역</button><button type="button" id="home" onclick="moveHome()">메인으로</button>';
-			mbti += '</div></div></div>';
-			document.getElementById("eventTotalContent").innerHTML = mbti;
-		}
-		
 		
 		$.ajax({
 			url : "http://localhost:9001/api/v1/event/detail",
@@ -381,7 +360,7 @@ canvas {
 					if(eventNo == 3){
 						document.getElementById("eventContent").innerHTML = data.eventContent;
 					} else if(eventNo == 2){
-						document.getElementById("eventTotalContent").innerHTML= data.eventContent;
+						document.getElementById("mbtiBox").innerHTML= data.eventContent;
 					} else if(eventNo == 1){
 						let canvas = '<div class="roulette-container">';
 						canvas += '<div class="pointer"></div>';

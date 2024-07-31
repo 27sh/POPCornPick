@@ -110,7 +110,7 @@ input[type="radio"]{
 	$(document).ready(function(){
 		const urlParams = new URLSearchParams(window.location.search);
 		let eventNo = urlParams.get('eventNo');
-		console.log(eventNo);
+// 		console.log(eventNo);
 		
 		if(eventNo === null){
 			alert("올바르지 않은 경로입니다.");
@@ -123,11 +123,13 @@ input[type="radio"]{
 				eventNo : eventNo
 			},
 			success : function(data) {
-				console.log(data);
+// 				console.log(data);
 				if(data != null){
 					var image = document.getElementById('myImage');
 					const filename = data.eventImgNewName;
-					console.log("newName",filename);
+// 					console.log("newName",filename);
+// 					console.log("startDate : ", data.startEvent);
+	
 					let detail = '';
 					detail += '<label for="eventNo" id="eventNo"><b>이벤트 번호</b></label>';
 					detail += '<span id="result">'+ data.eventNo +'</span><br>';
@@ -149,12 +151,10 @@ input[type="radio"]{
 					document.getElementById("deleteButton").innerHTML = buttonStr2;
 				} else {
 					alert("불러오는데 실패했습니다. 다시 시도해주세요.");
-					//window.location.href="/cinema/list";
 				}
 			},
 			error : function(error) {
 				alert("불러오는데 실패했습니다. 다시 시도해주세요.", error);
-				//wifgndow.location.href="/cinema/list";
 			}
 		});
 		

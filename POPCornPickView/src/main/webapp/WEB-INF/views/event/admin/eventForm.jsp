@@ -120,7 +120,7 @@ textarea{
 			<h2>이벤트 등록</h2>
 			<form name="eventFrm">
 				<input type="hidden" name="eventNo" id="eventNo">
-				<label for="startEvent" id="startEvent"><b>시작일<span>*</span></b></label>
+				<label for="startEvent"><b>시작일<span>*</span></b></label>
 				<input type="date" name="startEvent" id="startEvent"><br>
 				<label for="endEvent"><b>종료일<span>*</span></b></label>
 				<input type="date" name="endEvent" id="endEvent"><br>

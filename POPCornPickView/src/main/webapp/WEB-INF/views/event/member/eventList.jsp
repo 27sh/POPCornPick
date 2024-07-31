@@ -52,8 +52,9 @@ hr{
 #eventContainer{
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-around;
+	justify-content: flex-start;
 	margin: 20px;
+	gap: 29px;
 }
 
 .eventItem {

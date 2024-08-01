@@ -383,8 +383,8 @@ margin-left: 400px;
 	const items = [
 		{name : "10 포인트", color : "#FF6384"},
 		{name : "500 포인트", color : "#36A2EB"},
-		{name : "할인쿠폰 1000원", color : "#FFCE56"},
-		{name : "할인쿠폰 5000원", color : "#4BC0C0"}
+		{name : "할인 10%쿠폰", color : "#FFCE56"},
+		{name : "할인쿠폰 50%쿠폰", color : "#4BC0C0"}
 	];
 	
 	const weightedItems = [
@@ -429,7 +429,6 @@ margin-left: 400px;
 	function spinButton(eventNo){
 		console.log("spinButton함수 실행..");
 		const canvas = document.getElementById('roulettecanvas');
-// 		const items = ["할인쿠폰 5000원","10 포인트","할인쿠폰 1000원","500포인트"];
 		
 		const randomIndex = weightedItems[Math.floor(Math.random() * weightedItems.length)];
 		const seletedItem = items[randomIndex].name;

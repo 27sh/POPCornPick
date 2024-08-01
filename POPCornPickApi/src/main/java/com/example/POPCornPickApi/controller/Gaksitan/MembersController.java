@@ -368,6 +368,15 @@ public class MembersController {
 		
 	}
 	
+	@GetMapping("/watchedMoiveList")
+	public List<?> watchedMoiveList(){
+		
+		
+		
+		
+		
+		return null;
+	}
 	
 	
 }

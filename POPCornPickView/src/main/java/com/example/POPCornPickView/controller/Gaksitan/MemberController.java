@@ -54,9 +54,9 @@ public class MemberController {
 		return "/member/eventList";
 	}
 	
-	@GetMapping("/test")
-	public String test() {
-		return "/member/test";
+	@GetMapping("/watchedList")
+	public String watchedList() {
+		return "/member/watchedList";
 	}
 	
 	

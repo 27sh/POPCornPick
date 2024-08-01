@@ -71,6 +71,9 @@ ul {
 	padding-top:30px;
 }
 
+#sidebar .sidebar-box3 {
+	height:100px;
+}
 
 #sidebar .sidebar-box5{
 	height: 80px;

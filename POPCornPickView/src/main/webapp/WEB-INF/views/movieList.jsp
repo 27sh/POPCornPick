@@ -7,6 +7,9 @@
 <title>영화 목록</title>
 
 <%@ include file="layout/header.jsp"%>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
 body {
 	font-family: Arial, sans-serif;

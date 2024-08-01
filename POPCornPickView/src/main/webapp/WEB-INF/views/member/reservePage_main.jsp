@@ -1353,7 +1353,13 @@ main {
 					
 					const date = $(this).children("strong").text();
 					const day = $(this).children("em").text();
-					const result = year + "-" + month + "-" + date + " ( " + day +  " )";
+					let dateStr = '';
+					
+					if(date.length === 1){
+						dateStr = "0" + date;
+					}
+					
+					const result = year + "-" + month + "-" + dateStr + " ( " + day +  " )";
 					
 					$(".section_schedule_title").text("날짜 - " + result);
 					$(".simple_info_content_date").text(result);

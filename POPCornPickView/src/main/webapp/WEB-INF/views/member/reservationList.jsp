@@ -156,6 +156,22 @@ td {
 	padding: 15px 0;
 }
 
+.table-size {
+	margin-top: 50px;
+}
+
+.table-size th{
+	width: 15%;
+}
+
+.table-size td{
+	font-size: 15px;
+}
+
+.bold {
+	font-size: 18px;
+}
+
 </style>
 </head>
 <body>
@@ -190,6 +206,22 @@ td {
 <!-- 						</tbody> -->
 <!-- 					</table> -->
 				</div>
+				<div >
+					<table class="table-size" border="1">
+						<tr>
+							<th>이용안내</th>
+							<td>예매 변경은 불가능 하며, 취소 후 재 예매를 하셔야만 합니다.<br> 취소하신 내역이 나타나지 않거나 궁금하신 사항이 있으시면, 고객센터로 문의해 주시기 바랍니다.</td>
+						</tr>
+						<tr>
+							<th>티켓 교환방법</th>
+							<td><span class="bold">티켓판매기(ATM)에서 발권하실 경우</span><br> 예매번호 또는 고객인증번호 (법정생년월일 6자리 + 휴대폰번호 뒷 7~8자리)를 입력하시면 티켓을 편하게 발권하실 수 있습니다. <br><br><span class="bold">매표소에서 발권하실 경우</span><br> 티켓교환권을 출력하여 매표소에 방문하시면 티켓으로 교환하실 수 있습니다. (티켓교환권 출력이 어려운 경우, 예매번호와 신분증을 지참하시면 매표소에서 티켓을 수령하실 수 있습니다.)</td>
+						</tr>
+						<tr>
+							<th>환불 규정 안내</th>
+							<td><span class="bold">현장 취소를 하는 경우</span><br> 상영시간 이전까지만 가능하며, 상영시간 이후 취소나 환불은 되지 않습니다.<br><br> <span class="bold">홈페이지에서 예매 취소할 경우</span><br> 부분 취소는 불가능합니다. (ex. 4장을 인터넷으로 예매한 경우 4장 모두 취소만 가능) 홈페이지 예매 취소는 상영시간 20분전까지 가능합니다. 상영시간 이후 취소나 환불은 되지 않습니다. <br><br><span class="bold">모바일 앱/웹(m.cgv.co.kr)에서 예매 취소할 경우</span><br> 부분 취소는 불가합니다.(ex. 4장을 인터넷으로 예매한 경우 4장 모두 취소만 가능) 모바일 앱/웹 예매 취소는 상영시간 15분전까지 가능합니다. 상영시간 이후 취소나 환불은 되지 않습니다. <span class="bold">단, 일부 행사의 경우 행사 당일 취소, 변경 불가 합니다.</span></td>
+						</tr>
+					</table>
+				</div>
 			</div>
 		</div>
 		
@@ -205,6 +237,15 @@ td {
 			reservationcancelList();
 		    
 		});
+		
+		// 아스키 코드 이용 row 변환
+        function asciiToString(row) {
+		    let str = '';
+		    for (let i = 0; i < asciiArray.length; i++) {
+		        str += String.fromCharCode(asciiArray[i]);
+		    }
+		    return str;
+		}
 		
 		function loadReservation(){
 			
@@ -223,6 +264,8 @@ td {
 		                
 		                const formattedRegdate = formatDate(reservation.regdate);
 		                const formattedStart = formatDate(reservation.start);
+		                
+		                const seatRow = String.fromCharCode(reservation.seatRow + 64);
 		                
 		                reservationDiv.innerHTML = 
 		                    '<div class="reservationList">' +
@@ -245,7 +288,7 @@ td {
 		                                    '</tr>' +
 		                                    '<tr>' +
 		                                        '<th>관람좌석</th>' +
-		                                        '<td>' + reservation.seatRow + ' ' + reservation.seatColumn + '</td>' +
+		                                        '<td>' + seatRow + reservation.seatColumn + '</td>' +
 		                                    '</tr>' +
 		                                '</table>' +
 		                                '<h3 class="h3">총 결제금액  <span class="span1">' + reservation.payTotalAmount + '원</span> <input id="cancelTicket" type="button" value="예매취소" onclick="cancelTicketing(' + reservation.ticketingNo + ')"></h3>' +

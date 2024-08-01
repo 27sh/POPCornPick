@@ -54,6 +54,10 @@ public class MemberController {
 		return "/member/eventList";
 	}
 	
+	@GetMapping("/watchedList")
+	public String watchedList() {
+		return "/member/watchedList";
+	}
 	
 	
 }

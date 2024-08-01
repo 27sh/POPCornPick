@@ -170,15 +170,7 @@ a:hover {
 
 	<div class="container">
 			<h1>공지사항 목록</h1>
-		<div class="tab-menu">
-			<div id="" onclick="a(event)" class="tab-menu-item" data-value="공지사항">공지사항</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="이벤트">이벤트</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="FAQ">FAQ</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="문의">문의</div>
-			<div id="" onclick="" class="tab-menu-item" data-value="신고">신고</div>
-			<div>사이드바를 만들었으니 여기에 카테고리를 넣으면 될것같다.</div>
-		</div>
-		
+
 		<br>
 		<form class="search-form" onsubmit="searchNotice(event)">
 			<label for="search">검색</label> <input type="text" id="search"
@@ -208,7 +200,7 @@ a:hover {
 <script>
 $(document).ready(function() {
     var currentPage = 1;
-    var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
+    var itemsPerPage = 10; // 한 페이지에 5개의 데이터 출력
 
     loadPage(currentPage);
 
@@ -250,7 +242,7 @@ $(document).ready(function() {
 });
 
 function loadPage(page) {
-    var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
+    var itemsPerPage = 10; // 한 페이지에 5개의 데이터 출력
     $.ajax({
         url: "http://localhost:9001/api/v1/admin/announcementList",
         method: "GET",

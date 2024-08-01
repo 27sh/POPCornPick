@@ -236,7 +236,7 @@ $(document).ready(function() {
 });
 
 function loadPage(page) {
-    var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
+    var itemsPerPage = 10; // 한 페이지에 5개의 데이터 출력
     $.ajax({
         url: "http://localhost:9001/api/v1/faqpagenation",
         method: "GET",

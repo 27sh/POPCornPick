@@ -71,6 +71,9 @@ ul {
 	padding-top:30px;
 }
 
+#sidebar .sidebar-box3 {
+	height:100px;
+}
 
 #sidebar .sidebar-box5{
 	height: 80px;
@@ -98,7 +101,6 @@ ul {
 		</div>
 		<div class="sidebar-box sidebar-box3">
 			<h3>Q&A</h3>
-			<p><a href="">Q&A 작성</a></p>
 			<p><a href="/admin/qnaList">Q&A 목록</a></p>
 		</div>
 		<div class="sidebar-box sidebar-box4">

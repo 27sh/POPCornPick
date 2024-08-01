@@ -157,17 +157,18 @@ public class EventController {
 		
 		Date endDate = Date.valueOf("2024-08-31");
 		//쿠폰 타입 등록
-		CouponType result = couponService.checkCouponType("룰렛 이벤트 1000원 할인쿠폰");
-		CouponType result2 = couponService.checkCouponType("룰렛 이벤트 5000원 할인쿠폰");
+		CouponType result = couponService.checkCouponType("룰렛 이벤트 10% 할인쿠폰");
+		CouponType result2 = couponService.checkCouponType("룰렛 이벤트 50% 할인쿠폰");
+		System.out.println("result : " + result + " result2 : " + result2);
 		//쿠폰 타입 최초 등록
 		if(result == null && result2 == null) {
 			CouponType couponType = new CouponType();
-			couponType.setCouponName("룰렛 이벤트 1000원 할인쿠폰");
-			couponType.setDiscount(1000);
+			couponType.setCouponName("룰렛 이벤트 10% 할인쿠폰");
+			couponType.setDiscount(10);
 			couponType.setEndDate(endDate);
 			CouponType couponType2 = new CouponType();
-			couponType2.setCouponName("룰렛 이벤트 5000원 할인쿠폰");
-			couponType2.setDiscount(5000);
+			couponType2.setCouponName("룰렛 이벤트 50% 할인쿠폰");
+			couponType2.setDiscount(50);
 			couponType2.setEndDate(endDate);
 			boolean couponResult = couponService.registCoupon(couponType);
 			boolean couponResult2 = couponService.registCoupon(couponType2);
@@ -197,20 +198,19 @@ public class EventController {
 				point.setAcheive(500);
 				pointService.acheivePoint(point);
 				return ResponseEntity.ok("500포인트가 적립되었습니다. 참여 감사합니다^^");
-			} else if(participationResult.equals("할인쿠폰 1000원")) {
+			} else if(participationResult.equals("할인 10%쿠폰")) {
 				coupon.setCouponNo(result);
 				coupon.setMember(member);
 				couponService.eventCoupon(coupon);
-				return ResponseEntity.ok("할인쿠폰 1000원이 발급되었습니다. 참여 감사합니다^^");
-			} else if(participationResult.equals("할인쿠폰 5000원")) {
+				return ResponseEntity.ok("10% 할인쿠폰이 발급되었습니다. 참여 감사합니다^^");
+			} else if(participationResult.equals("할인쿠폰 50%쿠폰")) {
 				coupon.setCouponNo(result2);
 				coupon.setMember(member);
-				
-				return ResponseEntity.ok("할인쿠폰 5000원이 발급되었습니다. 참여 감사합니다^^");
+				couponService.eventCoupon(coupon);
+				return ResponseEntity.ok("50% 할인쿠폰이 발급되었습니다. 참여 감사합니다^^");
 			} else {
 				return ResponseEntity.badRequest().body("다시 시도해주세요");
 			}
-			
 		} else {
 			return ResponseEntity.badRequest().body("해당 이벤트는 한번만 참여 가능합니다.");
 		}

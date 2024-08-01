@@ -110,9 +110,13 @@ public class MemberInquiryController {
 				qna.setQnaFile(newName);
 				List<String> imageExtensions = new ArrayList<>();
 				imageExtensions.add(".jpg");
+				imageExtensions.add(".JPG");
 				imageExtensions.add(".jpeg");
+				imageExtensions.add(".JPEG");
 				imageExtensions.add(".png");
+				imageExtensions.add(".PNG");
 				imageExtensions.add(".gif");
+				imageExtensions.add(".GIF");
 				
 				if(imageExtensions.contains(extension) == false) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("파일 업로드 실패: 이미지 파일만 첨부가 가능합니다.");
@@ -263,9 +267,13 @@ public class MemberInquiryController {
 				qna.setQnaFile(newName);
 				List<String> imageExtensions = new ArrayList<>();
 				imageExtensions.add(".jpg");
+				imageExtensions.add(".JPG");
 				imageExtensions.add(".jpeg");
+				imageExtensions.add(".JPEG");
 				imageExtensions.add(".png");
+				imageExtensions.add(".PNG");
 				imageExtensions.add(".gif");
+				imageExtensions.add(".GIF");
 				
 				if(imageExtensions.contains(extension) == false) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("파일 업로드 실패: 이미지 파일만 첨부가 가능합니다.");

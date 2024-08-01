@@ -237,7 +237,7 @@ tr[name="qnaContentTr"] {
 		</div>
 		<div class="content">
 			<div class="tab">
-				<a href="#1">FAQ</a><a href="#2">공지사항</a><a href="#3">1:1 문의</a><a href="#4">단체관람/대관문의</a>
+				<a href="/common/faqList">FAQ</a><a href="/common/noticeList">공지사항</a><a href="/member/qnaForm">1:1 문의</a>
 			</div>
 			<div class="FAQ">
 				<div class="text-box">

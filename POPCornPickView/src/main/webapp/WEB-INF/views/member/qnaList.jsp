@@ -58,7 +58,7 @@ table tr:first-child th:nth-child(7) {
 }
 
 h1 {
-	margin: 20px 0;
+	margin: 30px 0;
 }
 
 .tr-group { 
@@ -90,6 +90,12 @@ h1 {
 #pagination {
 	margin-top: 20px;
 }
+
+#inquiry {
+	font-size: 16px;
+	position: relative;
+	left: 300px;
+}
 </style>
 </head>
 <body>
@@ -105,7 +111,7 @@ h1 {
 				<%@ include file="../member/sideMenu.jsp"%>
 			</div>
 			<div id="table-location">
-				<h1>1:1 문의내역 목록</h1>
+				<h1>1:1 문의내역 목록<a id="inquiry" href="/member/qnaForm">문의하기</a></h1>
 				<table id="table" border="1">
 					<thead>
 						<tr class="tr-group">

@@ -125,6 +125,14 @@ main {
 	height: 150px;
 }
 
+#qnaFileImg {
+	height: 150px;
+}
+
+#qnaFileImg:hover {
+	cursor: pointer;
+}
+
 .buttons {
 	text-align: center;
 }
@@ -195,6 +203,10 @@ main {
 	</footer>
 	<script type="text/javascript">
 		
+		document.addEventListener("DOMContentLoaded", () => {
+			loadQnaDetail();
+		});
+		
 		function loadQnaDetail(){
 			const token = localStorage.getItem("jwtToken");
 			const xhttp = new XMLHttpRequest();
@@ -216,8 +228,8 @@ main {
 				qnaDetail.innerHTML += '<div class="title"><p class="smallCategoryAndTitle">[' + qna.qnaSmallCategory + ']     ' + qna.qnaTitle + ' <span class="regdate">' +  qna.regdate.split("T")[0] + '</span><span class="qnaAnswer">' + Answer + '</span></p></div>';
 				qnaDetail.innerHTML += '<div class="context">' + qna.qnaContent + '</div>';
 				qnaDetail.innerHTML += '<p class="file"> 첨부 파일</p>';
-				qnaDetail.innerHTML += '<div class="fileImage"><img src="" id="qnaFileImg" alt="이미지 첨부파일 미리보기"></div>';
-				qnaDetail.innerHTML += '<div class="fileName">' + qnaFileName + '</div>';
+				qnaDetail.innerHTML += '<div class="fileImage"><img src="" id="qnaFileImg" alt="이미지 첨부파일 미리보기" onclick="viewLarger(this.src)"></div>';
+				qnaDetail.innerHTML += '<div class="fileName"><a id="downloadLink" href="#" download>' + qnaFileName + '</a></div>';
 				qnaDetail.innerHTML += '<div class="buttons"><input type="button" id="editBtn" value="수정" onclick="editQnaForm()"> <input type="button" id="deleteBtn" value="삭제" onclick="deleteQna()"></div>'
 				
 				const AnswerColor = document.querySelector(".qnaAnswer");
@@ -242,6 +254,13 @@ main {
 					console.log("이미지url 확인 : " + createImageUrl(qna.qnaFile));
 				}
 				
+				// 첨부파일 이름 클릭시 다운로드 처리
+				const fileDownloadLink = document.querySelector("#downloadLink");
+				if(qna.qnaFile){
+					fileDownloadLink.href = createImageUrl(qna.qnaFile);
+					fileDownloadLink.download = qnaFileName;
+				}
+				
 			}
 			
 			xhttp.open("GET", "http://localhost:9001/api/v1/memInquiry/qnaDetail?qnaNo=" + ${qnaNo});
@@ -258,12 +277,12 @@ main {
 
 		// 이미지 URL 생성 함수 (예시)
 		function createImageUrl(originFileName) {
-			return '/static/upload/' + originFileName; // 실제 서버 환경에 맞게 수정
+			return '/upload/' + originFileName; // 실제 서버 환경에 맞게 수정
 		}
 		
-		document.addEventListener("DOMContentLoaded", () => {
-			loadQnaDetail();
-		});
+		function viewLarger(imgUrl){
+			window.open(imgUrl, '_blank');
+		}
 		
 		function editQnaForm(){
 			window.location.href = "/member/editQnaForm?qnaNo=" + ${qnaNo};

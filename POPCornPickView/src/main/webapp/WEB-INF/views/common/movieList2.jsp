@@ -6,8 +6,17 @@
 <meta charset="UTF-8">
 <title>영화 목록</title>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <%@ include file="../layout/header.jsp"%>
 <style>
+main {
+	width: 1200px;
+	margin: 80px auto;
+	min-height: 700px;
+	border: 1px solid #eee;
+}
 body {
 	font-family: Arial, sans-serif;
 }
@@ -56,6 +65,7 @@ body {
 	color: white;
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 	

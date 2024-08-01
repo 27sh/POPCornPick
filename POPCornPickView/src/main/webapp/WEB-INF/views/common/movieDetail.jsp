@@ -6,6 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>영화상세보기</title>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />0
+
 <style>
 main {
 	width: 1200px;

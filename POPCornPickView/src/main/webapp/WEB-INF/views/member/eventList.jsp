@@ -13,7 +13,7 @@ main {
 	width: 1200px;
 	margin: 80px auto;
 /* 	min-height: 700px; */
-	border:1px solid #eee;
+/* 	border:1px solid #eee; */
 	box-sizing: border-box;
 }
 

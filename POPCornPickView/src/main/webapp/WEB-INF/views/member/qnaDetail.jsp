@@ -18,7 +18,7 @@ main {
 	width: 1200px;
 	margin: 80px auto;
 /* 	min-height: 700px; */
-	border:1px solid #eee;
+/* 	border:1px solid #eee; */
 }
 
 #sidebar-container {
@@ -65,7 +65,7 @@ main {
 
 .title {
 	position: relative;
-	margin: 20px 20px 50px 20px;
+	margin: 20px 20px 20px 20px;
 	border-bottom: 2px solid #BDBDBD;
 }
 
@@ -88,7 +88,7 @@ main {
 .context {
 	font-size: 16px;
 	margin: 0 20px;
-	padding: 10px 0 0 20px;
+	padding: 0 0 0 20px;
 	height: 300px;
 /* 	border: 1px solid green; */
 }

@@ -29,7 +29,7 @@
             프로필 관리
         </div>
     </a>
-    <a href="/mem/watchedList">
+    <a href="/member/watchedList">
         <div class="side-box" id="box8">
             내가 본 영화
         </div>

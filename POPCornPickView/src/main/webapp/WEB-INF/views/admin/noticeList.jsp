@@ -200,7 +200,7 @@ a:hover {
 <script>
 $(document).ready(function() {
     var currentPage = 1;
-    var itemsPerPage = 5; // 한 페이지에 5개의 데이터 출력
+    var itemsPerPage = 10; // 한 페이지에 5개의 데이터 출력
 
     loadPage(currentPage);
 

@@ -275,10 +275,6 @@ function loadCinemas(location) {
                     loadRoomCount(cinema.cinemaNo);
                 }
                 
-//                selectedCinemaNo = cinema.cinemaNo;
-//                
-//                console.log("selectedCinemaNo "+ selectedCinemaNo);
-                
                 // 첫 번째 `.cinema-item` 클릭 이벤트 트리거
                 if ($('.cinema-item').length > 0) {
                     $('.cinema-item:first').click();

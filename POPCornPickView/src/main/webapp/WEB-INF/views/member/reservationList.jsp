@@ -238,6 +238,15 @@ td {
 		    
 		});
 		
+		// 아스키 코드 이용 row 변환
+        function asciiToString(row) {
+		    let str = '';
+		    for (let i = 0; i < asciiArray.length; i++) {
+		        str += String.fromCharCode(asciiArray[i]);
+		    }
+		    return str;
+		}
+		
 		function loadReservation(){
 			
 			const token = localStorage.getItem("jwtToken");
@@ -255,6 +264,8 @@ td {
 		                
 		                const formattedRegdate = formatDate(reservation.regdate);
 		                const formattedStart = formatDate(reservation.start);
+		                
+		                const seatRow = String.fromCharCode(reservation.seatRow + 64);
 		                
 		                reservationDiv.innerHTML = 
 		                    '<div class="reservationList">' +
@@ -277,7 +288,7 @@ td {
 		                                    '</tr>' +
 		                                    '<tr>' +
 		                                        '<th>관람좌석</th>' +
-		                                        '<td>' + reservation.seatRow + ' ' + reservation.seatColumn + '</td>' +
+		                                        '<td>' + seatRow + reservation.seatColumn + '</td>' +
 		                                    '</tr>' +
 		                                '</table>' +
 		                                '<h3 class="h3">총 결제금액  <span class="span1">' + reservation.payTotalAmount + '원</span> <input id="cancelTicket" type="button" value="예매취소" onclick="cancelTicketing(' + reservation.ticketingNo + ')"></h3>' +

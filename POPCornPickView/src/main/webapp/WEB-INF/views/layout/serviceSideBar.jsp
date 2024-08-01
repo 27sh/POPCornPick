@@ -98,7 +98,6 @@ ul {
 		</div>
 		<div class="sidebar-box sidebar-box3">
 			<h3>Q&A</h3>
-			<p><a href="">Q&A 작성</a></p>
 			<p><a href="/admin/qnaList">Q&A 목록</a></p>
 		</div>
 		<div class="sidebar-box sidebar-box4">

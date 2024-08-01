@@ -119,7 +119,7 @@ th {
 											str += '<table>';
 											str += '    <tr>';
 											str += '      <td>카테고리</td>';
-											str += '      <td id="category">' + response.qnaCategory 	+ '</td>';
+											str += '      <td id="category">' + response.qnaBigCategory 	+ '</td>';
 											str += '    </tr>';
 											str += '    <tr>';
 											str += '      <td>제목</td>';
@@ -187,7 +187,7 @@ th {
 							contentType: "application/json",
 							data : JSON.stringify({
 								qnaNo : qnaNo,
-								qnaCategory : category,
+								qnaBigCategory : category,
 								qnaTitle : title,
 								username : username,
 								qnaContent : content,
@@ -195,7 +195,7 @@ th {
 							}),
 							success : function(response){
 								
-								alert("답변해써요");
+								alert("QNA답변완료");
 								window.location.href="http://localhost:8080/admin/qnaList";
 							},
 							error : function(xhr, status, error){

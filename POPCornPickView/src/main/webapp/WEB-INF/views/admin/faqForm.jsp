@@ -118,9 +118,14 @@ th {
 				<tr>
 					<td>카테고리</td>
 					<td><select name="category">
-							<option value="카테고리는" selected="selected">카테고리는</option>
-							<option value="정해야하는데">정해야합니다</option>
-							<option value="무엇이 좋을까">뭘로하지</option>
+							<option value="홈페이지" selected="selected">홈페이지</option>
+							<option value="회원">회원</option>
+							<option value=""></option>
+							<option value="특별관">특별관</option>
+							<option value="영화관이용">영화관이용</option>
+							<option value="할인혜택">할인혜택</option>
+							<option value="관람권/결제수단">관람권/결제수단</option>
+							<option value="예매/매표">예매/매표</option>
 					</select></td>
 				</tr>
 				<tr>

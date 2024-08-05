@@ -16,6 +16,6 @@
 
 ![이미지](./img/main.png)
 
-시연 영상 : https://drive.google.com/file/d/1VxFomdNhioiw1L32iMTnvPSXnV0BBAjk/view?usp=sharing
+시연 영상 : https://drive.google.com/file/d/11EYSATNgWgEkyjRBqkz596jogGQXkFg3/view?usp=sharing
 
-발표 ppt :
+발표 ppt : https://docs.google.com/presentation/d/1X8SX8lAU2gaIYXh0lfbLkdDYOu-B9PAZ/edit?usp=sharing&ouid=107942165821383448547&rtpof=true&sd=true
